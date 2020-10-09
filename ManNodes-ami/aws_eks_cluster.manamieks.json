@@ -1,0 +1,69 @@
+{
+  "address": "aws_eks_cluster.manamieks",
+  "mode": "managed",
+  "type": "aws_eks_cluster",
+  "name": "manamieks",
+  "provider_name": "aws",
+  "schema_version": 0,
+  "values": {
+    "arn": "arn:aws:eks:eu-west-2:566972129213:cluster/manamieks",
+    "certificate_authority": [
+      {
+        "data": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJd01UQXdNVEl4TVRZeE4xb1hEVE13TURreU9USXhNVFl4TjFvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBSm96CjJ3bVNaVzlYZU9PNTE4ajNDSDlFNyt3TzJRY2tick0waXZ5eEtGYzdOTGJ2aTBqWG03SC9uc0FNMFBaZkJJL00KeUcyalNFeDdpYVlmQW4yTVl3YnduU1B2MVV5QU5oVkMxQ3hXR2xrdTJYQ29sbXBjRXJyV3Y4dEtJdzI2V2ZqNwpoRE4ra3BsaklSU2pCS2tqeTNHVjc4QS9jcnUrY045aGNiUU1SWFV4b3ZPQXhIb0x3WEkzclUzWkJEOXA4MG9pCkI2Q1c0Tmk4RmFzdFpOa2RPSnR5VXVSUFk1cThMb0tOSkJNTFdXMG1hSWNzSFNVaUtIN2ExT3p4UERnYzlQMWYKUDc0am03RUx0Nlk0M3haV1VhR1c5T0gwMmk5TGsvV0hDbk9WbHJrbDNJUmV0aVRLaS9NU3VmSk5HbFlrY0FOUgpXM1dJRFV0dTZvUlpyNWtZMFhrQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFDWFpxazFsbERQK3E5WHErZmljWHBvcTl6eXoKM2VrZzVVaXZTSVJ5dVNIcmROU1N4WjQwSnJ2MzdpQTNJM3FpL056N3praFNUeitMcEk4NVRoaDlDdW1zSjNQago1SjFMNWR6NkRlQnIvNFhPZnl3Nmk1VUJSY3ZuZ0NMZklUNkI2alRTVUNOdnhXWVYzamNpTm43aTNwRTc1SE11ClRweU1ORVlLdUN0OWszTFVNWnJDTjUxc25ZZkNuYUdSNW5IaEtCbTl0NzZRdnF3K0VCRjdEYS9ZSzVkemVtMTQKUW10MjhlWjR0Z0JBVmM0dXJxMHM4RHJMWTRSTldpNkpHdW5GUXh1cUx1NHBjem5DaVlkR3E4b00rSmRDTDVReApjNVBqeXpIOUw0RDdWZ2NrbENPQ0trT2tZN1FTSmRZWVpHeVdQT3BVdXIrRVlTemhJbkJDRHdEL0p2WT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo="
+      }
+    ],
+    "created_at": "2020-10-01 21:08:24.566 +0000 UTC",
+    "enabled_cluster_log_types": [
+      "api",
+      "audit",
+      "authenticator",
+      "controllerManager",
+      "scheduler"
+    ],
+    "encryption_config": [],
+    "endpoint": "https://4C7EF648342A57AE7744E7B311F048C9.gr7.eu-west-2.eks.amazonaws.com",
+    "id": "manamieks",
+    "identity": [
+      {
+        "oidc": [
+          {
+            "issuer": "https://oidc.eks.eu-west-2.amazonaws.com/id/4C7EF648342A57AE7744E7B311F048C9"
+          }
+        ]
+      }
+    ],
+    "name": "manamieks",
+    "platform_version": "eks.3",
+    "role_arn": "arn:aws:iam::566972129213:role/eksctl-manamieks-cluster-ServiceRole-HX498SOE260J",
+    "status": "ACTIVE",
+    "tags": {},
+    "timeouts": {
+      "create": null,
+      "delete": null,
+      "update": null
+    },
+    "version": "1.17",
+    "vpc_config": [
+      {
+        "cluster_security_group_id": "sg-0636c6506d2cac3df",
+        "endpoint_private_access": false,
+        "endpoint_public_access": true,
+        "public_access_cidrs": [
+          "0.0.0.0/0"
+        ],
+        "security_group_ids": [
+          "sg-02394ec9f2195be9b"
+        ],
+        "subnet_ids": [
+          "subnet-08dad7366e061da93",
+          "subnet-0c9bda2cedc5060a5",
+          "subnet-0ca14ea12ad0de3c4",
+          "subnet-0cc9b935aa4a049e1",
+          "subnet-0dbd0e98cc1c333a4",
+          "subnet-0fb6aa031219d3720"
+        ],
+        "vpc_id": "vpc-0528d1e3f0b31cefe"
+      }
+    ]
+  }
+}

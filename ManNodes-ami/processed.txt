@@ -1,0 +1,1 @@
+. ../../scripts/300-get-eks-cluster.sh manamieks

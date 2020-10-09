@@ -1,0 +1,1 @@
+terraform import aws_vpc.vpc-0528d1e3f0b31cefe vpc-0528d1e3f0b31cefe
