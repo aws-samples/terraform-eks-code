@@ -15,7 +15,7 @@ resource "aws_vpc_endpoint" "vpce-s3" {
     }
   )
   private_dns_enabled = true
-  route_table_ids = [ data.aws_route_tables.rts.ids ]
+  route_table_ids =  data.aws_route_tables.rts.ids 
     
   security_group_ids = []
   service_name       = "com.amazonaws.eu-west-2.s3"
