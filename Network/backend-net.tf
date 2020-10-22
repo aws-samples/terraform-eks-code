@@ -10,9 +10,9 @@ encrypt = "true"
 }
 
 provider "aws" {
-region                  = var.region
+region = var.region
 shared_credentials_file = "~/.aws/credentials"
-profile                 = var.profile
+profile = var.profile
 # Allow any 3.1x version of the AWS provider
 version = "~> 3.10"
 }

@@ -1,12 +1,14 @@
 
 d=`pwd`
 cd init
+section="net"
 reg=`terraform output region`
 if [[ -z ${reg} ]] ; then
 echo "no terraform output variables - exiting ....."
+echo "run terraform init/plan/apply in the the init directory first"
 else
 echo "region=$reg"
-rm -f backend.tf
+rm -f $of $of
 fi
 
 
@@ -16,26 +18,38 @@ echo $s3b $tabn
 
 
 cd $d
-printf "" > backend.tf
-printf "terraform {\n" >> backend.tf
-printf "required_version = \">= 0.12, < 0.13\"\n" >> backend.tf
-printf "backend \"s3\" {\n" >> backend.tf
-printf "bucket = \"%s\"\n"  $s3b >> backend.tf
-printf "key = \"terraform/%s.tfstate\"\n"  $tabn >> backend.tf
-printf "region = \"%s\"\n"  $reg >> backend.tf
-printf "dynamodb_table = \"%s\"\n"  $tabn >> backend.tf
-printf "encrypt = \"true\"\n"   >> backend.tf
-printf "}\n" >> backend.tf
-printf "}\n" >> backend.tf
-printf "\n" >> backend.tf
+of=`echo "backend-${section}.tf"`
+printf "" > $of
+printf "terraform {\n" >> $of
+printf "required_version = \">= 0.12, < 0.13\"\n" >> $of
+printf "backend \"s3\" {\n" >> $of
+printf "bucket = \"%s\"\n"  $s3b >> $of
+printf "key = \"terraform/%s.tfstate\"\n"  $tabn >> $of
+printf "region = \"%s\"\n"  $reg >> $of
+printf "dynamodb_table = \"%s\"\n"  $tabn >> $of
+printf "encrypt = \"true\"\n"   >> $of
+printf "}\n" >> $of
+printf "}\n" >> $of
+printf "\n" >> $of
+printf "provider \"aws\" {\n" >> $of
+printf "region = var.region\n"  >> $of
+printf "shared_credentials_file = \"~/.aws/credentials\"\n" >> $of
+printf "profile = var.profile\n" >> $of
+printf "# Allow any 3.1x version of the AWS provider\n" >> $of
+printf "version = \"~> 3.10\"\n" >> $of
+printf "}\n" >> $of
 
-printf "provider \"aws\" {\n" >> backend.tf
-printf "region                  = var.region\n"  >> backend.tf
-printf "shared_credentials_file = \"~/.aws/credentials\"\n" >> backend.tf
-printf "profile                 = var.profile\n" >> backend.tf
-printf "# Allow any 3.1x version of the AWS provider\n" >> backend.tf
-printf "version = \"~> 3.10\"\n" >> backend.tf
-printf "}\n" >> backend.tf
+of=`echo "remote-${section}.tf.sav"`
+printf "" > $of
+printf "data terraform_remote_state \"network\" {\n" >> $of
+printf "backend = \"s3\"\n" >> $of
+printf "config = {\n" >> $of
+printf "bucket = \"%s\"\n"  $s3b >> $of
+printf "region = \"%s\"\n"  $reg >> $of
+printf "key = \"terraform/%s.tfstate\"\n"  $tabn >> $of
+printf "}\n" >> $of
+printf "}\n" >> $of
+
 
 cp init/vars.tf .
 

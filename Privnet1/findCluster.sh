@@ -12,6 +12,10 @@ clusters+=(`aws --profile Pub1 --region eu-west-2 eks list-clusters | jq .cluste
 #done
 nc=${#clusters[@]}
 
+
+
+
+
 #echo "array size=$nc"
 #echo ${clusters[0]}
 #echo ${clusters[1]}
