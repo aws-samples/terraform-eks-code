@@ -1,1 +1,0 @@
-terraform import aws_subnet.subnet-0fb6aa031219d3720 subnet-0fb6aa031219d3720

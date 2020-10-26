@@ -1,0 +1,10 @@
+resource "aws_security_group" "sg-0a1578a53b37b12c6" {
+  description = "Communication between the control plane and worker nodegroups"
+  vpc_id      = aws_vpc.vpc-0c5887ebf50affcd7.id
+  tags = {
+    "alpha.eksctl.io/cluster-name"                = "manamieksp"
+    "alpha.eksctl.io/eksctl-version"              = "0.29.2"
+    "Name"                                        = "eksctl-manamieksp-cluster/ControlPlaneSecurityGroup"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "manamieksp"
+  }
+}
