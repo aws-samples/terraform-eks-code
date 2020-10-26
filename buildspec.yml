@@ -101,38 +101,17 @@ phases:
       - cd "$CODEBUILD_SRC_DIR"
       - ls -al
       - cd "Network"
+      - rm -f tfplan
       - ls -al
       - terraform init  -no-color
       - terraform validate -no-color
-      - #terraform plan .
+      - terraform plan -out tfplan
 
-      - #ls themes
-      - #ls themes/learn
-      - #echo "<p class="build-number">${IMAGE_TAG}</p>" >> layouts/partials/menu-footer.html
-      - #cat layouts/partials/menu-footer.html
-      - #if [ "${CODEBUILD_GIT_CLEAN_BRANCH}" != "master" ] ; then
-        #  sed -i "s@branch =.*@branch = \"$CODEBUILD_GIT_CLEAN_BRANCH\"@" config.toml;
-        #fi
-      - #cat config.toml
-      - #echo "npm run build"
-      - #npm run build
-      - #npm run deploytemplates
-      - #curl https://api.github.com/rate_limit
-      - #if [ "$CODEBUILD_GIT_CLEAN_BRANCH" = "master" ] ; then
-        #  npm run test;
-        #else
-        #  echo skipping this test docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --url-swap "/$CODEBUILD_GIT_CLEAN_BRANCH:" --external-only;
-        #fi
-      - #curl https://api.github.com/rate_limit
 
   post_build:
     commands:
       - echo "terraform completed on `date`"
-      #- if [ "${CODEBUILD_BUILD_SUCCEEDING}" != "1" ] ; then
-      #    echo "the build failed -- not continuing with post build";
-      #    exit 99;
-      #  fi
-      #- ./codebuild-deploy.sh
+
 
 artifacts:
   files:
