@@ -101,8 +101,9 @@ phases:
       - cd "$CODEBUILD_SRC_DIR"
       - ls -al
       - cd "Network"
+      - ls -al
     
-      - #terraform validate
+      - terraform validate
       - #terraform plan .
 
       - #ls themes
