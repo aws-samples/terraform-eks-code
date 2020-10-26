@@ -17,10 +17,10 @@ resource "aws_route_table" "rtb-0102c621469c344cd" {
     },
   ]
   tags = {
-    "Name"                                        = "eksctl-manamieksp-cluster/PrivateRouteTableEUWEST1B"
-    "alpha.eksctl.io/cluster-name"                = "manamieksp"
+    "Name"                                        = "eksctl-mycluster1-cluster/PrivateRouteTableEUWEST1B"
+    "alpha.eksctl.io/cluster-name"                = "mycluster1"
     "alpha.eksctl.io/eksctl-version"              = "0.29.2"
-    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "manamieksp"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "mycluster1"
   }
   vpc_id = aws_vpc.vpc-mycluster1.id
 }
