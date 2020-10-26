@@ -106,7 +106,7 @@ phases:
       - terraform init  -no-color
       - terraform validate -no-color
       - terraform plan -out tfplan
-
+      - terraform apply tfplan -auto-approve -no-color
 
   post_build:
     commands:
