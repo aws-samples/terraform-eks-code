@@ -87,8 +87,8 @@ phases:
       - "cd /usr/bin"
       - "curl -s -qL -o terraform.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
       - "unzip -o terraform.zip"
-      - echo ".aws" 
-      - ls -al /root
+    
+      - ls -al /root/.ssh
 
       - export AWS_RAW_CRED=$(curl --silent http://169.254.170.2:80$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)
       - export AWS_ACCESS_KEY_ID=$(echo $AWS_RAW_CRED | jq -r '.AccessKeyId')
@@ -98,9 +98,12 @@ phases:
       - echo $AWS_ACCESS_KEY_ID
       - echo $AWS_SECRET_ACCESS_KEY
       - echo $CODEBUILD_SRC_DIR
-      - cd Network
-      - terraform validate
-      - terraform plan .
+      - cd "$CODEBUILD_SRC_DIR"
+      - ls -al
+      - cd "Network"
+    
+      - #terraform validate
+      - #terraform plan .
 
       - #ls themes
       - #ls themes/learn
