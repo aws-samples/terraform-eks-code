@@ -97,6 +97,10 @@ phases:
 
       - echo $AWS_ACCESS_KEY_ID
       - echo $AWS_SECRET_ACCESS_KEY
+      - echo $CODEBUILD_SRC_DIR
+      - cd NETWORK
+      - terraform validate
+      - terraform plan .
 
       - #ls themes
       - #ls themes/learn
@@ -125,3 +129,6 @@ phases:
       #  fi
       #- ./codebuild-deploy.sh
 
+artifacts:
+  files:
+    - '**/*'
