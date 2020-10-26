@@ -17,3 +17,7 @@ resource "aws_subnet" "subnet-00d48938ae75575f6" {
 
   timeouts {}
 }
+
+output "sub-priv3" {
+  value = aws_subnet.subnet-00d48938ae75575f6.id
+}

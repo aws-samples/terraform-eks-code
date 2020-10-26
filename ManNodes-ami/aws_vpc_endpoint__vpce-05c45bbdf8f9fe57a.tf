@@ -25,7 +25,7 @@ resource "aws_vpc_endpoint" "vpce-05c45bbdf8f9fe57a" {
   subnet_ids         = []
   tags               = {}
   vpc_endpoint_type  = "Gateway"
-  vpc_id             = aws_vpc.vpc-0c5887ebf50affcd7.id
+  vpc_id             = aws_vpc.vpc-mycluster1.id
 
   timeouts {}
 }

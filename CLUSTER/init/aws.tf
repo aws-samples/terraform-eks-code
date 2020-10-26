@@ -1,12 +1,5 @@
 terraform {
   required_version = ">= 0.12, < 0.13"
-  backend "s3" {
-    bucket         = "at-terraform-eks-workshop1"
-    key            = "terraform/at-terraform-eks-workshop1-net.tfstate"
-    region         = "eu-west-1"
-    dynamodb_table = "at-terraform-eks-workshop1-net"
-    encrypt        = "true"
-  }
 }
 
 provider "aws" {

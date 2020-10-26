@@ -2,20 +2,7 @@
 # aws_route_table.rtb-041267f0474c24068:
 resource "aws_route_table" "rtb-041267f0474c24068" {
   propagating_vgws = []
-  route = [
-    {
-      cidr_block                = ""
-      egress_only_gateway_id    = ""
-      gateway_id                = ""
-      instance_id               = ""
-      ipv6_cidr_block           = ""
-      local_gateway_id          = ""
-      nat_gateway_id            = ""
-      network_interface_id      = ""
-      transit_gateway_id        = ""
-      vpc_peering_connection_id = ""
-    },
-  ]
+  route            = []
   tags = {
     "Name"                                        = "eksctl-mycluster1-cluster/PrivateRouteTableEUWEST1A"
     "alpha.eksctl.io/cluster-name"                = "mycluster1"

@@ -5,7 +5,7 @@ resource "aws_vpc_peering_connection" "pcx-0e111fb23e4eee730" {
   peer_region   = "eu-west-1"
   peer_vpc_id   = "vpc-d16a7cb7"
   tags          = {}
-  vpc_id        = aws_vpc.vpc-0c5887ebf50affcd7.id
+  vpc_id        = aws_vpc.vpc-mycluster1.id
 
   accepter {
     allow_classic_link_to_remote_vpc = false

@@ -26,7 +26,7 @@ resource "aws_vpc_endpoint" "vpce-0ba9d8367c2da6f54" {
   ]
   tags              = {}
   vpc_endpoint_type = "Interface"
-  vpc_id            = aws_vpc.vpc-0c5887ebf50affcd7.id
+  vpc_id            = aws_vpc.vpc-mycluster1.id
 
   timeouts {}
 }

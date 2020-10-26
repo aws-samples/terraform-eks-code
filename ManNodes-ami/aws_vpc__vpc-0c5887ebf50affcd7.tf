@@ -9,9 +9,9 @@ resource "aws_vpc" "vpc-0c5887ebf50affcd7" {
   enable_dns_support               = true
   instance_tenancy                 = "default"
   tags = {
-    "Name"                                        = "eksctl-manamieksp-cluster/VPC"
-    "alpha.eksctl.io/cluster-name"                = "manamieksp"
+    "Name"                                        = "eksctl-mycluster1-cluster/VPC"
+    "alpha.eksctl.io/cluster-name"                = "mycluster1"
     "alpha.eksctl.io/eksctl-version"              = "0.29.2"
-    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "manamieksp"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "mycluster1"
   }
 }

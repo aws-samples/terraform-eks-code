@@ -8,3 +8,7 @@ resource "aws_security_group" "sg-0a1578a53b37b12c6" {
     "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "mycluster1"
   }
 }
+
+output "cluster-sg" {
+  value = aws_security_group.sg-0a1578a53b37b12c6.id
+}
