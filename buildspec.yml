@@ -102,8 +102,8 @@ phases:
       - ls -al
       - cd "Network"
       - ls -al
-    
-      - terraform validate
+      - terraform init  -no-color
+      - terraform validate -no-color
       - #terraform plan .
 
       - #ls themes
@@ -125,8 +125,9 @@ phases:
         #fi
       - #curl https://api.github.com/rate_limit
 
-  #post_build:
-  #  commands:
+  post_build:
+    commands:
+      - echo "terraform completed on `date`"
       #- if [ "${CODEBUILD_BUILD_SUCCEEDING}" != "1" ] ; then
       #    echo "the build failed -- not continuing with post build";
       #    exit 99;
