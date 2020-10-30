@@ -15,3 +15,7 @@ resource "aws_vpc" "vpc-mycluster1" {
     "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "mycluster1"
   }
 }
+
+output "eks-vpc" {
+  value = aws_vpc.vpc-mycluster1.id
+}
