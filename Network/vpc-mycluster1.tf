@@ -19,3 +19,7 @@ resource "aws_vpc" "vpc-mycluster1" {
 output "eks-vpc" {
   value = aws_vpc.vpc-mycluster1.id
 }
+
+output "eks-cidr" {
+  value = aws_vpc.vpc-mycluster1.cidr_block
+}

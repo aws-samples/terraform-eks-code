@@ -8,3 +8,7 @@ resource "aws_security_group" "sg-073762dd312483127" {
     "alpha.eksctl.io/eksctl-version"              = "0.29.2"
   }
 }
+
+output "allnodes-sg" {
+  value = aws_security_group.sg-073762dd312483127.id
+}
