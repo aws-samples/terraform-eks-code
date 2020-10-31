@@ -27,6 +27,7 @@ data "aws_security_group" "c9sg" {
   name = sort(data.aws_instance.c9inst.security_groups)[0]
 }
 
+
 data "aws_iam_instance_profile" "c9ip" {
   name = data.aws_instance.c9inst.iam_instance_profile
 }
