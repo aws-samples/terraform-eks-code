@@ -14,9 +14,9 @@ rm -rf aws
 echo "other tools"
 sudo yum -y install jq moreutils gettext bash-completion wget nmap bind-utils
 
-echo 'yq() {
-  docker run --rm -i -v "${PWD}":/workdir mikefarah/yq yq "$@"
-}' | tee -a ~/.bash_profile && source ~/.bash_profile
+#echo 'yq() {
+#  docker run --rm -i -v "${PWD}":/workdir mikefarah/yq yq "$@"
+#}' | tee -a ~/.bash_profile && source ~/.bash_profile
 
 
 echo "Terraform"
@@ -63,35 +63,14 @@ sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
 sudo ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
 sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
 
-echo "install go"
-wget https://dl.google.com/go/go1.12.5.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.12.5.linux-amd64.tar.gz
-export PATH=$PATH:/usr/local/go/bin
-echo "export PATH=$PATH:/usr/local/go/bin" | tee -a ~/.bash_profile
-rm -f go1.12.5.linux-amd64.tar.gz
+
 
 echo "verify"
-for command in kubectl jq envsubst aws wget terraform eksctl go helm kubectx
+for command in kubectl jq envsubst aws wget terraform eksctl helm kubectx
   do
     which $command &>/dev/null && echo "$command in path" || echo "$command NOT FOUND"
   done
 
-
-echo "install krew"
-
-curl -fsSLO "https://storage.googleapis.com/krew/v0.2.1/krew.{tar.gz,yaml}"
-tar zxvf krew.tar.gz 
-./krew-linux_amd64 install --manifest=krew.yaml --archive=krew.tar.gz
-
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-echo "export PATH=${KREW_ROOT:-$HOME/.krew}/bin:$PATH" | tee -a ~/.bash_profile
-rm -f krew*
-rm -rf linux-amd64
-kubectl krew install access-matrix
-kubectl krew install rbac-lookup
-
-go get -v github.com/aquasecurity/kubectl-who-can
-kubectl krew install who-can
 
 
 this=`pwd`
