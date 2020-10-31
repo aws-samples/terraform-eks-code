@@ -2,9 +2,9 @@ terraform {
 required_version = ">= 0.12, < 0.13"
 backend "s3" {
 bucket = "at-terraform-eks-workshop1"
-key = "terraform/at-terraform-eks-workshop1-c9net.tfstate"
+key = "terraform/at-terraform-eks-workshop1-nodeg.tfstate"
 region = "eu-west-1"
-dynamodb_table = "at-terraform-eks-workshop1-c9net"
+dynamodb_table = "at-terraform-eks-workshop1-nodeg"
 encrypt = "true"
 }
 }

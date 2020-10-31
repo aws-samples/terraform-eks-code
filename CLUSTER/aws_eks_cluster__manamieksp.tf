@@ -18,7 +18,7 @@ resource "aws_eks_cluster" "mycluster1" {
 
   vpc_config {
     endpoint_private_access = true
-    endpoint_public_access  = false
+    endpoint_public_access  = true
     public_access_cidrs = [
       "0.0.0.0/0",
     ]
@@ -31,4 +31,8 @@ resource "aws_eks_cluster" "mycluster1" {
       data.terraform_remote_state.net.outputs.sub-priv3,
     ]
   }
+}
+
+output cluster-name {
+  value=aws_eks_cluster.mycluster1.name
 }

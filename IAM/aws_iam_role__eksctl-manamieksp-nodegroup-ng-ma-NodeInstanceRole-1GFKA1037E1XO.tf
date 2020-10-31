@@ -28,3 +28,7 @@ resource "aws_iam_role" "eksctl-mycluster1-nodegroup-ng-ma-NodeInstanceRole-1GFK
     "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "mycluster1"
   }
 }
+
+output "nodegroup_role_arn" {
+  value = aws_iam_role.eksctl-mycluster1-nodegroup-ng-ma-NodeInstanceRole-1GFKA1037E1XO.arn
+}

@@ -7,7 +7,7 @@ variable "bucket_name" {
 variable "table_name" {
   description = "The name of the DynamoDB table. Must be unique in this AWS account."
   type        = string
-  default     = "at-terraform-eks-workshop1-cluster"
+  default     = "at-terraform-eks-workshop1-c9net"
 }
 
 # TF_VAR_region

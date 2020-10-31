@@ -3,6 +3,6 @@ backend = "s3"
 config = {
 bucket = "at-terraform-eks-workshop1"
 region = "eu-west-1"
-key = "terraform/at-terraform-eks-workshop1-c9net.tfstate"
+key = "terraform/at-terraform-eks-workshop1-nodeg.tfstate"
 }
 }
