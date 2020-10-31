@@ -1,3 +1,3 @@
-cn=`terraform output`
-aws eks update-kubeconfig --name mycluster1
+cn=`terraform output cluster-name`
+aws eks update-kubeconfig --name $cn
 kubectx
