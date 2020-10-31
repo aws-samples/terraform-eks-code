@@ -13,7 +13,7 @@ managedNodeGroups:
   maxSize: 3
   privateNetworking: true 
   launchTemplate:
-    id: "lt-0d265d53fdcc9bd8f"
+    id: "lt-08f6cf896f7c0fcac"
   iam:
     withAddonPolicies:
       externalDNS: true

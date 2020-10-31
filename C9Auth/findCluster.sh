@@ -12,6 +12,7 @@ nc=${#clusters[@]}
 c9role=`terraform output c9role`
 echo $c9role
 
+
 #echo "array size=$nc"
 #echo ${clusters[0]}
 #echo ${clusters[1]}
