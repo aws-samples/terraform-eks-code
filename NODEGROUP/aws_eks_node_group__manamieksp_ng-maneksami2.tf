@@ -38,5 +38,9 @@ resource "aws_eks_node_group" "mycluster1_ng-maneksami2" {
     min_size     = 1
   }
 
+  lifecycle {
+    ignore_changes = [scaling_config[0].desired_size]
+  }
+
   timeouts {}
 }

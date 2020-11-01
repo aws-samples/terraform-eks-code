@@ -34,13 +34,13 @@ resource "aws_security_group_rule" "eks-node-all" {
   security_group_id = data.terraform_remote_state.net.outputs.allnodes-sg
 }
 
-resource "aws_security_group_rule" "eks-all-self" {
-  type              = "ingress"
-  self = true
-  security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
-}
-resource "aws_security_group_rule" "eks-node-self" {
-  type              = "ingress"
-  self = true
-  security_group_id = data.terraform_remote_state.net.outputs.allnodes-sg
-}
+#resource "aws_security_group_rule" "eks-all-self" {
+#  type              = "ingress"
+#  self = true
+#  security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
+#}
+#resource "aws_security_group_rule" "eks-node-self" {
+#  type              = "ingress"
+#  self = true
+#  security_group_id = data.terraform_remote_state.net.outputs.allnodes-sg
+#}
