@@ -7,6 +7,16 @@ resource "aws_security_group_rule" "eks-all" {
   security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
 }
 
+resource "aws_security_group_rule" "eks-all-egress" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+
 resource "aws_security_group_rule" "eks-node" {
   type              = "ingress"
   from_port         = 22
@@ -16,11 +26,22 @@ resource "aws_security_group_rule" "eks-node" {
   security_group_id = data.terraform_remote_state.net.outputs.allnodes-sg
 }
 
+
+resource "aws_security_group_rule" "eks-node-egress" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  security_group_id = data.terraform_remote_state.net.outputs.allnodes-sg
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+
 resource "aws_security_group_rule" "eks-all-node" {
   type              = "ingress"
   from_port         = 0
-  to_port           = 65535
-  protocol          = "tcp"
+  to_port           = 0
+  protocol          = "-1"
   source_security_group_id = data.terraform_remote_state.net.outputs.allnodes-sg
   security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
 }
@@ -28,8 +49,8 @@ resource "aws_security_group_rule" "eks-all-node" {
 resource "aws_security_group_rule" "eks-node-all" {
   type              = "ingress"
   from_port         = 0
-  to_port           = 65535
-  protocol          = "tcp"
+  to_port           = 0
+  protocol          = "-1"
   source_security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
   security_group_id = data.terraform_remote_state.net.outputs.allnodes-sg
 }
