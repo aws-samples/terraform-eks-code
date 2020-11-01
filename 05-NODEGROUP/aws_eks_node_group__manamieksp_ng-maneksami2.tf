@@ -10,7 +10,7 @@ resource "aws_eks_node_group" "mycluster1_ng-maneksami2" {
     "alpha.eksctl.io/cluster-name"   = data.aws_eks_cluster.mycluster.name
     "alpha.eksctl.io/nodegroup-name" = format("ng1-%s", data.aws_eks_cluster.mycluster.name)
   }
-  node_group_name = format("ng1-%s", ddata.aws_eks_cluster.mycluster.name)
+  node_group_name = format("ng1-%s", data.aws_eks_cluster.mycluster.name)
   node_role_arn   = data.terraform_remote_state.iam.outputs.nodegroup_role_arn
   release_version = "1.17.11-20201007"
   subnet_ids = [
