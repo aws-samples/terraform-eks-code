@@ -4,7 +4,7 @@ resource "aws_security_group_rule" "eks-all" {
   to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = [data.aws_vpc.vpc-default.cidr_block]
-  security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
+  security_group_id = data.terraform_remote_state.cluster.outputs.cluster-sg
 }
 
 resource "aws_security_group_rule" "eks-node" {
@@ -22,7 +22,7 @@ resource "aws_security_group_rule" "eks-all-node" {
   to_port           = 65535
   protocol          = "tcp"
   source_security_group_id = data.terraform_remote_state.net.outputs.allnodes-sg
-  security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
+  security_group_id = data.terraform_remote_state.cluster.outputs.cluster-sg
 }
 
 resource "aws_security_group_rule" "eks-node-all" {
@@ -30,7 +30,7 @@ resource "aws_security_group_rule" "eks-node-all" {
   from_port         = 0
   to_port           = 65535
   protocol          = "tcp"
-  source_security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
+  source_security_group_id = data.terraform_remote_state.cluster.outputs.cluster-sg
   security_group_id = data.terraform_remote_state.net.outputs.allnodes-sg
 }
 
