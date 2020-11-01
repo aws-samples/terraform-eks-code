@@ -22,9 +22,9 @@ resource "aws_eks_cluster" "mycluster1" {
     public_access_cidrs = [
       "0.0.0.0/0",
     ]
-    security_group_ids = [
-      data.terraform_remote_state.net.outputs.cluster-sg,
-    ]
+    #security_group_ids = [
+    #  data.terraform_remote_state.net.outputs.cluster-sg,
+    #]
     subnet_ids = [
       data.terraform_remote_state.net.outputs.sub-priv1,
       data.terraform_remote_state.net.outputs.sub-priv2,
@@ -35,4 +35,8 @@ resource "aws_eks_cluster" "mycluster1" {
 
 output cluster-name {
   value=aws_eks_cluster.mycluster1.name
+}
+
+output cluster-sg {
+  value=aws_eks_cluster.mycluster1.vpc_config[0].security_group_ids
 }
