@@ -9,7 +9,7 @@ resource "aws_security_group_rule" "eks-all" {
 
 resource "aws_security_group_rule" "eks-node" {
   type              = "ingress"
-  from_port         = 22
+  from_port         = 
   to_port           = 22
   protocol          = "tcp"
   cidr_blocks       = [data.aws_vpc.vpc-default.cidr_block]
