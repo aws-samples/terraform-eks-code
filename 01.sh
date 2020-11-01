@@ -1,5 +1,5 @@
 cd 01*
 terraform init
-terraform plan -out tfpan
+terraform plan -out tfplan
 terraform apply tfplan
 cd ..
