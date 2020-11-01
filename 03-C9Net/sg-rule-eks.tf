@@ -7,14 +7,14 @@ resource "aws_security_group_rule" "eks-all" {
   security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
 }
 
-#resource "aws_security_group_rule" "eks-all-egress" {
-#  type              = "egress"
-#  from_port         = 0
-#  to_port           = 0
-#  protocol          = "-1"
-#  security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
-#  cidr_blocks       = ["0.0.0.0/0"]
-#}
+resource "aws_security_group_rule" "eks-all-egress" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
+  cidr_blocks       = ["0.0.0.0/0"]
+}
 
 
 resource "aws_security_group_rule" "eks-node" {
