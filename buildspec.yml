@@ -87,6 +87,12 @@ phases:
       - "cd /usr/bin"
       - "curl -s -qL -o terraform.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
       - "unzip -o terraform.zip"
+      - echo "kubectl"
+      - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+      - chmod +x ./kubectl
+      - sudo mv ./kubectl /usr/local/bin/kubectl
+      - yum -y install jq moreutils gettext bash-completion wget nmap bind-utils
+
     
       - ls -al /root/.ssh
 
@@ -100,14 +106,20 @@ phases:
       - echo $CODEBUILD_SRC_DIR
       - cd "$CODEBUILD_SRC_DIR"
       - ls -al
-      - cd "Network"
-      - rm -f tfplan
-      - ls -al
-      - terraform init  -no-color
-      - terraform validate -no-color
-      - terraform plan -out tfplan
-      - "terraform apply -auto-approve tfplan" 
-
+      - #cd "Network"
+      - #rm -f tfplan
+      - #ls -al
+      - #terraform init  -no-color
+      - #terraform validate -no-color
+      - #terraform plan -out tfplan
+      - #"terraform apply -auto-approve tfplan"  
+      - rm -f ~/.kube/config
+      - aws eks update-kubeconfig --name mycluster1
+      - kubectl get nodes
+      - resp=$(aws eks describe-cluster --name mycluster1)
+      - endp=$(echo $resp | jq -r .cluster.endpoint | cut -f3 -d'/')
+      - nslookup $endp
+      - nmap $endp -Pn -p 443
   post_build:
     commands:
       - echo "terraform completed on `date`"
