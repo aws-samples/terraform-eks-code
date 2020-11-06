@@ -1,7 +1,7 @@
-data terraform_remote_state "network" {
+data terraform_remote_state "nodeg" {
 backend = "s3"
 config = {
-bucket = "at-terraform-eks-workshop1"
+bucket = "terraform-state-f8ffc212119c-1604685411n"
 region = "eu-west-1"
 key = "terraform/at-terraform-eks-workshop1-nodeg.tfstate"
 }

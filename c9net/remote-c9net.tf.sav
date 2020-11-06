@@ -1,8 +1,8 @@
-data terraform_remote_state "network" {
+data terraform_remote_state "c9net" {
 backend = "s3"
 config = {
-bucket = "at-terraform-eks-workshop1"
+bucket = ""
 region = "eu-west-1"
-key = "terraform/at-terraform-eks-workshop1-c9net.tfstate"
+key = "terraform/.tfstate"
 }
 }

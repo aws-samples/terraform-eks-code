@@ -4,27 +4,27 @@ output "s3_bucket" {
 }
 
 output "dynamodb_table_name_net" {
-  value       = aws_dynamodb_table.terraform_locks.name
+  value       = aws_dynamodb_table.terraform_locks_net.name
   description = "The name of the DynamoDB table"
 }
 
-output "dynamodb_table_name_net" {
-  value       = aws_dynamodb_table.terraform_locks.name
+output "dynamodb_table_name_iam" {
+  value       = aws_dynamodb_table.terraform_locks_iam.name
   description = "The name of the DynamoDB table"
 }
 
-output "dynamodb_table_name_net" {
-  value       = aws_dynamodb_table.terraform_locks.name
+output "dynamodb_table_name_c9net" {
+  value       = aws_dynamodb_table.terraform_locks_c9net.name
   description = "The name of the DynamoDB table"
 }
 
-output "dynamodb_table_name_net" {
-  value       = aws_dynamodb_table.terraform_locks.name
+output "dynamodb_table_name_cluster" {
+  value       = aws_dynamodb_table.terraform_locks_cluster.name
   description = "The name of the DynamoDB table"
 }
 
-output "dynamodb_table_name_net" {
-  value       = aws_dynamodb_table.terraform_locks.name
+output "dynamodb_table_name_nodeg" {
+  value       = aws_dynamodb_table.terraform_locks_nodeg.name
   description = "The name of the DynamoDB table"
 }
 

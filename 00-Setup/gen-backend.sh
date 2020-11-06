@@ -1,6 +1,6 @@
 
 d=`pwd`
-
+sleep 5
 reg=`terraform output region`
 if [[ -z ${reg} ]] ; then
 echo "no terraform output variables - exiting ....."
@@ -22,7 +22,7 @@ echo $s3b $tabn
 
 
 cd $d
-of=`echo "backend-${section}.tf"`
+of=`echo "generated/backend-${section}.tf"`
 printf "" > $of
 printf "terraform {\n" >> $of
 printf "required_version = \">= 0.12, < 0.13\"\n" >> $of
@@ -42,9 +42,25 @@ printf "profile = var.profile\n" >> $of
 printf "# Allow any 3.1x version of the AWS provider\n" >> $of
 printf "version = \"~> 3.10\"\n" >> $of
 printf "}\n" >> $of
+cp -v $of ../$section
 
-of=`echo "remote-${section}.tf.sav"`
+cp -v vars.tf ../$section
+
+done
+
+
+cd $d
+of=`echo "generated/remote-state.tf"`
 printf "" > $of
+
+SECTIONS=('net' 'iam' 'c9net' 'cluster') 
+for section in "${SECTIONS[@]}"
+do
+
+tabn=`terraform output dynamodb_table_name_$section`
+s3b=`terraform output s3_bucket`
+echo $s3b $tabn
+
 printf "data terraform_remote_state \"%s\" {\n" $section>> $of
 printf "backend = \"s3\"\n" >> $of
 printf "config = {\n" >> $of
@@ -54,11 +70,11 @@ printf "key = \"terraform/%s.tfstate\"\n"  $tabn >> $of
 printf "}\n" >> $of
 printf "}\n" >> $of
 
-cp vars.tf ../
 done
 
-
-
-
+for section in "${SECTIONS[@]}"
+do
+cp -v $of ../$section
+done
 
 

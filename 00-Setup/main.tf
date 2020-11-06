@@ -25,6 +25,7 @@ resource "aws_s3_bucket" "terraform_state" {
 }
 
 resource "aws_dynamodb_table" "terraform_locks_net" {
+  depends_on=[aws_s3_bucket.terraform_state]
   name         = var.table_name_net
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
@@ -70,6 +71,7 @@ resource "aws_dynamodb_table" "terraform_locks_cluster" {
 
 
 resource "aws_dynamodb_table" "terraform_locks_nodeg" {
+  depends_on = [aws_dynamodb_table.terraform_locks_net]
   name         = var.table_name_nodeg
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
