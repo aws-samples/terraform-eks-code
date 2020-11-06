@@ -10,6 +10,6 @@ cd ../..
 cd iam/init
 terraform destroy -auto-approve
 cd ../..
-cd network
+cd network/init
 terraform destroy -auto-approve
 cd ../..
