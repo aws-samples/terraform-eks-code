@@ -1,7 +1,7 @@
 terraform {
 required_version = ">= 0.12, < 0.13"
 backend "s3" {
-bucket = "terraform-state-f8ffc212119c-1604685975n"
+bucket = "terraform-state-f8ffc212119c-1604689183n"
 key = "terraform/at-terraform-eks-workshop1-net.tfstate"
 region = "eu-west-1"
 dynamodb_table = "at-terraform-eks-workshop1-net"

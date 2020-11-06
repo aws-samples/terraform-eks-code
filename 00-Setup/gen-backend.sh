@@ -23,6 +23,7 @@ echo $s3b $tabn
 
 cd $d
 of=`echo "generated/backend-${section}.tf"`
+vf=`echo "generated/vars-${section}.tf"`
 printf "" > $of
 printf "terraform {\n" >> $of
 printf "required_version = \">= 0.12, < 0.13\"\n" >> $of
@@ -42,16 +43,24 @@ printf "profile = var.profile\n" >> $of
 printf "# Allow any 3.1x version of the AWS provider\n" >> $of
 printf "version = \"~> 3.10\"\n" >> $of
 printf "}\n" >> $of
-cp -v $of ../$section
 
-cp -v vars.tf ../$section
+printf "" > $vf
+printf "variable \"bucket_name\" {\n" >> $vf
+printf "  description = \"The name of the S3 bucket. Must be globally unique.\"\n" >> $vf
+printf "  type        = string\n" >> $vf
+printf "  default     = \"%s\"\n" $s3b >> $vf
+printf "}\n" >> $vf
+
+
+cp -v $of ../$section
+cp -v $vf ../$section
+cp -v vars-dynamodb.tf ../$section
 
 done
 
 
 cd $d
-of=`echo "generated/remote-state.tf"`
-printf "" > $of
+
 
 SECTIONS=('net' 'iam' 'c9net' 'cluster') 
 for section in "${SECTIONS[@]}"
@@ -60,6 +69,8 @@ do
 tabn=`terraform output dynamodb_table_name_$section`
 s3b=`terraform output s3_bucket`
 echo $s3b $tabn
+of=`echo "generated/remote-${section}.tf"`
+printf "" > $of
 
 printf "data terraform_remote_state \"%s\" {\n" $section>> $of
 printf "backend = \"s3\"\n" >> $of
@@ -72,9 +83,11 @@ printf "}\n" >> $of
 
 done
 
-for section in "${SECTIONS[@]}"
-do
-cp -v $of ../$section
-done
+cp -v generated/remote-net.tf ../c9net 
+cp -v generated/remote-net.tf ../cluster
+cp -v generated/remote-net.tf ../nodeg
 
+cp -v generated/remote-iam.tf ../cluster 
+cp -v generated/remote-iam.tf ../nodeg
 
+cp -v generated/remote-cluster.tf ../nodeg
