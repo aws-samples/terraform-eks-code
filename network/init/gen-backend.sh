@@ -16,7 +16,7 @@ SECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg')
 for section in "${SECTIONS[@]}"
 do
 
-tabn=`terraform output dynamodb_table_name_$section`
+tabn=`terraform output dynamodb_table_name`
 s3b=`terraform output s3_bucket`
 echo $s3b $tabn
 
@@ -45,7 +45,7 @@ printf "}\n" >> $of
 
 of=`echo "remote-${section}.tf.sav"`
 printf "" > $of
-printf "data terraform_remote_state \"%s\" {\n" $section>> $of
+printf "data terraform_remote_state \"network\" {\n" >> $of
 printf "backend = \"s3\"\n" >> $of
 printf "config = {\n" >> $of
 printf "bucket = \"%s\"\n"  $s3b >> $of
