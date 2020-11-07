@@ -4,7 +4,7 @@ triggers = {
 }
 depends_on = [aws_eks_cluster.mycluster1]
 provisioner "local-exec" {
-    on_failure  = "fail"
+    on_failure  = fail
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
         echo -e "\x1B[31m Warning! Testing Network Connectivity ${aws_eks_cluster.mycluster1.name}...should see port 443/tcp open \x1B[0m"
