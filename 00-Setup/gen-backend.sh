@@ -91,3 +91,12 @@ cp -v generated/remote-iam.tf ../cluster
 cp -v generated/remote-iam.tf ../nodeg
 
 cp -v generated/remote-cluster.tf ../nodeg
+
+# upload tools into remote bucket
+wget https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
+wget https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+curl -s -qL -o jq https://stedolan.github.io/jq/download/linux64/jq
+aws s3 cp terraform_0.12.29_linux_amd64.zip s3://$s3b/tools/terraform_0.12.29_linux_amd64.zip
+aws s3 cp kubectl s3://$s3b/tools/kubectl
+aws s3 cp jq s3://$s3b/tools/jq
+rm -rf terraform_0.12.29_linux_amd64.zip kubectl
