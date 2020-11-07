@@ -1,15 +1,15 @@
-cd 05*
+cd nodeg
 terraform destroy -auto-approve
 cd ..
-cd 04*
+cd cluster
 terraform destroy -auto-approve
 cd ..
-cd 03*
+cd c9net
 terraform destroy -auto-approve
 cd ..
-cd 02*
+cd iam
 terraform destroy -auto-approve
 cd ..
-cd 01*
+cd net
 terraform destroy -auto-approve
 cd ..

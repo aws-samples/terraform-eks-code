@@ -1,15 +1,3 @@
-cd nodeg/init
-terraform destroy -auto-approve
-cd ../..
-cd cluster/init
-terraform destroy -auto-approve
-cd ../..
-cd c9net/init
-terraform destroy -auto-approve
-cd ../..
-cd iam/init
-terraform destroy -auto-approve
-cd ../..
-cd network/init
-terraform destroy -auto-approve
-cd ../..
+cd 00-Setup
+terraform destroy -auto-approve -var="bucket_name="
+cd ..
