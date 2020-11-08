@@ -1,0 +1,26 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "AWS CloudForme stack",
+    "Resources": {
+        "Environment": {
+        "Type" : "AWS::Cloud9::EnvironmentEC2",
+        "Properties" : {
+            "AutomaticStopTimeMinutes" : 120,
+            "ConnectionType" : "CONNECT_SSM",
+            "Description" : "Terraform EKS Workshop",
+            "InstanceType" : "t2.small",
+            "Name" : "eks-terraform",
+            "Repositories" : [ {
+                "PathComponent" : "ekswkshp-std",
+                "RepositoryUrl" : "https://github.com/awsandy/ekswkshp-std.git"
+            } ],
+            "Tags" : [{
+                "Key" : "workshop",
+                "Value" : "eks-terraform"
+            } ]
+        }
+        }
+    }
+  }
+
+
