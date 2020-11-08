@@ -2,7 +2,7 @@
 # aws_eks_node_group.mycluster1_ng-maneksami2:
 resource "aws_eks_node_group" "ng-experiment" {
   ami_type       = "AL2_x86_64"
-  #depends_on     = [data.aws_eks_cluster.mycluster]
+  depends_on     = [aws_launch_template.lt-ng-experiment]
   cluster_name   = data.aws_eks_cluster.mycluster.name
   disk_size      = 0
   instance_types = []
