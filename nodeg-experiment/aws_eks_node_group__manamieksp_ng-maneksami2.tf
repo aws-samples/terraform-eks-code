@@ -28,7 +28,7 @@ resource "aws_eks_node_group" "ng-experiment" {
   version = "1.17"
 
   launch_template {
-    name    = aws_launch_template.lt-001c97f607e636908.name
+    name    = aws_launch_template.lt-ng-experimen.name
     version = "1"
   }
 
