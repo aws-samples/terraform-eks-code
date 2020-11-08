@@ -4,7 +4,7 @@ b64=`cat user_data.sh | openssl enc -A -base64`
 
 printf "" > $of
 printf "resource \"aws_launch_template\" \"lt-ng-experiment\" {\n" >> $of
-printf "  depends_on = [null_resource.gen_lt]" >> $of
+printf "  depends_on = [null_resource.gen_lt]\n" >> $of
 printf "  disable_api_termination = false\n" >> $of
 printf "  instance_type           = \"t3.small\"\n" >> $of
 printf "  key_name                = \"eksworkshop\"\n" >> $of
