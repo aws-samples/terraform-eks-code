@@ -11,8 +11,8 @@
                 "InstanceType" : "t2.small",
                 "Name" : "eks-terraform",
                 "Repositories" : [ {
-                    "PathComponent" : "ekswkshp-std",
-                    "RepositoryUrl" : "https://github.com/awsandy/ekswkshp-std.git"
+                    "PathComponent" : "tfekscode",
+                    "RepositoryUrl" : "https://github.com/awsandy/Terraform-EKS-Code.git"
                 } ],
                 "Tags" : [{
                     "Key" : "workshop",
