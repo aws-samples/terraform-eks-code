@@ -20,7 +20,13 @@ printf "echo \"Running custom user data script\"\n" >> ud.sh
 #printf "ls -l /etc/eks >> /tmp/me.txt \n" >> ud.sh
 # needs extra args as private ?
 # --apiserver-endpoint <cluster-endpoint> --b64-cluster-ca <cluster-certificate-authority>
-printf "/etc/eks/bootstrap.sh mycluster1 --apiserver-endpoint %s --b64-cluster-ca %s --kubelet-extra-args '--node-labels=eks.amazonaws.com/nodegroup=ng-mycluster1,eks.amazonaws.com/nodegroup-image=%s'\n" $api $ca $ami >> ud.sh
+# needs 4 labels - 
+# alpha.eksctl.io/cluster-name
+# alpha.eksctl.io/nodegroup-name
+# eks.amazonaws.com/nodegroup=
+# eks.amazonaws.com/nodegroup-image=
+
+printf "/etc/eks/bootstrap.sh mycluster1 --apiserver-endpoint %s --b64-cluster-ca %s --kubelet-extra-args '--node-labels=eks.amazonaws.com/nodegroup=ng-experiment,eks.amazonaws.com/nodegroup-image=%s'\n" $api $ca $ami >> ud.sh
 printf "echo \"Running custom user data script\" > /tmp/me.txt\n" >> ud.sh
 printf "yum install -y amazon-ssm-agent\n" >> ud.sh
 printf "echo \"yum'd agent\" >> /tmp/me.txt\n" >> ud.sh
