@@ -4,7 +4,7 @@
 ami=`aws ssm get-parameter --name /aws/service/eks/optimized-ami/1.17/amazon-linux-2/recommended/image_id --region eu-west-1 --query "Parameter.Value" --output text`
 echo $ami
 # get cluster ami
-api=`aws eks describe-cluster --name mycluster1 | jq .cluster.endpoint | cut -f3 -d'/' | tr -d '"'`
+api=`aws eks describe-cluster --name mycluster1 | jq .cluster.endpoint | tr -d '"'`
 # get CA
 ca=`aws eks describe-cluster --name mycluster1 | jq .cluster.certificateAuthority.data | tr -d '"'`
 

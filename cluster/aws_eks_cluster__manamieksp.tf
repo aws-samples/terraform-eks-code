@@ -40,3 +40,11 @@ output cluster-name {
 output cluster-sg {
   value=aws_eks_cluster.mycluster1.vpc_config[0].cluster_security_group_id
 }
+
+output ca {
+  value=aws_eks_cluster.mycluster1.certificate_authority[0].data
+}
+
+output endpoint {
+  value=aws_eks_cluster.mycluster1.endpoint
+}
