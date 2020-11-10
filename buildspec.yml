@@ -78,9 +78,6 @@ phases:
 
   build:
     commands:
-
-
-
           # install required binary
       - "s3b=`aws s3 ls | grep terraform-state- | awk '{print $3}'`"
       - "aws s3 cp s3://$s3b/tools/jq /usr/bin/jq"
@@ -89,7 +86,8 @@ phases:
       - "chmod +x /usr/bin/jq"
       - "chmod +x /usr/bin/kubectl"
       - "unzip -qq terraform_0.12.29_linux_amd64.zip"
-      - "sudo mv terraform /usr/local/bin/"
+      - "sudo mv terraform /usr/bin/terraform"
+      - "chmod +x /usr/bin/terraform"
       - "rm -f terraform_0.12.29_linux_amd64.zip"
       - yum -y install jq moreutils gettext bash-completion wget nmap bind-utils
       - export AWS_RAW_CRED=$(curl --silent http://169.254.170.2:80$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)
