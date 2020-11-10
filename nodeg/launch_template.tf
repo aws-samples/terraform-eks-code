@@ -9,10 +9,10 @@
 
 #### User data for worker launch
 
-resource "aws_launch_template" "lt-ng-experiment2" {
+resource "aws_launch_template" "lt-ng1" {
   instance_type           = "t3.small"
   key_name                = "eksworkshop"
-  name                    = format("at-lt-%s-experiment2", data.aws_eks_cluster.eks_cluster.name)
+  name                    = format("at-lt-%s-ng1", data.aws_eks_cluster.eks_cluster.name)
   tags                    = {}
   image_id                = data.aws_ssm_parameter.eksami.value
   user_data            = base64encode(local.eks-node-private-userdata)
