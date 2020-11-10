@@ -1,26 +1,24 @@
-cd 01*
+cd net
 terraform init
 terraform plan -out tfpan
 terraform apply tfplan
 cd ..
-cd 02*
+cd iam
 terraform init
 terraform plan -out tfpan
 terraform apply tfplan
 cd ..
-cd 03*
+cd c9net
 terraform init
 terraform plan -out tfpan
 terraform apply tfplan
 cd ..
-cd 04*
+cd cluster
 terraform init
 terraform plan -out tfpan
 terraform apply tfplan
-./auth.sh
-./test.sh
 cd ..
-cd 05*
+cd nodeg
 terraform init
 terraform plan -out tfpan
 terraform apply tfplan
