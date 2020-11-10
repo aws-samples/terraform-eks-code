@@ -14,7 +14,7 @@ resource "aws_launch_template" "lt-ng-experiment2" {
   key_name                = "eksworkshop"
   name                    = format("at-lt-%s-experiment2", data.aws_eks_cluster.eks_cluster.name)
   tags                    = {}
-  image_id                = "ami-0c504dda1302b182f"
+  image_id                = aws_ssm_parameter.eks-ami.value
   user_data            = base64encode(local.eks-node-private-userdata)
   vpc_security_group_ids  = [data.terraform_remote_state.net.outputs.allnodes-sg] 
   tag_specifications { 
