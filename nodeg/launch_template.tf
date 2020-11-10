@@ -36,18 +36,7 @@ resource "aws_launch_template" "lt-ng-experiment2" {
   #    volume_size = 20
   #  }
   #}
-
-
-
-#resource "aws_launch_configuration" "eks-private-lc" {
-#  image_id                    = "${var.eks-worker-ami}" ## visit https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami.html
-##  iam_instance_profile        = "${aws_iam_instance_profile.eks-node.name}"
-#  instance_type               = "${var.worker-node-instance_type}" # use instance variable
-#  key_name                    = "${var.ssh_key_pair}"
-#  name_prefix                 = "eks-private"
-#  security_groups             = ["${aws_security_group.eks-node.id}"]
-
-  
+ 
   
 ## Enable this when you use cluster autoscaler within cluster.
 ## https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md
