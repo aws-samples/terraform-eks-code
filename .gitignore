@@ -30,3 +30,6 @@ override.tf.json
 *tfplan*
 terraform*
 kubectl*
+**/old/*
+**/sw/*
+jq

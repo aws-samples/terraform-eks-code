@@ -1,8 +1,0 @@
-{
-    "LaunchTemplateData": {
-        "InstanceType" : "t3.small",
-        "KeyName": "terraform-andyt",
-        "ImageId": "ami-0a0e935731c835095"
-        
-    }
-}
