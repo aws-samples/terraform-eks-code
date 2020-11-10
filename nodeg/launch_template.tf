@@ -9,27 +9,6 @@
 
 #### User data for worker launch
 
-locals {
-  eks-node-private-userdata = <<USERDATA
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
-
---==MYBOUNDARY==
-Content-Type: text/x-shellscript; charset="us-ascii"
-
-#!/bin/bash -xe
-sudo /etc/eks/bootstrap.sh --apiserver-endpoint '${data.aws_eks_cluster.eks_cluster.endpoint}' --b64-cluster-ca '${data.aws_eks_cluster.eks_cluster.certificate_authority[0].data}' '${data.aws_eks_cluster.eks_cluster.name}'
-echo "Running custom user data script" > /tmp/me.txt
-yum install -y amazon-ssm-agent
-echo "yum'd agent" >> /tmp/me.txt
-systemctl enable amazon-ssm-agent && systemctl start amazon-ssm-agent
-date >> /tmp/me.txt
-
---==MYBOUNDARY==--
-USERDATA
-}
-
-
 resource "aws_launch_template" "lt-ng-experiment2" {
   instance_type           = "t3.small"
   key_name                = "eksworkshop"
@@ -41,7 +20,7 @@ resource "aws_launch_template" "lt-ng-experiment2" {
   tag_specifications { 
         resource_type = "instance"
     tags = {
-        Name = format("%s-experiment2", data.aws_eks_cluster.eks_cluster.name)
+        Name = format("%s-ng1", data.aws_eks_cluster.eks_cluster.name)
         }
     }
   lifecycle {
