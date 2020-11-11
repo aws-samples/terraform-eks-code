@@ -89,7 +89,7 @@ phases:
       - "mv terraform /usr/bin/terraform"
       - "chmod +x /usr/bin/terraform"
       - "rm -f terraform_0.12.29_linux_amd64.zip"
-      - #"yum -y install jq moreutils gettext bash-completion wget nmap bind-utils"
+      - "yum -y install jq moreutils gettext bash-completion wget nmap bind-utils"
       - export AWS_RAW_CRED=$(curl --silent http://169.254.170.2:80$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)
       - export AWS_ACCESS_KEY_ID=$(echo $AWS_RAW_CRED | jq -r '.AccessKeyId')
       - export AWS_SECRET_ACCESS_KEY=$(echo $AWS_RAW_CRED | jq -r '.SecretAccessKey')
@@ -103,9 +103,9 @@ phases:
       - cd "net"
       - rm -f tfplan
       - ls -al
-      - #terraform init  -no-color - no internet access
-      - #terraform validate -no-color
-      - #terraform plan -out tfplan
+      - terraform init  -no-color - no internet access
+      - terraform validate -no-color
+      - terraform plan -out tfplan
       - "cd .."
       - "aws sts get-caller-identity"
       - #"terraform apply -auto-approve tfplan"  
