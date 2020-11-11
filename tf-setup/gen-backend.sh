@@ -44,16 +44,9 @@ printf "# Allow any 3.1x version of the AWS provider\n" >> $of
 printf "version = \"~> 3.10\"\n" >> $of
 printf "}\n" >> $of
 
-printf "" > $vf
-printf "variable \"bucket_name\" {\n" >> $vf
-printf "  description = \"The name of the S3 bucket. Must be globally unique.\"\n" >> $vf
-printf "  type        = string\n" >> $vf
-printf "  default     = \"%s\"\n" $s3b >> $vf
-printf "}\n" >> $vf
-
 
 cp -v $of ../$section
-cp -v $vf ../$section
+
 cp -v vars-dynamodb.tf ../$section
 
 done

@@ -76,9 +76,9 @@ for command in kubectl jq envsubst aws wget terraform eksctl helm kubectx
 this=`pwd`
 echo "sample apps"
 cd ~/environment
-git clone https://github.com/brentley/ecsdemo-frontend.git
-git clone https://github.com/brentley/ecsdemo-nodejs.git
-git clone https://github.com/brentley/ecsdemo-crystal.git
+#git clone https://github.com/brentley/ecsdemo-frontend.git
+#git clone https://github.com/brentley/ecsdemo-nodejs.git
+#git clone https://github.com/brentley/ecsdemo-crystal.git
 git clone https://github.com/awsandy/aws2tf.git
 
 source ~/.bash_profile
@@ -87,11 +87,9 @@ aws --version
 eksctl version
 kubectl version --client
 helm version
-yq --version
-
 
 cd $this
 
 
-#echo "Configure Cloud 9 & AWS Settings - then run part2.sh"
+h"
 
