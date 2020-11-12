@@ -5,14 +5,14 @@ sudo mv ./kubectl /usr/local/bin/kubectl
 
 echo "update aws cli"
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip -q awscliv2.zip
+unzip -qq awscliv2.zip
 sudo ./aws/install
 rm -f awscliv2.zip
 rm -rf aws
 #sudo pip install --upgrade awscli && hash -r
 
 echo "other tools"
-sudo yum -y install jq moreutils gettext bash-completion wget nmap bind-utils
+sudo yum -y -q -e 0 install jq moreutils gettext bash-completion wget nmap bind-utils
 
 #echo 'yq() {
 #  docker run --rm -i -v "${PWD}":/workdir mikefarah/yq yq "$@"
@@ -51,7 +51,7 @@ eksctl completion bash >> ~/.bash_completion
 . ~/.bash_completion
 echo "helm"
 wget https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz
-tar -zxvf helm-v3.2.1-linux-amd64.tar.gz
+tar -zxf helm-v3.2.1-linux-amd64.tar.gz
 sudo mv linux-amd64/helm /usr/local/bin/helm
 rm -rf helm-v3.2.1-linux-amd64.tar.gz linux-amd64
 echo "add a repo"
