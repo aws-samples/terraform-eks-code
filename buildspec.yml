@@ -88,7 +88,7 @@ phases:
       - echo $AWS_SECRET_ACCESS_KEY
       - echo $CODEBUILD_SRC_DIR
       - aws sts get-caller-identity
-      - "yum -y -q -e 0 install moreutils gettext bash-completion nmap bind-utils"
+      - "yum -y -q -e 0 install moreutils bash-completion nmap bind-utils"
       - echo "Terraform"
       - wget -q https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
       - unzip -qq terraform_0.12.29_linux_amd64.zip
@@ -106,8 +106,8 @@ phases:
       - cd "net"
       - rm -f tfplan
       - ls -al
-      - terraform init  -no-color - no internet access
-      - terraform validate -no-color
+      - terraform init  --no-color
+      - terraform validate --no-color
       - terraform plan -out tfplan
       - "cd .."
       - "aws sts get-caller-identity"
