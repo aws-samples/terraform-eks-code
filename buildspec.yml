@@ -90,15 +90,15 @@ phases:
       - aws sts get-caller-identity
       - "yum -y -q -e 0 install jq moreutils gettext bash-completion wget nmap bind-utils"
       - echo "Terraform"
-      - wget https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
+      - wget -q https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
       - unzip -qq terraform_0.12.29_linux_amd64.zip
-      - sudo mv terraform /usr/local/bin/
+      - mv terraform /usr/local/bin/
       - rm -f terraform_0.12.29_linux_amd64.zip
 
       - echo "kubectl"
       - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
       - chmod +x ./kubectl
-      - sudo mv ./kubectl /usr/local/bin/kubectl
+      - mv ./kubectl /usr/local/bin/kubectl
       - kubectl version
 
       - cd "$CODEBUILD_SRC_DIR"
