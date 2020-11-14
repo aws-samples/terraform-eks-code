@@ -106,8 +106,8 @@ phases:
       - cd "net"
       - rm -f tfplan
       - ls -al
-      - "terraform init  -no-color"
-      - "terraform validate -no-color"
+      - "terraform init"
+      - "terraform validate"
       - "terraform plan -out tfplan"
       - "cd .."
       - "aws sts get-caller-identity"
