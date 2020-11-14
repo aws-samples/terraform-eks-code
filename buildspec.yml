@@ -88,18 +88,18 @@ phases:
       - echo $AWS_SECRET_ACCESS_KEY
       - echo $CODEBUILD_SRC_DIR
       - aws sts get-caller-identity
+      - "yum -y -q -e 0 install jq moreutils gettext bash-completion wget nmap bind-utils"
+      - echo "Terraform"
+      - wget https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
+      - unzip -qq terraform_0.12.29_linux_amd64.zip
+      - sudo mv terraform /usr/local/bin/
+      - rm -f terraform_0.12.29_linux_amd64.zip
 
-      - "s3b=`aws s3 ls | grep terraform-state- | awk '{print $3}'`"
-      - "aws s3 cp s3://$s3b/tools/jq /usr/bin/jq"
-      - "aws s3 cp s3://$s3b/tools/kubectl /usr/bin/kubectl"
-      - "aws s3 cp s3://$s3b/tools/terraform_0.12.29_linux_amd64.zip terraform_0.12.29_linux_amd64.zip"
-      - "chmod +x /usr/bin/jq"
-      - "chmod +x /usr/bin/kubectl"
-      - "unzip -qq terraform_0.12.29_linux_amd64.zip"
-      - "mv terraform /usr/bin/terraform"
-      - "chmod +x /usr/bin/terraform"
-      - "rm -f terraform_0.12.29_linux_amd64.zip"
-      - "yum -y install jq moreutils gettext bash-completion wget nmap bind-utils"
+      - echo "kubectl"
+      - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+      - chmod +x ./kubectl
+      - sudo mv ./kubectl /usr/local/bin/kubectl
+      - kubectl version
 
       - cd "$CODEBUILD_SRC_DIR"
       - ls -al
@@ -113,12 +113,13 @@ phases:
       - "aws sts get-caller-identity"
       - #"terraform apply -auto-approve tfplan"  
       - rm -f ~/.kube/config
-      - aws eks update-kubeconfig --name mycluster1
-      - kubectl get nodes
-      - resp=$(aws eks describe-cluster --name mycluster1)
-      - endp=$(echo $resp | jq -r .cluster.endpoint | cut -f3 -d'/')
-      - nslookup $endp
-      - nmap $endp -Pn -p 443
+      - aws eks list-clusters
+      - #aws eks update-kubeconfig --name mycluster1
+      - #kubectl get nodes
+      - #resp=$(aws eks describe-cluster --name mycluster1)
+      - #endp=$(echo $resp | jq -r .cluster.endpoint | cut -f3 -d'/')
+      - #nslookup $endp
+      - #nmap $endp -Pn -p 443
   post_build:
     commands:
       - echo "terraform completed on `date`"
