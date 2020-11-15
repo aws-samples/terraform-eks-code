@@ -15,17 +15,6 @@ resource "aws_route_table" "rtb1-natgw-tgw" {
       transit_gateway_id        = ""
       vpc_peering_connection_id = ""
     },
-    {
-      cidr_block                = "10.0.0.0/8"
-      egress_only_gateway_id    = ""
-      gateway_id                = ""
-      instance_id               = ""
-      ipv6_cidr_block           = ""
-      nat_gateway_id            = ""
-      network_interface_id      = ""
-      transit_gateway_id        = data.aws_ec2_transit_gateway.mytgw.id
-      vpc_peering_connection_id = ""
-    },
   ]
   tags   = {}
   vpc_id = aws_vpc.VPC[count.index].id
