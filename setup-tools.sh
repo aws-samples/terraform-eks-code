@@ -89,7 +89,3 @@ kubectl version --client
 helm version
 
 cd $this
-
-
-h"
-
