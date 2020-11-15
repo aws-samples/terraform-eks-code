@@ -14,6 +14,8 @@ resource "aws_route_table" "rtb2-igw" {
       network_interface_id      = ""
       transit_gateway_id        = ""
       vpc_peering_connection_id = ""
+      "local_gateway_id" = ""
+      "vpc_endpoint_id" = ""
     },
   ]
   tags   = {}
