@@ -1,3 +1,4 @@
 cd tf-setup
-terraform destroy -auto-approve -var="bucket_name="
+buck=$(aws s3 ls | grep terraform-state | awk '{print $3}')
+terraform destroy -auto-approve -var="bucket_name=$buck"
 cd ..
