@@ -1,11 +1,23 @@
+cur=`pwd`
+for i in ("tf-setup" "net");do
+cd $i
+pwd
+cd $cur
+done
+exit
+
+cd ..
+terraform init -no-color
+terraform plan -out tfplan -no-color
+terraform apply tfplan -no-color
 cd net
 terraform init
-terraform plan -out tfpan
+terraform plan -out tfplan
 terraform apply tfplan
 cd ..
 cd iam
 terraform init
-terraform plan -out tfpan
+terraform plan -out tfplan
 terraform apply tfplan
 cd ..
 cd c9net
