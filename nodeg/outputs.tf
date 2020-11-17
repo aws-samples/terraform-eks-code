@@ -53,3 +53,4 @@ output "config-map-aws-auth" {
 output "kubeconfig" {
   value = "local.kubeconfig"
 }
+
