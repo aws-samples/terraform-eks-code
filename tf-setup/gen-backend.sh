@@ -75,7 +75,7 @@ printf "}\n" >> $of
 printf "}\n" >> $of
 
 done
-cp -v generated/remote-net.tf ../net
+
 cp -v generated/remote-net.tf ../c9net 
 cp -v generated/remote-net.tf ../cluster
 cp -v generated/remote-net.tf ../nodeg
