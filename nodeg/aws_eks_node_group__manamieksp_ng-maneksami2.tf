@@ -28,7 +28,7 @@ resource "aws_eks_node_group" "ng1" {
   #version = "1.17"
 
   launch_template {
-    name    = aws_launch_template.lt1.name
+    name    = aws_launch_template.lt-ng1.name
     version = "1"
   }
 

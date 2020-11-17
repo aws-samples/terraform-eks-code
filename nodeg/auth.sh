@@ -1,5 +1,3 @@
-echo "sleep 5 for sync"
-sleep 5
 rm -f ~/.kube/config
 cn=`terraform output cluster-name`
 arn=$(aws sts get-caller-identity | jq -r .Arn)
