@@ -1,5 +1,5 @@
 cur=`pwd`
-dirs="tf-setup net"
+dirs="tf-setup net iam c9net cluster nodeg"
 for i in $dirs; do
 cd $i
 pwd
