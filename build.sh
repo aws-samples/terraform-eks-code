@@ -1,5 +1,6 @@
 cur=`pwd`
-for i in ("tf-setup" "net");do
+dirs="tf-setup net"
+for i in $dirs; do
 cd $i
 pwd
 cd $cur
