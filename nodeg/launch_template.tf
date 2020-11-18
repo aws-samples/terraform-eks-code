@@ -10,6 +10,7 @@
 #### User data for worker launch
 
 resource "aws_launch_template" "lt-ng1" {
+  depends_on = [null_resource.auth_cluster]
   instance_type           = "t3.small"
   key_name                = "eksworkshop"
   name                    = format("at-lt-%s-ng1", data.aws_eks_cluster.eks_cluster.name)
