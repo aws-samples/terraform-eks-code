@@ -2,5 +2,5 @@
 # aws_route_table_association.rtbassoc-049d94408cba62cca:
 resource "aws_route_table_association" "rtbassoc-049d94408cba62cca" {
   route_table_id = aws_route_table.rtb-0329e787bbafcb2c4.id
-  subnet_id      = aws_subnet.subnet-06036e889a3d11863.id
+  subnet_id      = aws_subnet.subnet-i2.id
 }

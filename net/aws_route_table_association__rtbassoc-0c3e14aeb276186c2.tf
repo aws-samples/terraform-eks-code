@@ -2,7 +2,7 @@
 # aws_route_table_association.rtbassoc-0c3e14aeb276186c2:
 resource "aws_route_table_association" "rtbassoc-0c3e14aeb276186c2" {
   route_table_id = aws_route_table.rtb-0102c621469c344cd.id
-  subnet_id      = aws_subnet.subnet-0eed8d110fe361191.id
+  subnet_id      = aws_subnet.subnet-p2.id
 }
 
 output "rtb-priv2" {

@@ -20,9 +20,9 @@ resource "aws_vpc_endpoint" "vpce-08b539c9a5e50b6a9" {
   ]
   service_name = "com.amazonaws.eu-west-1.ecr.api"
   subnet_ids = [
-    aws_subnet.subnet-00d48938ae75575f6.id,
-    aws_subnet.subnet-0c29b7ba0fae1c061.id,
-    aws_subnet.subnet-0eed8d110fe361191.id,
+    aws_subnet.subnet-p3.id,
+    aws_subnet.subnet-p1.id,
+    aws_subnet.subnet-p2.id,
   ]
   tags              = {}
   vpc_endpoint_type = "Interface"
