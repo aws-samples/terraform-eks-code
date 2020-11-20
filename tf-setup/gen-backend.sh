@@ -10,7 +10,7 @@ echo "region=$reg"
 rm -f $of $of
 fi
 
-
+mkdir -p generated 
 SECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg')
  
 for section in "${SECTIONS[@]}"
