@@ -10,7 +10,7 @@ echo "region=$reg"
 rm -f $of $of
 fi
 
-mkdir -p generated 
+mkdir generated
 SECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg')
  
 for section in "${SECTIONS[@]}"
@@ -22,6 +22,8 @@ echo $s3b $tabn
 
 
 cd $d
+
+
 of=`echo "generated/backend-${section}.tf"`
 vf=`echo "generated/vars-${section}.tf"`
 printf "" > $of
