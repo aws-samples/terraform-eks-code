@@ -3,7 +3,7 @@
 resource "aws_subnet" "subnet-p2" {
   assign_ipv6_address_on_creation = false
   availability_zone               = "eu-west-1b"
-  cidr_block                      = "192.168.160.0/19"
+  cidr_block                      = "10.0.2.0/24"
   map_public_ip_on_launch         = false
   tags = {
     "Name"                                        = "Private2"

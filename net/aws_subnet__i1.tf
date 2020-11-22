@@ -4,7 +4,7 @@ resource "aws_subnet" "subnet-i1" {
   depends_on=[aws_vpc_ipv4_cidr_block_association.vpc-cidr-assoc]
   assign_ipv6_address_on_creation = false
   availability_zone               = "eu-west-1a"
-  cidr_block                      = "100.64.0.0/19"
+  cidr_block                      = "100.64.0.0/18"
   map_public_ip_on_launch         = false
   tags = {
     "Name"                                        = "i1-mycluster1"
