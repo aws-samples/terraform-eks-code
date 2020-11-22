@@ -1,16 +1,4 @@
-# EKS currently documents this required userdata for EKS worker nodes to
-# properly configure Kubernetes applications on the EC2 instance.
-# We utilize a Terraform local here to simplify Base64 encoding this
-# information into the AutoScaling Launch Configuration.
-# More information: https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/amazon-eks-nodegroup.yaml
-
-## updated AMI support for /etc/eks/bootstrap.sh
-##
-
-#### User data for worker launch
-
 resource "aws_launch_template" "lt-ng1" {
-  depends_on = [null_resource.auth_cluster]
   instance_type           = "t3.small"
   key_name                = "eksworkshop"
   name                    = format("at-lt-%s-ng1", data.aws_eks_cluster.eks_cluster.name)
