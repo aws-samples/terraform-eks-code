@@ -45,7 +45,10 @@ notice the us-west-2 - we are in eu-west-1
 helm delete aws-load-balancer-controller -n kube-system
 ```
 
-Override image location
-```
-helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=mycluster1 --set image.repository 602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon/aws-load-balancer-controller
+Override image location  (the IAM service controller shoud not be installed
+eksctl delete iamserviceaccount --cluster mycluster1 --namespace=kube-system --name=aws-load-balancer-controller
 
+```
+
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=mycluster1 --set image.repository=602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon/aws-load-balancer-controller 
+```
