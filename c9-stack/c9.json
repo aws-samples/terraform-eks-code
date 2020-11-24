@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "AWS CloudForme stack",
+    "Description": "Cloud9 Terrform EKS stack",
     "Resources": {
         "Environment": {
             "Type" : "AWS::Cloud9::EnvironmentEC2",
