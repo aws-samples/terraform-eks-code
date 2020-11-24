@@ -12,7 +12,7 @@ rm -rf aws
 #sudo pip install --upgrade awscli && hash -r
 
 echo "other tools"
-sudo yum -y -q -e 0 install jq moreutils bash-completion nmap bind-utils
+sudo yum -y -q -e 0 install jq moreutils bash-completion nmap
 
 #echo 'yq() {
 #  docker run --rm -i -v "${PWD}":/workdir mikefarah/yq yq "$@"
