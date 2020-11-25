@@ -4,6 +4,6 @@ resource "aws_vpc_peering_connection" "cicd-peer" {
   auto_accept   = true
 }
 
-output "peerid" {
+output "cicdpeerid" {
   value = aws_vpc_peering_connection.cicd-peer.id
 }

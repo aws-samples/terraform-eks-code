@@ -1,4 +1,4 @@
-resource "aws_security_group_rule" "sg-def-22" {
+resource "aws_security_group_rule" "sg-cicd-22" {
   type              = "ingress"
   from_port         = 443
   to_port           = 443
@@ -7,7 +7,7 @@ resource "aws_security_group_rule" "sg-def-22" {
   security_group_id = data.aws_security_group.cicd-sg.id
 }
 
-resource "aws_security_group_rule" "sg-def-eks-all" {
+resource "aws_security_group_rule" "sg-cicd-eks-all" {
   type              = "ingress"
   from_port         = 22
   to_port           = 22
