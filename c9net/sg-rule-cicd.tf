@@ -15,3 +15,13 @@ resource "aws_security_group_rule" "sg-cicd-eks-all" {
   cidr_blocks       = [data.terraform_remote_state.net.outputs.eks-cidr]
   security_group_id = data.aws_security_group.cicd-sg.id
 }
+
+
+resource "aws_security_group_rule" "sg-cicd-egress" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = data.aws_security_group.cicd-sg.id
+}
