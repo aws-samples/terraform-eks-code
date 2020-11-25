@@ -1,5 +1,5 @@
-aws codecommit create-repository --repository-name eksworkshop-app
-aws iam create-user --user-name git-user
+#aws codecommit create-repository --repository-name eksworkshop-app
+#aws iam create-user --user-name git-user
 aws iam attach-user-policy --user-name git-user --policy-arn arn:aws:iam::aws:policy/AWSCodeCommitPowerUser
 aws iam create-service-specific-credential --user-name git-user --service-name codecommit.amazonaws.com | tee /tmp/gituser_output.json
 
