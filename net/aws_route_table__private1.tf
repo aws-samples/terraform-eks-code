@@ -17,7 +17,7 @@ resource "aws_route_table" "rtb-0fe5311ff86579482" {
     },
   ]
   tags = {
-    "Name" = "rtb-eks-cicd-priv"
+    "Name" = "rtb-eks-cicd-priv1"
   }
   vpc_id = aws_vpc.vpc-026635e1e91a07ddd.id
 }

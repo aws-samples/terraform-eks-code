@@ -44,7 +44,7 @@ resource "aws_codebuild_project" "eks-cicd-build-app" {
   source {
     git_clone_depth     = 1
     insecure_ssl        = false
-    location            = "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/Terraform-EKS"
+    location            = "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/eksworkshop-app"
     report_build_status = false
     type                = "CODECOMMIT"
 
