@@ -12,7 +12,7 @@ resource "aws_vpc" "vpc-mycluster1" {
     "Name"                                        = "mycluster1-cluster/VPC"
 #    "alpha.eksctl.io/cluster-name"                = "mycluster1"
 #    "alpha.eksctl.io/eksctl-version"              = "0.29.2"
-    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "mycluster1"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = var.cluster-name
   }
 }
 
