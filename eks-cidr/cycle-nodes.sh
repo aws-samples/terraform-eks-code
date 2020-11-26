@@ -4,10 +4,15 @@ for k in `seq 0 $ncount`; do
     nn=$(kubectl get nodes -o json | jq -r .items[$k].metadata.name)
     echo "Starting $nn"
     inst=$(aws ec2  describe-network-interfaces --region eu-west-2 --filters Name=private-dns-name,Values=$nn --query 'NetworkInterfaces[0].Attachment.InstanceId' | jq -r .)
-    echo $inst 
+    echo "inst=$inst" 
     nifs=$(aws ec2  describe-network-interfaces --region eu-west-2 --filters Name=attachment.instance-id,Values=$inst --query 'NetworkInterfaces')
     count=$(echo $nifs | jq ". | length - 1" )
-    echo $count
+    echo "netif count =$count"
+    if [ $count .lt 0 ];then
+        echo "no net interfaces - exiting"
+        exit
+    fi
+
 
     kubectl drain $nn
     kubectl drain $nn --delete-local-data --ignore-daemonsets
