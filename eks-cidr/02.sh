@@ -17,7 +17,7 @@ echo "Terminating EC2 instance $i ... "
 aws ec2 terminate-instances --instance-ids $i
 while [ $curr -ne $target ]; do
     stat=$(aws ec2 describe-instance-status --instance-ids $i  --include-all-instances | jq -r .InstanceStatuses[0].InstanceState.Name)
-    echo $stat
+    echo "$i $stat"
     if [ "$stat" == "terminated" ]; then
         curr=$(kubectl get nodes | grep -v NotReady | grep Read | wc -l)
         kubectl get nodes
