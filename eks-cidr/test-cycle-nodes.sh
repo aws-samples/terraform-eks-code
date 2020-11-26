@@ -63,4 +63,5 @@ for k in `seq 0 $ncount`; do
     echo "outside restart"
     ssh ec2-user@$pubdns "hostname"
     echo "*** $nn finished ****"
+    kubectl get nodes
 done
