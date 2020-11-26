@@ -11,7 +11,8 @@ for k in `seq 0 $ncount`; do
 
     kubectl drain $nn
     kubectl drain $nn --delete-local-data --ignore-daemonsets
-    sleep 5
+    echo "sleep 10 for drain"
+    sleep 10
     kubectl get nodes
 
 
@@ -54,6 +55,7 @@ for k in `seq 0 $ncount`; do
     fi
 
     kubectl uncordon $nn
+    echo "sleep for uncordon"
     sleep 5
     kubectl get nodes
     echo "Done $nn"
