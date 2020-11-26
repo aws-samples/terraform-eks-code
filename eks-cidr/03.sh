@@ -16,12 +16,12 @@ sg0=`aws ec2 describe-instances --instance-ids $i | jq -r '.Reservations[].Insta
 sg1=`aws ec2 describe-instances --instance-ids $i | jq -r '.Reservations[].Instances[].SecurityGroups[1].GroupId'`
 done
 echo "creating custom netwoking resource yaml's"
-sub1=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*19" --query 'Subnets[0].SubnetId' | tr -d '"'`
-sub2=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*19" --query 'Subnets[1].SubnetId'| tr -d '"'`
-sub3=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*19" --query 'Subnets[2].SubnetId' | tr -d '"'`
-zone1=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*19" --query 'Subnets[0].AvailabilityZone'| tr -d '"'`
-zone2=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*19" --query 'Subnets[1].AvailabilityZone'| tr -d '"'`
-zone3=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*19" --query 'Subnets[2].AvailabilityZone'| tr -d '"'`
+sub1=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*18" --query 'Subnets[0].SubnetId' | tr -d '"'`
+sub2=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*18" --query 'Subnets[1].SubnetId'| tr -d '"'`
+sub3=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*18" --query 'Subnets[2].SubnetId' | tr -d '"'`
+zone1=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*18" --query 'Subnets[0].AvailabilityZone'| tr -d '"'`
+zone2=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*18" --query 'Subnets[1].AvailabilityZone'| tr -d '"'`
+zone3=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*18" --query 'Subnets[2].AvailabilityZone'| tr -d '"'`
 echo "subnet $sub1 zone $zone1"
 echo "subnet $sub2 zone $zone2"
 echo "subnet $sub3 zone $zone3"
