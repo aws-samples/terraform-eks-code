@@ -15,8 +15,9 @@ for k in `seq 0 $ncount`; do
     echo "netif count =$count"
 
 
-
+    echo "Soft Drain"
     kubectl drain $nn
+    echo "Hard Drain"
     kubectl drain $nn --delete-local-data --ignore-daemonsets
     echo "sleep 10 for drain"
     sleep 10
@@ -62,6 +63,7 @@ for k in `seq 0 $ncount`; do
     echo "sleep for uncordon"
     sleep 5
     kubectl get nodes
+    kubectl get pods -A
     echo "Done $nn"
 
 done
