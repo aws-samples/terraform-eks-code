@@ -20,9 +20,9 @@ resource "aws_vpc_endpoint" "vpce-sts" {
   ]
   service_name = "com.amazonaws.eu-west-1.sts"
   subnet_ids = [
-    aws_subnet.subnet-p3.id,
-    aws_subnet.subnet-p1.id,
-    aws_subnet.subnet-p2.id,
+    aws_subnet.subnet-i3.id,
+    aws_subnet.subnet-i1.id,
+    aws_subnet.subnet-i2.id,
   ]
   tags              = {}
   vpc_endpoint_type = "Interface"

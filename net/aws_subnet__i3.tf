@@ -8,7 +8,7 @@ resource "aws_subnet" "subnet-i3" {
   map_public_ip_on_launch         = false
   tags = {
     "Name"                                        = "i3-mycluster1"
-    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "mycluster1"
+ #   "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "mycluster1"
     "kubernetes.io/cluster/mycluster1"            = "shared"
     "kubernetes.io/role/internal-elb"             = "1"
     
