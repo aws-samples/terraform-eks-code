@@ -27,7 +27,7 @@ for k in `seq 0 $ncount`; do
             #echo $j
             #done
             #echo "aws ec2 unassign-private-ip-addresses --region eu-west-2 --network-interface-id $nid --private-ip-addresses $ips"
-            #echo $nifs | jq .       
+            echo $nifs | jq .       
             pubdns=$(echo $nifs | jq -r ".[$i].PrivateIpAddresses[] | select(.Primary==true) | .Association.PublicDnsName")
             echo "pub dns=$pubdns"
             if [ "$pubdns" != "null" ];then 
