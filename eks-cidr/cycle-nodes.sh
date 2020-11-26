@@ -49,8 +49,7 @@ for k in `seq 0 $ncount`; do
                 aws ec2 unassign-private-ip-addresses --region $AWS_REGION --network-interface-id $nid --private-ip-addresses $ips
             fi
 ### Now restart the node
-            pubdns=$(echo $nifs | jq -r ".[$i].PrivateIpAddresses[] | select(.Primary==true) | .Association.PublicDnsName")
-            echo "pub dns=$pubdns"
+            echo "Inside Restart"
             if [ "$pubdns" != "null" ];then 
                 ssh ec2-user@$nn "sudo systemctl start docker"
                 ssh ec2-user@$nn "sudo systemctl start kubelet"
