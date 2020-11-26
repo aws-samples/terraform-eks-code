@@ -1,9 +1,10 @@
+test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo AWS_REGION is not set && exit
 ncount=$(kubectl get nodes -o json | jq ".items | length - 1" )
 echo $ncount
 for k in `seq 0 $ncount`; do
     nn=$(kubectl get nodes -o json | jq -r .items[$k].metadata.name)
     echo "Starting $nn"
-    inst=$(aws ec2  describe-network-interfaces --region eu-west-2 --filters Name=private-dns-name,Values=$nn --query 'NetworkInterfaces[0].Attachment.InstanceId' | jq -r .)
+    inst=$(aws ec2  describe-network-interfaces --region $AWS_REGION --filters Name=private-dns-name,Values=$nn --query 'NetworkInterfaces[0].Attachment.InstanceId' | jq -r .)
     echo "inst=$inst" 
     if [ "$inst" == "null" ];then
         echo "no instance - exiting"
