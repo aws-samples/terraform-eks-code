@@ -14,11 +14,12 @@ for i in "${INSTANCE_IDS[@]}"
 do
 curr=0
 echo "Terminating EC2 instance $i ... "
-aws ec2 terminate-instances --instance-ids $i
+aws ec2 terminate-instances --instance-ids $i | jq -r .TerminatingInstances[0].CurrentState.Name
 while [ $curr -ne $target ]; do
     stat=$(aws ec2 describe-instance-status --instance-ids $i  --include-all-instances | jq -r .InstanceStatuses[0].InstanceState.Name)
     echo "$i $stat"
     if [ "$stat" == "terminated" ]; then
+        sleep 5
         curr=$(kubectl get nodes | grep -v NotReady | grep Read | wc -l)
         kubectl get nodes
         echo "Current Ready nodes = $curr of $target"
