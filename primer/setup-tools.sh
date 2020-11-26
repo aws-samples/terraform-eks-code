@@ -40,7 +40,7 @@ for command in jq aws wget terraform eksctl
 this=`pwd`
 echo "sample apps"
 cd ~/environment
-git clone https://github.com/awsandy/aws2tf.git
+git clone https://github.com/aws-samples/aws2tf.git
 
 source ~/.bash_profile
 

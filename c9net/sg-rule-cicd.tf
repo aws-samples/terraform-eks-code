@@ -23,7 +23,7 @@ resource "aws_security_group_rule" "sg-cicd-self" {
   protocol          = "-1"
   self = true
   security_group_id = data.aws_security_group.cicd-sg.id
-
+}
 
 resource "aws_security_group_rule" "sg-cicd-egress" {
   type              = "egress"

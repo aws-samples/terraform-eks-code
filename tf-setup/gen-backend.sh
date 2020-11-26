@@ -50,6 +50,7 @@ printf "}\n" >> $of
 cp -v $of ../$section
 
 cp -v vars-dynamodb.tf ../$section
+cp -v vars-main.tf ../$section
 
 done
 

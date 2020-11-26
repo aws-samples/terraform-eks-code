@@ -28,16 +28,4 @@ variable "table_name_nodeg" {
   default     = "at-terraform-eks-workshop1-nodeg"
 }
 
-# TF_VAR_region
-variable "region" {
-  description = "The name of the AWS Region"
-  type        = string
-  default     = "eu-west-1"
-  #default     = "eu-west-1"
-}
 
-variable "profile" {
-  description = "The name of the AWS profile in the credentials file"
-  type        = string
-  default     = "default"
-}
