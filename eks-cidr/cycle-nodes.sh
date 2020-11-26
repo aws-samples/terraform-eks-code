@@ -2,7 +2,7 @@ ncount=$(kubectl get nodes -o json | jq ".items | length - 1" )
 echo $ncount
 for k in `seq 0 $ncount`; do
     nn=$(kubectl get nodes -o json | jq -r .items[$k].metadata.name)
-    echo $nn
+    echo "Starting $nn"
     inst=$(aws ec2  describe-network-interfaces --region eu-west-2 --filters Name=private-dns-name,Values=$nn --query 'NetworkInterfaces[0].Attachment.InstanceId' | jq -r .)
     echo $inst 
     nifs=$(aws ec2  describe-network-interfaces --region eu-west-2 --filters Name=attachment.instance-id,Values=$inst --query 'NetworkInterfaces')
@@ -28,19 +28,16 @@ for k in `seq 0 $ncount`; do
             #done
             #echo "aws ec2 unassign-private-ip-addresses --region eu-west-2 --network-interface-id $nid --private-ip-addresses $ips"
             #echo $nifs | jq .       
-            pubdns=$(echo $nifs | jq -r ".[$i].PrivateIpAddresses[] | select(.Primary==true) | .Association.PublicDnsName")
-            echo "pub dns=$pubdns"
-            if [ "$pubdns" != "null" ];then 
                 dl=()
-                ssh ec2-user@$pubdns "sudo systemctl stop kubelet"
-                dl+=$(ssh ec2-user@$pubdns "sudo docker ps -aq")
+                ssh ec2-user@$nn "sudo systemctl stop kubelet"
+                dl+=$(ssh ec2-user@$nn "sudo docker ps -aq")
                 for k in ${dl[@]}; do
                     echo "docker stop $k"
-                    ssh ec2-user@$pubdns "sudo docker stop $k"
+                    ssh ec2-user@$nn "sudo docker stop $k"
                 done
-                ssh ec2-user@$pubdns "sudo docker ps"
-                ssh ec2-user@$pubdns "sudo systemctl stop docker"
-            fi
+                ssh ec2-user@$nn "sudo docker ps"
+                ssh ec2-user@$nn "sudo systemctl stop docker"
+            
             echo "private ip's $ips"
             if [ "$ips" != "" ];then 
                 aws ec2 unassign-private-ip-addresses --region eu-west-2 --network-interface-id $nid --private-ip-addresses $ips
@@ -49,8 +46,8 @@ for k in `seq 0 $ncount`; do
             pubdns=$(echo $nifs | jq -r ".[$i].PrivateIpAddresses[] | select(.Primary==true) | .Association.PublicDnsName")
             echo "pub dns=$pubdns"
             if [ "$pubdns" != "null" ];then 
-                ssh ec2-user@$pubdns "sudo systemctl start docker"
-                ssh ec2-user@$pubdns "sudo systemctl start kubelet"
+                ssh ec2-user@$nn "sudo systemctl start docker"
+                ssh ec2-user@$nn "sudo systemctl start kubelet"
 
             fi
         done
@@ -59,9 +56,6 @@ for k in `seq 0 $ncount`; do
     kubectl uncordon $nn
     sleep 5
     kubectl get nodes
-    ssh ec2-user@$pubdns "sudo docker ps"
-
-
-
+    echo "Done $nn"
 
 done

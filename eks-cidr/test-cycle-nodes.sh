@@ -32,11 +32,11 @@ for k in `seq 0 $ncount`; do
 
             dl=()
                 #ssh ec2-user@$nn "sudo systemctl stop kubelet"
-            dl+=$(ssh ec2-user@$nn "sudo docker ps")
+            dl+=$(ssh ec2-user@$nn "sudo docker ps -aq")
             for k in ${dl[@]}; do
                 echo "docker stop $k"
                 #ssh ec2-user@$nn "sudo docker stop $k"
-                ssh ec2-user@$nn "hostname"
+                #ssh ec2-user@$nn "hostname"
             done
             ssh ec2-user@$nn "hostname"
             #ssh ec2-user@$nn "sudo systemctl stop docker"
