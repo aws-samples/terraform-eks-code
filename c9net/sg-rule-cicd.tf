@@ -16,6 +16,14 @@ resource "aws_security_group_rule" "sg-cicd-eks-all" {
   security_group_id = data.aws_security_group.cicd-sg.id
 }
 
+resource "aws_security_group_rule" "sg-cicd-self" {
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  self = true
+  security_group_id = data.aws_security_group.cicd-sg.id
+
 
 resource "aws_security_group_rule" "sg-cicd-egress" {
   type              = "egress"
