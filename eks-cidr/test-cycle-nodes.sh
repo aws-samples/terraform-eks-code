@@ -1,11 +1,11 @@
 ncount=$(kubectl get nodes -o json | jq ".items | length - 1" )
-echo $ncount
+echo "num nodes=$ncount"
 for k in `seq 0 $ncount`; do
     nn=$(kubectl get nodes -o json | jq -r .items[$k].metadata.name)
     echo $nn
-    inst=$(aws ec2  describe-network-interfaces --region eu-west-2 --filters Name=private-dns-name,Values=$nn --query 'NetworkInterfaces[0].Attachment.InstanceId' | jq -r .)
-    echo $inst 
-    nifs=$(aws ec2  describe-network-interfaces --region eu-west-2 --filters Name=attachment.instance-id,Values=$inst --query 'NetworkInterfaces')
+    inst=$(aws ec2  describe-network-interfaces --region $AWS_REGION --filters Name=private-dns-name,Values=$nn --query 'NetworkInterfaces[0].Attachment.InstanceId' | jq -r .)
+    echo "inst = $inst" 
+    nifs=$(aws ec2  describe-network-interfaces --region $AWS_REGION --filters Name=attachment.instance-id,Values=$inst --query 'NetworkInterfaces')
     count=$(echo $nifs | jq ". | length - 1" )
     echo $count
 
