@@ -15,9 +15,9 @@ for i in "${INSTANCE_IDS[@]}"
 do
 echo "Terminating EC2 instance $i ... "
 aws ec2 terminate-instances --instance-ids $i
-while [ $cur -ne $target ]; do
+while [ $curr -ne $target ]; do
     sleep 5
-    curr=$(kubectl get nodes | grep Ready | wc -l)
+    curr=$(kubectl get nodes | grep -v NotReady | grep Read | wc -l)
     kubectl get nodes
     echo "Current Ready nodes = $curr of $target"
 done
