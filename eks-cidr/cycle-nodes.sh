@@ -5,13 +5,14 @@ for k in `seq 0 $ncount`; do
     echo "Starting $nn"
     inst=$(aws ec2  describe-network-interfaces --region eu-west-2 --filters Name=private-dns-name,Values=$nn --query 'NetworkInterfaces[0].Attachment.InstanceId' | jq -r .)
     echo "inst=$inst" 
-    nifs=$(aws ec2  describe-network-interfaces --region eu-west-2 --filters Name=attachment.instance-id,Values=$inst --query 'NetworkInterfaces')
-    count=$(echo $nifs | jq ". | length - 1" )
-    echo "netif count =$count"
-    if [ $count .lt 0 ];then
-        echo "no net interfaces - exiting"
+    if [ "$inst" == "null" ];then
+        echo "no instance - exiting"
         exit
     fi
+    nifs=$(aws ec2  describe-network-interfaces --region $AWS_REGION --filters Name=attachment.instance-id,Values=$inst --query 'NetworkInterfaces')
+    count=$(echo $nifs | jq ". | length - 1" )
+    echo "netif count =$count"
+
 
 
     kubectl drain $nn
