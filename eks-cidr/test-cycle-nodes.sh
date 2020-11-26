@@ -29,19 +29,18 @@ for k in `seq 0 $ncount`; do
             #echo "aws ec2 unassign-private-ip-addresses --region eu-west-2 --network-interface-id $nid --private-ip-addresses $ips"
             #echo $nifs | jq .       
             
-            echo "pub dns=$pubdns"
-            if [ "$pubdns" != "null" ];then 
-                dl=()
-                #ssh ec2-user@$ns "sudo systemctl stop kubelet"
-                dl+=$(ssh ec2-user@$ns "sudo docker ps")
-                for k in ${dl[@]}; do
-                    echo "docker stop $k"
-                    #ssh ec2-user@$ns "sudo docker stop $k"
-                    ssh ec2-user@$ns "hostname"
-                done
-                ssh ec2-user@$ns "hostname"
-                #ssh ec2-user@$ns "sudo systemctl stop docker"
-            fi
+
+            dl=()
+                #ssh ec2-user@$nn "sudo systemctl stop kubelet"
+            dl+=$(ssh ec2-user@$nn "sudo docker ps")
+            for k in ${dl[@]}; do
+                echo "docker stop $k"
+                #ssh ec2-user@$nn "sudo docker stop $k"
+                ssh ec2-user@$nn "hostname"
+            done
+            ssh ec2-user@$nn "hostname"
+            #ssh ec2-user@$nn "sudo systemctl stop docker"
+            
             echo "private ip's $ips"
             if [ "$ips" != "" ];then 
                 echo "unassign --network-interface-id $nid --private-ip-addresses $ips"
@@ -50,9 +49,9 @@ for k in `seq 0 $ncount`; do
 ### Now restart the node
             echo "inside retart"
             if [ "$pubdns" != "null" ];then 
-                #ssh ec2-user@$ns "sudo systemctl start docker"
-                #ssh ec2-user@$ns "sudo systemctl start kubelet"
-                ssh ec2-user@$ns "hostname"
+                #ssh ec2-user@$nn "sudo systemctl start docker"
+                #ssh ec2-user@$nn "sudo systemctl start kubelet"
+                ssh ec2-user@$nn "hostname"
             fi
         done
     fi
@@ -61,7 +60,7 @@ for k in `seq 0 $ncount`; do
     #sleep 5
     #kubectl get nodes
     echo "outside restart"
-    ssh ec2-user@$ns "hostname"
+    ssh ec2-user@$nn "hostname"
     echo "*** $nn finished ****"
     kubectl get nodes
 done
