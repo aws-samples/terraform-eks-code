@@ -14,7 +14,6 @@ do
 echo "Descr EC2 instance $i ..."
 sg0=`aws ec2 describe-instances --instance-ids $i | jq -r '.Reservations[].Instances[].SecurityGroups[0].GroupId'`
 sg1=`aws ec2 describe-instances --instance-ids $i | jq -r '.Reservations[].Instances[].SecurityGroups[1].GroupId'`
-
 done
 echo "creating custom netwoking resource yaml's"
 sub1=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*19" --query 'Subnets[0].SubnetId' | tr -d '"'`
@@ -35,11 +34,11 @@ spec:
  subnet: ${sub1}
  securityGroups:
  - ${sg0}
- - ${sg1}
 EOF
 echo "cat ${zone1}-pod-netconfig.yaml"
 cat ${zone1}-pod-netconfig.yaml
 #
+
 cat << EOF > ${zone2}-pod-netconfig.yaml
 apiVersion: crd.k8s.amazonaws.com/v1alpha1
 kind: ENIConfig
@@ -49,8 +48,8 @@ spec:
  subnet: ${sub2}
  securityGroups:
  - ${sg0}
- - ${sg1}
-EOF
+EOF 
+
 echo "cat ${zone2}-pod-netconfig.yaml"
 cat ${zone2}-pod-netconfig.yaml
 #
@@ -63,7 +62,6 @@ spec:
  subnet: ${sub3}
  securityGroups:
  - ${sg0}
- - ${sg1}
 EOF
 echo "cat ${zone3}-pod-netconfig.yaml"
 cat ${zone3}-pod-netconfig.yaml
