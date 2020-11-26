@@ -31,24 +31,21 @@ for k in `seq 0 $ncount`; do
             echo $nid
             ips=()
             ips+=$(echo $nifs | jq -r ".[$i].PrivateIpAddresses[] | select(.Primary==false) | .PrivateIpAddress" )
-            #for j in ${ips[@]}; do
-            #echo $j
-            #done
-            #echo "aws ec2 unassign-private-ip-addresses --region eu-west-2 --network-interface-id $nid --private-ip-addresses $ips"
-            #echo $nifs | jq .       
-                dl=()
-                ssh ec2-user@$nn "sudo systemctl stop kubelet"
-                dl+=$(ssh ec2-user@$nn "sudo docker ps -aq")
-                for k in ${dl[@]}; do
-                    echo "docker stop $k"
-                    ssh ec2-user@$nn "sudo docker stop $k"
-                done
-                ssh ec2-user@$nn "sudo docker ps"
-                ssh ec2-user@$nn "sudo systemctl stop docker"
+      
+                
+            ssh ec2-user@$nn "sudo systemctl stop kubelet"
+            dl=()
+            dl+=$(ssh ec2-user@$nn "sudo docker ps -aq")
+            for k in ${dl[@]}; do
+                echo "docker stop $k"
+                ssh ec2-user@$nn "sudo docker stop $k"
+            done
+            ssh ec2-user@$nn "sudo docker ps"
+            ssh ec2-user@$nn "sudo systemctl stop docker"
             
             echo "private ip's $ips"
             if [ "$ips" != "" ];then 
-                aws ec2 unassign-private-ip-addresses --region eu-west-2 --network-interface-id $nid --private-ip-addresses $ips
+                aws ec2 unassign-private-ip-addresses --region $AWS_REGION --network-interface-id $nid --private-ip-addresses $ips
             fi
 ### Now restart the node
             pubdns=$(echo $nifs | jq -r ".[$i].PrivateIpAddresses[] | select(.Primary==true) | .Association.PublicDnsName")
