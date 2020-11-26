@@ -61,6 +61,6 @@ for k in `seq 0 $ncount`; do
     #sleep 5
     #kubectl get nodes
     echo "outside restart"
-    ssh ec2-user@$pubdns "sudo docker ps"
-
+    ssh ec2-user@$pubdns "hostname"
+    echo "*** $nn finished ****"
 done
