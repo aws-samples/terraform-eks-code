@@ -1,4 +1,4 @@
-test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo AWS_REGION is not set && exit
+test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || "echo AWS_REGION is not set && exit"
 ncount=$(kubectl get nodes -o json | jq ".items | length - 1" )
 echo $ncount
 for k in `seq 0 $ncount`; do
