@@ -51,7 +51,7 @@ spec:
  subnet: ${sub2}
  securityGroups:
  - ${sg0}
-EOF 
+EOF
 
 echo "cat ${zone2}-pod-netconfig.yaml"
 cat ${zone2}-pod-netconfig.yaml
