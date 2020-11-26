@@ -25,6 +25,8 @@ zone3=`aws ec2 describe-subnets  --filters "Name=cidr-block,Values=100.64.*18" -
 echo "subnet $sub1 zone $zone1"
 echo "subnet $sub2 zone $zone2"
 echo "subnet $sub3 zone $zone3"
+
+echo ${zone1}
 cat << EOF > ${zone1}-pod-netconfig.yaml
 apiVersion: crd.k8s.amazonaws.com/v1alpha1
 kind: ENIConfig
@@ -39,6 +41,7 @@ echo "cat ${zone1}-pod-netconfig.yaml"
 cat ${zone1}-pod-netconfig.yaml
 #
 
+echo ${zone2}
 cat << EOF > ${zone2}-pod-netconfig.yaml
 apiVersion: crd.k8s.amazonaws.com/v1alpha1
 kind: ENIConfig
@@ -53,6 +56,7 @@ EOF
 echo "cat ${zone2}-pod-netconfig.yaml"
 cat ${zone2}-pod-netconfig.yaml
 #
+echo ${zone3}
 cat << EOF > ${zone3}-pod-netconfig.yaml
 apiVersion: crd.k8s.amazonaws.com/v1alpha1
 kind: ENIConfig
@@ -65,9 +69,12 @@ spec:
 EOF
 echo "cat ${zone3}-pod-netconfig.yaml"
 cat ${zone3}-pod-netconfig.yaml
-echo "apply the CRD's"
+
+echo "apply the CRD ${zone1}"
 kubectl apply -f ${zone1}-pod-netconfig.yaml
+echo "apply the CRD ${zone2}"
 kubectl apply -f ${zone2}-pod-netconfig.yaml
+echo "apply the CRD ${zone3}"
 kubectl apply -f ${zone3}-pod-netconfig.yaml
 allnodes=`kubectl get nodes -o json`
 len=`kubectl get nodes -o json | jq '.items | length-1'`
