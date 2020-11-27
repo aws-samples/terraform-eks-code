@@ -6,4 +6,10 @@ resource "aws_iam_policy" "load-balancer-policy" {
 
   policy = data.aws_iam_policy_document.example.json
   
+lifecycle {
+    ignore_changes = [
+      policy
+    ]
+  }
+
 }
