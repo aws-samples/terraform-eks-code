@@ -10,10 +10,11 @@ git clone codecommit::$AWS_REGION://eksworkshop-app
 cd eksworkshop-app
 cp ../*.yaml .
 git add --all && git commit -m "Initial commit." && git push
-
+#
 
 # create pipeline
 
+# auth pipeline
 
 
 # envoke
