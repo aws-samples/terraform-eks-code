@@ -11,7 +11,8 @@ provisioner "local-exec" {
             cat iam-policy.json >> aws_iam_policy_document.tf
             printf "}\n" >> aws_iam_policy_document.tf  
             ls aws_iam_policy_document.tf
-            cat aws_iam_policy_document.tf
+            #cat aws_iam_policy_document.tf
+            cp -v aws_iam_policy_document.tf ../lb2
      EOT
 }
 }
