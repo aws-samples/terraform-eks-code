@@ -15,7 +15,7 @@ provisioner "local-exec" {
         cn=$(echo ${data.aws_eks_cluster.eks_cluster.name})
         echo $az1 $az2 $az3 $sub1 $sub2 $sub3
         echo -e "\x1B[35mCycle nodes for custom CNI setting (takes a few minutes) ......\x1B[0m"
-        ./cni-cycle-nodes.sh
+        ./cni-cycle-nodes.sh $cn
         echo -e "\x1B[33mAnnotate nodes ......\x1B[0m"
         ./annotate-nodes.sh $az1 $az2 $az3 $sub1 $sub2 $sub3 $cn
         echo -e "\x1B[32mShould now see coredns on 100.64.x.y addresses ......\x1B[0m"
