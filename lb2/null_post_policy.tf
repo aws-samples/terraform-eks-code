@@ -1,4 +1,4 @@
-resource "null_resource" "policy" {
+resource "null_resource" "post-policy" {
 depends_on=[aws_iam_policy.load-balancer-policy]
 triggers = {
     always_run = "${timestamp()}"
