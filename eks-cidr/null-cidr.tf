@@ -6,8 +6,6 @@ provisioner "local-exec" {
     on_failure  = fail
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
-        echo -e "\x1B[31m Warning! ${data.aws_subnet.i1.availability_zone}\x1B[0m"
-        echo -e "\x1B[31m Warning! ${data.aws_subnet.i1.id}\x1B[0m"
         az1=$(echo ${data.aws_subnet.i1.availability_zone})
         az2=$(echo ${data.aws_subnet.i2.availability_zone})
         az3=$(echo ${data.aws_subnet.i3.availability_zone})
@@ -16,10 +14,12 @@ provisioner "local-exec" {
         sub3=$(echo ${data.aws_subnet.i3.id})
         cn=$(echo ${data.aws_eks_cluster.eks_cluster.name})
         echo $az1 $az2 $az3 $sub1 $sub2 $sub3
+        echo -e "\x1B[35mCycle nodes for custom CNI setting (takes a few minutes) ......\x1B[0m"
         ./cni-cycle-nodes.sh
+        echo -e "\x1B[33mAnnotate nodes ......\x1B[0m"
         ./annotate-nodes.sh $az1 $az2 $az3 $sub1 $sub2 $sub3 $cn
-        echo "************************************************************************************"
-        
+        echo -e "\x1B[32mShould now see coredns on 100.64.x.y addresses ......\x1B[0m"
+        kubectl get pods -A -o wide | grep coredns     
      EOT
 }
 }
