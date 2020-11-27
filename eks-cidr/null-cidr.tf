@@ -14,8 +14,12 @@ provisioner "local-exec" {
         sub1=$(echo ${data.aws_subnet.i1.id})
         sub2=$(echo ${data.aws_subnet.i2.id})
         sub3=$(echo ${data.aws_subnet.i3.id})
+        cn=$(echo ${data.aws_eks_cluster.eks_cluster.name})
         echo $az1 $az2 $az3 $sub1 $sub2 $sub3
+        ./cni-cycle-nodes.sh
+        ./annotate-nodes.sh $az1 $az2 $az3 $sub1 $sub2 $sub3 $cn
         echo "************************************************************************************"
+        
      EOT
 }
 }
