@@ -7,7 +7,7 @@ provisioner "local-exec" {
     on_failure  = fail
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
-        eksctl utils associate-iam-oidc-provider   --region  eu-west-1 --cluster mycluster1  --approve
+        eksctl utils associate-iam-oidc-provider   --region $AWS_REGION --cluster mycluster1  --approve
         # helm chart does this if you let it
         eksctl create iamserviceaccount --cluster mycluster1 --namespace=kube-system --name=aws-load-balancer-controller --attach-policy-arn=arn:aws:iam::566972129213:policy/AWSLoadBalancerControllerIAMPolicy --approve
         #helm repo add eks https://aws.github.io/eks-charts

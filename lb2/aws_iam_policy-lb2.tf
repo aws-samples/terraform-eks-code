@@ -4,12 +4,6 @@ resource "aws_iam_policy" "load-balancer-policy" {
   path        = "/"
   description = "AWS LoadBalancer Controller IAM Policy"
 
-  policy = data.aws_iam_policy_document.example.json
+  policy = file("iam_policy.json")
   
-lifecycle {
-    ignore_changes = [
-      policy
-    ]
-  }
-
 }
