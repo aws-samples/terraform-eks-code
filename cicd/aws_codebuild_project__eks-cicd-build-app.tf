@@ -6,8 +6,8 @@ resource "aws_codebuild_project" "eks-cicd-build-app" {
   encryption_key = data.aws_kms_alias.s3.arn
   name           = "eks-cicd-build-app"
   queued_timeout = 480
-  depends_on     = [aws_iam_role.codebuild-eks-cicd-build-app-service-role]
-  service_role   = aws_iam_role.codebuild-eks-cicd-build-app-service-role.arn
+ # depends_on     = [aws_iam_role.codebuild-eks-cicd-build-app-service-role]
+  service_role   = data.aws_iam_role.cicd.arn
   source_version = "refs/heads/master"
   tags           = {}
 
@@ -55,11 +55,11 @@ resource "aws_codebuild_project" "eks-cicd-build-app" {
 
   vpc_config {
     security_group_ids = [
-      aws_security_group.sg-08e64dafdccb7c879.id,
+      data.aws_security_group.cicd.id,
     ]
     subnets = [
-      aws_subnet.subnet-00cc72ac5b0b79dd4.id,
+      data.aws_subnet.cicd.id,
     ]
-    vpc_id = aws_vpc.vpc-026635e1e91a07ddd.id
+    vpc_id = data.aws_vpc.cicd.id
   }
 }
