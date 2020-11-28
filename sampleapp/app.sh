@@ -8,7 +8,7 @@ CREDENTIAL_ID=$(cat /tmp/gituser_output.json | jq -r '.ServiceSpecificCredential
 test -n "$GIT_USERNAME" && echo GIT_USERNAME is "$GIT_USERNAME" || "echo GIT_USERNAME is not set && exit"
 git clone codecommit::$AWS_REGION://eksworkshop-app
 cd eksworkshop-app
-cp ../*.yaml .
+cp ../*.yml .
 git add --all && git commit -m "Initial commit." && git push
 #
 
