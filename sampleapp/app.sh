@@ -7,15 +7,20 @@ GIT_PASSWORD=$(cat /tmp/gituser_output.json | jq -r '.ServiceSpecificCredential.
 CREDENTIAL_ID=$(cat /tmp/gituser_output.json | jq -r '.ServiceSpecificCredential.ServiceSpecificCredentialId')
 test -n "$GIT_USERNAME" && echo GIT_USERNAME is "$GIT_USERNAME" || "echo GIT_USERNAME is not set && exit"
 git clone codecommit::$AWS_REGION://eksworkshop-app
+
+
+#
+
+# auth pipeline
+# aws eks
+
+#eksctl create iamidentitymapping \
+#  --cluster eksworkshop-eksctl \
+#  --arn arn:aws:iam::${ACCOUNT_ID}:role/k8sAdmin \
+#  --username admin \
+#  --group system:masters
+
+# envoke
 cd eksworkshop-app
 cp ../*.yml .
 git add --all && git commit -m "Initial commit." && git push
-#
-
-# create pipeline
-
-# auth pipeline
-
-
-# envoke
-
