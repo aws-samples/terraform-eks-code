@@ -73,8 +73,7 @@ phases:
         fi
       - echo '***** This is the current env:'
       - printenv
-      - ls -lah
-      - pwd
+
 
   build:
     commands:
@@ -83,17 +82,22 @@ phases:
       - export AWS_ACCESS_KEY_ID=$(echo $AWS_RAW_CRED | jq -r '.AccessKeyId')
       - export AWS_SECRET_ACCESS_KEY=$(echo $AWS_RAW_CRED | jq -r '.SecretAccessKey')
       - export AWS_SESSION_TOKEN=$(echo $AWS_RAW_CRED | jq -r '.Token')
-      - "echo $AWS_RAW_CRED | jq ."
+      - reg=$(echo $CODEBUILD_BUILD_ARN | cut -f4 -d'.')
+      - acc=$(echo $CODEBUILD_BUILD_ARN | cut -f5 -d'.')
+      - export AWS_REGION=$(echo $reg)
+      - export ACCOUNT_ID=$(echo $reg)
       - echo $AWS_ACCESS_KEY_ID
       - echo $AWS_SECRET_ACCESS_KEY
       - echo $CODEBUILD_SRC_DIR
+      - echo $AWS_REGION
+      - echo $ACCOUNT_ID
       - aws sts get-caller-identity
       - "yum -y -q -e 0 install moreutils bash-completion nmap bind-utils"
-      - echo "Terraform"
-      - wget -q https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
-      - unzip -qq terraform_0.12.29_linux_amd64.zip
-      - mv terraform /usr/local/bin/
-      - rm -f terraform_0.12.29_linux_amd64.zip
+      - #echo "Terraform"
+      - #wget -q https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
+      - #unzip -qq terraform_0.12.29_linux_amd64.zip
+      - #mv terraform /usr/local/bin/
+      - #rm -f terraform_0.12.29_linux_amd64.zip
 
       - echo "kubectl"
       - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
