@@ -103,24 +103,21 @@ phases:
 
       - cd "$CODEBUILD_SRC_DIR"
       - ls -al
-      - cd "net"
-      - rm -f tfplan
-      - ls -al
-      - aws eks list-clusters
-      - "terraform init"
-      - "terraform validate"
-      - "terraform plan -out tfplan"
-      - "cd .."
+      - resp=$(aws eks describe-cluster --name mycluster1)
+      - endp=$(echo $resp | jq -r .cluster.endpoint | cut -f3 -d'/')
+      - nslookup $endp
+      - nmap $endp -Pn -p 443
+      - #
+      - #"terraform init"
+      - #aws eks list-clusters
+      - #"terraform validate"
+      - #"terraform plan -out tfplan"
+      - #"cd .."
       - "aws sts get-caller-identity"
       - #"terraform apply -auto-approve tfplan"  
       - rm -f ~/.kube/config
-
-      - #aws eks update-kubeconfig --name mycluster1
-      - #kubectl get nodes
-      - #resp=$(aws eks describe-cluster --name mycluster1)
-      - #endp=$(echo $resp | jq -r .cluster.endpoint | cut -f3 -d'/')
-      - #nslookup $endp
-      - #nmap $endp -Pn -p 443
+      - aws eks update-kubeconfig --name mycluster1
+      - kubectl get nodes
   post_build:
     commands:
       - echo "terraform completed on `date`"
