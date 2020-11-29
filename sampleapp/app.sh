@@ -14,11 +14,11 @@ git clone codecommit::$AWS_REGION://eksworkshop-app
 # auth pipeline
 # aws eks
 
-#eksctl create iamidentitymapping \
-#  --cluster eksworkshop-eksctl \
-#  --arn arn:aws:iam::${ACCOUNT_ID}:role/k8sAdmin \
-#  --username admin \
-#  --group system:masters
+eksctl create iamidentitymapping \
+  --cluster mycluster1 \
+  --arn arn:aws:iam::${ACCOUNT_ID}:role/codebuild-eks-cicd-build-app-service-role \
+  --username admin \
+  --group system:masters
 
 # envoke
 cd eksworkshop-app
