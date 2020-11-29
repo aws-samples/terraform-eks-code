@@ -7,9 +7,8 @@ provisioner "local-exec" {
     on_failure  = fail
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
-        carn=$(echo ${data.aws_eks_cluster.eks_cluster.arn})
-        reg=$(echo $carn | cut -f4 -d':')
-        acc=$(echo $carn | cut -f5 -d':')
+        reg=$(echo ${data.aws_eks_cluster.eks_cluster.arn} | cut -f4 -d':')
+        acc=$(echo ${data.aws_eks_cluster.eks_cluster.arn} | cut -f5 -d':')
         cn=$(echo ${data.aws_eks_cluster.eks_cluster.name})
         echo "$reg $cn $acc"
         ./post-policy.sh $reg $cn $acc
