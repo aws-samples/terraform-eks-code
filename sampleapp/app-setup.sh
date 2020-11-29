@@ -14,13 +14,17 @@ git clone codecommit::$AWS_REGION://eksworkshop-app
 # auth pipeline
 # aws eks
 
-eksctl create iamidentitymapping \
-  --cluster mycluster1 \
-  --arn arn:aws:iam::${ACCOUNT_ID}:role/codebuild-eks-cicd-build-app-service-role \
-  --username admin \
-  --group system:masters
+ROLE="    - rolearn: arn:aws:iam::$ACCOUNT_ID:role/codebuild-eks-cicd-build-app-service-role\n      username: build\n      groups:\n        - system:masters"
+#
+kubectl get -n kube-system configmap/aws-auth -o yaml | awk "/mapRoles: \|/{print;print \"$ROLE\";next}1" > /tmp/aws-auth-patch.yml
+#
+kubectl patch configmap/aws-auth -n kube-system --patch "$(cat /tmp/aws-auth-patch.yml)"
+#
 
-# envoke
-cd eksworkshop-app
-cp ../*.yml .
-git add --all && git commit -m "Initial commit." && git push
+#eksctl create iamidentitymapping \
+#  --cluster mycluster1 \
+#  --arn arn:aws:iam::${ACCOUNT_ID}:role/codebuild-eks-cicd-build-app-service-role \
+#  --username admin \
+#  --group system:masters
+
+
