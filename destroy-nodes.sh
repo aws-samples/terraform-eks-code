@@ -1,7 +1,6 @@
 cur=`pwd`
-dirs="nodeg eks-cidr lb2"
-rdirs=$(echo $dirs | rev)
-for i in $rdirs; do
+dirs="lb2 eks-cidr nodeg"
+for i in $dirs; do
 cd $i
 echo "Destroying in $i"
 terraform destroy -auto-approve
