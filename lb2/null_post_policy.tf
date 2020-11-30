@@ -6,7 +6,7 @@ triggers = {
 provisioner "local-exec" {
     on_failure  = fail
     interpreter = ["/bin/bash", "-c"]
-    when = "create"
+    when = create
     command     = <<EOT
         reg=$(echo ${data.aws_eks_cluster.eks_cluster.arn} | cut -f4 -d':')
         acc=$(echo ${data.aws_eks_cluster.eks_cluster.arn} | cut -f5 -d':')
