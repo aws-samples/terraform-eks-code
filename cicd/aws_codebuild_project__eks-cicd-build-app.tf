@@ -6,7 +6,7 @@ resource "aws_codebuild_project" "eks-cicd-build-app" {
   encryption_key = data.aws_kms_alias.s3.arn
   name           = "eks-cicd-build-app"
   queued_timeout = 480
- # depends_on     = [aws_iam_role.codebuild-eks-cicd-build-app-service-role]
+  depends_on     = [aws_iam_role.codebuild-eks-cicd-build-app-service-role]
   service_role   = data.aws_iam_role.cicd.arn
   source_version = "refs/heads/master"
   tags           = {}
