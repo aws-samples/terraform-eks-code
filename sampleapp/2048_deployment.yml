@@ -20,7 +20,7 @@ spec:
         app.kubernetes.io/name: app-2048
     spec:
       containers:
-      - image: $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/sample-app
+      - image: $(ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/sample-app
         imagePullPolicy: Always
         name: app-2048
         ports:
