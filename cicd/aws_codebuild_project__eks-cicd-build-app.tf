@@ -7,7 +7,7 @@ resource "aws_codebuild_project" "eks-cicd-build-app" {
   name           = "eks-cicd-build-app"
   queued_timeout = 480
   depends_on     = [aws_iam_role.codebuild-eks-cicd-build-app-service-role]
-  service_role   = data.aws_iam_role.cicd.arn
+  service_role   = aws_iam_role.codebuild-eks-cicd-build-app-service-role.arn
   source_version = "refs/heads/master"
   tags           = {}
 
