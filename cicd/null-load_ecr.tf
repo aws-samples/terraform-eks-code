@@ -5,6 +5,7 @@ triggers = {
 depends_on = [aws_ecr_repository.busybox]
 provisioner "local-exec" {
     on_failure  = fail
+    when = create
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
         ./load_ecr.sh
