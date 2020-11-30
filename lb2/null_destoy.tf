@@ -1,4 +1,4 @@
-resource "null_resource" "post-policy" {
+resource "null_resource" "destroy" {
 depends_on=[aws_iam_policy.load-balancer-policy]
 triggers = {
     when = "destroy"
