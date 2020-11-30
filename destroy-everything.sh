@@ -1,5 +1,5 @@
 cur=`pwd`
-dirs="cicd lb2 eks-cidr nodeg cluster c9net iam net tf-setup"
+dirs="eks-cidr cicd lb2 nodeg cluster c9net iam net tf-setup"
 for i in $dirs; do
 cd $i
 echo "Destroying in $i"

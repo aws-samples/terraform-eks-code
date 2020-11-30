@@ -10,7 +10,7 @@ resource "aws_subnet" "subnet-i3" {
     "Name"                                        = "i3-mycluster1"
  #   "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "mycluster1"
     "kubernetes.io/cluster/mycluster1"            = "shared"
-    "kubernetes.io/role/internal-elb"             = "1"
+   # "kubernetes.io/role/internal-elb"             = "1"
     "workshop" = "subnet-i3"
   }
   vpc_id = aws_vpc.vpc-mycluster1.id
