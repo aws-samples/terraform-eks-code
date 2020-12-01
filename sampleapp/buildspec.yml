@@ -85,7 +85,7 @@ phases:
       - reg=$(echo $CODEBUILD_BUILD_ARN | cut -f4 -d':')
       - acc=$(echo $CODEBUILD_BUILD_ARN | cut -f5 -d':')
       - export AWS_REGION=$(echo $reg)
-      - export ACCOUNT_ID=$(echo $reg)
+      - export ACCOUNT_ID=$(echo $acc)
       - echo $AWS_ACCESS_KEY_ID
       - echo $AWS_SECRET_ACCESS_KEY
       - echo $CODEBUILD_SRC_DIR
