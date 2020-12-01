@@ -82,8 +82,8 @@ phases:
       - export AWS_ACCESS_KEY_ID=$(echo $AWS_RAW_CRED | jq -r '.AccessKeyId')
       - export AWS_SECRET_ACCESS_KEY=$(echo $AWS_RAW_CRED | jq -r '.SecretAccessKey')
       - export AWS_SESSION_TOKEN=$(echo $AWS_RAW_CRED | jq -r '.Token')
-      - reg=$(echo $CODEBUILD_BUILD_ARN | cut -f4 -d'.')
-      - acc=$(echo $CODEBUILD_BUILD_ARN | cut -f5 -d'.')
+      - reg=$(echo $CODEBUILD_BUILD_ARN | cut -f4 -d':')
+      - acc=$(echo $CODEBUILD_BUILD_ARN | cut -f5 -d':')
       - export AWS_REGION=$(echo $reg)
       - export ACCOUNT_ID=$(echo $reg)
       - echo $AWS_ACCESS_KEY_ID
@@ -123,10 +123,11 @@ phases:
       - aws eks update-kubeconfig --name mycluster1
       - kubectl get nodes
       - ls -l
-      - cat 2048_deployment.yml | ./subvar.sh | kubectl apply -f -
+      - #kubectl apply -f 2048_namespace.yml
+      - #cat 2048_deployment.yml | ./subvar.sh | kubectl apply -f -
       - #kubectl apply -f 2048_service.yml
       - #kubectl apply -f 2048_ingress.yml
-      - kubectl get pods,svc,ingress -n game-2048
+      - #kubectl get pods,svc,ingress -n game-2048
       - echo "kubectl get ingress/ingress-2048 -n game-2048"
   post_build:
     commands:
