@@ -1,9 +1,4 @@
 ---
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: game-2048
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,7 +15,7 @@ spec:
         app.kubernetes.io/name: app-2048
     spec:
       containers:
-      - image: $(ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/sample-app
+      - image: ACCOUNT_ID.dkr.ecr.AWS_REGION.amazonaws.com/sample-app
         imagePullPolicy: Always
         name: app-2048
         ports:

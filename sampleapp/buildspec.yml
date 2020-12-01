@@ -123,7 +123,7 @@ phases:
       - aws eks update-kubeconfig --name mycluster1
       - kubectl get nodes
       - ls -l
-      - #kubectl apply -f 2048_deployment.yml
+      - cat 2048_deployment.yml | ./subvar.sh | kubectl apply -f -
       - #kubectl apply -f 2048_service.yml
       - #kubectl apply -f 2048_ingress.yml
       - kubectl get pods,svc,ingress -n game-2048
