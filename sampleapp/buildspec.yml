@@ -89,9 +89,8 @@ phases:
       - echo $AWS_ACCESS_KEY_ID
       - echo $AWS_SECRET_ACCESS_KEY
       - echo $CODEBUILD_SRC_DIR
-      - echo $AWS_REGION
-      - echo $ACCOUNT_ID
-      - aws sts get-caller-identity
+
+      - echo "yum installs"
       - "yum -y -q -e 0 install moreutils bash-completion nmap bind-utils"
       - #echo "Terraform"
       - #wget -q https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
@@ -104,9 +103,10 @@ phases:
       - chmod +x ./kubectl
       - mv ./kubectl /usr/local/bin/kubectl
       - #kubectl version
-
+      - aws sts get-caller-identity
+      - echo $AWS_REGION
+      - echo $ACCOUNT_ID
       - cd "$CODEBUILD_SRC_DIR"
-      - ls -al
       - resp=$(aws eks describe-cluster --name mycluster1)
       - endp=$(echo $resp | jq -r .cluster.endpoint | cut -f3 -d'/')
       - nslookup $endp
@@ -123,11 +123,11 @@ phases:
       - aws eks update-kubeconfig --name mycluster1
       - kubectl get nodes
       - ls -l
-      - #kubectl apply -f 2048_namespace.yml
-      - #cat 2048_deployment.yml | ./subvar.sh | kubectl apply -f -
-      - #kubectl apply -f 2048_service.yml
-      - #kubectl apply -f 2048_ingress.yml
-      - #kubectl get pods,svc,ingress -n game-2048
+      - kubectl apply -f 2048_namespace.yml
+      - cat 2048_deployment.yml | ./subvar.sh | kubectl apply -f -
+      - kubectl apply -f 2048_service.yml
+      - kubectl apply -f 2048_ingress.yml
+      - kubectl get pods,svc,ingress -n game-2048
       - echo "kubectl get ingress/ingress-2048 -n game-2048"
   post_build:
     commands:
