@@ -13,11 +13,13 @@ while [ $curr -ne $target ]; do
     stat=$(aws ec2 describe-instance-status --instance-ids $i  --include-all-instances | jq -r .InstanceStatuses[0].InstanceState.Name)
     echo "$i $stat"
     if [ "$stat" == "terminated" ]; then
-        sleep 5
+        sleep 15
         curr=$(kubectl get nodes | grep -v NotReady | grep Read | wc -l)
         kubectl get nodes
         echo "Current Ready nodes = $curr of $target"
     fi
-    sleep 10
+    if [ "$stat" != "terminated" ]; then
+        sleep 10
+    fi
 done
 done
