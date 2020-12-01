@@ -23,3 +23,4 @@ while [ $curr -ne $target ]; do
     fi
 done
 done
+echo "done"
