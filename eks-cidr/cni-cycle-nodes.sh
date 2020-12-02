@@ -2,7 +2,7 @@ test -n "$1" && echo CLUSTER is "$1" || "echo CLUSTER is not set && exit"
 CLUSTER=$(echo $1)
 kubectl set env ds aws-node -n kube-system AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG=true
 kubectl describe daemonset aws-node -n kube-system | grep -A5 Environment | grep CUSTOM
-INSTANCE_IDS=(`aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --filters "Name=tag-key,Values=eks:nodegroup-name" "Name=instance-state-name,Values=running" "Name=tag-value,Values=ng2-mycluster1" --output text` )
+INSTANCE_IDS=(`aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --filters "Name=tag-key,Values=eks:nodegroup-name" "Name=instance-state-name,Values=running" "Name=tag-value,Values=ng1-mycluster1" --output text` )
 target=$(kubectl get nodes | grep Read | wc -l)
 for i in "${INSTANCE_IDS[@]}"
 do

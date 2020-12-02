@@ -4,6 +4,7 @@ triggers = {
 }
 provisioner "local-exec" {
     on_failure  = fail
+    when = create
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
         az1=$(echo ${data.aws_subnet.i1.availability_zone})
