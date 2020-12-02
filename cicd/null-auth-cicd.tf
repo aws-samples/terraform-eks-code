@@ -1,4 +1,4 @@
-resource "null_resource" "load_ecr" {
+resource "null_resource" "auth-cidr" {
 triggers = {
     always_run = "${timestamp()}"
 }
