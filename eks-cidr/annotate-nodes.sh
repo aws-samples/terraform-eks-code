@@ -8,7 +8,8 @@ sub3=$(echo $6)
 CLUSTER=$(echo $7)
 kubectl get crd
 # get the SG's
-INSTANCE_IDS=(`aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --filters "Name=tag-key,Values=eks:cluster-name" "Name=tag-value,Values=$CLUSTER" "Name=instance-state-name,Values=running" --output text`)
+INSTANCE_IDS=(`aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --filters "Name=tag-key,Values=eks:nodegroup-name" "Name=tag-value,Values=ng1-mycluster1" "Name=instance-state-name,Values=running" --output text`)
+
 for i in "${INSTANCE_IDS[0]}"
 do
 echo "Descr EC2 instance $i ..."
@@ -69,8 +70,8 @@ echo "apply the CRD ${zone2}"
 kubectl apply -f ${zone2}-pod-netconfig.yaml
 echo "apply the CRD ${zone3}"
 kubectl apply -f ${zone3}-pod-netconfig.yaml
-allnodes=`kubectl get nodes -o json`
-len=`kubectl get nodes -o json | jq '.items | length-1'`
+allnodes=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng1-mycluster1' -o json`
+len=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng1-mycluster1' -o json | jq '.items | length-1'`
 for i in `seq 0 $len`; do
 nn=`echo $allnodes | jq ".items[(${i})].metadata.name" | tr -d '"'`
 nz=`echo $allnodes | jq ".items[(${i})].metadata.labels" | grep failure | grep zone | cut -f2 -d':' | tr -d ' ' | tr -d ','| tr -d '"'`
