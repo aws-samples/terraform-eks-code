@@ -21,4 +21,4 @@ spec:
         ports:
         - containerPort: 80
       nodeSelector:
-        alpha.eksctl.io/nodegroup-name:  ng2-mycluster1
+        alpha.eksctl.io/nodegroup-name:  ng1-mycluster1
