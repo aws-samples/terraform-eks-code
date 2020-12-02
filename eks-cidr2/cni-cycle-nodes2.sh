@@ -1,4 +1,4 @@
-test -n "$1" && echo CLUSTER is "$7" || "echo CLUSTER is not set && exit"
+test -n "$1" && echo CLUSTER is "$1" || "echo CLUSTER is not set && exit"
 CLUSTER=$(echo $1)
 kubectl set env ds aws-node -n kube-system AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG=true
 kubectl describe daemonset aws-node -n kube-system | grep -A5 Environment | grep CUSTOM
