@@ -5,7 +5,7 @@ resource "aws_launch_template" "lt-ng1" {
   tags                    = {}
   image_id                = data.aws_ssm_parameter.eksami.value
   user_data            = base64encode(local.eks-node-private-userdata)
-  vpc_security_group_ids  = [aws_security_group.allnodes-sg.if] 
+  vpc_security_group_ids  = [data.terraform_remote_state.net.outputs.allnodes-sg] 
   tag_specifications { 
         resource_type = "instance"
     tags = {
