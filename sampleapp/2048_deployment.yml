@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: game-2048
-  name: deployment-2048-ng2
+  name: deployment-2048
 spec:
   selector:
     matchLabels:
@@ -21,4 +21,4 @@ spec:
         ports:
         - containerPort: 80
       nodeSelector:
-        alpha.eksctl.io/nodegroup-name:  ng2-mycluster1  
+        alpha.eksctl.io/nodegroup-name:  ng1-mycluster1
