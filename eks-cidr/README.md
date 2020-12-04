@@ -22,7 +22,8 @@ kubectl port-forward service/service-2048 8080:80 -n game-2048
 
 Debug Ingress
 
-
+In a terminal follow the logs:
+kubectl logs -f aws-load-balancer-controller-6768894cc9-rsjk2 -n kube-system 
 
 kubectl describe ingress.extensions/ingress-2048 -n game-2048
 

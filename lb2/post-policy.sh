@@ -5,6 +5,7 @@ test -n "$LBC_VERSION" && echo LBC_VERSION is "$LBC_VERSION" || "LBC_VERSION=2.0
 #eksctl utils associate-iam-oidc-provider   --region $1 --cluster $2  --approve
 #eksctl create iamserviceaccount --cluster mycluster1 --namespace=kube-system --name=aws-load-balancer-controller --attach-policy-arn=arn:aws:iam::$3:policy/AWSLoadBalancerControllerIAMPolicy --approve
 #helm repo add eks https://aws.github.io/eks-charts
+rm -f crds.yaml*
 wget https://raw.githubusercontent.com/aws/eks-charts/master/stable/aws-load-balancer-controller/crds/crds.yaml
 kubectl apply -f crds.yaml
 #kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master"
