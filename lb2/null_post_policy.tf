@@ -12,7 +12,7 @@ provisioner "local-exec" {
         acc=$(echo ${data.aws_eks_cluster.eks_cluster.arn} | cut -f5 -d':')
         cn=$(echo ${data.aws_eks_cluster.eks_cluster.name})
         echo "$reg $cn $acc"
-        ./post-policy-man.sh $reg $cn $acc
+        ./post-policy.sh $reg $cn $acc
         echo "done"
      EOT
 }
