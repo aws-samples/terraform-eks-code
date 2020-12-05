@@ -28,6 +28,16 @@ output "dynamodb_table_name_nodeg" {
   description = "The name of the DynamoDB table"
 }
 
+output "dynamodb_table_name_cicd" {
+  value       = aws_dynamodb_table.terraform_locks_cicd.name
+  description = "The name of the DynamoDB table"
+}
+
+output "dynamodb_table_name_eks-cicr" {
+  value       = aws_dynamodb_table.terraform_locks_eks-cidr.name
+  description = "The name of the DynamoDB table"
+}
+
 
 output "region" {
   value       = aws_s3_bucket.terraform_state.region

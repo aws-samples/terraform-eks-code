@@ -28,4 +28,16 @@ variable "table_name_nodeg" {
   default     = "at-terraform-eks-workshop1-nodeg"
 }
 
+variable "table_name_cicd" {
+  description = "The name of the DynamoDB table. Must be unique in this AWS account."
+  type        = string
+  default     = "at-terraform-eks-workshop1-cicd"
+}
+
+variable "table_name_eks-cidr" {
+  description = "The name of the DynamoDB table. Must be unique in this AWS account."
+  type        = string
+  default     = "at-terraform-eks-workshop1-eks-cicd"
+}
+
 

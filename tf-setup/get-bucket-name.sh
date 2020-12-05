@@ -1,4 +1,3 @@
-
 #!/bin/bash
 # Exit if any of the intermediate steps fail
 set -e
