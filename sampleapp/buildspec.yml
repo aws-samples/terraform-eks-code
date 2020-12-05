@@ -127,8 +127,8 @@ phases:
       - cat 2048_deployment.yml | ./subvar.sh | kubectl apply -f -
       - kubectl apply -f 2048_service.yml
       - kubectl apply -f 2048_ingress.yml
-      - kubectl get pods,svc,ingress -n game-2048
-      - echo "kubectl get ingress/ingress-2048 -n game-2048"
+      - #kubectl get pods,svc,ingress -n game-2048
+      - #echo "kubectl get ingress/ingress-2048 -n game-2048"
   post_build:
     commands:
       - echo "terraform completed on `date`"
