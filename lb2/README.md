@@ -1,5 +1,7 @@
 ### Troubleshoot
 
+helm search repo eks/aws-load-balancer-controller -l
+
 ```
 helm delete aws-load-balancer-controller -n kube-system
 ```
