@@ -1,7 +1,7 @@
 resource "aws_dynamodb_table" "terraform_locks" {
   count=var.stagecount
   depends_on=[aws_s3_bucket.terraform_state]
-  name         = format("tflock_%s",var.stages[count.index])
+  name         = format("terraform_locks_%s",var.stages[count.index])
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
 
