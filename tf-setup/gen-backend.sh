@@ -11,7 +11,7 @@ else
 fi
 
 mkdir generated
-SECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg' 'ci-cd' 'eks-cidr')
+SECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg' 'cicd' 'eks-cidr')
  
 for section in "${SECTIONS[@]}"
 do
@@ -52,7 +52,7 @@ done
 
 
 cd $d
-
+echo "**** REMOTE ****"
 
 RSECTIONS=('net' 'iam' 'c9net' 'cluster') 
 for section in "${RSECTIONS[@]}"
