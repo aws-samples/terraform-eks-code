@@ -7,5 +7,5 @@ if [[ $? .eq 1 ]]; then
 BUCKET_COUNT=1
 fi
 echo "count=$BUCKET_COUNT"
-jq -n --arg bc "$BUCKET_COUNT" '{"Name":$bc}'
+jq -n --arg bc "$BUCKET_COUNT" '{"Count":$bc}'
 
