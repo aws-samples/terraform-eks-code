@@ -2,7 +2,7 @@
 # Exit if any of the intermediate steps fail
 set -e
 BUCKET_COUNT=0
-res=`terraform state list aws_s3_bucket.terraform_state`
+res=`terraform state list aws_s3_bucket.terraform_state || true`
 if [[ $? -eq 1 ]]; then 
 BUCKET_COUNT=1
 fi
