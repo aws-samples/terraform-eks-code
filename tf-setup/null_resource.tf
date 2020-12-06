@@ -13,7 +13,7 @@ resource "null_resource" "sleep" {
 triggers = {
     always_run = "${timestamp()}"
 }
-depends_on = [aws_dynamodb_table.terraform_locks_nodeg]
+depends_on = [aws_dynamodb_table.terraform_locks]
 provisioner "local-exec" {
     command = "sleep 5"
 }
