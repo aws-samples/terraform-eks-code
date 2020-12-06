@@ -6,18 +6,12 @@ output "Name" {
   value = data.external.bucket_name.result.Name
 }
 
-data "external" "bucket_count" {
-  program = ["bash", "get-bucket-count.sh"]
-}
 
-output "Count" {
-  value = data.external.bucket_count.result.Count
-}
 
 resource "aws_s3_bucket" "terraform_state" {
 
   bucket = data.external.bucket_name.result.Name
-  count=data.external.bucket_count.result.Count
+
   // This is only here so we can destroy the bucket as part of automated tests. You should not copy this for production
   // usage
   force_destroy = true
