@@ -21,3 +21,8 @@ variable "stages" {
 type=list(string)
 default=["net","iam","c9net","cicd","cluster","nodeg","eks-cidr"]
 }
+
+variable "stagecount" {
+type=number
+default=7
+}
