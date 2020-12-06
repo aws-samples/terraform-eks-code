@@ -4,6 +4,7 @@ triggers = {
 }
 depends_on = [null_resource.sleep]
 provisioner "local-exec" {
+    when = create
     command = "./gen-backend.sh"
 }
 }
@@ -15,6 +16,7 @@ triggers = {
 }
 depends_on = [aws_dynamodb_table.terraform_locks]
 provisioner "local-exec" {
+    when = create
     command = "sleep 5"
 }
 }
