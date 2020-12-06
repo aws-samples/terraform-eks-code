@@ -16,3 +16,8 @@ variable "cluster-name" {
   type        = string
   default     = "mycluster1"
 }
+
+variable "stages" {
+type=list(string)
+default=["net","iam","c9net","cicd","cluster","nodeg","eks-cidr"]
+}

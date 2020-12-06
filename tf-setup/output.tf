@@ -41,5 +41,5 @@ output "dynamodb_table_name_eks-cidr" {
 
 output "region" {
   value       = aws_s3_bucket.terraform_state.region
-  description = "The name of the DynamoDB table"
+  description = "The name of the region"
 }
