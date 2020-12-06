@@ -1,37 +1,37 @@
 
 
 output "dynamodb_table_name_net" {
-  value       = aws_dynamodb_table.terraform_locks[1].name
+  value       = aws_dynamodb_table.terraform_locks_net.name
   description = "The name of the DynamoDB table"
 }
 
 output "dynamodb_table_name_iam" {
-  value       = aws_dynamodb_table.terraform_locks[2].name
+  value       = aws_dynamodb_table.terraform_locks_iam.name
   description = "The name of the DynamoDB table"
 }
 
 output "dynamodb_table_name_c9net" {
-  value       = aws_dynamodb_table.terraform_locks[3].name
+  value       = aws_dynamodb_table.terraform_locks_c9net.name
   description = "The name of the DynamoDB table"
 }
 
 output "dynamodb_table_name_cluster" {
-  value       = aws_dynamodb_table.terraform_locks[4].name
+  value       = aws_dynamodb_table.terraform_locks_cluster.name
   description = "The name of the DynamoDB table"
 }
 
 output "dynamodb_table_name_nodeg" {
-  value       = aws_dynamodb_table.terraform_locks[5].name
+  value       = aws_dynamodb_table.terraform_locks_nodeg.name
   description = "The name of the DynamoDB table"
 }
 
 output "dynamodb_table_name_cicd" {
-  value       = aws_dynamodb_table.terraform_locks[6].name
+  value       = aws_dynamodb_table.terraform_locks_cicd.name
   description = "The name of the DynamoDB table"
 }
 
 output "dynamodb_table_name_eks-cidr" {
-  value       = aws_dynamodb_table.terraform_locks[7].name
+  value       = aws_dynamodb_table.terraform_locks_eks-cidr.name
   description = "The name of the DynamoDB table"
 }
 
