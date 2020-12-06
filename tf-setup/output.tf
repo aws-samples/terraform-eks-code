@@ -33,7 +33,7 @@ output "dynamodb_table_name_cicd" {
   description = "The name of the DynamoDB table"
 }
 
-output "dynamodb_table_name_eks-cicr" {
+output "dynamodb_table_name_eks-cidr" {
   value       = aws_dynamodb_table.terraform_locks_eks-cidr.name
   description = "The name of the DynamoDB table"
 }
