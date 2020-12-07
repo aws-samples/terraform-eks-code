@@ -1,7 +1,7 @@
 
 d=`pwd`
 sleep 5
-reg=`terraform output region`
+reg=`terraform output -json region | jq -r .[]`
 if [[ -z ${reg} ]] ; then
     echo "no terraform output variables - exiting ....."
     echo "run terraform init/plan/apply in the the init directory first"
@@ -17,7 +17,7 @@ for section in "${SECTIONS[@]}"
 do
 
     tabn=`terraform output dynamodb_table_name_$section`
-    s3b=`terraform output s3_bucket`
+    s3b=`terraform output -json s3_bucket | jq -r .[]`
     echo $s3b $tabn
 
     cd $d
