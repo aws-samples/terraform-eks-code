@@ -58,7 +58,8 @@ RSECTIONS=('net' 'iam' 'c9net' 'cluster')
 for section in "${RSECTIONS[@]}"
 do
     tabn=`terraform output dynamodb_table_name_$section`
-    s3b=`terraform output s3_bucket`
+    s3b=`terraform output -json s3_bucket | jq -r .[]`
+
     echo $s3b $tabn
     of=`echo "generated/remote-${section}.tf"`
     printf "" > $of
