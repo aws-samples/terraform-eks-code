@@ -10,7 +10,7 @@ resource "aws_iam_openid_connect_provider" "cluster" {
 }
 
 
-### 
+### Enabling IAM Roles for Service Accounts
 data "aws_iam_policy_document" "cluster_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]

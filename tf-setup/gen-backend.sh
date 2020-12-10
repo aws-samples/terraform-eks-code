@@ -11,6 +11,8 @@ else
 fi
 
 mkdir generated
+
+#default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr"]
 SECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg' 'cicd' 'eks-cidr')
  
 for section in "${SECTIONS[@]}"

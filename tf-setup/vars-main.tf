@@ -19,7 +19,7 @@ variable "cluster-name" {
 
 variable "stages" {
 type=list(string)
-default=["net","iam","c9net","cicd","cluster","nodeg","eks-cidr"]
+default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr"]
 }
 
 variable "stagecount" {
