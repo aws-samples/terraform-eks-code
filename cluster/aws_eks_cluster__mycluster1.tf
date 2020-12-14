@@ -12,7 +12,7 @@ resource "aws_eks_cluster" "mycluster1" {
   #depends_on = [data.terraform_remote_state.iam.aws_iam_role.eksctl-mycluster1-cluster-ServiceRole-HUIGIC7K7HNJ]
   role_arn   = data.terraform_remote_state.iam.outputs.cluster_service_role_arn
   tags       = {}
-  version    = "1.17"
+  version    = "1.18"
 
   timeouts {}
 
