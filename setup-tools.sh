@@ -74,7 +74,6 @@ for command in kubectl jq envsubst aws wget terraform eksctl helm kubectx
   done
 
 
-
 this=`pwd`
 echo "sample apps"
 cd ~/environment
