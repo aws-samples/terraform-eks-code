@@ -1,5 +1,5 @@
 cur=`pwd`
-dirs="tf-setup net iam c9net cicd cluster nodeg eks-cidr"
+dirs="tf-setup net iam c9net cluster nodeg cicd eks-cidr"
 for i in $dirs; do
 cd $i
 echo "Building in $i"
