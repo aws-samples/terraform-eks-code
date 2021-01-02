@@ -1,6 +1,6 @@
 resource "null_resource" "cidr" {
 triggers = {
-    always_run = "${timestamp()}"
+    always_run = timestamp()
 }
 provisioner "local-exec" {
     on_failure  = fail

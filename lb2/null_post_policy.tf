@@ -1,7 +1,7 @@
 resource "null_resource" "post-policy" {
 depends_on=[aws_iam_policy.load-balancer-policy]
 triggers = {
-    always_run = "${timestamp()}"
+    always_run = timestamp()
 }
 provisioner "local-exec" {
     on_failure  = fail

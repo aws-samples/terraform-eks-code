@@ -1,6 +1,6 @@
 resource "null_resource" "gen_cluster_auth" {
 triggers = {
-    always_run = "${timestamp()}"
+    always_run = timestamp()
 }
 depends_on = [aws_eks_cluster.mycluster1]
 provisioner "local-exec" {

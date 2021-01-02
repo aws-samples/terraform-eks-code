@@ -1,6 +1,6 @@
 resource "null_resource" "gen_backend" {
 triggers = {
-    always_run = "${timestamp()}"
+    always_run = timestamp()
 }
 depends_on = [null_resource.sleep]
 provisioner "local-exec" {
@@ -12,7 +12,7 @@ provisioner "local-exec" {
 
 resource "null_resource" "sleep" {
 triggers = {
-    always_run = "${timestamp()}"
+    always_run = timestamp()
 }
 depends_on = [aws_dynamodb_table.terraform_locks]
 provisioner "local-exec" {

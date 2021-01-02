@@ -1,6 +1,6 @@
 resource "null_resource" "load_ecr" {
 triggers = {
-    always_run = "${timestamp()}"
+    always_run = timestamp()
 }
 depends_on = [aws_ecr_repository.busybox]
 provisioner "local-exec" {
