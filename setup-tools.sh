@@ -20,10 +20,10 @@ sudo yum -y -q -e 0 install jq moreutils bash-completion nmap
 
 
 echo "Terraform"
-wget https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
-unzip -qq terraform_0.12.29_linux_amd64.zip
+wget https://releases.hashicorp.com/terraform/0.14.3/terraform_0.14.3_linux_amd64.zip
+unzip -qq terraform_0.14.3_linux_amd64.zip
 sudo mv terraform /usr/local/bin/
-rm -f terraform_0.12.29_linux_amd64.zip
+rm -f terraform_0.14.3_linux_amd64.zip
 
 
 echo "Enable kubectl bash_completion"
