@@ -10,7 +10,7 @@ else
     rm -f $of $of
 fi
 
-mkdir generated
+mkdir -p generated
 
 #default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr"]
 SECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg' 'cicd' 'eks-cidr')
