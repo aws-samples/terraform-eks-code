@@ -28,7 +28,14 @@ do
     vf=`echo "generated/vars-${section}.tf"`
     printf "" > $of
     printf "terraform {\n" >> $of
-    printf "required_version = \">= 0.12, < 0.13\"\n" >> $of
+    printf "required_version = \"= 0.14\"\n" >> $of
+    printf "required_providers {\n" >> $of
+    printf "  aws {\n" >> $of
+    printf "   source = \"hashicord/aws\"\n" >> $of
+    printf "#  Allow any 3.1x version of the AWS provider\n" >> $of
+    printf "   version = \"~> 3.22\"\n" >> $of
+    printf "  }\n" >> $of
+    printf " }\n" >> $of
     printf "backend \"s3\" {\n" >> $of
     printf "bucket = \"%s\"\n"  $s3b >> $of
     printf "key = \"terraform/%s.tfstate\"\n"  $tabn >> $of
@@ -37,14 +44,13 @@ do
     printf "encrypt = \"true\"\n"   >> $of
     printf "}\n" >> $of
     printf "}\n" >> $of
-    printf "\n" >> $of
+    ##
     printf "provider \"aws\" {\n" >> $of
     printf "region = var.region\n"  >> $of
     printf "shared_credentials_file = \"~/.aws/credentials\"\n" >> $of
     printf "profile = var.profile\n" >> $of
-    printf "# Allow any 3.1x version of the AWS provider\n" >> $of
-    printf "version = \"~> 3.10\"\n" >> $of
-    printf "}\n" >> $of
+  
+
 
     cp -v $of ../$section
     cp -v vars-dynamodb.tf ../$section
