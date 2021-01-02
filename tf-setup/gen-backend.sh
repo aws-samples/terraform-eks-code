@@ -65,7 +65,7 @@ echo "**** REMOTE ****"
 RSECTIONS=('net' 'iam' 'c9net' 'cluster') 
 for section in "${RSECTIONS[@]}"
 do
-    tabn=`terraform output dynamodb_table_name_$section`
+    tabn=`terraform output dynamodb_table_name_$section | tr -d '"'`
     s3b=`terraform output -json s3_bucket | jq -r .[]`
 
     echo $s3b $tabn
