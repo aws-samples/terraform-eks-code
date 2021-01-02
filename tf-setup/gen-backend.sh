@@ -28,7 +28,7 @@ do
     vf=`echo "generated/vars-${section}.tf"`
     printf "" > $of
     printf "terraform {\n" >> $of
-#    printf "required_version = \"= 0.14\"\n" >> $of
+    printf "required_version = \"~> 0.14.3\"\n" >> $of
     printf "required_providers {\n" >> $of
     printf "  aws = {\n" >> $of
     printf "   source = \"hashicorp/aws\"\n" >> $of
