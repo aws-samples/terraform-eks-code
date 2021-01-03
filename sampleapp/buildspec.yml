@@ -92,17 +92,17 @@ phases:
 
       - echo "yum installs"
       - "yum -y -q -e 0 install moreutils bash-completion nmap bind-utils"
-      - echo "Terraform"
-      - wget -q https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
-      - unzip -qq terraform_0.12.29_linux_amd64.zip
-      - mv terraform /usr/local/bin/
-      - rm -f terraform_0.12.29_linux_amd64.zip
+      - #echo "Terraform"
+      - #wget -q https://releases.hashicorp.com/terraform/0.14.3/terraform_0.14.3_linux_amd64.zip
+      - #unzip -qq terraform_0.14.3_linux_amd64.zip
+      - #mv terraform /usr/local/bin/
+      - #rm -f terraform_0.14.3_linux_amd64.zip
 
       - echo "kubectl"
       - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
       - chmod +x ./kubectl
       - mv ./kubectl /usr/local/bin/kubectl
-      - #kubectl version
+      
       - aws sts get-caller-identity
       - echo $AWS_REGION
       - echo $ACCOUNT_ID
@@ -121,6 +121,7 @@ phases:
       - #"terraform apply -auto-approve tfplan"  
       - rm -f ~/.kube/config
       - aws eks update-kubeconfig --name mycluster1
+      - kubectl version
       - kubectl get nodes
       - ls -l
       - kubectl apply -f 2048_namespace.yml
@@ -131,7 +132,7 @@ phases:
       - #echo "kubectl get ingress/ingress-2048 -n game-2048"
   post_build:
     commands:
-      - echo "terraform completed on `date`"
+      - echo "completed on `date`"
 
 
 artifacts:
