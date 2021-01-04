@@ -7,7 +7,7 @@ resource "aws_instance" "myinstance" {
   associate_public_ip_address = false
   availability_zone           = "eu-west-1a"
 
-  iam_instance_profile = "AmazonEC2RoleforSSM"
+  iam_instance_profile = aws_iam_instance_profile.test_profile.name
   instance_type        = "t2.micro"
   monitoring           = false
 
@@ -47,4 +47,35 @@ resource "aws_instance" "myinstance" {
   }
 
   timeouts {}
+}
+
+resource "aws_iam_instance_profile" "test_profile" {
+  name = "test_profile"
+  role = "${aws_iam_role.test_role.name}"
+}
+
+resource "aws_iam_role" "test_role" {
+  name = "test_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+
+}
+
+resource "aws_iam_role_policy_attachment" "test-attach" {
+  role       = aws_iam_role.test_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
