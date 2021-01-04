@@ -3,4 +3,5 @@ helm list -A
 echo "Remove helm deployment"
 helm delete aws-load-balancer-controller -n kube-system
 echo "Remove CRD"
-kubectl delete -f crds.yaml 
+kubectl delete -f crds.yaml
+
