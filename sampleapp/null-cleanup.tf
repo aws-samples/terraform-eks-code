@@ -1,4 +1,4 @@
-resource "null_resource" "auth-cidr" {
+resource "null_resource" "cleanup" {
 triggers = {
     always_run = timestamp()
 }

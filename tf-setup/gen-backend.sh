@@ -92,4 +92,5 @@ cp -v generated/remote-iam.tf ../nodeg
 
 cp -v generated/remote-cluster.tf ../nodeg
 cp -v generated/remote-cluster.tf ../eks-cidr
-cp -v generated/remote-cluster.tf ../lb2
+cp -v generated/remote-cluster.tf ../lb
+cp -v aws.tf ../sampleapp
