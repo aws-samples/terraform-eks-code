@@ -7,7 +7,7 @@ resource "aws_instance" "myinstance" {
   associate_public_ip_address = false
   availability_zone           = "eu-west-1a"
 
-  iam_instance_profile = "ROLE-AmazonEC2RoleforSSM"
+  iam_instance_profile = "AmazonSSMManagedInstanceCore"
   instance_type        = "t2.micro"
   monitoring           = false
 
