@@ -44,7 +44,7 @@
                 "Description": "Service linked role for AWS Cloud9",
                 "Path": "/service-role/",
                 "ManagedPolicyArns": [
-                    "arn:aws:iam::aws:policy/AdministratorAccess"
+                    "arn:aws:iam::aws:policy/AWSCloud9SSMInstanceProfile"
                 ],
                 "RoleName": "AWSCloud9SSMAccessRole"
             }

@@ -1,26 +1,7 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Cloud9 Terrform EKS stack",
+    "Description": "Cloud9 IAM",
     "Resources": {
-        "C9Environment": {
-            "Type" : "AWS::Cloud9::EnvironmentEC2",
-            "DependsOn" : "AWSCloud9SSMInstanceProfile",
-            "Properties" : {
-                "AutomaticStopTimeMinutes" : 120,
-                "ConnectionType" : "CONNECT_SSM",
-                "Description" : "Terraform EKS Workshop",
-                "InstanceType" : "t2.small",
-                "Name" : "eks-terraform",
-                "Repositories" : [ {
-                    "PathComponent" : "tfekscode",
-                    "RepositoryUrl" : "https://github.com/awsandy/Terraform-EKS-Code.git"
-                } ],
-                "Tags" : [{
-                    "Key" : "workshop",
-                    "Value" : "eks-terraform"
-                } ]
-            }
-        },
         "AWSCloud9SSMAccessRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -44,7 +25,7 @@
                 "Description": "Service linked role for AWS Cloud9",
                 "Path": "/service-role/",
                 "ManagedPolicyArns": [
-                    "arn:aws:iam::aws:policy/AdministratorAccess"
+                    "arn:aws:iam::aws:policy/AWSCloud9SSMInstanceProfile"
                 ],
                 "RoleName": "AWSCloud9SSMAccessRole"
             }
@@ -62,6 +43,6 @@
             }
         }
     }
-}
+  }
 
 
