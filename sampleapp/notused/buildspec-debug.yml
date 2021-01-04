@@ -1,0 +1,140 @@
+version: 0.2
+
+env:
+  git-credential-helper: yes
+
+  variables:
+    TF_VERSION: "0.12.29"
+
+phases:
+  install:
+    commands:
+      - export CI=true
+      - export CODEBUILD=true
+      - #export CODEBUILD_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
+      - export CODEBUILD_GIT_BRANCH="$(git symbolic-ref HEAD --short 2>/dev/null)"
+      - if [ "$CODEBUILD_GIT_BRANCH" = "" ] ; then
+          CODEBUILD_GIT_BRANCH="$(git branch -a --contains HEAD | sed -n 2p | awk '{ printf $1 }')";
+          export CODEBUILD_GIT_BRANCH=${CODEBUILD_GIT_BRANCH#remotes/origin/};
+        fi
+      - export CODEBUILD_GIT_CLEAN_BRANCH="$(echo $CODEBUILD_GIT_BRANCH | tr '/' '.')"
+      - export CODEBUILD_GIT_ESCAPED_BRANCH="$(echo $CODEBUILD_GIT_CLEAN_BRANCH | sed -e 's/[]\/$*.^[]/\\\\&/g')"
+      - export CODEBUILD_GIT_MESSAGE="$(git log -1 --pretty=%B)"
+      - export CODEBUILD_GIT_AUTHOR="$(git log -1 --pretty=%an)"
+      - export CODEBUILD_GIT_AUTHOR_EMAIL="$(git log -1 --pretty=%ae)"
+      - export CODEBUILD_GIT_COMMIT="$(git log -1 --pretty=%H)"
+      - export CODEBUILD_GIT_SHORT_COMMIT=$(echo $CODEBUILD_SOURCE_VERSION | cut -c 1-7)
+      - export CODEBUILD_GIT_TAG="$(git describe --tags --exact-match 2>/dev/null)"
+      - export CODEBUILD_GIT_MOST_RECENT_TAG="$(git describe --tags --abbrev=0)"
+      - export CODEBUILD_PULL_REQUEST=false
+      - case "${CODEBUILD_SOURCE_VERSION}" in
+          *pr/*   ) echo "pull request";
+                    export PULL_REQUEST=$(echo ${CODEBUILD_SOURCE_VERSION} | tr / -);
+                    export CODEBUILD_PULL_REQUEST="${PULL_REQUEST}";
+                    export CODEBUILD_GIT_CLEAN_BRANCH=${CODEBUILD_PULL_REQUEST};
+                    ;;
+          *       ) echo "not pull request";;
+        esac
+      - if [ "${CODEBUILD_SOURCE_VERSION}" = *"pr/"* ]; then
+          echo "pull request";
+          export PULL_REQUEST=$(echo ${CODEBUILD_SOURCE_VERSION} | tr / -);
+          export CODEBUILD_PULL_REQUEST="${CODEBUILD_GIT_BRANCH}-${PULL_REQUEST}";
+          export CODEBUILD_GIT_CLEAN_BRANCH=${CODEBUILD_GIT_CLEAN_BRANCH};
+        else
+          echo "not pull request";
+        fi
+      #- if [ "${CODEBUILD_GIT_BRANCH#pr-}" != "$CODEBUILD_GIT_BRANCH" ] ; then
+      #    export CODEBUILD_PULL_REQUEST=${CODEBUILD_GIT_BRANCH#pr-};
+      #  fi
+      - export CODEBUILD_PROJECT=${CODEBUILD_BUILD_ID%:$CODEBUILD_LOG_PATH}
+      - export CODEBUILD_BUILD_URL=https://$AWS_DEFAULT_REGION.console.aws.amazon.com/codebuild/home?region=$AWS_DEFAULT_REGION#/builds/$CODEBUILD_BUILD_ID/view/new
+      - export IMAGE_TAG=$CODEBUILD_GIT_SHORT_COMMIT
+      - #export ACCOUNT=$CODEBUILD_ACCOUNT_ID
+      - echo "==> AWS CodeBuild Extra Environment Variables:"
+      - echo "==> CI = $CI"
+      - echo "==> CODEBUILD = $CODEBUILD"
+      - echo "==> CODEBUILD_ACCOUNT_ID = $CODEBUILD_ACCOUNT_ID"
+      - echo "==> CODEBUILD_GIT_AUTHOR = $CODEBUILD_GIT_AUTHOR"
+      - echo "==> CODEBUILD_GIT_AUTHOR_EMAIL = $CODEBUILD_GIT_AUTHOR_EMAIL"
+      - echo "==> CODEBUILD_GIT_BRANCH = $CODEBUILD_GIT_BRANCH"
+      - echo "==> CODEBUILD_GIT_CLEAN_BRANCH = $CODEBUILD_GIT_CLEAN_BRANCH"
+      - echo "==> CODEBUILD_GIT_ESCAPED_BRANCH = $CODEBUILD_GIT_ESCAPED_BRANCH"
+      - echo "==> CODEBUILD_GIT_COMMIT = $CODEBUILD_GIT_COMMIT"
+      - echo "==> CODEBUILD_GIT_SHORT_COMMIT = $CODEBUILD_GIT_SHORT_COMMIT"
+      - echo "==> CODEBUILD_GIT_MESSAGE = $CODEBUILD_GIT_MESSAGE"
+      - echo "==> CODEBUILD_GIT_TAG = $CODEBUILD_GIT_TAG"
+      - echo "==> CODEBUILD_GIT_MOST_RECENT_TAG = $CODEBUILD_GIT_MOST_RECENT_TAG"
+      - echo "==> CODEBUILD_PROJECT = $CODEBUILD_PROJECT"
+      - echo "==> CODEBUILD_PULL_REQUEST = $CODEBUILD_PULL_REQUEST"
+      - if [ "$CODEBUILD_GIT_CLEAN_BRANCH" = "master" ] ; then
+          export DEPLOY_DIR='/';
+        else
+          export DEPLOY_DIR=${CODEBUILD_GIT_CLEAN_BRANCH};
+        fi
+      - echo '***** This is the current env:'
+      - printenv
+
+
+  build:
+    commands:
+          # install required binary
+      - export AWS_RAW_CRED=$(curl --silent http://169.254.170.2:80$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)
+      - export AWS_ACCESS_KEY_ID=$(echo $AWS_RAW_CRED | jq -r '.AccessKeyId')
+      - export AWS_SECRET_ACCESS_KEY=$(echo $AWS_RAW_CRED | jq -r '.SecretAccessKey')
+      - export AWS_SESSION_TOKEN=$(echo $AWS_RAW_CRED | jq -r '.Token')
+      - reg=$(echo $CODEBUILD_BUILD_ARN | cut -f4 -d':')
+      - acc=$(echo $CODEBUILD_BUILD_ARN | cut -f5 -d':')
+      - export AWS_REGION=$(echo $reg)
+      - export ACCOUNT_ID=$(echo $acc)
+      - echo $AWS_ACCESS_KEY_ID
+      - echo $AWS_SECRET_ACCESS_KEY
+      - echo $CODEBUILD_SRC_DIR
+
+      - echo "yum installs"
+      - "yum -y -q -e 0 install moreutils bash-completion nmap bind-utils"
+      - #echo "Terraform"
+      - #wget -q https://releases.hashicorp.com/terraform/0.14.3/terraform_0.14.3_linux_amd64.zip
+      - #unzip -qq terraform_0.14.3_linux_amd64.zip
+      - #mv terraform /usr/local/bin/
+      - #rm -f terraform_0.14.3_linux_amd64.zip
+
+      - echo "kubectl"
+      - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+      - chmod +x ./kubectl
+      - mv ./kubectl /usr/local/bin/kubectl
+      
+      - aws sts get-caller-identity
+      - echo $AWS_REGION
+      - echo $ACCOUNT_ID
+      - cd "$CODEBUILD_SRC_DIR"
+      - resp=$(aws eks describe-cluster --name mycluster1)
+      - endp=$(echo $resp | jq -r .cluster.endpoint | cut -f3 -d'/')
+      - nslookup $endp
+      - nmap $endp -Pn -p 443
+      - #
+      - #"terraform init"
+      - #aws eks list-clusters
+      - #"terraform validate"
+      - #"terraform plan -out tfplan"
+      - #"cd .."
+      - "aws sts get-caller-identity"
+      - #"terraform apply -auto-approve tfplan"  
+      - rm -f ~/.kube/config
+      - aws eks update-kubeconfig --name mycluster1
+      - kubectl version
+      - kubectl get nodes
+      - ls -l
+      - kubectl apply -f 2048_namespace.yml
+      - cat 2048_deployment.yml | ./subvar.sh | kubectl apply -f -
+      - kubectl apply -f 2048_service.yml
+      - kubectl apply -f 2048_ingress.yml
+      - #kubectl get pods,svc,ingress -n game-2048
+      - #echo "kubectl get ingress/ingress-2048 -n game-2048"
+  post_build:
+    commands:
+      - echo "completed on `date`"
+
+
+artifacts:
+  files:
+    - '**/*'
