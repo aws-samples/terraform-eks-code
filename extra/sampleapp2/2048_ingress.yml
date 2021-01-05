@@ -11,7 +11,11 @@ spec:
   rules:
     - http:
         paths:
-          - path: /*
+          - path: /app1
             backend:
-              serviceName: service-2048
+              serviceName: service1-2048
+              servicePort: 80
+          - path: /app2
+            backend:
+              serviceName: service2-2048
               servicePort: 80

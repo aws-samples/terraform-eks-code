@@ -7,17 +7,17 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: app-2048
+      app.kubernetes.io/name: app1-2048
   replicas: 2
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: app-2048
+        app.kubernetes.io/name: app1-2048
     spec:
       containers:
       - image: ACCOUNT_ID.dkr.ecr.AWS_REGION.amazonaws.com/sample-app
         imagePullPolicy: Always
-        name: app-2048
+        name: app1-2048
         ports:
         - containerPort: 80
       nodeSelector:
