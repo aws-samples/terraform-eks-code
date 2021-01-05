@@ -13,7 +13,7 @@ fi
 mkdir -p generated
 
 #default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr"]
-SECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg' 'cicd' 'eks-cidr' 'extra/nodeg2')
+SECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg' 'cicd' 'eks-cidr')
  
 for section in "${SECTIONS[@]}"
 do
@@ -58,6 +58,9 @@ do
 
 done
 
+cp -v backend-nodeg.tf ../extra/nodeg2
+cp -v vars-dynamodb.tf ../extra/nodeg2
+cp -v vars-main.tf ../extra/nodeg2
 
 cd $d
 echo "**** REMOTE ****"
