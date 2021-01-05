@@ -16,7 +16,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /
+          - path: /app1
             backend:
               serviceName: forward-single-tg
               servicePort: use-annotation
