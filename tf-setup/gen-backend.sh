@@ -59,13 +59,8 @@ do
 
 done
 
-cp -v generated/backend-nodeg.tf ../extra/nodeg2
-cp -v vars-dynamodb.tf ../extra/nodeg2
-cp -v vars-main.tf ../extra/nodeg2
 
-cp -v generated/backend-eks-cidr.tf ../extra/eks-cidr2
-cp -v vars-dynamodb.tf ../extra/eks-cidr2
-cp -v vars-main.tf ../extra/eks-cidr2
+
 
 cd $d
 echo "**** REMOTE ****"
@@ -113,6 +108,9 @@ cp -v aws.tf ../lb2
 cp -v vars-main.tf ../lb2
 cp -v aws.tf ../extra/sampleapp2
 cp -v vars-main.tf ../extra/sampleapp2
-#cp -v aws.tf ../extra/lb-external
-#cp -v vars-main.tf ../extra/lb-external
+cp -v aws.tf ../extra/nodeg2
+cp -v vars-main.tf ../extra/nodeg2
+cp -v aws.tf ../extra/eks-cidr2
+cp -v vars-main.tf ../extra/eks-cidr2
+
 
