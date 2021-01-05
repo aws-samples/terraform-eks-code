@@ -88,6 +88,7 @@ done
 cp -v generated/remote-net.tf ../c9net 
 cp -v generated/remote-net.tf ../cluster
 cp -v generated/remote-net.tf ../nodeg
+cp -v generated/remote-net.tf ../data/nodeg2
 cp -v generated/remote-net.tf ../eks-cidr
 
 cp -v generated/remote-iam.tf ../cluster 
