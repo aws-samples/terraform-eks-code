@@ -63,7 +63,7 @@ cp -v generated/backend-nodeg.tf ../extra/nodeg2
 cp -v vars-dynamodb.tf ../extra/nodeg2
 cp -v vars-main.tf ../extra/nodeg2
 
-cp -v generated/backend-eks-cidr2.tf ../extra/eks-cidr2
+cp -v generated/backend-eks-cidr.tf ../extra/eks-cidr2
 cp -v vars-dynamodb.tf ../extra/eks-cidr2
 cp -v vars-main.tf ../extra/eks-cidr2
 
