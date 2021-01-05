@@ -55,12 +55,17 @@ do
     cp -v $of ../$section
     cp -v vars-dynamodb.tf ../$section
     cp -v vars-main.tf ../$section
+   
 
 done
 
 cp -v generated/backend-nodeg.tf ../extra/nodeg2
 cp -v vars-dynamodb.tf ../extra/nodeg2
 cp -v vars-main.tf ../extra/nodeg2
+
+cp -v generated/backend-eks-cidr2.tf ../extra/eks-cidr2
+cp -v vars-dynamodb.tf ../extra/eks-cidr2
+cp -v vars-main.tf ../extra/eks-cidr2
 
 cd $d
 echo "**** REMOTE ****"
@@ -90,12 +95,15 @@ cp -v generated/remote-net.tf ../cluster
 cp -v generated/remote-net.tf ../nodeg
 cp -v generated/remote-net.tf ../extra/nodeg2
 cp -v generated/remote-net.tf ../eks-cidr
+cp -v generated/remote-net.tf ../extra/eks-cidr2
 
 cp -v generated/remote-iam.tf ../cluster 
 cp -v generated/remote-iam.tf ../nodeg
+cp -v generated/remote-iam.tf ../extra/nodeg2
 
 cp -v generated/remote-cluster.tf ../nodeg
 cp -v generated/remote-cluster.tf ../eks-cidr
+cp -v generated/remote-cluster.tf ../extra/eks-cidr2
 cp -v generated/remote-cluster.tf ../lb2
 cp -v generated/remote-cluster.tf ../extra/nodeg2
 
