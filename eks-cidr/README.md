@@ -1,6 +1,10 @@
 
 
 Debug:
+Check for annotation on all nodes  (use reannotate script if needed)
+
+kubectl get nodes -o json | jq .items[].metadata.annotations
+
 
 kubectl describe pods  coredns-6987776bbd-c9q4z -n kube-system
 
