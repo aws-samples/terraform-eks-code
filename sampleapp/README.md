@@ -8,3 +8,7 @@ Takes about 7minutes to appear in console  - 8minutes to be "ready"
 
 $ nslookup lbdns
 $ curl lbdns
+
+
+
+

@@ -61,3 +61,14 @@ Go and manually fixup the Listener
 delete fixed 404 response
 Add 
 
+
+
+
+---
+
+terminate a node
+
+kubectl rollout restart deployment deployment-2048 -n game-2048
+kubectl rollout restart deployment coredns -n kube-system
+
+
