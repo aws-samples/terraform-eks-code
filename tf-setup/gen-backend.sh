@@ -13,7 +13,7 @@ fi
 mkdir -p generated
 
 #default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr"]
-SECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg' 'cicd' 'eks-cidr')
+SECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg' 'cicd' 'eks-cidr' 'extra/nodeg2')
  
 for section in "${SECTIONS[@]}"
 do
@@ -93,7 +93,10 @@ cp -v generated/remote-iam.tf ../nodeg
 cp -v generated/remote-cluster.tf ../nodeg
 cp -v generated/remote-cluster.tf ../eks-cidr
 cp -v generated/remote-cluster.tf ../lb2
+cp -v generated/remote-cluster.tf ../extra/nodeg2
+
 cp -v aws.tf ../sampleapp
 cp -v vars-main.tf ../sampleapp
 cp -v aws.tf ../lb2
 cp -v vars-main.tf ../lb2
+
