@@ -113,4 +113,6 @@ cp -v aws.tf ../lb2
 cp -v vars-main.tf ../lb2
 cp -v aws.tf ../extra/sampleapp2
 cp -v vars-main.tf ../extra/sampleapp2
+#cp -v aws.tf ../extra/lb-external
+#cp -v vars-main.tf ../extra/lb-external
 
