@@ -58,7 +58,7 @@ do
 
 done
 
-cp -v backend-nodeg.tf ../extra/nodeg2
+cp -v generated/backend-nodeg.tf ../extra/nodeg2
 cp -v vars-dynamodb.tf ../extra/nodeg2
 cp -v vars-main.tf ../extra/nodeg2
 
