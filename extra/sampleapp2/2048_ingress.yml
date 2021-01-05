@@ -7,11 +7,9 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internal
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/group.name: group1
-    alb.ingress.kubernetes.io/group.order: '101'
     alb.ingress.kubernetes.io/actions.forward-single-tg: >
       {"type":"forward","forwardConfig":{"targetGroups":[{"serviceName":"service1-2048","servicePort":"80","weight":100}],"targetGroupStickinessConfig":{"enabled":true,"durationSeconds":200}}
-    alb.ingress.kubernetes.io/actions.app1-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTP", "Port": "80", "Path": "/app1", "Query": "#{query}", "StatusCode": "HTTP_301"}}'
+    alb.ingress.kubernetes.io/actions.app2-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTP", "Port": "80", "Path": "/app2", "Query": "#{query}", "StatusCode": "HTTP_301"}}'
 spec:
   rules:
     - http:
