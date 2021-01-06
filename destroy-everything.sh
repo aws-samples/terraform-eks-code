@@ -1,10 +1,8 @@
 cur=`pwd`
-dirs="sample-app lb2 eks-cidr cicd nodeg cluster c9net iam net tf-setup"
+dirs="extra/eks-cidr2 extra/nodeg2 sample-app lb2 eks-cidr cicd nodeg cluster c9net iam net tf-setup"
 for i in $dirs; do
 cd $i
 echo "Destroying in $i"
-rm -rf .terraform
-terraform init
 terraform destroy -auto-approve
 rm -rf .terraform
 cd $cur
