@@ -7,6 +7,9 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internal
     alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":8080,"HTTPS":443}]'
+    alb.ingress.kubernetes.io/healthcheck-port: '80'
+
 spec:
   rules:
     - http:
