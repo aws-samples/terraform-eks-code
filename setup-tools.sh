@@ -89,13 +89,13 @@ cd ~/environment
 #git clone https://github.com/brentley/ecsdemo-frontend.git
 #git clone https://github.com/brentley/ecsdemo-nodejs.git
 #git clone https://github.com/brentley/ecsdemo-crystal.git
-git clone https://github.com/aws-samples/aws2tf.git
+#git clone https://github.com/aws-samples/aws2tf.git
 
 source ~/.bash_profile
 
-aws --version
-eksctl version
-kubectl version --client
-helm version
+#aws --version
+#eksctl version
+#kubectl version --client
+#helm version
 
 cd $this
