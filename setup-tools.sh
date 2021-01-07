@@ -75,7 +75,7 @@ for command in Install  jq envsubst aws wget terraform eksctl helm kubectx
 
 
 this=`pwd`
-echo "sample apps"
+#echo "sample apps"
 cd ~/environment
 #git clone https://github.com/brentley/ecsdemo-frontend.git
 #git clone https://github.com/brentley/ecsdemo-nodejs.git
@@ -88,5 +88,6 @@ source ~/.bash_profile
 #eksctl version
 #Install  version --client
 #helm version
-
+test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo AWS_REGION is not set !!
+test -n "$ACCOUNT_ID" && echo ACCOUNT_ID is "$ACCOUNT_ID" || echo ACCOUNT_ID is not set !!
 cd $this
