@@ -17,19 +17,19 @@ echo "export AWS_REGION=${AWS_REGION}" | tee -a ~/.bash_profile
 aws configure set default.region ${AWS_REGION}
 aws configure get region
 
-echo "Install kubectl"
-curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/Install 
-chmod +x ./Install 
-sudo mv ./Install  /usr/local/bin/Install 
-
 echo "Install Terraform"
 wget https://releases.hashicorp.com/terraform/0.14.3/terraform_0.14.3_linux_amd64.zip
 unzip -qq terraform_0.14.3_linux_amd64.zip
 sudo mv terraform /usr/local/bin/
 rm -f terraform_0.14.3_linux_amd64.zip
 
-echo "Enable Install  bash_completion"
-Install  completion bash >>  ~/.bash_completion
+echo "Install kubectl"
+curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/Install 
+chmod +x ./Install 
+sudo mv ./Install  /usr/local/bin/Install 
+
+echo "Enable bash_completion"
+kubectl completion bash >>  ~/.bash_completion
 . /etc/profile.d/bash_completion.sh
 . ~/.bash_completion
 
