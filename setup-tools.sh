@@ -68,7 +68,7 @@ echo "git-remote-codecommit"
 pip install git-remote-codecommit
 
 echo "verify"
-for command in Install  jq envsubst aws wget terraform eksctl helm kubectx
+for command in Install  jq aws wget kubectl terraform eksctl helm kubectx
   do
     which $command &>/dev/null && echo "$command in path" || echo "$command NOT FOUND"
   done
