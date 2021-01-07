@@ -67,8 +67,8 @@ sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
 echo "git-remote-codecommit"
 pip install git-remote-codecommit
 
-echo "verify"
-for command in Install  jq aws wget kubectl terraform eksctl helm kubectx
+echo "Verify"
+for command in jq aws wget kubectl terraform eksctl helm kubectx
   do
     which $command &>/dev/null && echo "$command in path" || echo "$command NOT FOUND"
   done
