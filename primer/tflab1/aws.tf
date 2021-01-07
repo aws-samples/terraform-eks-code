@@ -6,15 +6,6 @@ terraform {
     #  Allow any 3.22+  version of the AWS provider
     version = "~> 3.22"
     }
-    null = {
-    source = "hashicorp/null"
-    version = "~> 3.0"
-    }
-    external = {
-    source = "hashicorp/external"
-    version = "~> 2.0"
-    }
-    
   }
 }
 
@@ -23,6 +14,5 @@ provider "aws" {
   shared_credentials_file = "~/.aws/credentials"
   profile                 = "default"
 }
-provider "null" {}
-provider "external" {}
+
 
