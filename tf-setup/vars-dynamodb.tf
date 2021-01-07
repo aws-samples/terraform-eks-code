@@ -16,6 +16,12 @@ variable "table_name_c9net" {
   default     = "at-terraform-eks-workshop1-c9net"
 }
 
+variable "table_name_cicd" {
+  description = "The name of the DynamoDB table. Must be unique in this AWS account."
+  type        = string
+  default     = "at-terraform-eks-workshop1-cicd"
+}
+
 variable "table_name_cluster" {
   description = "The name of the DynamoDB table. Must be unique in this AWS account."
   type        = string
@@ -26,12 +32,6 @@ variable "table_name_nodeg" {
   description = "The name of the DynamoDB table. Must be unique in this AWS account."
   type        = string
   default     = "at-terraform-eks-workshop1-nodeg"
-}
-
-variable "table_name_cicd" {
-  description = "The name of the DynamoDB table. Must be unique in this AWS account."
-  type        = string
-  default     = "at-terraform-eks-workshop1-cicd"
 }
 
 variable "table_name_eks-cidr" {

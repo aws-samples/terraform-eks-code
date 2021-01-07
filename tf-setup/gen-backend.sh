@@ -1,4 +1,4 @@
-
+#!/bin/bash
 d=`pwd`
 sleep 5
 reg=`terraform output -json region | jq -r .[]`
@@ -13,7 +13,7 @@ fi
 mkdir -p generated
 
 #default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr"]
-SECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg' 'cicd' 'eks-cidr')
+SECTIONS=('net' 'iam' 'c9net' 'cicd' 'cluster' 'nodeg' 'eks-cidr')
  
 for section in "${SECTIONS[@]}"
 do
@@ -26,6 +26,8 @@ do
 
     of=`echo "generated/backend-${section}.tf"`
     vf=`echo "generated/vars-${section}.tf"`
+
+    # write out the backend config 
     printf "" > $of
     printf "terraform {\n" >> $of
     printf "required_version = \"~> 0.14.3\"\n" >> $of
@@ -51,15 +53,15 @@ do
     printf "profile = var.profile\n" >> $of
     printf "}\n" >> $of
 
-
+    # copy the files into place
     cp -v $of ../$section
-    cp -v vars-dynamodb.tf ../$section
-    cp -v vars-main.tf ../$section
+    cp  vars-dynamodb.tf ../$section
+    cp  vars-main.tf ../$section
    
 
 done
 
-
+# next generate the remote_state config files 
 
 
 cd $d
@@ -75,6 +77,7 @@ do
     of=`echo "generated/remote-${section}.tf"`
     printf "" > $of
 
+    # write out the remote_state terraform files
     printf "data terraform_remote_state \"%s\" {\n" $section>> $of
     printf "backend = \"s3\"\n" >> $of
     printf "config = {\n" >> $of
@@ -85,32 +88,34 @@ do
     printf "}\n" >> $of
 done
 
-cp -v generated/remote-net.tf ../c9net 
-cp -v generated/remote-net.tf ../cluster
-cp -v generated/remote-net.tf ../nodeg
-cp -v generated/remote-net.tf ../extra/nodeg2
-cp -v generated/remote-net.tf ../eks-cidr
-cp -v generated/remote-net.tf ../extra/eks-cidr2
+# put in place remote state access where required
+cp  generated/remote-net.tf ../c9net 
+cp  generated/remote-net.tf ../cluster
+cp  generated/remote-net.tf ../nodeg
+cp  generated/remote-net.tf ../extra/nodeg2
+cp  generated/remote-net.tf ../eks-cidr
+cp  generated/remote-net.tf ../extra/eks-cidr2
 
-cp -v generated/remote-iam.tf ../cluster 
-cp -v generated/remote-iam.tf ../nodeg
-cp -v generated/remote-iam.tf ../extra/nodeg2
+cp  generated/remote-iam.tf ../cluster 
+cp  generated/remote-iam.tf ../nodeg
+cp  generated/remote-iam.tf ../extra/nodeg2
 
-cp -v generated/remote-cluster.tf ../nodeg
-cp -v generated/remote-cluster.tf ../eks-cidr
-cp -v generated/remote-cluster.tf ../extra/eks-cidr2
-cp -v generated/remote-cluster.tf ../lb2
-cp -v generated/remote-cluster.tf ../extra/nodeg2
+cp  generated/remote-cluster.tf ../nodeg
+cp  generated/remote-cluster.tf ../eks-cidr
+cp  generated/remote-cluster.tf ../extra/eks-cidr2
+cp  generated/remote-cluster.tf ../lb2
+cp  generated/remote-cluster.tf ../extra/nodeg2
 
-cp -v aws.tf ../sampleapp
-cp -v vars-main.tf ../sampleapp
-cp -v aws.tf ../lb2
-cp -v vars-main.tf ../lb2
-cp -v aws.tf ../extra/sampleapp2
-cp -v vars-main.tf ../extra/sampleapp2
-cp -v aws.tf ../extra/nodeg2
-cp -v vars-main.tf ../extra/nodeg2
-cp -v aws.tf ../extra/eks-cidr2
-cp -v vars-main.tf ../extra/eks-cidr2
+# Prepare "local state" for the sample app and extra activities
+cp  aws.tf ../sampleapp
+cp  vars-main.tf ../sampleapp
+cp  aws.tf ../lb2
+cp  vars-main.tf ../lb2
+cp  aws.tf ../extra/sampleapp2
+cp  vars-main.tf ../extra/sampleapp2
+cp  aws.tf ../extra/nodeg2
+cp  vars-main.tf ../extra/nodeg2
+cp  aws.tf ../extra/eks-cidr2
+cp  vars-main.tf ../extra/eks-cidr2
 
 
