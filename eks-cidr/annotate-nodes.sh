@@ -8,8 +8,9 @@ sub3=$(echo $6)
 CLUSTER=$(echo $7)
 kubectl get crd
 # get the SG's
+# get a list of the insytances in the node group
 INSTANCE_IDS=(`aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --filters "Name=tag-key,Values=eks:nodegroup-name" "Name=tag-value,Values=ng1-mycluster1" "Name=instance-state-name,Values=running" --output text`)
-
+# extract the security groups
 for i in "${INSTANCE_IDS[0]}"
 do
 echo "Descr EC2 instance $i ..."
@@ -20,6 +21,7 @@ echo "subnet $sub1 zone $zone1"
 echo "subnet $sub2 zone $zone2"
 echo "subnet $sub3 zone $zone3"
 
+# Create the CRD config files - mapping the right security groups, subnets for the zone
 echo ${zone1}
 cat << EOF > ${zone1}-pod-netconfig.yaml
 apiVersion: crd.k8s.amazonaws.com/v1alpha1
@@ -64,14 +66,17 @@ EOF
 echo "cat ${zone3}-pod-netconfig.yaml"
 cat ${zone3}-pod-netconfig.yaml
 
+# Apply the CRD config
 echo "apply the CRD ${zone1}"
 kubectl apply -f ${zone1}-pod-netconfig.yaml
 echo "apply the CRD ${zone2}"
 kubectl apply -f ${zone2}-pod-netconfig.yaml
 echo "apply the CRD ${zone3}"
 kubectl apply -f ${zone3}-pod-netconfig.yaml
+# get all the nodes
 allnodes=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng1-mycluster1' -o json`
 len=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng1-mycluster1' -o json | jq '.items | length-1'`
+# iterate through the nodes and apply the annotation - so the eniConfig can match
 for i in `seq 0 $len`; do
 nn=`echo $allnodes | jq ".items[(${i})].metadata.name" | tr -d '"'`
 nz=`echo $allnodes | jq ".items[(${i})].metadata.labels" | grep failure | grep zone | cut -f2 -d':' | tr -d ' ' | tr -d ','| tr -d '"'`
