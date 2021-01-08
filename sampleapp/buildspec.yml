@@ -121,7 +121,7 @@ phases:
       - #"terraform apply -auto-approve tfplan"  
       - rm -f ~/.kube/config
       - aws eks update-kubeconfig --name mycluster1
-      - kubectl version
+      - sleep 1
       - kubectl get nodes
       - ls -l
       - kubectl apply -f 2048_namespace.yml
