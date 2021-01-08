@@ -19,7 +19,7 @@ resource "aws_codepipeline" "pipe-eksworkshop-app" {
       configuration = {
         "BranchName"           = "master"
         "OutputArtifactFormat" = "CODE_ZIP"
-        "PollForSourceChanges" = "false"
+        "PollForSourceChanges" = "true"
         "RepositoryName"       = "eksworkshop-app"
       }
       input_artifacts = []
