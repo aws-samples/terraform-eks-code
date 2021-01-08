@@ -7,7 +7,7 @@ resource "aws_codepipeline" "pipe-eksworkshop-app" {
   tags       = {}
 
   artifact_store {
-    location = aws_s3_bucket.codepipeline-bucket.bucket
+    location = "codepipeline-eu-west-1-421985771879"
     type     = "S3"
   }
 
