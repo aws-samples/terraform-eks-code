@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: game-2048
+  namespace: game2-2048
   name: deployment-2048-ng2
 spec:
   selector:
