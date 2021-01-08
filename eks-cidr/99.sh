@@ -1,1 +1,0 @@
-kubectl delete deployments nginx
