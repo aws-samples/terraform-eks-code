@@ -5,7 +5,7 @@ resource "kubernetes_ingress" "game-2048__ingress-2048" {
     annotations = {"kubernetes.io/ingress.class" = "alb"}
     annotations = {"alb.ingress.kubernetes.io/scheme" = "internal"}
     annotations = {"alb.ingress.kubernetes.io/target-type" = "ip"}
-    annotations = {"alb.ingress.kubernetes.io/listen-ports" = "'[{\"HTTP\": 8080}]'"}
+    annotations = {"alb.ingress.kubernetes.io/listen-ports" = "[{\"HTTP\": 8080}]"}
     labels      = {}
     name        = "ingress-2048"
     namespace   = "game-2048"
