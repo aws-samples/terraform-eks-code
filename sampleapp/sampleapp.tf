@@ -81,7 +81,6 @@ spec {
     type = "NodePort"
 
     port {
-        node_port = 32357
         port = 80
         protocol = "TCP"
         target_port = "80"
