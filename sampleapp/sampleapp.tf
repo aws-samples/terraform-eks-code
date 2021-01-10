@@ -35,7 +35,6 @@ resource "kubernetes_deployment" "game-2048__deployment-2048" {
         template {
             metadata {
                 annotations = {}
-                generation  = 0
                 labels      = {}
             }
 
