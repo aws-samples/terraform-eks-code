@@ -30,4 +30,7 @@ resource "aws_s3_bucket" "terraform_state" {
       }
     }
   }
+  lifecycle {
+    ignore_changes = [bucket]
+  }
 }
