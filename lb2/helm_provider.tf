@@ -9,7 +9,7 @@ resource "helm_release" "aws-load-balancer-controller" {
   depends_on=[null_resource.post-policy]
 
   repository = "https://aws.github.io/eks-charts"
-  chart      = "eks/aws-load-balancer-controller"
+  chart      = "aws-load-balancer-controller"
   namespace = "kube-system"
 
   set {

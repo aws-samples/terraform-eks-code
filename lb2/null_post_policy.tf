@@ -13,6 +13,9 @@ provisioner "local-exec" {
         cn=$(echo ${data.aws_eks_cluster.eks_cluster.name})
         echo "$reg $cn $acc"
         ./post-policy.sh $reg $cn $acc
+        echo "reannotate nodes"
+        cd ../eks-cidr
+        ./reannotate-nodes.sh
         echo "done"
      EOT
 }
