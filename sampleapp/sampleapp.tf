@@ -56,7 +56,7 @@ resource "kubernetes_deployment" "game-2048__deployment-2048" {
                         host_port      = 0
                         protocol       = "TCP"
                     }
-                    #node_selector {
+                    node_selector {}
                     #  alpha.eksctl.io/nodegroup-name =  "ng1-mycluster1"
                     #}
                     resources {
