@@ -1,6 +1,4 @@
 resource "kubernetes_ingress" "game-2048__ingress-2048" {
-  load_balancer_ingress = []
-
   metadata {
     annotations = {"kubernetes.io/ingress.class" = "alb", "alb.ingress.kubernetes.io/scheme" = "internal"}
   #  annotations = {"alb.ingress.kubernetes.io/scheme" = "internal"}
