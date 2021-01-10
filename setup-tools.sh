@@ -1,5 +1,5 @@
 echo "Install OS tools"
-sudo yum -y -q -e 0 install jq moreutils bash-completion nmap
+sudo yum -y -q -e 0 jq moreutils bash-completion nmap
 echo "update aws cli"
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip -qq awscliv2.zip
@@ -24,9 +24,9 @@ sudo mv terraform /usr/local/bin/
 rm -f terraform_0.14.3_linux_amd64.zip
 
 echo "Install kubectl"
-curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/Install 
-chmod +x ./Install 
-sudo mv ./Install  /usr/local/bin/Install 
+curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl  /usr/local/bin/kubectl
 
 echo "Enable bash_completion"
 kubectl completion bash >>  ~/.bash_completion
