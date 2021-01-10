@@ -118,12 +118,11 @@ phases:
       - kubectl get nodes
       - ls -l
       - #
-      - terraform init"
+      - terraform init
       - #aws eks list-clusters
-      - terraform validate"
-      - terraform plan -out tfplan"
+      - terraform validate
+      - terraform plan -out tfplan
       - #"cd .."
-      - "aws sts get-caller-identity"
       - terraform apply  tfplan"  
 
       - #kubectl apply -f 2048_namespace.yml
