@@ -35,9 +35,9 @@ resource "kubernetes_deployment" "deployment-2048" {
           image_pull_policy = "Always"
           port = ["80"]
         }
-        node_selector {
-          alpha.eksctl.io/nodegroup-name =  "ng1-mycluster1"
-        }
+        #node_selector {
+        #  alpha.eksctl.io/nodegroup-name =  "ng1-mycluster1"
+        #}
 
       }
     }
