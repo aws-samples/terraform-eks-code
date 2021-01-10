@@ -35,7 +35,7 @@ resource "kubernetes_deployment" "game-2048__deployment-2048" {
         template {
             metadata {
                 annotations = {}
-                labels      = {}
+                labels      = {"app.kubernetes.io/name" = "app-2048"}
             }
 
             spec {
