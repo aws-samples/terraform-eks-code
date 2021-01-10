@@ -17,14 +17,14 @@ resource "kubernetes_deployment" "deployment-2048" {
 
     selector {
       match_labels = {
-        "app.kubernetes.io/name" = "app-2048"
+        app.kubernetes.io/name = "app-2048"
       }
     }
 
     template {
       metadata {
         labels = {
-          "app.kubernetes.io/name" = "app-2048"
+          app.kubernetes.io/name = "app-2048"
         }
       }
 
@@ -36,7 +36,7 @@ resource "kubernetes_deployment" "deployment-2048" {
           port = ["80"]
         }
         node_selector {
-          "alpha.eksctl.io/nodegroup-name" =  "ng1-mycluster1"
+          alpha.eksctl.io/nodegroup-name =  "ng1-mycluster1"
         }
 
       }
