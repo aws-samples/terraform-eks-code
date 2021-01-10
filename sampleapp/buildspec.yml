@@ -111,22 +111,24 @@ phases:
       - endp=$(echo $resp | jq -r .cluster.endpoint | cut -f3 -d'/')
       - nslookup $endp
       - nmap $endp -Pn -p 443
-      - #
-      - #"terraform init"
-      - #aws eks list-clusters
-      - #"terraform validate"
-      - #"terraform plan -out tfplan"
-      - #"cd .."
-      - "aws sts get-caller-identity"
-      - #"terraform apply -auto-approve tfplan"  
+      - "echo kube config"
       - rm -f ~/.kube/config
       - aws eks update-kubeconfig --name mycluster1
       - sleep 1
       - kubectl get nodes
       - ls -l
-      - kubectl apply -f 2048_namespace.yml
-      - cat 2048_deployment.yml | ./subvar.sh | kubectl apply -f -
-      - kubectl apply -f 2048_service.yml
+      - #
+      - terraform init"
+      - #aws eks list-clusters
+      - terraform validate"
+      - terraform plan -out tfplan"
+      - #"cd .."
+      - "aws sts get-caller-identity"
+      - terraform apply  tfplan"  
+
+      - #kubectl apply -f 2048_namespace.yml
+      - #cat 2048_deployment.yml | ./subvar.sh | kubectl apply -f -
+      - #kubectl apply -f 2048_service.yml
       - #kubectl apply -f 2048_ingress.yml
       - #kubectl get pods,svc,ingress -n game-2048
       - #echo "kubectl get ingress/ingress-2048 -n game-2048"
