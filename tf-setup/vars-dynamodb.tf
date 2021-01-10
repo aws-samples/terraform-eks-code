@@ -40,4 +40,10 @@ variable "table_name_eks-cidr" {
   default     = "at-terraform-eks-workshop1-eks-cidr"
 }
 
+variable "table_name_sampleapp" {
+  description = "The name of the DynamoDB table. Must be unique in this AWS account."
+  type        = string
+  default     = "at-terraform-eks-workshop1-sampleapp"
+}
+
 
