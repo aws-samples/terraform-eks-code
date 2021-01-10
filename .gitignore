@@ -38,4 +38,5 @@ backend-*.tf
 **/remote-*.tf
 remote-*.tf
 **/tf-setup/generated/*
+**/net-v2/*
 
