@@ -29,9 +29,3 @@ resource "kubernetes_ingress" "game-2048__ingress-2048" {
     }
   }
 }
-
-
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internal
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 8080}]'
