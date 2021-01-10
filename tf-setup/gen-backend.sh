@@ -107,7 +107,7 @@ cp  generated/remote-cluster.tf ../lb2
 cp  generated/remote-cluster.tf ../extra/nodeg2
 
 # Prepare "local state" for the sample app and extra activities
-cp  aws.tf ../sampleapp
+#cp  aws.tf ../sampleapp
 cp  vars-main.tf ../sampleapp
 cp  aws.tf ../lb2
 cp  vars-main.tf ../lb2
