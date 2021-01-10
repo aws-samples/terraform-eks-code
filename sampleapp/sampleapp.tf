@@ -1,7 +1,7 @@
 resource "kubernetes_namespace" "game-2048" {
     name = "game-2048"
-  }
 }
+
 
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
