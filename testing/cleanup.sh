@@ -1,15 +1,16 @@
-cd nodeg
+cur=`pwd`
+cd ../nodeg
 terraform destroy -auto-approve
-cd ..
-cd cluster
+cd $cur
+cd ../cluster
 terraform destroy -auto-approve
-cd ..
-cd c9net
+cd $cur
+cd ../c9net
 terraform destroy -auto-approve
-cd ..
-cd iam
+cd $cur
+cd ../iam
 terraform destroy -auto-approve
-cd ..
-cd net
+cd $cur
+cd ../net
 terraform destroy -auto-approve
-cd ..
+cd $cur
