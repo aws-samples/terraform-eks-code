@@ -74,6 +74,7 @@ kubectl apply -f ${zone2}-pod-netconfig.yaml
 echo "apply the CRD ${zone3}"
 kubectl apply -f ${zone3}-pod-netconfig.yaml
 # get all the nodes
+sleep 5
 allnodes=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng1-mycluster1' -o json`
 len=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng1-mycluster1' -o json | jq '.items | length-1'`
 # iterate through the nodes and apply the annotation - so the eniConfig can match
@@ -84,4 +85,5 @@ echo $nn $nz $nr
 echo "kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig"
 kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig
 done
+
 
