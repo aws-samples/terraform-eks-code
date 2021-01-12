@@ -5,6 +5,6 @@ nn=`echo $allnodes | jq ".items[(${i})].metadata.name" | tr -d '"'`
 nz=`echo $allnodes | jq ".items[(${i})].metadata.labels" | grep failure | grep zone | cut -f2 -d':' | tr -d ' ' | tr -d ','| tr -d '"'`
 echo $nn $nz $nr
 echo "kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig"
-kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig
+kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig --overwrite
 done
 
