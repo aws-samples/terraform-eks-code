@@ -10,9 +10,11 @@ provisioner "local-exec" {
     command     = <<EOT
         #echo "Remove helm deployment"
         #helm delete aws-load-balancer-controller -n kube-system
+        if [ -f "crds.yml" ]; then
         echo "Remove CRD"
         kubectl delete -f crds.yaml 
         echo "done"
+        fi
      EOT
 }
 }
