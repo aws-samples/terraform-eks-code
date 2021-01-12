@@ -6,6 +6,7 @@ cd ../$i
 echo " "
 echo "**** Building in $i ****"
 rm -rf .terraform
+rm -f terraform.tfstate* tfplan
 terraform init -no-color
 terraform plan -out tfplan -no-color
 terraform apply tfplan -no-color
