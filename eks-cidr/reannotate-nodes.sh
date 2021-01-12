@@ -7,4 +7,3 @@ echo $nn $nz $nr
 echo "kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig --overwrite"
 kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig --overwrite
 done
-
