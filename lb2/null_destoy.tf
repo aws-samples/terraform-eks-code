@@ -8,8 +8,8 @@ provisioner "local-exec" {
     when    = destroy
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
-        echo "Remove helm deployment"
-        helm delete aws-load-balancer-controller -n kube-system
+        #echo "Remove helm deployment"
+        #helm delete aws-load-balancer-controller -n kube-system
         echo "Remove CRD"
         kubectl delete -f crds.yaml 
         echo "done"
