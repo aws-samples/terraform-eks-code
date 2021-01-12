@@ -4,7 +4,7 @@ triggers = {
        always_run = timestamp()
 }
 provisioner "local-exec" {
-    on_failure  = fail
+    on_failure  = continue
     when    = destroy
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
