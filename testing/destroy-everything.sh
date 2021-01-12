@@ -1,5 +1,5 @@
 cur=`pwd`
-dirs="extra/nodeg2 sampleapp cicd nodeg cluster c9net iam net tf-setup"
+dirs="sampleapp cicd nodeg cluster c9net iam net tf-setup"
 for i in $dirs; do
 cd ../$i
 echo "Destroying in $i"
