@@ -3,6 +3,12 @@ userid=$(aws iam list-service-specific-credentials --user-name git-user | jq -r 
 if [ "$userid" != "null" ]; then
 aws iam delete-service-specific-credential --service-specific-credential-id $userid --user-name git-user
 fi
+# Empty codepipeline bucket ready for delete
+buck=$(aws s3 ls | grep codep-tfeks | awk '{print $3}')
+if [ "$buck" != "" ]; then
+aws s3 rm s3://$buck --recursive
+fi
+#
 # lb, lb sg, launch template
 echo "pass 1 ...."
 cur=`pwd`
