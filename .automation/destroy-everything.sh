@@ -35,5 +35,8 @@ cd $cur
 date
 done
 echo "Pass 2 cli based actions ..."
+accid=$(aws --output json sts get-caller-identity | jq -r '.Account' )
+lbarn=$(printf "arn:aws:iam::%s:policy/AWSLoadBalancerControllerIAMPolicy" $accid)
+aws iam delete-policy --policy-arn $lbarn || echo "no LB policy to delete"
 echo "Done"
 exit
