@@ -23,6 +23,7 @@ unzip -qq terraform_0.14.3_linux_amd64.zip
 sudo mv terraform /usr/local/bin/
 rm -f terraform_0.14.3_linux_amd64.zip
 mkdir -p $HOME/.terraform.d/plugin-cache
+cp tf-setup/dot-terraform.rc $HOME/.terraformrc
 
 echo "Install kubectl"
 curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
