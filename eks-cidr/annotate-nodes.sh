@@ -76,8 +76,13 @@ kubectl apply -f ${zone3}-pod-netconfig.yaml
 # get all the nodes
 echo "pause 10s before annotate"
 sleep 10
+target=$(kubectl get nodes | grep Read | wc -l)
 allnodes=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng1-mycluster1' -o json`
-len=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng1-mycluster1' -o json | jq '.items | length-1'`
+curr=`echo $allnodes | jq '.items | length'`
+len=`echo $allnodes | jq '.items | length-1'`
+if [ $curr -ne $target ]; then
+    echo "Warning found $curr nodes to annotate of $target"
+fi
 # iterate through the nodes and apply the annotation - so the eniConfig can match
 for i in `seq 0 $len`; do
 nn=`echo $allnodes | jq ".items[(${i})].metadata.name" | tr -d '"'`
@@ -85,4 +90,8 @@ nz=`echo $allnodes | jq ".items[(${i})].metadata.labels" | grep failure | grep z
 echo $nn $nz $nr
 echo "kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig"
 kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig
+done
+if [ $curr -ne $target ]; then
+sleep 10
+./reannotate-nodes.sh
 done
