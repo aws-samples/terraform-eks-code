@@ -1,4 +1,5 @@
 #!/bin/bash
+cp dot-terraform.rc $HOME/.terraformrc
 d=`pwd`
 sleep 5
 reg=`terraform output -json region | jq -r .[]`
