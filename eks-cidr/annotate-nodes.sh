@@ -94,4 +94,4 @@ done
 if [ $curr -ne $target ]; then
 sleep 10
 ./reannotate-nodes.sh
-done
+fi
