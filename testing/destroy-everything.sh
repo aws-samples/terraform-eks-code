@@ -7,7 +7,7 @@ fi
 echo "pass 1 ...."
 cur=`pwd`
 date
-dirs="sampleapp cicd nodeg cluster c9net iam net tf-setup"
+dirs="extra/sampleapp2 extra/nodeg2 sampleapp cicd nodeg cluster c9net iam net"
 for i in $dirs; do
 cd ../$i
 echo "**** Destroying in $i ****"
@@ -17,6 +17,7 @@ date
 done
 echo "Pass 1 cli based actions ..."
 echo "pass 2 ...."
+dirs="sampleapp cicd nodeg cluster c9net iam net tf-setup"
 for i in $dirs; do
 cd ../$i
 echo "**** Destroying in $i ****"
