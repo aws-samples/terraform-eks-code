@@ -80,9 +80,7 @@ target=$(kubectl get nodes | grep Read | wc -l)
 allnodes=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng1-mycluster1' -o json`
 curr=`echo $allnodes | jq '.items | length'`
 len=`echo $allnodes | jq '.items | length-1'`
-if [ $curr -ne $target ]; then
-    echo "Warning found $curr nodes to annotate of $target"
-fi
+echo "Found $curr nodes to annotate of $target"
 # iterate through the nodes and apply the annotation - so the eniConfig can match
 for i in `seq 0 $len`; do
 nn=`echo $allnodes | jq ".items[(${i})].metadata.name" | tr -d '"'`
@@ -92,5 +90,6 @@ echo "kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfi
 kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig
 done
 if [ $curr -ne $target ]; then
+echo "Background reannotate"
 sleep 60 && ./reannotate-nodes.sh > /dev/null &
 fi
