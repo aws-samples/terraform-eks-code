@@ -92,6 +92,5 @@ echo "kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfi
 kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig
 done
 if [ $curr -ne $target ]; then
-sleep 10
-./reannotate-nodes.sh
+sleep 60 && ./reannotate-nodes.sh > /dev/null &
 fi
