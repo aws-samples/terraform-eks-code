@@ -6,6 +6,7 @@ aws iam delete-service-specific-credential --service-specific-credential-id $use
 fi
 # Empty codepipeline bucket ready for delete
 buck=$(aws s3 ls | grep codep-tfeks | awk '{print $3}')
+echo "buck=$buck"
 if [ "$buck" != "" ]; then
 echo "Emptying bucket $buck"
 aws s3 rm s3://$buck --recursive
@@ -30,7 +31,7 @@ for i in $dirs; do
 cd ../$i
 echo "**** Destroying in $i ****"
 terraform destroy -auto-approve
-rm -f terraform.tfstate* tfplan
+rm -f tfplan
 cd $cur
 date
 done
@@ -38,5 +39,7 @@ echo "Pass 2 cli based actions ..."
 accid=$(aws --output json sts get-caller-identity | jq -r '.Account' )
 lbarn=$(printf "arn:aws:iam::%s:policy/AWSLoadBalancerControllerIAMPolicy" $accid)
 aws iam delete-policy --policy-arn $lbarn || echo "no LB policy to delete"
+aws dynamodb delete-table --table-name terraform_locks_net || echo "terraform_locks_net deleted"
+
 echo "Done"
 exit
