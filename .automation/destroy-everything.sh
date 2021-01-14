@@ -9,7 +9,8 @@ buck=$(aws s3 ls | grep codep-tfeks | awk '{print $3}')
 echo "buck=$buck"
 if [ "$buck" != "" ]; then
 echo "Emptying bucket $buck"
-aws s3 rm s3://$buck --recursive
+comm=$(printf "aws s3 rm s3://%s --recursive" $buck)
+eval $comm
 fi
 #
 # lb, lb sg, launch template
@@ -50,4 +51,5 @@ aws dynamodb delete-table --table-name terraform_locks_eks-cidr || echo "terrafo
 aws dynamodb delete-table --table-name terraform_locks_sampleapp || echo "terraform_locks_sampleapp"
 aws dynamodb delete-table --table-name terraform_locks_cicd || echo "terraform_locks_cicd"
 echo "Done"
+
 exit
