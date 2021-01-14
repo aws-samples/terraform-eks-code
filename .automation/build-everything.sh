@@ -1,7 +1,7 @@
 date
 cur=`pwd`
 #dirs="tf-setup net iam c9net cluster nodeg cicd eks-cidr lb2 sampleapp"
-dirs="net iam c9net cluster nodeg cicd eks-cidr lb2 sampleapp extra/nodeg2 extra/eks-cidr2 extra/sampleapp2"
+dirs="tf-setup net iam c9net cluster nodeg cicd eks-cidr lb2 sampleapp extra/nodeg2 extra/eks-cidr2 extra/sampleapp2"
 for i in $dirs; do
 cd ../$i
 echo " "
@@ -19,10 +19,9 @@ if [ "$i" == "cicd" ] && [ "$rc" == 25 ]; then echo "$rc in tf state expected 25
 if [ "$i" == "eks-cidr" ] && [ "$rc" == 7 ]; then echo "$rc in tf state expected 7" && continue; fi
 if [ "$i" == "lb2" ] && [ "$rc" == 7 ]; then echo "$rc in tf state expected 7" && continue; fi
 if [ "$i" == "sampleapp" ] && [ "$rc" == 7 ]; then echo "$rc in tf state expected 7" && continue; fi
-if [ "$i" == "extra/nodeg2" ] && [ "$rc" == 7 ]; then echo "$rc in tf state expected 7" && continue; fi
+if [ "$i" == "extra/nodeg2" ] && [ $rc -ge 7 ]; then echo "$rc in tf state expected 7" && continue; fi
 if [ "$i" == "extra/eks-cidr2" ] && [ "$rc" == 7 ]; then echo "$rc in tf state expected 7" && continue; fi
 if [ "$i" == "extra/sampleapp2" ] && [ "$rc" == 8 ]; then echo "$rc in tf state expected 8" && continue; fi
-rm -f terraform.tfstate* tfplan
 terraform plan -out tfplan -no-color
 terraform apply tfplan -no-color
 rc=$(terraform state list | wc -l)
