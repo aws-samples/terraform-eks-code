@@ -37,7 +37,7 @@ if [ "$i" == "eks-cidr" ] && [ "$rc" != 7 ]; then echo "only $rc in tf state exp
 if [ "$i" == "lb2" ] && [ "$rc" != 7 ]; then echo "only $rc in tf state expected 7" && break; fi
 if [ "$i" == "sampleapp" ] && [ "$rc" != 7 ]; then echo "only $rc in tf state expected 7" && break; fi
 if [ "$i" == "extra/nodeg2" ] && [ "$rc" != 7 ]; then echo "only $rc in tf state expected 7" && break; fi
-if [ "$i" == "extra/eks-cidr2" ] && [ "$rc" != 7 ]; then echo "only $rc in tf state expected 7" && break; fi
+if [ "$i" == "extra/eks-cidr2" ] && [ $rc -ge 7 ]; then echo "only $rc in tf state expected 7+" && break; fi
 if [ "$i" == "extra/sampleapp2" ] && [ "$rc" != 8 ]; then echo "only $rc in tf state expected 8" && break; fi
 echo "Passed $i tests"
 cd $cur
