@@ -22,7 +22,7 @@ cd ../$i
 echo "**** Destroying in $i ****"
 rm -rf .terrform*
 terraform init
-terraform destroy -auto-approve > /dev/null
+terraform destroy -auto-approve
 cd $cur
 date
 done
@@ -32,7 +32,7 @@ dirs="sampleapp cicd nodeg cluster c9net iam net tf-setup"
 for i in $dirs; do
 cd ../$i
 echo "**** Destroying in $i ****"
-terraform destroy -auto-approve
+terraform destroy -auto-approve > /dev/null
 rm -f tfplan
 cd $cur
 date
