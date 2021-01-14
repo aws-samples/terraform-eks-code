@@ -20,7 +20,7 @@ dirs="extra/sampleapp2 extra/nodeg2 sampleapp cicd nodeg cluster c9net iam net"
 for i in $dirs; do
 cd ../$i
 echo "**** Destroying in $i ****"
-terraform destroy -auto-approve
+terraform destroy -auto-approve > /dev/null
 cd $cur
 date
 done
