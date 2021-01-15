@@ -9,7 +9,11 @@ echo " "
 echo "**** Building in $i ****"
 rm -rf .terraform
 terraform init -no-color
+rc=0
+terraform state list 2> /dev/null | grep aws_ > /dev/null
+if [ $? -eq 0 ]; then
 rc=$(terraform state list | wc -l ) 
+fi
 if [ "$i" == "tf-setup" ] && [ $rc -ge 12 ]; then echo "$rc in tf state expected 12" && continue; fi
 if [ "$i" == "net" ] && [ $rc -ge 42 ]; then echo "$rc in tf state expected 42" && continue; fi
 if [ "$i" == "iam" ] && [ $rc -ge 20 ]; then echo "$rc in tf state expected 20" && continue; fi
@@ -37,7 +41,7 @@ if [ "$i" == "eks-cidr" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expe
 if [ "$i" == "lb2" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expected 7" && break; fi
 # double check the helm chart has gone in
 if [ "$i" == "lb2" ] ; then
-    hc=$(terraform state list | wc -l )
+    hc=$(helm ls -A | wc -l )
     if [ $hc -lt 2 ]; then
         echo "retry helm chart"
         terraform state rm helm_release.aws-load-balancer-controller
@@ -59,7 +63,7 @@ rc=$(kubectl get pods -A | grep Running | wc -l)
 if [ $rc -lt 23 ]; then 
 echo "ERROR: Found only $rc pods running - expected 23"
 else
-echo "Passed"
+echo "Passed running pod count"
 fi
 
 # terraform state rm helm_release.aws-load-balancer-controller
