@@ -1,5 +1,5 @@
 resource "null_resource" "destroy" {
-depends_on=[aws_iam_policy.load-balancer-policy]
+depends_on=[aws_iam_policy.appmesh-policy]
 triggers = {
        always_run = timestamp()
 }
@@ -9,7 +9,7 @@ provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
         #echo "Remove helm deployment"
-        #helm delete aws-load-balancer-controller -n kube-system
+        #helm delete aws-appmesh-controller -n kube-system
         if [ -f "crds.yml" ]; then
         echo "Remove CRD"
         kubectl delete -f crds.yaml 
