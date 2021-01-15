@@ -35,6 +35,16 @@ if [ "$i" == "nodeg" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expecte
 if [ "$i" == "cicd" ] && [ $rc -lt 25 ]; then echo "only $rc in tf state expected 25" && break; fi
 if [ "$i" == "eks-cidr" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expected 7" && break; fi
 if [ "$i" == "lb2" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expected 7" && break; fi
+# double check the helm chart has gone in
+if [ "$i" == "lb2" ] ; then
+    hc=$(terraform state list | wc -l )
+    if [ $hc -lt 2 ]; then
+        echo "retry helm chart"
+        terraform state rm helm_release.aws-load-balancer-controller
+        terraform plan -out tfplan
+        terraform apply tfplan
+    fi
+fi
 if [ "$i" == "sampleapp" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expected 7" && break; fi
 if [ "$i" == "extra/nodeg2" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expected 7" && break; fi
 if [ "$i" == "extra/eks-cidr2" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expected 7+" && break; fi
@@ -51,3 +61,7 @@ echo "ERROR: Found only $rc pods running - expected 23"
 else
 echo "Passed"
 fi
+
+# terraform state rm helm_release.aws-load-balancer-controller
+# helm ls -A | wc -l
+# 
