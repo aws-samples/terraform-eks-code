@@ -3,6 +3,7 @@ cur=`pwd`
 #dirs="tf-setup net iam c9net cluster nodeg cicd eks-cidr lb2 sampleapp"
 dirs="tf-setup net iam c9net cluster nodeg cicd eks-cidr lb2 sampleapp extra/nodeg2 extra/eks-cidr2 extra/sampleapp2"
 for i in $dirs; do
+cd $cur
 cd ../$i
 echo " "
 echo "**** Building in $i ****"
