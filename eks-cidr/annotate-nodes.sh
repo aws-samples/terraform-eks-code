@@ -66,6 +66,7 @@ EOF
 echo "created ${zone3}-pod-netconfig.yaml"
 #cat ${zone3}-pod-netconfig.yaml
 
+
 # Apply the CRD config
 echo "apply the CRD ${zone1}"
 kubectl apply -f ${zone1}-pod-netconfig.yaml

@@ -35,7 +35,7 @@ cat ${zone1}-pod-netconfig2.yaml
 #
 
 echo ${zone2}
-#cat << EOF > ${zone2}-pod-netconfig2.yaml
+cat << EOF > ${zone2}-pod-netconfig2.yaml
 apiVersion: crd.k8s.amazonaws.com/v1alpha1
 kind: ENIConfig
 metadata:
