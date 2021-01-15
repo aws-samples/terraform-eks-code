@@ -33,8 +33,8 @@ spec:
  securityGroups:
  - ${sg0}
 EOF
-echo "cat ${zone1}-pod-netconfig.yaml"
-cat ${zone1}-pod-netconfig.yaml
+echo "created ${zone1}-pod-netconfig.yaml"
+#cat ${zone1}-pod-netconfig.yaml
 #
 
 echo ${zone2}
@@ -49,8 +49,8 @@ spec:
  - ${sg0}
 EOF
 
-echo "cat ${zone2}-pod-netconfig.yaml"
-cat ${zone2}-pod-netconfig.yaml
+echo "created ${zone2}-pod-netconfig.yaml"
+#cat ${zone2}-pod-netconfig.yaml
 #
 echo ${zone3}
 cat << EOF > ${zone3}-pod-netconfig.yaml
@@ -63,8 +63,8 @@ spec:
  securityGroups:
  - ${sg0}
 EOF
-echo "cat ${zone3}-pod-netconfig.yaml"
-cat ${zone3}-pod-netconfig.yaml
+echo "created ${zone3}-pod-netconfig.yaml"
+#cat ${zone3}-pod-netconfig.yaml
 
 # Apply the CRD config
 echo "apply the CRD ${zone1}"
