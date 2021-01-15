@@ -8,11 +8,6 @@ provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
     when = create
     command     = <<EOT
-        #reg=$(echo ${data.aws_eks_cluster.eks_cluster.arn} | cut -f4 -d':')
-        #acc=$(echo ${data.aws_eks_cluster.eks_cluster.arn} | cut -f5 -d':')
-        #cn=$(echo ${data.aws_eks_cluster.eks_cluster.name})
-        #echo "$reg $cn $acc"
-        #./post-policy.sh $reg $cn $acc
         rm -f crds.yaml*
         curl -o crds.yaml https://raw.githubusercontent.com/aws/eks-charts/master/stable/appmesh-controller/crds/crds.yaml
         kubectl apply -f crds.yaml
