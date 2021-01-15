@@ -14,11 +14,13 @@ eval $comm
 fi
 #
 # lb, lb sg, launch template
+
 echo "pass 1 ...."
 cur=`pwd`
 date
-dirs="extra/sampleapp2 extra/nodeg2 sampleapp cicd nodeg cluster c9net iam net"
+dirs="extra/sampleapp2 extra/eks-cidr2 extra/nodeg2 sampleapp lb2 cicd eks-cidr nodeg cluster c9net iam net"
 for i in $dirs; do
+cd $cur
 cd ../$i
 echo "**** Destroying in $i ****"
 rm -rf .terrform*
@@ -29,16 +31,26 @@ date
 done
 echo "Pass 1 cli based actions ..."
 echo "pass 2 ...."
-dirs="sampleapp cicd nodeg cluster c9net iam net tf-setup"
+for i in $dirs; do
+cd $cur
+cd ../$i
+echo "**** Destroying in $i ****"
+terraform destroy -auto-approve > /dev/null
+rm -f tfplan terraform*
+rm -rf .terraform
+cd $cur
+date
+done
+dirs="tf-setup"
 for i in $dirs; do
 cd ../$i
 echo "**** Destroying in $i ****"
 terraform destroy -auto-approve > /dev/null
 rm -f tfplan terraform*
+rm -rf .terraform
 cd $cur
 date
 done
-
 echo "Done"
 
 exit
