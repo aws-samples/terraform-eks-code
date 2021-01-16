@@ -75,8 +75,8 @@ kubectl apply -f ${zone2}-pod-netconfig.yaml
 echo "apply the CRD ${zone3}"
 kubectl apply -f ${zone3}-pod-netconfig.yaml
 # get all the nodes
-echo "pause 10s before annotate"
-sleep 10
+echo "pause 20s before annotate"
+sleep 20
 target=$(kubectl get nodes | grep Read | wc -l)
 allnodes=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng1-mycluster1' -o json`
 curr=`echo $allnodes | jq '.items | length'`

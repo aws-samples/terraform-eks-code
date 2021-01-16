@@ -73,7 +73,7 @@ kubectl apply -f ${zone3}-pod-netconfig2.yaml
 echo "pause 10s before annotate"
 sleep 10
 target=$(kubectl get nodes | grep Read | wc -l)
-allnodes=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng1-mycluster1' -o json`
+allnodes=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng2-mycluster1' -o json`
 curr=`echo $allnodes | jq '.items | length'`
 len=`echo $allnodes | jq '.items | length-1'`
 echo "Found $curr nodes to annotate of $target"
