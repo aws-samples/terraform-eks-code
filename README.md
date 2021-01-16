@@ -1,7 +1,17 @@
-# Terraform-EKS
-Sub directories contain the workshop content
-- setup-tools.sh installs local tooling for workshop
-- resize-osdisk.sh resizes local OS disk to 30GB (if staging larger docker images etc)
-  
-- build-everything.sh - will build all the terraform 7x stages in the workshop
-- destroy-everything.sh will attempt to tear down everything (needs work for ingress/load balancers)  
+## My Project
+
+TODO: Fill this README out!
+
+Be sure to:
+
+* Change the title in this README
+* Edit your repository description on GitHub
+
+## Security
+
+See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+
+## License
+
+This library is licensed under the MIT-0 License. See the LICENSE file.
+
