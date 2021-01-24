@@ -38,7 +38,11 @@ do
     printf "#  Allow any 3.1x version of the AWS provider\n" >> $of
     printf "   version = \"~> 3.22\"\n" >> $of
     printf "  }\n" >> $of
-    printf " }\n" >> $of
+    printf "  kubernetes = {\n" >> $of
+    printf "   source = \"hashicorp/kubernetes\"\n" >> $of
+    printf "   version = \"~> 1.13.2\"\n" >> $of
+    printf "  }\n" >> $of
+    printf "}\n" >> $of
     printf "backend \"s3\" {\n" >> $of
     printf "bucket = \"%s\"\n"  $s3b >> $of
     printf "key = \"terraform/%s.tfstate\"\n"  $tabn >> $of
