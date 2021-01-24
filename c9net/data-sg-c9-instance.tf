@@ -18,7 +18,7 @@ data "aws_instance" "c9inst" {
   #}
 
   filter {
-    name   = "tag:workshop"
+    name   = "tag:Name"
     values = ["*${var.c9label}*"]
   }
 }
