@@ -67,7 +67,7 @@ sudo ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
 sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
 
 echo "git-remote-codecommit"
-pip install git-remote-codecommit
+sudo pip install git-remote-codecommit
 
 echo "Verify ...."
 for command in jq aws wget kubectl terraform eksctl helm kubectx
