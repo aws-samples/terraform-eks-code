@@ -32,7 +32,6 @@ resource "kubernetes_deployment" "game-2048__deployment-2048" {
 
       spec {
 
-        node_selector                    = { "alpha.eksctl.io/nodegroup-name" = "ng1-mycluster1" }
         restart_policy                   = "Always"
         share_process_namespace          = false
         termination_grace_period_seconds = 30

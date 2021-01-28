@@ -5,7 +5,8 @@ kubectl set env ds aws-node -n kube-system AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG=tr
 # quick look to see if it's now set
 kubectl describe daemonset aws-node -n kube-system | grep -A5 Environment | grep CUSTOM
 # Get a list of all the instances in the node group
-INSTANCE_IDS=(`aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --filters "Name=tag-key,Values=eks:nodegroup-name" "Name=instance-state-name,Values=running" "Name=tag-value,Values=ng1-mycluster1" --output text` )
+comm=`printf "aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --filters \"Name=tag-key,Values=eks:nodegroup-name\" \"Name=tag-value,Values=ng1-%s\" \"Name=instance-state-name,Values=running\" --output text" $CLUSTER`
+INSTANCE_IDS=(`eval $comm`)
 target=$(kubectl get nodes | grep Read | wc -l)
 # iterate through nodes - terminate one at a time
 for i in "${INSTANCE_IDS[@]}"

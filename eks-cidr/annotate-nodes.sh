@@ -9,7 +9,8 @@ CLUSTER=$(echo $7)
 kubectl get crd
 # get the SG's
 # get a list of the insytances in the node group
-INSTANCE_IDS=(`aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --filters "Name=tag-key,Values=eks:nodegroup-name" "Name=tag-value,Values=ng1-mycluster1" "Name=instance-state-name,Values=running" --output text`)
+comm=`printf "aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --filters \"Name=tag-key,Values=eks:nodegroup-name\" \"Name=tag-value,Values=ng1-%s\" \"Name=instance-state-name,Values=running\" --output text" $CLUSTER`
+INSTANCE_IDS=(`eval $comm`)
 # extract the security groups
 for i in "${INSTANCE_IDS[0]}"
 do
@@ -78,7 +79,8 @@ kubectl apply -f ${zone3}-pod-netconfig.yaml
 echo "pause 20s before annotate"
 sleep 20
 target=$(kubectl get nodes | grep Read | wc -l)
-allnodes=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng1-mycluster1' -o json`
+comm=`printf "kubectl get node --selector='eks.amazonaws.com/nodegroup==ng1-%s' -o json" $CLUSTER`
+allnodes=`eval $comm`
 curr=`echo $allnodes | jq '.items | length'`
 len=`echo $allnodes | jq '.items | length-1'`
 echo "Found $curr nodes to annotate of $target"
@@ -92,5 +94,5 @@ kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig
 done
 if [ $curr -ne $target ]; then
 echo "Background reannotate"
-sleep 60 && ./reannotate-nodes.sh > /dev/null &
+sleep 60 && ./reannotate-nodes.sh $CLUSTER > /dev/null &
 fi

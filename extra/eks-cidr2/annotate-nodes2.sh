@@ -8,7 +8,8 @@ sub3=$(echo $6)
 CLUSTER=$(echo $7)
 kubectl get crd
 # get the SG's
-INSTANCE_IDS=(`aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --filters "Name=tag-key,Values=eks:nodegroup-name" "Name=tag-value,Values=ng2-mycluster1" "Name=instance-state-name,Values=running" --output text`)
+comm=`printf "aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --filters \"Name=tag-key,Values=eks:nodegroup-name\" \"Name=tag-value,Values=ng2-%s\" \"Name=instance-state-name,Values=running\" --output text" $CLUSTER`
+INSTANCE_IDS=(`eval $comm`)
 for i in "${INSTANCE_IDS[0]}"
 do
 echo "Descr EC2 instance $i ..."
@@ -73,7 +74,8 @@ kubectl apply -f ${zone3}-pod-netconfig2.yaml
 echo "pause 10s before annotate"
 sleep 10
 target=$(kubectl get nodes | grep Read | wc -l)
-allnodes=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng2-mycluster1' -o json`
+comm=`printf "kubectl get node --selector='eks.amazonaws.com/nodegroup==ng2-%s' -o json" $CLUSTER`
+allnodes=`eval $comm`
 curr=`echo $allnodes | jq '.items | length'`
 len=`echo $allnodes | jq '.items | length-1'`
 echo "Found $curr nodes to annotate of $target"
@@ -86,6 +88,6 @@ kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig2
 done
 if [ $curr -ne $target ]; then
 echo "Background reannotate"
-sleep 60 && ./reannotate-nodes.sh > /dev/null &
+sleep 60 && ./reannotate-nodes.sh $CLUSTER > /dev/null &
 fi
 

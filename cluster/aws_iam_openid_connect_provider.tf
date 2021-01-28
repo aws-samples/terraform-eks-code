@@ -1,16 +1,16 @@
 ## OIDC Provider
 data "tls_certificate" "cluster" {
-  url = aws_eks_cluster.mycluster1.identity.0.oidc.0.issuer
+  url = aws_eks_cluster.cluster.identity.0.oidc.0.issuer
 }
 resource "aws_iam_openid_connect_provider" "cluster" {
   client_id_list = ["sts.amazonaws.com"]
 #  thumbprint_list = concat([data.tls_certificate.cluster.certificates.0.sha1_fingerprint], var.oidc_thumbprint_list)
   thumbprint_list = [data.tls_certificate.cluster.certificates.0.sha1_fingerprint]
-  url = aws_eks_cluster.mycluster1.identity.0.oidc.0.issuer
+  url = aws_eks_cluster.cluster.identity.0.oidc.0.issuer
 }
 
 
-### Enabling IAM Roles for Service Accounts
+### Enabling IAM Roles for Service Accounts  for aws-node pod
 data "aws_iam_policy_document" "cluster_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
@@ -31,5 +31,9 @@ data "aws_iam_policy_document" "cluster_assume_role_policy" {
 
 resource "aws_iam_role" "cluster" {
   assume_role_policy = data.aws_iam_policy_document.cluster_assume_role_policy.json
-  name               = "cluster"
+  name               = format("irsa-%s-aws-node", aws_eks_cluster.cluster.name)
+}
+
+output oidc_provider_arn {
+  value=aws_iam_openid_connect_provider.cluster.arn
 }

@@ -1,5 +1,8 @@
-allnodes=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng2-mycluster1' -o json`
-len=`kubectl get node --selector='eks.amazonaws.com/nodegroup==ng2-mycluster1' -o json | jq '.items | length-1'`
+test -n "$1" && echo CLUSTER is "$1" || "echo CLUSTER is not set && exit"
+CLUSTER=$(echo $1)
+comm=`printf "kubectl get node --selector='eks.amazonaws.com/nodegroup==ng2-%s' -o json" $CLUSTER`
+allnodes=`eval $comm`
+len=`eval $comm | jq '.items | length-1'`
 for i in `seq 0 $len`; do
 nn=`echo $allnodes | jq ".items[(${i})].metadata.name" | tr -d '"'`
 nz=`echo $allnodes | jq ".items[(${i})].metadata.labels" | grep failure | grep zone | cut -f2 -d':' | tr -d ' ' | tr -d ','| tr -d '"'`

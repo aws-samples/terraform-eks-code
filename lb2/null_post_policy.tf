@@ -15,7 +15,7 @@ provisioner "local-exec" {
         ./post-policy.sh $reg $cn $acc
         echo "reannotate nodes"
         cd ../eks-cidr
-        ./reannotate-nodes.sh
+        ./reannotate-nodes.sh $cn
         echo "done"
      EOT
 }

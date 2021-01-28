@@ -1,6 +1,6 @@
 
-# aws_iam_role.AWSCodePipelineServiceRole-eu-west-1-pipe-eksworkshop-app:
-resource "aws_iam_role" "AWSCodePipelineServiceRole-eu-west-1-pipe-eksworkshop-app" {
+# aws_iam_role.AWSCodePipelineServiceRole-pipe-eksworkshop-app:
+resource "aws_iam_role" "AWSCodePipelineServiceRole-pipe-eksworkshop-app" {
   assume_role_policy = jsonencode(
     {
       Statement = [
@@ -17,7 +17,7 @@ resource "aws_iam_role" "AWSCodePipelineServiceRole-eu-west-1-pipe-eksworkshop-a
   )
   force_detach_policies = false
   max_session_duration  = 3600
-  name                  = "AWSCodePipelineServiceRole-eu-west-1-pipe-eksworkshop-app"
+  name                  = "AWSCodePipelineServiceRole-pipe-eksworkshop-app"
   path                  = "/service-role/"
   tags                  = {}
 }

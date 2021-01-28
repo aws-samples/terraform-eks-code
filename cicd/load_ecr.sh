@@ -10,9 +10,9 @@ docker tag $i $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$i
 docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$i
 done
 
-#docker pull alexwhen/docker-2048 
-#docker tag alexwhen/docker-2048 $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/sample-app
-#docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/sample-app
+docker pull amazon/aws-cli 
+docker tag amazon/aws-cli $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-cli
+docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/aws-cli
 
 docker pull public.ecr.aws/awsandy/docker-2048 
 docker tag public.ecr.aws/awsandy/docker-2048 $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/sample-app
