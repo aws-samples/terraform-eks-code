@@ -17,8 +17,9 @@ resource "aws_vpc_endpoint" "vpce-autoscaling" {
   route_table_ids     = []
   security_group_ids = [
     aws_security_group.allnodes-sg.id,
+    aws_security_group.cluster-sg.id
   ]
-  service_name = "com.amazonaws.eu-west-1.autoscaling"
+  service_name = format("com.amazonaws.%s.autoscaling",data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -26,7 +27,7 @@ resource "aws_vpc_endpoint" "vpce-autoscaling" {
   ]
   tags              = {}
   vpc_endpoint_type = "Interface"
-  vpc_id            = aws_vpc.vpc-mycluster1.id
+  vpc_id            = aws_vpc.cluster.id
 
   timeouts {}
 }
@@ -49,8 +50,9 @@ resource "aws_vpc_endpoint" "vpce-ec2" {
   route_table_ids     = []
   security_group_ids = [
     aws_security_group.allnodes-sg.id,
+    aws_security_group.cluster-sg.id
   ]
-  service_name = "com.amazonaws.eu-west-1.ec2"
+  service_name = format("com.amazonaws.%s.ec2",data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -58,7 +60,7 @@ resource "aws_vpc_endpoint" "vpce-ec2" {
   ]
   tags              = {}
   vpc_endpoint_type = "Interface"
-  vpc_id            = aws_vpc.vpc-mycluster1.id
+  vpc_id            = aws_vpc.cluster.id
 
   timeouts {}
 }
@@ -81,8 +83,9 @@ resource "aws_vpc_endpoint" "vpce-vpce-ec2messages" {
   route_table_ids     = []
   security_group_ids = [
     aws_security_group.allnodes-sg.id,
+    aws_security_group.cluster-sg.id
   ]
-  service_name = "com.amazonaws.eu-west-1.ec2messages"
+  service_name = format("com.amazonaws.%s.ec2messages",data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -90,7 +93,7 @@ resource "aws_vpc_endpoint" "vpce-vpce-ec2messages" {
   ]
   tags              = {}
   vpc_endpoint_type = "Interface"
-  vpc_id            = aws_vpc.vpc-mycluster1.id
+  vpc_id            = aws_vpc.cluster.id
 
   timeouts {}
 }
@@ -113,8 +116,9 @@ resource "aws_vpc_endpoint" "vpce-ecrapi" {
   route_table_ids     = []
   security_group_ids = [
     aws_security_group.allnodes-sg.id,
+    aws_security_group.cluster-sg.id
   ]
-  service_name = "com.amazonaws.eu-west-1.ecr.api"
+  service_name = format("com.amazonaws.%s.ecr.api",data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -122,7 +126,7 @@ resource "aws_vpc_endpoint" "vpce-ecrapi" {
   ]
   tags              = {}
   vpc_endpoint_type = "Interface"
-  vpc_id            = aws_vpc.vpc-mycluster1.id
+  vpc_id            = aws_vpc.cluster.id
 
   timeouts {}
 }
@@ -145,8 +149,9 @@ resource "aws_vpc_endpoint" "vpce-ecrdkr" {
   route_table_ids     = []
   security_group_ids = [
     aws_security_group.allnodes-sg.id,
+    aws_security_group.cluster-sg.id
   ]
-  service_name = "com.amazonaws.eu-west-1.ecr.dkr"
+  service_name = format("com.amazonaws.%s.ecr.dkr",data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -154,7 +159,7 @@ resource "aws_vpc_endpoint" "vpce-ecrdkr" {
   ]
   tags              = {}
   vpc_endpoint_type = "Interface"
-  vpc_id            = aws_vpc.vpc-mycluster1.id
+  vpc_id            = aws_vpc.cluster.id
 
   timeouts {}
 }
@@ -177,8 +182,9 @@ resource "aws_vpc_endpoint" "vpce-elb" {
   route_table_ids     = []
   security_group_ids = [
     aws_security_group.allnodes-sg.id,
+    aws_security_group.cluster-sg.id
   ]
-  service_name = "com.amazonaws.eu-west-1.elasticloadbalancing"
+  service_name = format("com.amazonaws.%s.elasticloadbalancing",data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -186,7 +192,7 @@ resource "aws_vpc_endpoint" "vpce-elb" {
   ]
   tags              = {}
   vpc_endpoint_type = "Interface"
-  vpc_id            = aws_vpc.vpc-mycluster1.id
+  vpc_id            = aws_vpc.cluster.id
 
   timeouts {}
 }
@@ -209,8 +215,9 @@ resource "aws_vpc_endpoint" "vpce-logs" {
   route_table_ids     = []
   security_group_ids = [
     aws_security_group.allnodes-sg.id,
+    aws_security_group.cluster-sg.id
   ]
-  service_name = "com.amazonaws.eu-west-1.logs"
+  service_name = format("com.amazonaws.%s.logs",data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -218,7 +225,7 @@ resource "aws_vpc_endpoint" "vpce-logs" {
   ]
   tags              = {}
   vpc_endpoint_type = "Interface"
-  vpc_id            = aws_vpc.vpc-mycluster1.id
+  vpc_id            = aws_vpc.cluster.id
 
   timeouts {}
 }
@@ -245,11 +252,11 @@ resource "aws_vpc_endpoint" "vpce-s3" {
     aws_route_table.rtb-041267f0474c24068.id,
   ]
   security_group_ids = []
-  service_name       = "com.amazonaws.eu-west-1.s3"
+  service_name       = format("com.amazonaws.%s.s3",data.aws_region.current.name)
   subnet_ids         = []
   tags               = {}
   vpc_endpoint_type  = "Gateway"
-  vpc_id             = aws_vpc.vpc-mycluster1.id
+  vpc_id             = aws_vpc.cluster.id
 
   timeouts {}
 }
@@ -272,8 +279,9 @@ resource "aws_vpc_endpoint" "vpce-ssm" {
   route_table_ids     = []
   security_group_ids = [
     aws_security_group.allnodes-sg.id,
+    aws_security_group.cluster-sg.id
   ]
-  service_name = "com.amazonaws.eu-west-1.ssm"
+  service_name = format("com.amazonaws.%s.ssm",data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -281,7 +289,7 @@ resource "aws_vpc_endpoint" "vpce-ssm" {
   ]
   tags              = {}
   vpc_endpoint_type = "Interface"
-  vpc_id            = aws_vpc.vpc-mycluster1.id
+  vpc_id            = aws_vpc.cluster.id
 
   timeouts {}
 }
@@ -304,8 +312,9 @@ resource "aws_vpc_endpoint" "vpce-ssmmessages" {
   route_table_ids     = []
   security_group_ids = [
     aws_security_group.allnodes-sg.id,
+    aws_security_group.cluster-sg.id
   ]
-  service_name = "com.amazonaws.eu-west-1.ssmmessages"
+  service_name = format("com.amazonaws.%s.ssmmessages",data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -313,7 +322,7 @@ resource "aws_vpc_endpoint" "vpce-ssmmessages" {
   ]
   tags              = {}
   vpc_endpoint_type = "Interface"
-  vpc_id            = aws_vpc.vpc-mycluster1.id
+  vpc_id            = aws_vpc.cluster.id
 
   timeouts {}
 }
@@ -336,8 +345,9 @@ resource "aws_vpc_endpoint" "vpce-sts" {
   route_table_ids     = []
   security_group_ids = [
     aws_security_group.allnodes-sg.id,
+    aws_security_group.cluster-sg.id
   ]
-  service_name = "com.amazonaws.eu-west-1.sts"
+  service_name = format("com.amazonaws.%s.sts",data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -345,7 +355,7 @@ resource "aws_vpc_endpoint" "vpce-sts" {
   ]
   tags              = {}
   vpc_endpoint_type = "Interface"
-  vpc_id            = aws_vpc.vpc-mycluster1.id
+  vpc_id            = aws_vpc.cluster.id
 
   timeouts {}
 }
@@ -378,7 +388,7 @@ resource "aws_vpc_endpoint" "vpce-sts" {
 #  ]
 #  tags              = {}
 #  vpc_endpoint_type = "Interface"
-#  vpc_id            = aws_vpc.vpc-mycluster1.id
+#  vpc_id            = aws_vpc.cluster.id
 #
 #  timeouts {}
 #}

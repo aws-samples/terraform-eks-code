@@ -4,10 +4,7 @@ resource "aws_route_table" "rtb-0329e787bbafcb2c4" {
   propagating_vgws = []
   route            = []
   tags = {
-    "Name"                                        = "eksctl-mycluster1-cluster/PrivateRouteTableEUWEST1C"
-    "alpha.eksctl.io/cluster-name"                = "mycluster1"
-    "alpha.eksctl.io/eksctl-version"              = "0.29.2"
-    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "mycluster1"
+    "Name" = format("eks-%s-cluster/PrivateRouteTableEUWEST1C",var.cluster-name)
   }
-  vpc_id = aws_vpc.vpc-mycluster1.id
+  vpc_id = aws_vpc.cluster.id
 }

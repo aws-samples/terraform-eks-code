@@ -36,6 +36,7 @@ jq
 **/backend-*.tf
 backend-*.tf
 **/remote-*.tf
+**/*.old
 remote-*.tf
 **/tf-setup/generated/*
 **/net-v2/*

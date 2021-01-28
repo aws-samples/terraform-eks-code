@@ -24,7 +24,7 @@ cd $cur
 cd ../$i
 echo "**** Destroying in $i ****"
 rm -rf .terrform*
-terraform init
+terraform init > /dev/null
 terraform destroy -auto-approve
 cd $cur
 date
