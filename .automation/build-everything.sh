@@ -22,20 +22,7 @@ for i in $dirs; do
     terraform plan -out tfplan -no-color
     terraform apply tfplan -no-color
     rc=$(terraform state list | wc -l)
-    
-    #if [ "$i" == "iam" ] && [ $rc -lt 20 ]; then echo "only $rc in tf state expected 20" && break; fi
-    #if [ "$i" == "net" ] && [ $rc -lt 42 ]; then echo "only $rc in tf state expected 42" && break; fi
-    #if [ "$i" == "c9net" ] && [ $rc -lt 34 ]; then echo "only $rc in tf state expected 34" && break; fi
-    #if [ "$i" == "cluster" ] && [ $rc -lt 8 ]; then echo "only $rc in tf state expected 8" && break; fi
-    #if [ "$i" == "nodeg" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expected 7" && break; fi
-    #if [ "$i" == "cicd" ] && [ $rc -lt 25 ]; then echo "only $rc in tf state expected 25" && break; fi
-    #if [ "$i" == "eks-cidr" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expected 7" && break; fi
-    #if [ "$i" == "lb2" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expected 7" && break; fi
-    #if [ "$i" == "sampleapp" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expected 7" && break; fi
-    #if [ "$i" == "extra/nodeg2" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expected 7" && break; fi
-    #if [ "$i" == "extra/eks-cidr2" ] && [ $rc -lt 7 ]; then echo "only $rc in tf state expected 7+" && break; fi
-    #if [ "$i" == "extra/sampleapp2" ] && [ $rc -lt 8 ]; then echo "only $rc in tf state expected 8" && break; fi
-
+  
     if [ "$i" == "tf-setup" ] && [ $rc -lt 12 ]; then echo "only $rc in tf state expected 12" && break; fi
     # double check the helm chart has gone in
     if [ "$i" == "lb2" ] ; then
@@ -59,7 +46,7 @@ rc=$(kubectl get pods -A | grep Running | wc -l)
 if [ $rc -lt 23 ]; then 
 echo "ERROR: Found only $rc pods running - expected 23"
 else
-echo "Passed running pod count"
+echo "PASSED: running pod count $rc"
 fi
 
 # terraform state rm helm_release.aws-load-balancer-controller
