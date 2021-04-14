@@ -35,12 +35,12 @@ do
     printf "required_providers {\n" >> $of
     printf "  aws = {\n" >> $of
     printf "   source = \"hashicorp/aws\"\n" >> $of
-    printf "#  Allow any 3.1x version of the AWS provider\n" >> $of
-    printf "   version = \"~> 3.22\"\n" >> $of
+    printf "#  Lock version to avoid unexpected problems\n" >> $of
+    printf "   version = \"3.36\"\n" >> $of
     printf "  }\n" >> $of
     printf "  kubernetes = {\n" >> $of
     printf "   source = \"hashicorp/kubernetes\"\n" >> $of
-    printf "   version = \"~> 1.13.2\"\n" >> $of
+    printf "   version = \"1.13.3\"\n" >> $of
     printf "  }\n" >> $of
     printf " }\n" >> $of
     printf "backend \"s3\" {\n" >> $of
