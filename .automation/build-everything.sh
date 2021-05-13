@@ -8,7 +8,7 @@ for i in $dirs; do
     echo " "
     echo "**** Building in $i ****"
     tobuild=$(grep 'data\|resource' *.tf | grep '"' | grep  '{' | grep -v '#' |  wc -l)
-    rm -rf .terraform
+    rm -rf .terraform*
     terraform init -no-color > /dev/null
     rc=0
     terraform state list 2> /dev/null | grep aws_ > /dev/null
