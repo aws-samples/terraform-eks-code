@@ -16,6 +16,8 @@ resource "aws_route_table" "rtb1-natgw-tgw" {
       vpc_peering_connection_id = ""
       local_gateway_id = ""
       vpc_endpoint_id = ""
+      carrier_gateway_id = ""
+      destination_prefix_list_id = ""
     },
   ]
   tags   = {}

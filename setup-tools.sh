@@ -18,10 +18,10 @@ aws configure set default.region ${AWS_REGION}
 aws configure get region
 
 echo "Install Terraform"
-wget https://releases.hashicorp.com/terraform/0.14.3/terraform_0.14.3_linux_amd64.zip
-unzip -qq terraform_0.14.3_linux_amd64.zip
+wget https://releases.hashicorp.com/terraform/0.14.11/terraform_0.14.11_linux_amd64.zip
+unzip -qq terraform_0.14.11_linux_amd64.zip
 sudo mv terraform /usr/local/bin/
-rm -f terraform_0.14.3_linux_amd64.zip
+rm -f terraform_0.14.11_linux_amd64.zip
 mkdir -p $HOME/.terraform.d/plugin-cache
 cp tf-setup/dot-terraform.rc $HOME/.terraformrc
 
