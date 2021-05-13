@@ -10,7 +10,6 @@ resource "aws_security_group_rule" "mysgegress" {
   prefix_list_ids   = []
   protocol          = "-1"
   security_group_id = aws_security_group.mysg[count.index].id
-  self              = false
   to_port           = 0
   type              = "egress"
 }

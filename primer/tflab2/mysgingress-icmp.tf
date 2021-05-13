@@ -12,7 +12,6 @@ resource "aws_security_group_rule" "mysgingress-icmp" {
   prefix_list_ids   = []
   protocol          = "icmp"
   security_group_id = aws_security_group.mysg[count.index].id
-  self              = false
   to_port           = -1
   type              = "ingress"
 }

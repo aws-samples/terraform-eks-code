@@ -11,7 +11,6 @@ resource "aws_security_group_rule" "mysgingress-80" {
   prefix_list_ids   = []
   protocol          = "tcp"
   security_group_id = aws_security_group.mysg[count.index].id
-  self              = false
   to_port           = 80
   type              = "ingress"
 }
