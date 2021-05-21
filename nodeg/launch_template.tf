@@ -1,5 +1,5 @@
 resource "aws_launch_template" "lt-ng1" {
-  instance_type           = "t3.small"
+  instance_type           = "t3.medium"
   key_name                = "eksworkshop"
   name                    = format("at-lt-%s-ng1", data.aws_eks_cluster.eks_cluster.name)
   tags                    = {}
