@@ -26,11 +26,12 @@ for i in $dirs; do
 
     if [ $rc -lt $tobuild ]; then echo "only $rc in tf state expected $tobuild" && break; fi
     echo "Passed $i tests"
-    cd $cur
-    date
+
     echo "Destroying $i"
     terraform destroy -auto-approve
     rm -rf .terraform*
+    cd $cur
+    date
 
 done
 
