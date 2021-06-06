@@ -33,7 +33,7 @@ fi
 echo "Setup Terraform cache"
 if [ ! -f $HOME/.terraform.d/plugin-cache ];then
   mkdir -p $HOME/.terraform.d/plugin-cache
-  cp tfinit/dot-terraform.rc $HOME/.terraformrc
+  cp tf-setup/dot-terraform.rc $HOME/.terraformrc
 fi
 echo "Setup kubectl"
 if [ ! `which kubectl 2> /dev/null` ]; then
