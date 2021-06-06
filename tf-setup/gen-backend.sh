@@ -87,7 +87,8 @@ do
     printf "backend = \"s3\"\n" >> $of
     printf "config = {\n" >> $of
     printf "bucket = \"%s\"\n"  $s3b >> $of
-    printf "region = \"%s\"\n"  $reg >> $of
+#    printf "region = \"%s\"\n"  $reg >> $of
+    printf "region = var.region\n"  >> $of
     printf "key = \"terraform/%s.tfstate\"\n"  $tabn >> $of
     printf "}\n" >> $of
     printf "}\n" >> $of
