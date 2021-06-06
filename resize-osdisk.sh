@@ -1,6 +1,6 @@
-pip install --user --upgrade boto3
+pip install --user --upgrade boto3 > /dev/null
 export instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
-date
+echo "Resizing OS disk"
 python -c "import boto3
 import os
 from botocore.exceptions import ClientError 
@@ -26,6 +26,7 @@ except ClientError as e:
     if e.response['Error']['Code'] == 'InvalidParameterValue':
         print('ERROR MESSAGE: {}'.format(e))"
 if [ $? -eq 0 ]; then
+    echo "Rebooting ...."
     sudo reboot
 fi
 
