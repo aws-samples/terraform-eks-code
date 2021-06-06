@@ -3,10 +3,10 @@ sudo yum -y -q -e 0 install  jq moreutils nmap > /dev/null
 echo "Update OS tools"
 sudo yum update -y > /dev/null
 echo "Update pip"
-sudo pip install --upgrade pip > /dev/null
+sudo pip install --upgrade pip 2&> /dev/null
 echo "Uninstall AWS CLI v1"
-sudo /usr/local/bin/pip uninstall awscli -y > /dev/null
-
+sudo /usr/local/bin/pip uninstall awscli -y 2&> /dev/null
+sudo pip uninstall awscli -y 2&> /dev/null
 echo "Install AWS CLI v2"
 curl --silent "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" > /dev/null
 unzip -qq awscliv2.zip
@@ -87,12 +87,13 @@ echo "export MASTER_ARN=${MASTER_ARN}" | tee -a ~/.bash_profile
 fi
 
 echo "git-remote-codecommit"
-pip install git-remote-codecommit > /dev/null
+pip install git-remote-codecommit 2&> /dev/null
+/usr/bin/pip install git-remote-codecommit 2&> /dev/null
 
 echo "Verify ...."
 for command in jq aws wget kubectl terraform eksctl helm kubectx
   do
-    which $command &>/dev/null && echo "$command in path" || echo "$command NOT FOUND"
+    which $command &>/dev/null && echo "PASSED: $command in path" || echo "ERROR: $command NOT FOUND"
   done
 
 
@@ -118,9 +119,8 @@ source ~/.bash_profile
 
 test -n "$AWS_REGION" && echo "PASSED: AWS_REGION is $AWS_REGION" || echo AWS_REGION is not set !!
 test -n "$ACCOUNT_ID" && echo "PASSED: ACCOUNT_ID is $ACCOUNT_ID" || echo ACCOUNT_ID is not set !!
-echo "setup tools run" >> ~/setup-tools.log
 
-cd ~/environment/tfekscode/Launch/lb2
+cd ~/environment/tfekscode/lb2
 curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json -s
-
+echo "setup tools run" >> ~/setup-tools.log
 cd $this
