@@ -127,4 +127,4 @@ cp  aws.tf ../extra/eks-cidr2
 cp  vars-main.tf ../extra/eks-cidr2
 
 cd ~/environment
-terraform fmt --recursive 2&? /dev/null
+terraform fmt --recursive 2&> /dev/null
