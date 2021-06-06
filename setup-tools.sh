@@ -2,6 +2,7 @@ echo "Install OS tools"
 sudo yum -y -q -e 0 install  jq moreutils nmap > /dev/null
 echo "Update OS tools"
 sudo yum update -y > /dev/null
+alternatives --set python /usr/bin/python3
 echo "Update pip"
 sudo pip install --upgrade pip 2&> /dev/null
 echo "Uninstall AWS CLI v1"
@@ -13,6 +14,7 @@ unzip -qq awscliv2.zip
 sudo ./aws/install > /dev/null
 rm -f awscliv2.zip
 rm -rf aws
+aws --version
 
 # setup for AWS cli
 aws sts get-caller-identity --query Arn | grep eksworkshop-admin > /dev/null
@@ -109,7 +111,6 @@ echo "Enable bash_completion"
 . /etc/profile.d/bash_completion.sh
 . ~/.bash_completion
 echo "alias tfb='terraform init && terraform plan -out tfplan && terraform apply tfplan && terraform init -force-copy'" >> ~/.bash_profile
-echo "alias aws='/usr/local/bin/aws'" >> ~/.bash_profile
 source ~/.bash_profile
 
 #aws --version
