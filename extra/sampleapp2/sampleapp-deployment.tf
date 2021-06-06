@@ -43,7 +43,6 @@ resource "kubernetes_deployment" "game1-2048__deployment1-2048" {
           name              = "app1-2048"
           port {
             container_port = 80
-            host_port      = 0
             protocol       = "TCP"
           }
 
@@ -99,7 +98,6 @@ resource "kubernetes_deployment" "game2-2048__deployment2-2048" {
           name              = "app2-2048"
           port {
             container_port = 80
-            host_port      = 0
             protocol       = "TCP"
           }
 
