@@ -11,6 +11,7 @@ sudo /etc/eks/bootstrap.sh --apiserver-endpoint '${data.aws_eks_cluster.eks_clus
 echo "Running custom user data script" > /tmp/me.txt
 yum install -y amazon-ssm-agent
 echo "yum'd agent" >> /tmp/me.txt
+yum update -y
 systemctl enable amazon-ssm-agent && systemctl start amazon-ssm-agent
 date >> /tmp/me.txt
 
