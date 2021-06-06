@@ -94,6 +94,8 @@ do
     printf "}\n" >> $of
 done
 
+
+
 # put in place remote state access where required
 cp  generated/remote-net.tf ../c9net 
 cp  generated/remote-net.tf ../cluster
@@ -124,4 +126,5 @@ cp  vars-main.tf ../extra/nodeg2
 cp  aws.tf ../extra/eks-cidr2
 cp  vars-main.tf ../extra/eks-cidr2
 
-
+cd ~/environment
+terraform fmt --recursive
