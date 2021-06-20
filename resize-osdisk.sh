@@ -5,6 +5,7 @@ python -c "import boto3
 import os
 from botocore.exceptions import ClientError 
 ec2 = boto3.client('ec2')
+print('instance_id=' + os.getenv('instance_id'))
 volume_info = ec2.describe_volumes(
     Filters=[
         {
@@ -16,12 +17,13 @@ volume_info = ec2.describe_volumes(
     ]
 )
 volume_id = volume_info['Volumes'][0]['VolumeId']
+print('volume_id=' + volume_id)
 try:
     resize = ec2.modify_volume(    
             VolumeId=volume_id,    
             Size=30
     )
-    print(resize)
+    print('Resized to 30GB')
 except ClientError as e:
     if e.response['Error']['Code'] == 'InvalidParameterValue':
         print('ERROR MESSAGE: {}'.format(e))"

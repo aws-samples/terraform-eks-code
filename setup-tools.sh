@@ -80,13 +80,7 @@ if [ ! -f ~/.ssh/id_rsa ]; then
   chmod 600 ~/.ssh/id*
 fi
 aws ec2 delete-key-pair --key-name "eksworkshop" > /dev/null
-aws ec2 import-key-pair --key-name "eksworkshop" --public-key-material fileb://~/.ssh/id_rsa.pub > /dev/null
-echo "KMS key"
-aws kms create-alias --alias-name alias/eksworkshop --target-key-id $(aws kms create-key --query KeyMetadata.Arn --output text)
-export MASTER_ARN=$(aws kms describe-key --key-id alias/eksworkshop --query KeyMetadata.Arn --output text)
-if [ ! -z $MASTER_ARN ];then
-echo "export MASTER_ARN=${MASTER_ARN}" | tee -a ~/.bash_profile
-fi
+
 
 echo "git-remote-codecommit"
 pip install git-remote-codecommit 2&> /dev/null
@@ -102,10 +96,6 @@ for command in jq aws wget kubectl terraform eksctl helm kubectx
 this=`pwd`
 #echo "sample apps"
 cd ~/environment
-#git clone https://github.com/brentley/ecsdemo-frontend.git
-#git clone https://github.com/brentley/ecsdemo-nodejs.git
-#git clone https://github.com/brentley/ecsdemo-crystal.git
-#git clone https://github.com/aws-samples/aws2tf.git
 
 echo "Enable bash_completion"
 . /etc/profile.d/bash_completion.sh
@@ -120,6 +110,7 @@ source ~/.bash_profile
 
 test -n "$AWS_REGION" && echo "PASSED: AWS_REGION is $AWS_REGION" || echo AWS_REGION is not set !!
 test -n "$ACCOUNT_ID" && echo "PASSED: ACCOUNT_ID is $ACCOUNT_ID" || echo ACCOUNT_ID is not set !!
+test -n "$TF_VAR_region" && echo "PASSED: TF_VAR_region is $TF_VAR_region" || echo TF_VAR_region is not set !!
 
 cd ~/environment/tfekscode/lb2
 curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json -s

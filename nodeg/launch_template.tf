@@ -1,6 +1,6 @@
 resource "aws_launch_template" "lt-ng1" {
   instance_type           = "m5a.large"
-  key_name                = "eksworkshop"
+  key_name                = data.terraform_remote_state.iam.outputs.key_name
   name                    = format("at-lt-%s-ng1", data.aws_eks_cluster.eks_cluster.name)
   tags                    = {}
   image_id                = data.aws_ssm_parameter.eksami.value
