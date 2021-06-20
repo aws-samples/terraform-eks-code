@@ -11,9 +11,7 @@ resource "aws_eks_node_group" "ng2" {
     "m4.large",
     "m5a.large",
     "m5d.large",
-    "m5n.large",
-    "m5ad.large",
-    "m5dn.large",
+    "m5ad.large"
   ]
   labels = {
     "eks/cluster-name"   = data.aws_eks_cluster.eks_cluster.name
