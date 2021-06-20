@@ -35,7 +35,7 @@ for i in $dirs; do
 cd $cur
 cd ../$i
 echo "**** Destroying in $i ****"
-terraform destroy -auto-approve > /dev/null
+terraform destroy -auto-approve 2&> /dev/null
 rm -f tfplan terraform*
 rm -rf .terraform
 cd $cur
