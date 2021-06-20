@@ -60,8 +60,8 @@ do
 
     # copy the files into place
     cp -v $of ../$section
-    cp  vars-dynamodb.tf ../$section
-    cp  vars-main.tf ../$section
+    cp  -v vars-dynamodb.tf ../$section
+    cp  -v vars-main.tf ../$section
    
 
 done
@@ -94,37 +94,42 @@ do
     printf "}\n" >> $of
 done
 
-
+echo "remotes"
 
 # put in place remote state access where required
-cp  generated/remote-net.tf ../c9net 
-cp  generated/remote-net.tf ../cluster
-cp  generated/remote-net.tf ../nodeg
-cp  generated/remote-net.tf ../extra/nodeg2
-cp  generated/remote-net.tf ../eks-cidr
-cp  generated/remote-net.tf ../extra/eks-cidr2
+cp  -v generated/remote-net.tf ../c9net 
+cp  -v generated/remote-net.tf ../cluster
+cp  -v generated/remote-net.tf ../nodeg
+cp  -v generated/remote-net.tf ../extra/nodeg2
+cp  -v generated/remote-net.tf ../eks-cidr
+cp  -v generated/remote-net.tf ../extra/eks-cidr2
 
-cp  generated/remote-iam.tf ../cluster 
-cp  generated/remote-iam.tf ../nodeg
-cp  generated/remote-iam.tf ../extra/nodeg2
+cp  -v generated/remote-iam.tf ../cluster 
+cp  -v generated/remote-iam.tf ../nodeg
+cp  -v generated/remote-iam.tf ../extra/nodeg2
 
-cp  generated/remote-cluster.tf ../nodeg
-cp  generated/remote-cluster.tf ../eks-cidr
-cp  generated/remote-cluster.tf ../extra/eks-cidr2
-cp  generated/remote-cluster.tf ../lb2
-cp  generated/remote-cluster.tf ../extra/nodeg2
+echo "Copy remote-cluster.tf"
+cp  -v generated/remote-cluster.tf ../nodeg
+cp  -v generated/remote-cluster.tf ../eks-cidr
+cp  -v generated/remote-cluster.tf ../extra/eks-cidr2
+cp  -v generated/remote-cluster.tf ../lb2
+cp  -v generated/remote-cluster.tf ../extra/nodeg2
 
 # Prepare "local state" for the sample app and extra activities
 #cp  aws.tf ../sampleapp
-cp  vars-main.tf ../sampleapp
-cp  aws.tf ../lb2
-cp  vars-main.tf ../lb2
-cp  aws.tf ../extra/sampleapp2
-cp  vars-main.tf ../extra/sampleapp2
-cp  aws.tf ../extra/nodeg2
-cp  vars-main.tf ../extra/nodeg2
-cp  aws.tf ../extra/eks-cidr2
-cp  vars-main.tf ../extra/eks-cidr2
+echo "Copy vars/aws.tf"
 
-cd ~/environment
-terraform fmt --recursive 2&> /dev/null
+
+cp  -v vars-main.tf ../sampleapp
+cp  -v aws.tf ../lb2
+cp  -v vars-main.tf ../lb2
+cp  -v aws.tf ../extra/sampleapp2
+cp  -v vars-main.tf ../extra/sampleapp2
+cp  -v aws.tf ../extra/nodeg2
+cp  -v vars-main.tf ../extra/nodeg2
+cp  -v aws.tf ../extra/eks-cidr2
+cp  -v vars-main.tf ../extra/eks-cidr2
+
+cd ~/environment/tfekscode
+terraform fmt --recursive > /dev/null
+exit 0
