@@ -1,7 +1,7 @@
-pip install --user --upgrade boto3 > /dev/null
+pip3 install --user --upgrade boto3 > /dev/null
 export instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 echo "Resizing OS disk"
-python -c "import boto3
+python3 -c "import boto3
 import os
 from botocore.exceptions import ClientError 
 ec2 = boto3.client('ec2')
