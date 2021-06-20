@@ -24,7 +24,7 @@ resource "helm_release" "appmesh-controller" {
 
   set {
     name  = "image.repository"
-    value = "602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon/appmesh-controller"
+    value = format("602401143452.dkr.ecr.%s.amazonaws.com/amazon/appmesh-controller",var.region)
   }
 
 }
