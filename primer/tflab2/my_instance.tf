@@ -5,7 +5,7 @@ resource "aws_instance" "myinstance" {
   ami   = data.aws_ami.amazon_linux.id
 
   associate_public_ip_address = false
-  availability_zone           = "eu-west-1a"
+  availability_zone           = data.aws_availability_zones.az.names[0]
 
   iam_instance_profile = aws_iam_instance_profile.test_profile.name
   instance_type        = "t2.micro"

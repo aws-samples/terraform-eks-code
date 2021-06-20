@@ -2,7 +2,7 @@
 # aws_subnet.subnet-00cc72ac5b0b79dd4:
 resource "aws_subnet" "subnet-00cc72ac5b0b79dd4" {
   assign_ipv6_address_on_creation = false
-  availability_zone               = "eu-west-1a"
+  availability_zone               = data.aws_availability_zones.az.names[0]
   cidr_block                      = "172.30.0.128/26"
   map_public_ip_on_launch         = false
   tags = {
