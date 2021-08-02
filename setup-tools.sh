@@ -71,7 +71,10 @@ if [ ! `which kubectx 2> /dev/null` ]; then
   sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
 fi
 
-
+echo "ssm cli add on"
+curl --silent "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm" -o "session-manager-plugin.rpm"
+sudo yum install -y session-manager-plugin.rpm > /dev/null
+rm -f session-manager-plugin.rpm
 
 echo "ssh key"
 if [ ! -f ~/.ssh/id_rsa ]; then
