@@ -58,12 +58,6 @@ do
     printf "profile = var.profile\n" >> $of
     printf "}\n" >> $of
 
-    printf "data \"aws_region\" \"current\" {}\n" >> $of
-    printf "data \"aws_caller_identity\" \"current\" {}\n" >> $of
-    printf "data \"aws_availability_zones\" \"az\" {\n" >> $of
-    printf "    state = \"available\"\n" >> $of
-    printf "}\n" >> $of
-
     # copy the files into place
     cp -v $of ../$section
     cp  -v vars-dynamodb.tf ../$section
