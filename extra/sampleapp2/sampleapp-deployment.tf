@@ -1,6 +1,3 @@
-data "aws_region" "current" {}
-data "aws_caller_identity" "current" {}
-
 resource "kubernetes_deployment" "game1-2048__deployment1-2048" {
 
   metadata {
