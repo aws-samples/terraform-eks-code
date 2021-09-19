@@ -4,6 +4,51 @@ echo "Update OS tools"
 sudo yum update -y > /dev/null
 echo "Update pip"
 sudo pip install --upgrade pip 2&> /dev/null
+# ------  resize OS disk -----------
+# Specify the desired volume size in GiB as a command-line argument. If not specified, default to 20 GiB.
+VOLUME_SIZE=${1:-32}
+
+# Get the ID of the environment host Amazon EC2 instance.
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data//instance-id)
+
+# Get the ID of the Amazon EBS volume associated with the instance.
+VOLUME_ID=$(aws ec2 describe-instances \
+  --instance-id $INSTANCE_ID \
+  --query "Reservations[0].Instances[0].BlockDeviceMappings[0].Ebs.VolumeId" \
+  --output text)
+
+# Resize the EBS volume.
+aws ec2 modify-volume --volume-id $VOLUME_ID --size $VOLUME_SIZE > /dev/null
+
+# Wait for the resize to finish.
+while [ \
+  "$(aws ec2 describe-volumes-modifications \
+    --volume-id $VOLUME_ID \
+    --filters Name=modification-state,Values="optimizing","completed" \
+    --query "length(VolumesModifications)"\
+    --output text)" != "1" ]; do
+sleep 1
+done
+
+if [ $(readlink -f /dev/xvda) = "/dev/xvda" ]
+then
+  # Rewrite the partition table so that the partition takes up all the space that it can.
+  sudo growpart /dev/xvda 1
+ 
+  # Expand the size of the file system.
+  sudo resize2fs /dev/xvda1 > /dev/null
+
+else
+  # Rewrite the partition table so that the partition takes up all the space that it can.
+  sudo growpart /dev/nvme0n1 1
+
+  # Expand the size of the file system.
+  # sudo resize2fs /dev/nvme0n1p1 #(Amazon Linux 1)
+  sudo xfs_growfs /dev/nvme0n1p1 > /dev/null #(Amazon Linux 2)
+fi
+df -m /
+#
+#
 echo "Uninstall AWS CLI v1"
 sudo /usr/local/bin/pip uninstall awscli -y 2&> /dev/null
 sudo pip uninstall awscli -y 2&> /dev/null
@@ -67,26 +112,24 @@ if [ ! `which kubectx 2> /dev/null` ]; then
   sudo ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
   sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
 fi
-
-
+#
 echo "ssh key"
 if [ ! -f ~/.ssh/id_rsa ]; then
   mkdir -p ~/.ssh
   ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""
   chmod 600 ~/.ssh/id*
 fi
-
+#
 echo "ssm cli add on"
 curl --silent "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm" -o "session-manager-plugin.rpm"
 sudo yum install -y session-manager-plugin.rpm > /dev/null
 rm -f ~/environment/session-manager-plugin.rpm
-
+#
 echo "install tfsec ..."
 wget -q https://github.com/aquasecurity/tfsec/releases/download/v0.56.0/tfsec-linux-amd64
 sudo mv tfsec-linux-amd64 /usr/bin/tfsec
 sudo chmod 755 /usr/bin/tfsec 
-
-
+#
 # cleanup key_pair if already there
 aws ec2 delete-key-pair --key-name "eksworkshop" > /dev/null
 
@@ -114,57 +157,11 @@ echo "Enable bash_completion"
 echo "alias tfb='terraform init && terraform plan -out tfplan && terraform apply tfplan && terraform init -force-copy'" >> ~/.bash_profile
 echo "alias aws='/usr/local/bin/aws'" >> ~/.bash_profile
 source ~/.bash_profile
-
-
-# ------  resize OS disk -----------
-
-# Specify the desired volume size in GiB as a command-line argument. If not specified, default to 20 GiB.
-VOLUME_SIZE=${1:-32}
-
-# Get the ID of the environment host Amazon EC2 instance.
-INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data//instance-id)
-
-# Get the ID of the Amazon EBS volume associated with the instance.
-VOLUME_ID=$(aws ec2 describe-instances \
-  --instance-id $INSTANCE_ID \
-  --query "Reservations[0].Instances[0].BlockDeviceMappings[0].Ebs.VolumeId" \
-  --output text)
-
-# Resize the EBS volume.
-aws ec2 modify-volume --volume-id $VOLUME_ID --size $VOLUME_SIZE > /dev/null
-
-# Wait for the resize to finish.
-while [ \
-  "$(aws ec2 describe-volumes-modifications \
-    --volume-id $VOLUME_ID \
-    --filters Name=modification-state,Values="optimizing","completed" \
-    --query "length(VolumesModifications)"\
-    --output text)" != "1" ]; do
-sleep 1
-done
-
-if [ $(readlink -f /dev/xvda) = "/dev/xvda" ]
-then
-  # Rewrite the partition table so that the partition takes up all the space that it can.
-  sudo growpart /dev/xvda 1
- 
-  # Expand the size of the file system.
-  sudo resize2fs /dev/xvda1
-
-else
-  # Rewrite the partition table so that the partition takes up all the space that it can.
-  sudo growpart /dev/nvme0n1 1
-
-  # Expand the size of the file system.
-  # sudo resize2fs /dev/nvme0n1p1 #(Amazon Linux 1)
-  sudo xfs_growfs /dev/nvme0n1p1 #(Amazon Linux 2)
-fi
-
+#
 test -n "$AWS_REGION" && echo "PASSED: AWS_REGION is $AWS_REGION" || echo AWS_REGION is not set !!
 test -n "$TF_VAR_region" && echo "PASSED: TF_VAR_region is $TF_VAR_region" || echo TF_VAR_region is not set !!
 test -n "$ACCOUNT_ID" && echo "PASSED: ACCOUNT_ID is $ACCOUNT_ID" || echo ACCOUNT_ID is not set !!
 echo "setup tools run" >> ~/setup-tools.log
-
 cd ~/environment/tfekscode/lb2
 curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json -s
 
