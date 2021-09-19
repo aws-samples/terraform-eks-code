@@ -32,7 +32,7 @@ fi
 echo "Setup Terraform cache"
 if [ ! -f $HOME/.terraform.d/plugin-cache ];then
   mkdir -p $HOME/.terraform.d/plugin-cache
-  cp tfinit/dot-terraform.rc $HOME/.terraformrc
+  cp tf-setup/dot-terraform.rc $HOME/.terraformrc
 fi
 echo "Setup kubectl"
 if [ ! `which kubectl 2> /dev/null` ]; then
@@ -131,7 +131,7 @@ VOLUME_ID=$(aws ec2 describe-instances \
   --output text)
 
 # Resize the EBS volume.
-aws ec2 modify-volume --volume-id $VOLUME_ID --size $VOLUME_SIZE
+aws ec2 modify-volume --volume-id $VOLUME_ID --size $VOLUME_SIZE > /dev/null
 
 # Wait for the resize to finish.
 while [ \
@@ -165,7 +165,7 @@ test -n "$TF_VAR_region" && echo "PASSED: TF_VAR_region is $TF_VAR_region" || ec
 test -n "$ACCOUNT_ID" && echo "PASSED: ACCOUNT_ID is $ACCOUNT_ID" || echo ACCOUNT_ID is not set !!
 echo "setup tools run" >> ~/setup-tools.log
 
-cd ~/environment/tfekscode/Launch/lb2
+cd ~/environment/tfekscode/lb2
 curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json -s
 
 cd $this
