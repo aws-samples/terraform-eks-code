@@ -4,50 +4,7 @@ echo "Update OS tools"
 sudo yum update -y > /dev/null
 echo "Update pip"
 sudo pip install --upgrade pip 2&> /dev/null
-# ------  resize OS disk -----------
-# Specify the desired volume size in GiB as a command-line argument. If not specified, default to 20 GiB.
-VOLUME_SIZE=${1:-32}
 
-# Get the ID of the environment host Amazon EC2 instance.
-INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data//instance-id)
-
-# Get the ID of the Amazon EBS volume associated with the instance.
-VOLUME_ID=$(aws ec2 describe-instances \
-  --instance-id $INSTANCE_ID \
-  --query "Reservations[0].Instances[0].BlockDeviceMappings[0].Ebs.VolumeId" \
-  --output text)
-
-# Resize the EBS volume.
-aws ec2 modify-volume --volume-id $VOLUME_ID --size $VOLUME_SIZE > /dev/null
-
-# Wait for the resize to finish.
-while [ \
-  "$(aws ec2 describe-volumes-modifications \
-    --volume-id $VOLUME_ID \
-    --filters Name=modification-state,Values="optimizing","completed" \
-    --query "length(VolumesModifications)"\
-    --output text)" != "1" ]; do
-sleep 1
-done
-
-if [ $(readlink -f /dev/xvda) = "/dev/xvda" ]
-then
-  # Rewrite the partition table so that the partition takes up all the space that it can.
-  sudo growpart /dev/xvda 1
- 
-  # Expand the size of the file system.
-  sudo resize2fs /dev/xvda1 > /dev/null
-
-else
-  # Rewrite the partition table so that the partition takes up all the space that it can.
-  sudo growpart /dev/nvme0n1 1
-
-  # Expand the size of the file system.
-  # sudo resize2fs /dev/nvme0n1p1 #(Amazon Linux 1)
-  sudo xfs_growfs /dev/nvme0n1p1 > /dev/null #(Amazon Linux 2)
-fi
-df -m /
-#
 #
 echo "Uninstall AWS CLI v1"
 sudo /usr/local/bin/pip uninstall awscli -y 2&> /dev/null
@@ -72,6 +29,9 @@ if [ $? -eq 0 ]; then
   echo "export TF_VAR_region=${AWS_REGION}" | tee -a ~/.bash_profile
   aws configure set default.region ${AWS_REGION}
   aws configure get region
+else
+  echo "ERROR: Could not find Instance profile eksworkshop-admin! - DO NOT PROCEED exiting"
+  exit
 fi
 
 echo "Setup Terraform cache"
@@ -139,6 +99,56 @@ curl --silent "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
 python3 get-pip.py 2&> /dev/null
 echo "git-remote-codecommit"
 pip3 install git-remote-codecommit 2&> /dev/null
+
+# ------  resize OS disk -----------
+# Specify the desired volume size in GiB as a command-line argument. If not specified, default to 20 GiB.
+VOLUME_SIZE=${1:-32}
+
+# Get the ID of the environment host Amazon EC2 instance.
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data//instance-id)
+
+# Get the ID of the Amazon EBS volume associated with the instance.
+VOLUME_ID=$(aws ec2 describe-instances \
+  --instance-id $INSTANCE_ID \
+  --query "Reservations[0].Instances[0].BlockDeviceMappings[0].Ebs.VolumeId" \
+  --output text)
+
+# Resize the EBS volume.
+aws ec2 modify-volume --volume-id $VOLUME_ID --size $VOLUME_SIZE > /dev/null
+
+# Wait for the resize to finish.
+while [ \
+  "$(aws ec2 describe-volumes-modifications \
+    --volume-id $VOLUME_ID \
+    --filters Name=modification-state,Values="optimizing","completed" \
+    --query "length(VolumesModifications)"\
+    --output text)" != "1" ]; do
+sleep 1
+done
+
+if [ $(readlink -f /dev/xvda) = "/dev/xvda" ]
+then
+  # Rewrite the partition table so that the partition takes up all the space that it can.
+  sudo growpart /dev/xvda 1
+ 
+  # Expand the size of the file system.
+  sudo resize2fs /dev/xvda1 > /dev/null
+
+else
+  # Rewrite the partition table so that the partition takes up all the space that it can.
+  sudo growpart /dev/nvme0n1 1
+
+  # Expand the size of the file system.
+  # sudo resize2fs /dev/nvme0n1p1 #(Amazon Linux 1)
+  sudo xfs_growfs /dev/nvme0n1p1 > /dev/null #(Amazon Linux 2)
+fi
+df -m /
+#
+
+
+
+
+
 
 echo "Verify ...."
 for command in jq aws wget kubectl terraform eksctl helm kubectx
