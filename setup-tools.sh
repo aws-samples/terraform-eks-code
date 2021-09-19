@@ -22,7 +22,7 @@ if [ $? -eq 0 ]; then
   rm -vf ${HOME}/.aws/credentials
   export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
   export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
-  test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo AWS_REGION is not set !!
+  test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo "AWS_REGION is not set !!"
   echo "export ACCOUNT_ID=${ACCOUNT_ID}" | tee -a ~/.bash_profile
   echo "export AWS_REGION=${AWS_REGION}" | tee -a ~/.bash_profile
   export TF_VAR_region=${AWS_REGION}
