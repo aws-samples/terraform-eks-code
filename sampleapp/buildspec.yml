@@ -86,17 +86,15 @@ phases:
       - acc=$(echo $CODEBUILD_BUILD_ARN | cut -f5 -d':')
       - export AWS_REGION=$(echo $reg)
       - export ACCOUNT_ID=$(echo $acc)
-      - echo $AWS_ACCESS_KEY_ID
-      - echo $AWS_SECRET_ACCESS_KEY
       - echo $CODEBUILD_SRC_DIR
 
       - echo "yum installs"
       - "yum -y -q -e 0 install moreutils bash-completion nmap bind-utils"
       - echo "Terraform"
-      - wget -q https://releases.hashicorp.com/terraform/0.15.3/terraform_0.15.3_linux_amd64.zip
-      - unzip -qq terraform_0.15.3_linux_amd64.zip
+      - wget -q https://releases.hashicorp.com/terraform/1.0.7/terraform_1.0.7_linux_amd64.zip
+      - unzip -qq terraform_1.0.7_linux_amd64.zip
       - mv terraform /usr/local/bin/
-      - rm -f terraform_0.15.3_linux_amd64.zip
+      - rm -f terraform_1.0.7_linux_amd64.zip
 
       - echo "kubectl"
       - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
