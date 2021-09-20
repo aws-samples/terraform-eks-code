@@ -15,8 +15,8 @@ resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
           ]
           Effect = "Allow"
           Resource = [
-             format("arn:aws:logs:%s:%s:log-group:/aws/codebuild/eks-cicd-build-app",data.aws_region.current.name,data.aws_caller_identity.current.account_id),
-             #format("arn:aws:logs:%s:%s:log-group:/aws/codebuild/eks-cicd-build-app:*",data.aws_region.current.name,data.aws_caller_identity.current.account_id)
+             format("arn:aws:logs:%s:%s:log-group:/aws/codebuild/eks-cicd-build-app",data.aws_caller_identity.current.account_id, data.aws_region.current.name),
+             format("arn:aws:logs:%s:%s:log-group:/aws/codebuild/eks-cicd-build-app:*",data.aws_caller_identity.current.account_id, data.aws_region.current.name)
           ]
         },
         {
@@ -29,8 +29,7 @@ resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
           ]
           Effect = "Allow"
           Resource = [
-
-            format("arn:aws:codepipeline-%s-*",data.aws_region.current.name),
+            "arn:aws:s3:::codepipeline-eu-west-1-*",
           ]
         },
         {
@@ -39,7 +38,7 @@ resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
           ]
           Effect = "Allow"
           Resource = [
-            format("arn:aws:codecommit:%s:%s:Terraform-EKS",data.aws_region.current.name,data.aws_caller_identity.current.account_id),
+            "arn:aws:codecommit:eu-west-1:566972129213:Terraform-EKS",
           ]
         },
         {
@@ -52,7 +51,7 @@ resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
           ]
           Effect = "Allow"
           Resource = [
-            format("arn:aws:codebuild:%s:%s:report-group/eks-cicd-build-app-*", data.aws_region.current.name,data.aws_caller_identity.current.account_id),
+            format("arn:aws:codebuild:%s:%s:report-group/eks-cicd-build-app-*",data.aws_caller_identity.current.account_id, data.aws_region.current.name),
           ]
         },
       ]
