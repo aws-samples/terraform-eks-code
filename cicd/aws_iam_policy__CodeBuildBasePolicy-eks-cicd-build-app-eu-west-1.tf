@@ -29,7 +29,6 @@ resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
           ]
           Effect = "Allow"
           Resource = [
-            #"arn:aws:s3:::codepipeline-eu-west-1-*",
             format("arn:aws:s3:::codepipeline-%s-*",data.aws_region.current.name)
           ]
         },
@@ -39,7 +38,6 @@ resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
           ]
           Effect = "Allow"
           Resource = [
-            #"arn:aws:codecommit:eu-west-1:566972129213:Terraform-EKS",
             format("arn:aws:codecommit:%s:%s:Terraform-EKS", data.aws_region.current.name,data.aws_caller_identity.current.account_id),
           ]
         },
