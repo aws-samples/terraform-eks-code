@@ -1,7 +1,7 @@
 
 # aws_iam_policy.CodeBuildBasePolicy-eks-cicd-build-app:
 resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
-  description = "Policy used in trust relationship with CodeBuild v0.3"
+  description = "Policy used in trust relationship with CodeBuild v0.4"
   name        = "CodeBuildBasePolicy-eks-cicd-build-app"
   path        = "/service-role/"
   policy = jsonencode(
@@ -29,7 +29,8 @@ resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
           ]
           Effect = "Allow"
           Resource = [
-            "arn:aws:s3:::codepipeline-eu-west-1-*",
+            #"arn:aws:s3:::codepipeline-eu-west-1-*",
+            format("arn:aws:s3:::codepipeline-%s-*",data.aws_region.current.name)
           ]
         },
         {
