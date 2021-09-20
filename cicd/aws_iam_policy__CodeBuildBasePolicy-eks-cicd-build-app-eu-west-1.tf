@@ -15,7 +15,7 @@ resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
           ]
           Effect = "Allow"
           Resource = [
-             format("arn:aws:logs:%s:%s:log-group:/aws/codebuild/eks-cicd-build-app", data.aws_region.current.name,data.aws_caller_identity.current.account_id),
+             format("arn:aws:logs:%s:%s:log-group:/aws/codebuild/eks-cicd-build-app",data.aws_caller_identity.current.account_id, data.aws_region.current.name),
              format("arn:aws:logs:%s:%s:log-group:/aws/codebuild/eks-cicd-build-app:*", data.aws_region.current.name,data.aws_caller_identity.current.account_id)
           ]
         },
