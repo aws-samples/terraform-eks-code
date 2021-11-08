@@ -104,7 +104,7 @@ echo "git-remote-codecommit"
 pip3 install git-remote-codecommit 2&> /dev/null
 
 # ------  resize OS disk -----------
-# Specify the desired volume size in GiB as a command-line argument. If not specified, default to 20 GiB.
+# Specify the desired volume size in GiB as a command-line argument. If not specified, default to 32 GiB.
 VOLUME_SIZE=${1:-32}
 
 # Get the ID of the environment host Amazon EC2 instance.
@@ -147,11 +147,7 @@ else
 fi
 df -m /
 #
-
-
-
-
-
+#
 
 echo "Verify ...."
 for command in jq aws wget kubectl terraform eksctl helm kubectx
