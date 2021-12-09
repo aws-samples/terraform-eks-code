@@ -11,6 +11,10 @@ else
     rm -f $of $of
 fi
 
+#
+## using terragrunt for the DRY code might be a better approach than the below -
+#
+
 mkdir -p generated
 
 #default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr"]
