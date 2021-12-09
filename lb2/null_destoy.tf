@@ -11,6 +11,8 @@ provisioner "local-exec" {
         #echo "Remove helm deployment"
         #helm delete aws-load-balancer-controller -n kube-system
         if [ -f "crds.yml" ]; then
+        echo "Set context"
+        kubectx ${data.aws_eks_cluster.eks_cluster.arn}
         echo "Remove CRD"
         kubectl delete -f crds.yaml 
         echo "done"
