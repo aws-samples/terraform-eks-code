@@ -15,8 +15,9 @@ for i in $dirs; do
     if [ $? -eq 0 ]; then
         rc=$(terraform state list | wc -l ) 
     fi
-    # array elements in hetre so special rule
-    if [ "$i" == "tf-setup" ] && [ $rc -ge 12 ]; then echo "$rc in tf state expected 12 so skipping build ..." && continue; fi
+    # array elements in here so special rule
+    #if [ "$i" == "tf-setup" ] && [ $rc -ge 12 ]; then echo "$rc in tf state expected 12 so skipping build ..." && continue; fi
+    #
     if [ $rc -ge $tobuild ]; then echo "$rc in tf state expected $tobuild so skipping build ..." && continue; fi
     
     terraform plan -out tfplan -no-color
