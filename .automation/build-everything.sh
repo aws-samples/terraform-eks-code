@@ -7,7 +7,7 @@ for i in $dirs; do
     cd ../$i
     echo " "
     echo "**** Building in $i ****"
-    tobuild=$(grep 'data\|resource' *.tf | grep '"' | grep  '{' | grep -v '#' |  wc -l)
+    tobuild=$(grep 'data\|resource' *.tf | grep '"' | grep  '{' | grep -v '#\|=' |  wc -l)
     rm -rf .terraform*
     terraform init -no-color > /dev/null
     rc=0
