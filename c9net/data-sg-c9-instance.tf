@@ -16,7 +16,7 @@ data "aws_instance" "c9inst" {
     values = ["*${var.c9label}*"]
   }
 }
-
+# line 21 is broken. had to hard code the sg id manully to get it working.
 data "aws_security_group" "c9sg" {
   name = sort(data.aws_instance.c9inst.security_groups)[0]
 }
