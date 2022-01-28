@@ -27,3 +27,10 @@ type=number
 default=8
 }
 
+variable "no-output" {
+  description = "The name of the EKS Cluster"
+  type        = string
+  default     = "secret"
+  sensitive   = true
+}
+
