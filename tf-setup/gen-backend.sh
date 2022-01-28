@@ -133,6 +133,9 @@ cp  -v aws.tf ../extra/nodeg2
 cp  -v vars-main.tf ../extra/nodeg2
 cp  -v aws.tf ../extra/eks-cidr2
 cp  -v vars-main.tf ../extra/eks-cidr2
+cp  -v aws.tf ../extra/.fargate
+cp  -v vars-main.tf ../extra/.fargate
+cp  -v var-tfid.tf ../extra/.fargate
 
 cd ~/environment/tfekscode
 terraform fmt --recursive > /dev/null
