@@ -22,8 +22,8 @@ resource "kubernetes_config_map" "aws-observability__aws-logging" {
                 log_group_name fluent-bit-eks-fargate
                 log_stream_prefix fargate1-
                 auto_create_group true
-                sts_endpoint https://sts.eu-west-1.amazonaws.com
-                endpoint https://logs.eu-west-1.amazonaws.com  
+                sts_endpoint https://sts.${data.aws_region.current.name}.amazonaws.com
+                endpoint https://logs.${data.aws_region.current.name}.amazonaws.com  
         EOT
     }
 
