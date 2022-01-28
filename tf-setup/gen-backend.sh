@@ -107,6 +107,7 @@ cp  -v generated/remote-net.tf ../nodeg
 cp  -v generated/remote-net.tf ../extra/nodeg2
 cp  -v generated/remote-net.tf ../eks-cidr
 cp  -v generated/remote-net.tf ../extra/eks-cidr2
+cp  -v generated/remote-net.tf ../extra/.fargate
 
 cp  -v generated/remote-iam.tf ../cluster 
 cp  -v generated/remote-iam.tf ../nodeg
@@ -118,6 +119,7 @@ cp  -v generated/remote-cluster.tf ../eks-cidr
 cp  -v generated/remote-cluster.tf ../extra/eks-cidr2
 cp  -v generated/remote-cluster.tf ../lb2
 cp  -v generated/remote-cluster.tf ../extra/nodeg2
+cp  -v generated/remote-cluster.tf ../extra/.fargate
 
 # Prepare "local state" for the sample app and extra activities
 #cp  aws.tf ../sampleapp
