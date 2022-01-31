@@ -17,6 +17,13 @@ variable "cluster-name" {
   default     = "mycluster1"
 }
 
+
+variable "eks_version" {
+  type    = string
+  default = "1.21"
+}
+
+
 variable "stages" {
 type=list(string)
 default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr","sampleapp"]

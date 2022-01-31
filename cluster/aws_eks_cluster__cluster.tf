@@ -12,7 +12,7 @@ resource "aws_eks_cluster" "cluster" {
   
   role_arn   = data.terraform_remote_state.iam.outputs.cluster_service_role_arn
   tags       = {}
-  version    = "1.20"
+  version    = var.eks_version
 
   timeouts {}
 
