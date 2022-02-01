@@ -12,7 +12,6 @@ provisioner "local-exec" {
         ./test.sh ${aws_eks_cluster.cluster.name}
         echo -e "\x1B[32m Checking Authorization ${aws_eks_cluster.cluster.name}...should see Server Version: v${var.eks_version}.xxx \x1B[0m"
         ./auth.sh ${aws_eks_cluster.cluster.name}
-        ./c9-auth.sh
         echo "************************************************************************************"
      EOT
 }

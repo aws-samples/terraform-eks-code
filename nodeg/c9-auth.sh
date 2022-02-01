@@ -1,5 +1,6 @@
 test -n "$C9_PID" && echo C9_PID is "$C9_PID" || "echo C9_PID is not set && exit"
 echo "local auth"
+sleep 5
 c9builder=$(aws cloud9 describe-environment-memberships --environment-id=$C9_PID | jq -r '.memberships[].userArn')
 if echo ${c9builder} | grep -q user; then
 	rolearn=${c9builder}
