@@ -76,7 +76,7 @@ done
 cd $d
 echo "**** REMOTE ****"
 
-RSECTIONS=('net' 'iam' 'c9net' 'cluster') 
+RSECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg') 
 for section in "${RSECTIONS[@]}"
 do
     tabn=`terraform output dynamodb_table_name_$section | tr -d '"'`
@@ -108,6 +108,8 @@ cp  -v generated/remote-net.tf ../extra/nodeg2
 cp  -v generated/remote-net.tf ../eks-cidr
 cp  -v generated/remote-net.tf ../extra/eks-cidr2
 cp  -v generated/remote-net.tf ../extra/.fargate
+
+cp  -v generated/remote-nodeg.tf ../extra/.karpenter
 
 cp  -v generated/remote-iam.tf ../cluster 
 cp  -v generated/remote-iam.tf ../nodeg
