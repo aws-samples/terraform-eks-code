@@ -3,7 +3,7 @@
 
 resource "helm_release" "karpenter" {
   depends_on = [
-    aws_ec2_tag.karpenter_tags
+    aws_ec2_tag.karpenter_tags,null_resource.modify_aws_auth
   ]
 
   namespace        = var.karpenter_namespace
