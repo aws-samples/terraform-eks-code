@@ -25,6 +25,11 @@ resource "null_resource" "modify_aws_auth" {
                 --arn ${self.triggers.iam_role_arn} \
                 --group system:bootstrappers \
                 --group system:nodes
+            # get the chart
+            helm repo add karpenter https://charts.karpenter.sh
+            helm repo update
+            helm fetch karpenter/karpenter
+            tar -xzf karp*.tgz       
         EOT
   }
 

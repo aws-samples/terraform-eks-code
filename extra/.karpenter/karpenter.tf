@@ -11,7 +11,7 @@ resource "helm_release" "karpenter" {
 
   name       = "karpenter"
   #repository = "https://charts.karpenter.sh"
-  chart      = "./chart/karpenter"
+  chart      = "./karpenter"
   version    = var.karpenter_version
 
   set {
