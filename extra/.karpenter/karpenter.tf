@@ -12,16 +12,16 @@ resource "helm_release" "karpenter" {
   name       = "karpenter"
   #repository = "https://charts.karpenter.sh"
   chart      = "./karpenter"
-  #version    = var.karpenter_version
+  version    = var.karpenter_version
 
   set {
     name  = "controller.image"
-    value = format("%s.dkr.ecr.%s.amazonaws.com/karpenter/controller:v0.6.0",data.aws_caller_identity.current.account_id,data.aws_region.current.name)
+    value = format("%s.dkr.ecr.%s.amazonaws.com/karpenter/controller:v%s",data.aws_caller_identity.current.account_id,data.aws_region.current.name,var.karpenter_version)
   }
 
   set {
     name  = "webhook.image"
-    value = format("%s.dkr.ecr.%s.amazonaws.com/karpenter/webhook:v0.6.0",data.aws_caller_identity.current.account_id,data.aws_region.current.name)
+    value = format("%s.dkr.ecr.%s.amazonaws.com/karpenter/webhook:v%s",data.aws_caller_identity.current.account_id,data.aws_region.current.name,var.karpenter_version)
   }
 
 

@@ -28,7 +28,7 @@ resource "null_resource" "modify_aws_auth" {
             # get the chart
             helm repo add karpenter https://charts.karpenter.sh
             helm repo update
-            helm fetch karpenter/karpenter
+            helm fetch karpenter/karpenter --version ${var.var.karpenter_version}
             tar -xzf karp*.tgz       
         EOT
   }
