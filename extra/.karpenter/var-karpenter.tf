@@ -7,11 +7,6 @@ variable "karpenter_namespace" {
   type        = string
 }
 
-variable "karpenter_version" {
-  description = "Karpenter Version"
-  default     = "0.6.1"
-  type        = string
-}
 
 variable "karpenter_target_nodegroup" {
   description = "The node group to deploy Karpenter to"
@@ -19,11 +14,6 @@ variable "karpenter_target_nodegroup" {
   default="ng1"
 }
 
-variable "bottlerocket_k8s_version" {
-  description = "Kubernetes version for Bottlerocket AMI"
-  default     = "1.21"
-  type        = string
-}
 
 variable "karpenter_ec2_instance_types" {
   description = "List of instance types that can be used by Karpenter"
