@@ -58,14 +58,10 @@ resource "local_file" "karpenter_provisioner" {
         "instanceProfile" = aws_iam_instance_profile.karpenter_node.name
         "launchTemplate"  = aws_launch_template.bottlerocket.name
         "karpenter.sh/securityGroupSelector" = {
-          "key"      = "Name"
-          "operator" = "In"
-          "values"   = "${data.aws_eks_cluster.eks.vpc_config.0.cluster_security_group_id}"
+          "Name"  = "${data.aws_eks_cluster.eks.vpc_config.0.cluster_security_group_id}"
         }        
         "karpenter.sh/subnetSelector" = {
-          "key"      = "Name"
-          "operator" = "In"
-          "values"   = "*${var.cluster-name}*"
+          "Name" = "*${var.cluster-name}*"
         }
       }
       "requirements" = [
