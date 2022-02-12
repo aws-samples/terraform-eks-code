@@ -22,7 +22,7 @@ controller:
               values:
               - controller
           topologyKey: topology.kubernetes.io/zone
-  replicas: 3
+  replicas: 2
 
 webhook:
   nodeSelector:
@@ -39,4 +39,4 @@ webhook:
               values:
               - webhook
           topologyKey: topology.kubernetes.io/zone
-  replicas: 3
+  replicas: 2
