@@ -32,7 +32,6 @@ resource "helm_release" "karpenter" {
         "karpenter_iam_role"   = module.iam_assumable_role_karpenter.iam_role_arn,
         "cluster_name"         = var.cluster-name,
         "cluster_endpoint"     = data.aws_eks_cluster.eks.endpoint,
-        #"karpenter_node_group" = var.karpenter_target_nodegroup,
         "karpenter_node_group" = data.terraform_remote_state.nodeg.outputs.ng1-name
       }
     )
@@ -58,6 +57,12 @@ resource "local_file" "karpenter_provisioner" {
         # As of today the Provisioner CRD requires it regardless. Fix is coming in future releases
         "instanceProfile" = aws_iam_instance_profile.karpenter_node.name
         "launchTemplate"  = aws_launch_template.bottlerocket.name
+        "karpenter.sh/securityGroupSelector" = data.aws_eks_cluster.eks.vpc_config.0.cluster_security_group_id
+        "karpenter.sh/subnetSelector" = {
+          "key"      = "Name"
+          "operator" = "In"
+          "values"   = "*${var.cluster-name}*"
+        }
       }
       "requirements" = [
         {

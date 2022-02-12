@@ -1,7 +1,5 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
-
-
 provider "helm" {
   kubernetes {
     host                   = data.aws_eks_cluster.eks.endpoint
