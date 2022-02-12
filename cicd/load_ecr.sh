@@ -26,5 +26,5 @@ docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/sample-app
 #docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/webhook
 #docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/controller
 docker pull public.ecr.aws/eks-distro/kubernetes/pause:3.5
-docker tag public.ecr.aws/eks-distro/kubernetes/pause:3.5 $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pause
+docker tag public.ecr.aws/eks-distro/kubernetes/pause:3.5 $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pause:3.5
 docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pause

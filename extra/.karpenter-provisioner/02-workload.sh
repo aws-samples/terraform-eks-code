@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 0
       containers:
         - name: inflate
-          image: public.ecr.aws/eks-distro/kubernetes/pause:3.2
+          image: $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pause:3.5
           resources:
             requests:
               cpu: 1
