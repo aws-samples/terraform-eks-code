@@ -23,8 +23,8 @@ docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/sample-app
 #docker pull public.ecr.aws/karpenter/webhook:v${var.karpenter_version}
 #docker tag public.ecr.aws/karpenter/webhook $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/webhook
 #docker tag public.ecr.aws/karpenter/controller $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/controller
-docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/webhook
-docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/controller
+#docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/webhook
+#docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/controller
 docker pull public.ecr.aws/eks-distro/kubernetes/pause:3.5
 docker tag public.ecr.aws/eks-distro/kubernetes/pause:3.5 $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pause
 docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pause

@@ -8,10 +8,13 @@ provisioner "local-exec" {
     when = create
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
+        echo "Karpenter ..."
         docker pull public.ecr.aws/karpenter/controller:v${var.karpenter_version}
         docker tag public.ecr.aws/karpenter/controller:v${var.karpenter_version} $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/controller
         docker pull public.ecr.aws/karpenter/webhook:v${var.karpenter_version}
         docker tag public.ecr.aws/karpenter/webhook:v${var.karpenter_version} $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/webhook
+        docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/webhook:v${var.karpenter_version}
+        docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/controller:v${var.karpenter_version}
         ./load_ecr.sh
         echo "************************************************************************************"
      EOT
