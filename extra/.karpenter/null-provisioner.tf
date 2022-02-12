@@ -1,6 +1,5 @@
 resource "null_resource" "provisioner" {
   triggers = {
-    iam_role_arn = helm_release.karpenter.arn
     cluster      = var.cluster-name
   }
 
