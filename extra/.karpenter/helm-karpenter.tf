@@ -61,7 +61,8 @@ resource "local_file" "karpenter_provisioner" {
           "Name"  = "${data.aws_eks_cluster.eks.vpc_config.0.cluster_security_group_id}"
         }        
         "subnetSelector" = {
-          "Name" = "*${var.cluster-name}*"
+          #"Name" = "*${var.cluster-name}*"
+          "Name" = "Private*"
         }
       }
       "requirements" = [
