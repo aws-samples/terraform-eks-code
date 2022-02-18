@@ -9,7 +9,7 @@ The intent is to build a private EKS cluster with some sample application just u
 
 The workshop also does not (deliberately) use any of the available Terraform modules for VPC's or EKS. The idea being you can take this code into your own module structure as you see fit.
 
-Much of the workshops Terraform code was originally created by the authors (awsandy) - other notable tool:
+Much of the workshops Terraform code was originally created by the author's (awsandy) other notable tool:
 
 https://github.com/aws-samples/aws2tf
 
