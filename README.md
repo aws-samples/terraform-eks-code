@@ -1,17 +1,21 @@
-## My Project
+## Terraform EKS workshop code
 
-TODO: Fill this README out!
+This code repo is intended to be used with the public AWS workshop:
 
-Be sure to:
+https://tf-eks-workshop.workshop.aws/
 
-* Change the title in this README
-* Edit your repository description on GitHub
 
-## Security
+The intent is to build a private EKS cluster with some sample application just using Terraform (no "eksctl" !).
 
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+The workshop also does not (deliberately) use any of the available Terraform modules for VPC's or EKS. The idea being you can take this code into your own module structure as you see fit.
 
-## License
+Much of the workshops Terraform code was originally created by the authors (awsandy) - other notable tool:
 
-This library is licensed under the MIT-0 License. See the LICENSE file.
+https://github.com/aws-samples/aws2tf
+
+-----
+
+Contributions and comments are welcome.
+
+
 
