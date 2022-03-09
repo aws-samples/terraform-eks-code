@@ -21,10 +21,10 @@ docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/sample-app
 # karpenter stuff 
 docker pull public.ecr.aws/karpenter/controller:v${1}
 docker pull public.ecr.aws/karpenter/webhook:v${1}
-docker tag public.ecr.aws/karpenter/webhook:v${1} $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/webhook
-docker tag public.ecr.aws/karpenter/controller:v${1} $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/controller
-docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/webhook
-docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/controller
+docker tag public.ecr.aws/karpenter/webhook:v${1} $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/webhook:v${1}
+docker tag public.ecr.aws/karpenter/controller:v${1} $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/controller:v${1}
+docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/webhook:v${1}
+docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/karpenter/controller:v${1}
 docker pull public.ecr.aws/eks-distro/kubernetes/pause:3.5
 docker tag public.ecr.aws/eks-distro/kubernetes/pause:3.5 $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pause:3.5
 docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pause:3.5
