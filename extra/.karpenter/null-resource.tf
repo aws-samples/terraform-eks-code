@@ -26,6 +26,8 @@ resource "null_resource" "modify_aws_auth" {
                 --group system:bootstrappers \
                 --group system:nodes
             # get the chart
+            rm -rf karpenter
+            rm -rf karpenter-*.tgz
             helm repo add karpenter https://charts.karpenter.sh
             helm repo update
             helm fetch karpenter/karpenter --version ${var.karpenter_version}
