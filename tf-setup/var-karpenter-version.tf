@@ -4,7 +4,7 @@
 
 variable "karpenter_version" {
   description = "Karpenter Version"
-  default     = "0.6.1"
+  default     = "0.6.4"
   type        = string
 }
 
