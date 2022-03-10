@@ -24,6 +24,16 @@ resource "helm_release" "karpenter" {
     value = format("%s.dkr.ecr.%s.amazonaws.com/karpenter/webhook:v%s",data.aws_caller_identity.current.account_id,data.aws_region.current.name,var.karpenter_version)
   }
 
+  set {
+    name  = "clusterName"
+    value = var.cluster_name
+  }
+
+  set {
+    name  = "clusterEndpoint"
+    value = data.aws_eks_cluster.eks.endpoint
+  }
+
 
   values = [
     templatefile(

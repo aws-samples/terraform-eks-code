@@ -1,10 +1,9 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-
 variable "karpenter_version" {
   description = "Karpenter Version"
-  default     = "0.6.4"
+  default     = "0.6.5"
   type        = string
 }
 
