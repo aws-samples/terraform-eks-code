@@ -26,7 +26,7 @@ resource "helm_release" "karpenter" {
 
   set {
     name  = "clusterName"
-    value = var.cluster_name
+    value = var.cluster-name
   }
 
   set {
