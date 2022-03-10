@@ -65,9 +65,9 @@ resource "local_file" "karpenter_provisioner" {
       "provider" = {
         # The launch template already has instance profile, so instanceProfile field is not required
         # As of today the Provisioner CRD requires it regardless. Fix is coming in future releases
-        "instanceProfile" = aws_iam_instance_profile.karpenter_node.name
+        #"instanceProfile" = aws_iam_instance_profile.karpenter_node.name
         "launchTemplate"  = aws_launch_template.bottlerocket.name
-        "securityGroupSelector" = {
+        " securityGroupSelector" = {
           "Name"  = "${data.aws_eks_cluster.eks.vpc_config.0.cluster_security_group_id}"
         }        
         "subnetSelector" = {
