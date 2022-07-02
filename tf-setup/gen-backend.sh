@@ -35,7 +35,7 @@ do
     # write out the backend config 
     printf "" > $of
     printf "terraform {\n" >> $of
-    printf "required_version = \"~> 1.1.0\"\n" >> $of
+    printf "required_version = \"~> 1.2.4\"\n" >> $of
     printf "required_providers {\n" >> $of
     printf "  aws = {\n" >> $of
     printf "   source = \"hashicorp/aws\"\n" >> $of
