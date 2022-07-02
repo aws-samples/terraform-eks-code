@@ -3,7 +3,7 @@ rm -f build.log
 date >> build.log
 cur=`pwd`
 cd ~/environment/tfekscode/lb2
-curl -o iam_policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.4.0/docs/install/iam_policy.json -s
+curl -o iam_policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.4.2/docs/install/iam_policy.json -s
 cd $cur
 buildok=1
 #orig
