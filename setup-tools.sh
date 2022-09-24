@@ -89,7 +89,7 @@ sudo yum install -y session-manager-plugin.rpm > /dev/null
 rm -f ~/environment/session-manager-plugin.rpm
 #
 echo "install tfsec ..."
-wget -q https://github.com/aquasecurity/tfsec/releases/download/v0.56.0/tfsec-linux-amd64
+wget -q https://github.com/aquasecurity/tfsec/releases/download/v1.27.5/tfsec-linux-amd64
 sudo mv tfsec-linux-amd64 /usr/bin/tfsec
 sudo chmod 755 /usr/bin/tfsec 
 #

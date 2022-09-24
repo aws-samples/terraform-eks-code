@@ -1,10 +1,10 @@
 terraform {
-  required_version = "~> 1.2.4"
+  required_version = "~> 1.3.0"
   required_providers {
     aws = {
     source = "hashicorp/aws"
     #  Lock version to prevent unexpected problems
-    version = "3.69"
+    version = "4.31.0"
     }
     null = {
     source = "hashicorp/null"
@@ -16,7 +16,7 @@ terraform {
     }
     kubernetes = {
     source = "hashicorp/kubernetes"
-    version = "2.7.1"
+    version = "2.13.1"
     }
     helm = {
       source  = "hashicorp/helm"

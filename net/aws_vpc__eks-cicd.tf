@@ -3,8 +3,6 @@
 resource "aws_vpc" "vpc-cicd" {
   assign_generated_ipv6_cidr_block = false
   cidr_block                       = "172.30.0.0/24"
-  enable_classiclink               = false
-  enable_classiclink_dns_support   = false
   enable_dns_hostnames             = false
   enable_dns_support               = true
   instance_tenancy                 = "default"
@@ -12,4 +10,13 @@ resource "aws_vpc" "vpc-cicd" {
     "Name"     = "eks-cicd"
     "workshop" = "eks-cicd"
   }
+}
+
+
+output "cicd-vpc" {
+  value = aws_vpc.vpc-cicd.id
+}
+
+output "cicd-cidr" {
+  value = aws_vpc.vpc-cicd.cidr_block
 }
