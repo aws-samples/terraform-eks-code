@@ -15,11 +15,8 @@ resource "aws_s3_bucket" "terraform_state" {
   // usage
   force_destroy = true
 
-  # Enable versioning so we can see the full revision history of our
-  # state files
-  versioning {
-    enabled = true
-  }
+ 
+
 
   lifecycle {
     ignore_changes = [bucket]
@@ -41,6 +38,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" 
 
 
 resource "aws_s3_bucket_versioning" "terraform_state" {
+   # Enable versioning so we can see the full revision history of our
+  # state files
   bucket = aws_s3_bucket.terraform_state.id
   versioning_configuration {
     status = "Enabled"
