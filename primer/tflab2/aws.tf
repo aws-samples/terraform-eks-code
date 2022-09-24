@@ -5,7 +5,7 @@ terraform {
     aws = {
     source = "hashicorp/aws"
     #  Allow only version 3.22
-    version = "= 4.32.0"
+    version = "= 4.31.0"
     }   
   }
 }
