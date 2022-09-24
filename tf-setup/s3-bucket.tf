@@ -7,7 +7,6 @@ output "Name" {
 }
 
 
-
 resource "aws_s3_bucket" "terraform_state" {
 
   bucket = data.external.bucket_name.result.Name
@@ -22,15 +21,20 @@ resource "aws_s3_bucket" "terraform_state" {
     enabled = true
   }
 
-  # Enable server-side encryption by default
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
   lifecycle {
     ignore_changes = [bucket]
+  }
+
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" {
+  bucket = data.external.bucket_name.result.Name
+
+  rule {
+    bucket_key_enabled = false
+
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
   }
 }
