@@ -40,7 +40,7 @@ do
     printf "  aws = {\n" >> $of
     printf "   source = \"hashicorp/aws\"\n" >> $of
     printf "#  Lock version to avoid unexpected problems\n" >> $of
-    printf "   version = \"4.31.0\"\n" >> $of
+    printf "   version = \"4.32.0\"\n" >> $of
     printf "  }\n" >> $of
     printf "  kubernetes = {\n" >> $of
     printf "   source = \"hashicorp/kubernetes\"\n" >> $of
@@ -58,7 +58,7 @@ do
     ##
     printf "provider \"aws\" {\n" >> $of
     printf "region = var.region\n"  >> $of
-    printf "shared_credentials_file = \"~/.aws/credentials\"\n" >> $of
+    printf "shared_credentials_files = [\"~/.aws/credentials\"]\n" >> $of
     printf "profile = var.profile\n" >> $of
     printf "}\n" >> $of
 

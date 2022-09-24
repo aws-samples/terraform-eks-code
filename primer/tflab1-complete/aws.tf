@@ -5,7 +5,7 @@ terraform {
     source = "hashicorp/aws"
     #  Allow any 3.22+  version of the AWS provider
     #version = "~> 3.22"
-    version = "= 3.75.2"
+    version = "= 4.32.2"
     }
     null = {
     source = "hashicorp/null"
@@ -21,7 +21,7 @@ terraform {
 
 provider "aws" {
   region                  = var.region
-  shared_credentials_file = "~/.aws/credentials"
+  shared_credentials_files = ["~/.aws/credentials"]
   profile                 = "default"
 }
 provider "null" {}

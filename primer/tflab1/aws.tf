@@ -5,14 +5,14 @@ terraform {
     aws = {
     source = "hashicorp/aws"
     #  Allow 3.39  version of the AWS provider
-    version = "= 3.75.2"
+    version = "= 4.32.0"
     }
   }
 }
 
 provider "aws" {
   region                  = var.region
-  shared_credentials_file = "~/.aws/credentials"
+  shared_credentials_files = ["~/.aws/credentials"]
   profile                 = "default"
 }
 
