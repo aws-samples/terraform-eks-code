@@ -8,14 +8,12 @@ output "Name" {
 
 
 resource "aws_s3_bucket" "terraform_state" {
-
-  bucket = data.external.bucket_name.result.Name
+depends_on = [null_resource.gen_idfile]
+  bucket = format("tf-state-workshop-%s",var.tfid)
 
   // This is only here so we can destroy the bucket as part of automated tests. You should not copy this for production
   // usage
   force_destroy = true
-
- 
 
 
   lifecycle {
