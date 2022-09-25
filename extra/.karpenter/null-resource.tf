@@ -32,7 +32,7 @@ resource "null_resource" "modify_aws_auth" {
             helm repo update
             helm fetch karpenter/karpenter --version ${var.karpenter_version}
             tar -xzf karp*.tgz   
-            aws iam create-service-linked-role --aws-service-name spot.amazonaws.com    
+            aws iam create-service-linked-role --aws-service-name spot.amazonaws.com 2> /dev/null  
         EOT
   }
 
