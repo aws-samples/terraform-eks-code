@@ -1,1 +1,1 @@
-../../tf-setup/remote-cluster.tf
+../../tf-setup/remotes/remote-cluster.tf

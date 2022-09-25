@@ -1,1 +1,1 @@
-../../tf-setup/remote-net.tf
+../../tf-setup/remotes/remote-net.tf

@@ -1,1 +1,1 @@
-../../tf-setup/remote-nodeg.tf
+../../tf-setup/remotes/remote-nodeg.tf
