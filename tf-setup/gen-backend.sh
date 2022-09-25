@@ -69,6 +69,8 @@ do
 done
 cd $d
 
+cp generated/backend-tf-setup.tf backend-tf-setup.tf
+mv aws.tf aws.tf.sav
 cd ~/environment/tfekscode
 terraform fmt --recursive > /dev/null
 exit 0
