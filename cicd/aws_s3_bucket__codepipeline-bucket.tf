@@ -13,7 +13,7 @@ resource "aws_s3_bucket" "codepipeline-bucket" {
   tags           = {}
 
   force_destroy = false
-  acl           = "private"
+
 }
 
 resource "aws_s3_bucket_versioning" "codepipeline-bucket" {
@@ -26,7 +26,12 @@ resource "aws_s3_bucket_versioning" "codepipeline-bucket" {
 }
 
 resource "aws_s3_bucket_request_payment_configuration" "codepipeline-bucket" {
-  bucket = aws_s3_bucket.codepipeline-bucket.id
+  bucket = 
   payer  = "BucketOwner"
+}
+
+resource "aws_s3_bucket_acl" "codepipeline-bucket" {
+  bucket = aws_s3_bucket.codepipeline-bucket.id
+  acl    = "private"
 }
 
