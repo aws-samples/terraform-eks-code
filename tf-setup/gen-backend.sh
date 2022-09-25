@@ -2,20 +2,20 @@
 cp dot-terraform.rc $HOME/.terraformrc
 d=`pwd`
 #sleep 5
-#reg=`terraform output -json region | jq -r .[]`
-reg=$(echo "var.region" | terraform console 2> /dev/null | jq -r .)
-#if [[ -z ${reg} ]] ; then
-#    echo "no terraform output variables - exiting ....."
-#    echo "run terraform init/plan/apply in the the init directory first"
-#else
-#    echo "region=$reg"
-#    rm -f $of $of
-#fi
-
+reg=`terraform output -json region | jq -r .[]`
+#reg=$(echo "var.region" | terraform console 2> /dev/null | jq -r .)
+if [[ -z ${reg} ]] ; then
+    echo "no terraform output variables - exiting ....."
+    echo "run terraform init/plan/apply in the the init directory first"
+else
+    echo "region=$reg"
+fi
+    s3b=`terraform output -json s3_bucket | jq -r .[]`
 #
 ## using terragrunt for the DRY code might be a better approach than the below -
 #
 s3b=$(echo "aws_s3_bucket.terraform_state.id" | terraform console 2> /dev/null | jq -r .)
+
 echo $s3b
 echo $reg
 mkdir -p generated
