@@ -18,8 +18,8 @@ resource "null_resource" "gen_idfile" {
         printf "type        = string\n" >> $varfile
         printf "default     = \"%s\"\n" $id >> $varfile
         printf "}\n\n" >> $varfile
-        printf "variable \"keyid\" {\n" > $varfile
-        printf "description = \"The unique ID for the project\"\n" >> $varfile
+        printf "variable \"keyid\" {\n" >> $varfile
+        printf "description = \"The KMS key ID for the project\"\n" >> $varfile
         printf "type        = string\n" >> $varfile
         printf "default     = \"%s\"\n" $kid >> $varfile
         printf "}\n" >> $varfile
