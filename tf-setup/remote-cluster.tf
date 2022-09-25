@@ -4,6 +4,6 @@ data "terraform_remote_state" "cluster" {
   config = {
     bucket = format("tf-state-workshop-%s", var.tfid)
     region = data.aws_region.current.name
-    key    = "terraform/tf_state_cluster.tfstate"
+    key    = "terraform/terraform_locks_cluster.tfstate"
   }
 }

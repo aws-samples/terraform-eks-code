@@ -4,6 +4,6 @@ data "terraform_remote_state" "tf-setup" {
   config = {
     bucket = format("tf-state-workshop-%s", var.tfid)
     region = data.aws_region.current.name
-    key    = "terraform/tf_state_tf-setup.tfstate"
+    key    = "terraform/terraform_locks_tf-setup.tfstate"
   }
 }
