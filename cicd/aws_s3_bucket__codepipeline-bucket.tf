@@ -26,7 +26,7 @@ resource "aws_s3_bucket_versioning" "codepipeline-bucket" {
 }
 
 resource "aws_s3_bucket_request_payment_configuration" "codepipeline-bucket" {
-  bucket = 
+  bucket = aws_s3_bucket.codepipeline-bucket.id
   payer  = "BucketOwner"
 }
 
