@@ -34,8 +34,6 @@ kubectl*
 **/aws/*
 **/sw/*
 jq
-**/backend-*.tf
-backend-*.tf
 **/remote-*.tf
 **/*.old
 remote-*.tf
