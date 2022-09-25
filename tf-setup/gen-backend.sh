@@ -81,9 +81,9 @@ cd $d
 
 
 # put in place remote state access where required
-#cp  -v generated/remote-net.tf ../c9net 
-#cp  -v generated/remote-net.tf ../cluster
-#cp  -v generated/remote-net.tf ../nodeg
+##cp  -v generated/remote-net.tf ../c9net 
+##cp  -v generated/remote-net.tf ../cluster
+##cp  -v generated/remote-net.tf ../nodeg
 #cp  -v generated/remote-net.tf ../extra/nodeg2
 #cp  -v generated/remote-net.tf ../eks-cidr
 #cp  -v generated/remote-net.tf ../extra/eks-cidr2
@@ -91,8 +91,8 @@ cd $d
 
 #cp  -v generated/remote-nodeg.tf ../extra/.karpenter
 
-#cp  -v generated/remote-iam.tf ../cluster 
-#cp  -v generated/remote-iam.tf ../nodeg
+##cp  -v generated/remote-iam.tf ../cluster 
+##cp  -v generated/remote-iam.tf ../nodeg
 #cp  -v generated/remote-iam.tf ../extra/nodeg2
 
 #echo "Copy remote-cluster.tf"
