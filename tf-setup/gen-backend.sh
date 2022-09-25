@@ -1,20 +1,21 @@
 #!/bin/bash
 cp dot-terraform.rc $HOME/.terraformrc
 d=`pwd`
-sleep 5
-reg=`terraform output -json region | jq -r .[]`
-if [[ -z ${reg} ]] ; then
-    echo "no terraform output variables - exiting ....."
-    echo "run terraform init/plan/apply in the the init directory first"
-else
-    echo "region=$reg"
-    rm -f $of $of
-fi
+#sleep 5
+#reg=`terraform output -json region | jq -r .[]`
+reg=$(echo "var.region" | terraform console | jq-r .)
+#if [[ -z ${reg} ]] ; then
+#    echo "no terraform output variables - exiting ....."
+#    echo "run terraform init/plan/apply in the the init directory first"
+#else
+#    echo "region=$reg"
+#    rm -f $of $of
+#fi
 
 #
 ## using terragrunt for the DRY code might be a better approach than the below -
 #
-
+s3b=$(echo "aws_s3_bucket.terraform_state.id" | terraform console | jq -r .)
 mkdir -p generated
 
 #default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr"]
@@ -23,14 +24,14 @@ SECTIONS=('net' 'iam' 'c9net' 'cicd' 'cluster' 'nodeg' 'eks-cidr' 'sampleapp')
 for section in "${SECTIONS[@]}"
 do
 
-    tabn=`terraform output dynamodb_table_name_$section | tr -d '"'`
-    s3b=`terraform output -json s3_bucket | jq -r .[]`
+    #tabn=`terraform output dynamodb_table_name_$section | tr -d '"'`
+    tabn=$(printf "terraform_lock_%s" $section) 
     echo $s3b $tabn
 
     cd $d
 
     of=`echo "generated/backend-${section}.tf"`
-    vf=`echo "generated/vars-${section}.tf"`
+    #vf=`echo "generated/vars-${section}.tf"`
 
     # write out the backend config 
     printf "" > $of
@@ -63,7 +64,7 @@ do
     printf "}\n" >> $of
 
     # copy the files into place
-    cp -v $of ../$section
+    #cp -v $of ../$section
     # link these
     #cp  -v vars-dynamodb.tf ../$section
     #cp  -v vars-main.tf ../$section
