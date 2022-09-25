@@ -4,6 +4,6 @@ data "terraform_remote_state" "net" {
   config = {
     bucket = format("tf-state-workshop-%s", var.tfid)
     region = data.aws_region.current.name
-    key    = "terraform/tf_state_net.tfstate"
+    key    = "terraform/terraform_locks_net.tfstate"
   }
 }
