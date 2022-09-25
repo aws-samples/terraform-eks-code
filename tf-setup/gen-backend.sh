@@ -66,48 +66,8 @@ do
     printf "profile = var.profile\n" >> $of
     printf "}\n" >> $of
 
-    # copy the files into place
-    #cp -v $of ../$section
-    # link these
-    #cp  -v vars-dynamodb.tf ../$section
-    #cp  -v vars-main.tf ../$section
-
 done
-
-# next generate the remote_state config files 
-
-
 cd $d
-
-
-# put in place remote state access where required
-##cp  -v generated/remote-net.tf ../c9net 
-##cp  -v generated/remote-net.tf ../cluster
-##cp  -v generated/remote-net.tf ../nodeg
-##cp  -v generated/remote-net.tf ../extra/nodeg2
-##cp  -v generated/remote-net.tf ../eks-cidr
-##cp  -v generated/remote-net.tf ../extra/eks-cidr2
-##cp  -v generated/remote-net.tf ../extra/.fargate
-
-#cp  -v generated/remote-nodeg.tf ../extra/.karpenter
-
-##cp  -v generated/remote-iam.tf ../cluster 
-##cp  -v generated/remote-iam.tf ../nodeg
-##cp  -v generated/remote-iam.tf ../extra/nodeg2
-
-#echo "Copy remote-cluster.tf"
-##cp  -v generated/remote-cluster.tf ../nodeg
-##cp  -v generated/remote-cluster.tf ../eks-cidr
-##cp  -v generated/remote-cluster.tf ../extra/eks-cidr2
-##cp  -v generated/remote-cluster.tf ../lb2
-##cp  -v generated/remote-cluster.tf ../extra/nodeg2
-##cp  -v generated/remote-cluster.tf ../extra/.fargate
-
-# Prepare "local state" for the sample app and extra activities
-#cp  aws.tf ../sampleapp
-echo "Copy vars/aws.tf"
-
-#link
 
 cd ~/environment/tfekscode
 terraform fmt --recursive > /dev/null
