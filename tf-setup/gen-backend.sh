@@ -27,7 +27,7 @@ for section in "${SECTIONS[@]}"
 do
 
     #tabn=`terraform output dynamodb_table_name_$section | tr -d '"'`
-    tabn=$(printf "terraform_lock_%s" $section) 
+    tabn=$(printf "terraform_locks_%s" $section) 
     s3b=`terraform output -json s3_bucket | jq -r .[]`
     echo $s3b $tabn
 
