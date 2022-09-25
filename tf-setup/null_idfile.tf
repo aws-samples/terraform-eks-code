@@ -10,12 +10,18 @@ resource "null_resource" "gen_idfile" {
         #idfile=$HOME/.tfid
 	      #rm -f $idfile
         id=${random_id.id1.hex}
+        kid=${aws_kms_key.ekskey.key_id}
         varfile="var-tfid.tf"
         sptfile="var-spots.tf"
         printf "variable \"tfid\" {\n" > $varfile
         printf "description = \"The unique ID for the project\"\n" >> $varfile
         printf "type        = string\n" >> $varfile
         printf "default     = \"%s\"\n" $id >> $varfile
+        printf "}\n\n" >> $varfile
+        printf "variable \"keyid\" {\n" > $varfile
+        printf "description = \"The unique ID for the project\"\n" >> $varfile
+        printf "type        = string\n" >> $varfile
+        printf "default     = \"%s\"\n" $kid >> $varfile
         printf "}\n" >> $varfile
         il=()
         il+="["
