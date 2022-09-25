@@ -13,10 +13,16 @@ resource "aws_s3_bucket" "codepipeline-bucket" {
   request_payer  = "BucketOwner"
   tags           = {}
 
-  versioning {
-    enabled    = false
-    mfa_delete = false
-  }
   force_destroy = false
   acl           = "private"
 }
+
+resource "aws_s3_bucket_versioning" "codepipeline-bucket" {
+   # Enable versioning so we can see the full revision history of our
+  # state files
+  bucket = aws_s3_bucket.codepipeline-bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
