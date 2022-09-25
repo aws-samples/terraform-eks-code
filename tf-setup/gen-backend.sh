@@ -3,7 +3,7 @@ cp dot-terraform.rc $HOME/.terraformrc
 d=`pwd`
 #sleep 5
 #reg=`terraform output -json region | jq -r .[]`
-reg=$(echo "var.region" | terraform console | jq-r .)
+reg=$(echo "var.region" | terraform console | jq -r .)
 #if [[ -z ${reg} ]] ; then
 #    echo "no terraform output variables - exiting ....."
 #    echo "run terraform init/plan/apply in the the init directory first"
