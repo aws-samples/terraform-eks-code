@@ -63,7 +63,7 @@ do
     printf "}\n" >> $of
 
     # copy the files into place
-    #cp -v $of ../$section
+    cp -v $of ../$section
     # link these
     #cp  -v vars-dynamodb.tf ../$section
     #cp  -v vars-main.tf ../$section
