@@ -10,7 +10,6 @@ output "Name" {
 resource "aws_s3_bucket" "codepipeline-bucket" {
   bucket = data.external.bucket_name.result.Name
   hosted_zone_id = "Z1BKCTXD74EZPE"
-  request_payer  = "BucketOwner"
   tags           = {}
 
   force_destroy = false
