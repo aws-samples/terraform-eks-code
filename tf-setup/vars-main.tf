@@ -26,12 +26,12 @@ variable "eks_version" {
 
 variable "stages" {
 type=list(string)
-default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr","sampleapp"]
+default=["tf-setup","net","iam","c9net","cluster","nodeg","cicd","eks-cidr","sampleapp"]
 }
 
 variable "stagecount" {
 type=number
-default=8
+default=9
 }
 
 variable "no-output" {
