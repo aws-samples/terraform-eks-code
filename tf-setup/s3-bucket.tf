@@ -8,8 +8,8 @@ output "Name" {
 
 
 resource "aws_s3_bucket" "terraform_state" {
-depends_on = [null_resource.gen_idfile]
-  bucket = format("tf-state-workshop-%s",var.tfid)
+
+  bucket = format("tf-state-workshop-%s",random_id.id1.hex)
 
   // This is only here so we can destroy the bucket as part of automated tests. You should not copy this for production
   // usage
