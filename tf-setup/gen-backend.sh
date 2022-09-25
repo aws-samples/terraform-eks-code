@@ -1,7 +1,7 @@
 #!/bin/bash
 cp dot-terraform.rc $HOME/.terraformrc
 d=`pwd`
-#sleep 5
+sleep 5
 reg=`terraform output -json region | jq -r .[]`
 #reg=$(echo "var.region" | terraform console 2> /dev/null | jq -r .)
 if [[ -z ${reg} ]] ; then
@@ -16,7 +16,7 @@ fi
 #
 s3b=$(echo "aws_s3_bucket.terraform_state.id" | terraform console 2> /dev/null | jq -r .)
 
-echo $s3b
+echo $s3b > tmp-buck.txt
 echo $reg
 mkdir -p generated
 
@@ -28,6 +28,7 @@ do
 
     #tabn=`terraform output dynamodb_table_name_$section | tr -d '"'`
     tabn=$(printf "terraform_lock_%s" $section) 
+    s3b=`terraform output -json s3_bucket | jq -r .[]`
     echo $s3b $tabn
 
     cd $d
