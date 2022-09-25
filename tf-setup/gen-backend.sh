@@ -18,7 +18,7 @@ fi
 mkdir -p generated
 
 #default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr"]
-SECTIONS=('net' 'iam' 'c9net' 'cicd' 'cluster' 'nodeg' 'eks-cidr' 'sampleapp')
+SECTIONS=('iam' 'c9net' 'cicd' 'cluster' 'nodeg' 'eks-cidr' 'sampleapp')
  
 for section in "${SECTIONS[@]}"
 do
@@ -74,53 +74,29 @@ done
 
 
 cd $d
-echo "**** REMOTE ****"
 
-RSECTIONS=('net' 'iam' 'c9net' 'cluster' 'nodeg') 
-for section in "${RSECTIONS[@]}"
-do
-    tabn=`terraform output dynamodb_table_name_$section | tr -d '"'`
-    s3b=`terraform output -json s3_bucket | jq -r .[]`
-
-    echo $s3b $tabn
-    of=`echo "generated/remote-${section}.tf"`
-    printf "" > $of
-
-    # write out the remote_state terraform files
-    printf "data terraform_remote_state \"%s\" {\n" $section>> $of
-    printf "backend = \"s3\"\n" >> $of
-    printf "config = {\n" >> $of
-    printf "bucket = \"%s\"\n"  $s3b >> $of
-#    printf "region = \"%s\"\n"  $reg >> $of
-    printf "region = var.region\n"  >> $of
-    printf "key = \"terraform/%s.tfstate\"\n"  $tabn >> $of
-    printf "}\n" >> $of
-    printf "}\n" >> $of
-done
-
-echo "remotes"
 
 # put in place remote state access where required
-cp  -v generated/remote-net.tf ../c9net 
-cp  -v generated/remote-net.tf ../cluster
-cp  -v generated/remote-net.tf ../nodeg
-cp  -v generated/remote-net.tf ../extra/nodeg2
-cp  -v generated/remote-net.tf ../eks-cidr
-cp  -v generated/remote-net.tf ../extra/eks-cidr2
+#cp  -v generated/remote-net.tf ../c9net 
+#cp  -v generated/remote-net.tf ../cluster
+#cp  -v generated/remote-net.tf ../nodeg
+#cp  -v generated/remote-net.tf ../extra/nodeg2
+#cp  -v generated/remote-net.tf ../eks-cidr
+#cp  -v generated/remote-net.tf ../extra/eks-cidr2
 #cp  -v generated/remote-net.tf ../extra/.fargate
 
-cp  -v generated/remote-nodeg.tf ../extra/.karpenter
+#cp  -v generated/remote-nodeg.tf ../extra/.karpenter
 
-cp  -v generated/remote-iam.tf ../cluster 
-cp  -v generated/remote-iam.tf ../nodeg
-cp  -v generated/remote-iam.tf ../extra/nodeg2
+#cp  -v generated/remote-iam.tf ../cluster 
+#cp  -v generated/remote-iam.tf ../nodeg
+#cp  -v generated/remote-iam.tf ../extra/nodeg2
 
-echo "Copy remote-cluster.tf"
-cp  -v generated/remote-cluster.tf ../nodeg
-cp  -v generated/remote-cluster.tf ../eks-cidr
-cp  -v generated/remote-cluster.tf ../extra/eks-cidr2
-cp  -v generated/remote-cluster.tf ../lb2
-cp  -v generated/remote-cluster.tf ../extra/nodeg2
+#echo "Copy remote-cluster.tf"
+#cp  -v generated/remote-cluster.tf ../nodeg
+#cp  -v generated/remote-cluster.tf ../eks-cidr
+#cp  -v generated/remote-cluster.tf ../extra/eks-cidr2
+#cp  -v generated/remote-cluster.tf ../lb2
+#cp  -v generated/remote-cluster.tf ../extra/nodeg2
 #cp  -v generated/remote-cluster.tf ../extra/.fargate
 
 # Prepare "local state" for the sample app and extra activities
