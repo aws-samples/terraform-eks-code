@@ -6,6 +6,10 @@ data "aws_ssm_parameter" "tf-eks-keyid" {
   name        = "/workshop/tf-eks/keyid"
 }
 
+data "aws_ssm_parameter" "tf-eks-keyarn" {
+  name        = "/workshop/tf-eks/keyarn"
+}
+
 data "aws_ssm_parameter" "tf-eks-region" {
   name        = "/workshop/tf-eks/region"
 }

@@ -20,6 +20,19 @@ resource "aws_ssm_parameter" "tf-eks-keyid" {
   }
 }
 
+
+
+resource "aws_ssm_parameter" "tf-eks-keyarn" {
+  name        = "/workshop/tf-eks/keyarn"
+  description = "The keyid for the workshop"
+  type        = "String"
+  value       = aws_kms_key.ekskey.arn
+
+  tags = {
+    workshop = "tf-eks-workshop"
+  }
+}
+
 resource "aws_ssm_parameter" "tf-eks-region" {
   name        = "/workshop/tf-eks/region"
   description = "The region for the workshop"
