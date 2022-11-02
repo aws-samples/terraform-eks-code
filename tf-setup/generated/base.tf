@@ -40,6 +40,14 @@ provider "null" {}
 provider "external" {}
 
 
+data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
+data "aws_availability_zones" "az" {
+  state = "available"
+}
+
+
+
 resource "aws_dynamodb_table" "terraform_lock" {
   # switch var
   name         = format("tf_lock_%s_%s", data.aws_ssm_parameter.tf-eks-id.value, lower(basename(path.cwd)))
@@ -59,3 +67,4 @@ resource "aws_dynamodb_table" "terraform_lock" {
   }
 
 }
+
