@@ -8,8 +8,8 @@ resource "aws_subnet" "subnet-i1" {
   cidr_block                      = "100.64.0.0/18"
   map_public_ip_on_launch         = false
   tags = {
-    "Name"                                        = format("i1-%s",var.cluster-name)
-    "kubernetes.io/cluster/${var.cluster-name}"            = "shared"
+    "Name"                                        = format("i1-%s",data.aws_ssm_parameter.tf-eks-cluster-name.value)
+    "kubernetes.io/cluster/${data.aws_ssm_parameter.tf-eks-cluster-name.value}"            = "shared"
      "workshop" = "subnet-i1"
   }
   vpc_id = aws_vpc.cluster.id
@@ -32,8 +32,8 @@ resource "aws_subnet" "subnet-i2" {
   cidr_block                      = "100.64.64.0/18"
   map_public_ip_on_launch         = false
   tags = {
-    "Name" = format("i2-%s",var.cluster-name)
-    "kubernetes.io/cluster/${var.cluster-name}" = "shared"
+    "Name" = format("i2-%s",data.aws_ssm_parameter.tf-eks-cluster-name.value)
+    "kubernetes.io/cluster/${data.aws_ssm_parameter.tf-eks-cluster-name.value}" = "shared"
     "workshop" = "subnet-i2"
   }
   vpc_id = aws_vpc.cluster.id
@@ -54,8 +54,8 @@ resource "aws_subnet" "subnet-i3" {
   cidr_block                      = "100.64.128.0/18"
   map_public_ip_on_launch         = false
   tags = {
-    "Name"                                        = format("i3-%s",var.cluster-name)
-    "kubernetes.io/cluster/${var.cluster-name}"            = "shared"
+    "Name"                                        = format("i3-%s",data.aws_ssm_parameter.tf-eks-cluster-name.value)
+    "kubernetes.io/cluster/${data.aws_ssm_parameter.tf-eks-cluster-name.value}"            = "shared"
     "workshop" = "subnet-i3"
   }
   vpc_id = aws_vpc.cluster.id
@@ -78,7 +78,7 @@ resource "aws_subnet" "subnet-p1" {
   map_public_ip_on_launch         = false
   tags = {
     "Name"                                        = "Private1"
-    "kubernetes.io/cluster/${var.cluster-name}"            = "shared"
+    "kubernetes.io/cluster/${data.aws_ssm_parameter.tf-eks-cluster-name.value}"            = "shared"
     "kubernetes.io/role/internal-elb"             = "1"
     "workshop" = "subnet-p1"
   }
@@ -100,7 +100,7 @@ resource "aws_subnet" "subnet-p2" {
   map_public_ip_on_launch         = false
   tags = {
     "Name"                                        = "Private2"
-    "kubernetes.io/cluster/${var.cluster-name}"            = "shared"
+    "kubernetes.io/cluster/${data.aws_ssm_parameter.tf-eks-cluster-name.value}"            = "shared"
     "kubernetes.io/role/internal-elb"             = "1"
     "workshop" = "subnet-p2"
   }
@@ -121,7 +121,7 @@ resource "aws_subnet" "subnet-p3" {
   map_public_ip_on_launch         = false
   tags = {
     "Name"                                        = "Private3"
-    "kubernetes.io/cluster/${var.cluster-name}"            = "shared"
+    "kubernetes.io/cluster/${data.aws_ssm_parameter.tf-eks-cluster-name.value}"            = "shared"
     "kubernetes.io/role/internal-elb"             = "1"
     "workshop" = "subnet-p3"
   }
