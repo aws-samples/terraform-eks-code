@@ -40,6 +40,18 @@ provider "null" {}
 provider "external" {}
 
 
+  backend "s3" {
+    bucket         = local.BUCKET_NAME
+    key            = local.BKEY
+    region         = local.BREG
+    dynamodb_table = local.DTAB
+    encrypt        = "true"
+  }
+
+
+
+
+
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 data "aws_availability_zones" "az" {
