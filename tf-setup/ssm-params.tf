@@ -31,3 +31,14 @@ resource "aws_ssm_parameter" "tf-eks-region" {
   }
 }
 
+resource "aws_ssm_parameter" "tf-eks-cluster-name" {
+  name        = "/workshop/tf-eks/cluster-name"
+  description = "The EKS cluster name for the workshop"
+  type        = "String"
+  value       = var.cluster-name
+
+  tags = {
+    workshop = "tf-eks-workshop"
+  }
+}
+

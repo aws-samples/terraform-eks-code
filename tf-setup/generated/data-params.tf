@@ -9,3 +9,7 @@ data "aws_ssm_parameter" "tf-eks-keyid" {
 data "aws_ssm_parameter" "tf-eks-region" {
   name        = "/workshop/tf-eks/region"
 }
+
+data "aws_ssm_parameter" "tf-eks-cluster-name" {
+  name        = "/workshop/tf-eks/cluster-name"
+}
