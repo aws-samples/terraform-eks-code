@@ -28,6 +28,15 @@ terraform {
     }
     
   }
+  backend "s3" {
+    bucket         = local.BUCKET_NAME
+    key            = local.BKEY
+    region         = local.BREG
+    dynamodb_table = local.DTAB
+    encrypt        = "true"
+  }
+
+   
 }
 
 provider "aws" {
@@ -40,13 +49,7 @@ provider "null" {}
 provider "external" {}
 
 
-  backend "s3" {
-    bucket         = local.BUCKET_NAME
-    key            = local.BKEY
-    region         = local.BREG
-    dynamodb_table = local.DTAB
-    encrypt        = "true"
-  }
+
 
 
 
