@@ -7,7 +7,7 @@ resource "aws_vpc" "cluster" {
   enable_dns_support               = true
   instance_tenancy                 = "default"
   tags = {
-    "Name"                                        = format("eks-%s-cluster",var.cluster-name)
+    "Name"                                        = format("eks-%s-cluster",data.aws_ssm_parameter.tf-eks-cluster-name)
   }
 }
 
