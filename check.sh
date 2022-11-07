@@ -11,4 +11,4 @@ echo "PASSED: Found Instance profile eksworkshop-admin - proceed with the worksh
 fi
 aws sts get-caller-identity --query Arn | grep eksworkshop-admin -q && echo "PASSED: IAM role valid - eksworkshop-admin" || echo "ERROR: IAM role not valid - DO NOT PROCEED"
 iname=$(aws ec2 describe-tags --filters "Name=resource-type,Values=instance" "Name=resource-id,Values=$instid" | jq -r '.Tags[] | select(.Key=="Name").Value')
-echo $iname| grep eks-terraform -q && echo "PASSED: Cloud9 IDE name is valid - contains eks-terraform" || echo "ERROR: Cloud9 IDE name invalid! - DO NOT PROCEED"
+echo $iname| grep 'eks-terraform\|-Project-mod-' -q && echo "PASSED: Cloud9 IDE name is valid" || echo "ERROR: Cloud9 IDE name invalid! - DO NOT PROCEED"
