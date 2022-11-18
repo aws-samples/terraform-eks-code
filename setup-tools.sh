@@ -13,6 +13,8 @@ echo "Install AWS CLI v2"
 curl --silent "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" > /dev/null
 unzip -qq awscliv2.zip
 sudo ./aws/install > /dev/null
+echo "alias aws='/usr/local/bin/aws'" >> ~/.bash_profile
+source ~/.bash_profile
 rm -f awscliv2.zip
 rm -rf aws
 
