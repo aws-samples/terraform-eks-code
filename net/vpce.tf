@@ -361,3 +361,35 @@ resource "aws_vpc_endpoint" "vpce-sts" {
   timeouts {}
 }
 
+resource "aws_vpc_endpoint" "vpce-eks" {
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action    = "*"
+          Effect    = "Allow"
+          Principal = "*"
+          Resource  = "*"
+        },
+      ]
+    }
+  )
+  private_dns_enabled = true
+  route_table_ids     = []
+  security_group_ids = [
+    aws_security_group.allnodes-sg.id,
+    aws_security_group.cluster-sg.id
+  ]
+  service_name = format("com.amazonaws.%s.eks",data.aws_region.current.name)
+  subnet_ids = [
+    aws_subnet.subnet-i3.id,
+    aws_subnet.subnet-i1.id,
+    aws_subnet.subnet-i2.id,
+  ]
+  tags              = {}
+  vpc_endpoint_type = "Interface"
+  vpc_id            = aws_vpc.cluster.id
+
+  timeouts {}
+}
+
