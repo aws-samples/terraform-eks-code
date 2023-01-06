@@ -8,7 +8,7 @@ locals {
 
 resource "aws_eks_addon" "vpc-cni" {
   depends_on     = [aws_eks_cluster.cluster]
-  cluster_name = data.aws_ssm_parameter.tf-eks-cluster-name
+  cluster_name = data.aws_ssm_parameter.tf-eks-cluster-name.value
   addon_name   = "vpc-cni"
   resolve_conflicts = "OVERWRITE"
 
