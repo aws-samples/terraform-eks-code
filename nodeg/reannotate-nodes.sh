@@ -2,7 +2,7 @@ test -n "$1" && echo CLUSTER is "$1" || "echo CLUSTER is not set && exit"
 CLUSTER=$(echo $1)
 test -n "$2" && echo tfid is "$2" || "echo tfid is not set && exit"
 tfid=$(echo $2)
-comm=`printf "kubectl get node --selector='eks.amazonaws.com/nodegroup==%s-ng1-%s' -o json" $CLUSTER $tfid`
+comm=`printf "kubectl get node --selector='eks.amazonaws.com/nodegroup==%s-ng1' -o json" $CLUSTER`
 allnodes=`eval $comm`
 len=`eval $comm | jq '.items | length-1'`
 for i in `seq 0 $len`; do

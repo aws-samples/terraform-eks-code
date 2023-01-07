@@ -11,7 +11,7 @@ tfid=$(echo $8)
 kubectl get crd
 # get the SG's
 # get a list of the insytances in the node group
-comm=`printf "aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --filters \"Name=tag-key,Values=eks:nodegroup-name\" \"Name=tag-value,Values=%s-ng1-%s\" \"Name=instance-state-name,Values=running\" --output text" $CLUSTER $tfid`
+comm=`printf "aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --filters \"Name=tag-key,Values=eks:nodegroup-name\" \"Name=tag-value,Values=%s-ng1\" \"Name=instance-state-name,Values=running\" --output text" $CLUSTER`
 INSTANCE_IDS=(`eval $comm`)
 # extract the security groups
 for i in "${INSTANCE_IDS[0]}"
@@ -81,7 +81,7 @@ kubectl apply -f ${zone3}-pod-netconfig.yaml
 echo "pause 20s before annotate"
 sleep 20
 target=$(kubectl get nodes | grep Read | wc -l)
-comm=`printf "kubectl get node --selector='eks.amazonaws.com/nodegroup==%s-ng1-%s' -o json" $CLUSTER $tfid`
+comm=`printf "kubectl get node --selector='eks.amazonaws.com/nodegroup==%s-ng1' -o json" $CLUSTER`
 allnodes=`eval $comm`
 curr=`echo $allnodes | jq '.items | length'`
 len=`echo $allnodes | jq '.items | length-1'`
