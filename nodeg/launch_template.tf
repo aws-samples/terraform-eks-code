@@ -1,5 +1,5 @@
 resource "aws_launch_template" "lt-ng1" {
-  instance_type           = "m5a.large"
+  instance_type           = "m6a.large"
   key_name                = data.terraform_remote_state.iam.outputs.key_name
   name                    = format("at-lt-%s-ng1", data.aws_eks_cluster.eks_cluster.name)
   tags                    = {}
