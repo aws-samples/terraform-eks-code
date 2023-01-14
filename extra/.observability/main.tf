@@ -4,7 +4,7 @@ module "eks_observability_accelerator" {
   eks_cluster_id = data.aws_ssm_parameter.tf-eks-cluster-name.value
   enable_managed_prometheus = true
   enable_managed_grafana       = false
-  managed_grafana_workspace_id = "g-abcdef123"
+  managed_grafana_workspace_id = var.grafana_id
   grafana_api_key              = var.grafana_api_key
 }
 
