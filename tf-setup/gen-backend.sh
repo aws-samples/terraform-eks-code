@@ -48,7 +48,7 @@ do
     printf "  }\n" >> $of
     printf "  kubernetes = {\n" >> $of
     printf "   source = \"hashicorp/kubernetes\"\n" >> $of
-    printf "   version = \"2.13.1\"\n" >> $of
+    printf "   version = \"2.17.0\"\n" >> $of
     printf "  }\n" >> $of
     printf " }\n" >> $of
     printf "backend \"s3\" {\n" >> $of
