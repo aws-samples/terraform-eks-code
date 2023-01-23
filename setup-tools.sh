@@ -46,8 +46,8 @@ if [ ! -f $HOME/.terraform.d/plugin-cache ];then
 fi
 echo "Setup kubectl"
 if [ ! `which kubectl 2> /dev/null` ]; then
-  echo "Install kubectl"
-  curl --silent -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl  > /dev/null
+  echo "Install kubectl v1.24.10"
+  curl --silent -LO https://storage.googleapis.com/kubernetes-release/release/v1.24.10/bin/linux/amd64/kubectl  > /dev/null
   chmod +x ./kubectl
   sudo mv ./kubectl  /usr/local/bin/kubectl > /dev/null
   kubectl completion bash >>  ~/.bash_completion
@@ -63,10 +63,10 @@ fi
 
 if [ ! `which helm 2> /dev/null` ]; then
   echo "helm"
-  wget -q https://get.helm.sh/helm-v3.5.4-linux-amd64.tar.gz > /dev/null
-  tar -zxf helm-v3.5.4-linux-amd64.tar.gz
+  wget -q https://get.helm.sh/helm-v3.10.3-linux-amd64.tar.gz > /dev/null
+  tar -zxf helm-v3.10.3-linux-amd64.tar.gz
   sudo mv linux-amd64/helm /usr/local/bin/helm > /dev/null
-  rm -rf helm-v3.5.4-linux-amd64.tar.gz linux-amd64
+  rm -rf helm-v3.10.3-linux-amd64.tar.gz linux-amd64
 fi
 echo "add helm repos"
 helm repo add eks https://aws.github.io/eks-charts
@@ -91,7 +91,7 @@ sudo yum install -y session-manager-plugin.rpm > /dev/null
 rm -f ~/environment/session-manager-plugin.rpm
 #
 echo "install tfsec ..."
-wget -q https://github.com/aquasecurity/tfsec/releases/download/v1.27.5/tfsec-linux-amd64
+wget -q https://github.com/aquasecurity/tfsec/releases/download/v1.28.1/tfsec-linux-amd64
 sudo mv tfsec-linux-amd64 /usr/bin/tfsec
 sudo chmod 755 /usr/bin/tfsec 
 #

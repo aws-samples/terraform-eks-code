@@ -10,6 +10,7 @@ resource "aws_eks_addon" "vpc-cni" {
   cluster_name = data.aws_ssm_parameter.tf-eks-cluster-name.value
   addon_name   = "vpc-cni"
   resolve_conflicts = "PRESERVE"
+  addon_version     = "v1.12.1-eksbuild.1"
 
   #configuration_values = local.cni_config
 

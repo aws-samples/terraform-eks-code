@@ -1,3 +1,4 @@
+# local exec in cluster renders this redundant
 resp=$(aws eks describe-cluster --name $1)
 endp=$(echo $resp | jq -r .cluster.endpoint | cut -f3 -d'/')
 #nslookup $endp
