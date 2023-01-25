@@ -4,7 +4,7 @@ env:
   git-credential-helper: yes
 
   variables:
-    TF_VERSION: "1.0.7"
+    TF_VERSION: "1.3.7"
 
 phases:
   install:
@@ -92,10 +92,10 @@ phases:
       - echo "yum installs"
       - "yum -y -q -e 0 install moreutils bash-completion nmap bind-utils"
       - echo "Terraform"
-      - wget -q https://releases.hashicorp.com/terraform/1.3.4/terraform_1.3.4_linux_amd64.zip
-      - unzip -qq terraform_1.3.4_linux_amd64.zip
+      - wget -q https://releases.hashicorp.com/terraform/1.3.7/terraform_1.3.7_linux_amd64.zip
+      - unzip -qq terraform_1.3.7_linux_amd64.zip
       - mv terraform /usr/local/bin/
-      - rm -f terraform_1.3.4_linux_amd64.zip
+      - rm -f terraform_1.3.7_linux_amd64.zip
 
       - echo "kubectl"
       - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
