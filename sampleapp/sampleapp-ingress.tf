@@ -13,7 +13,7 @@ resource "kubernetes_ingress_v1" "game-2048__ingress-2048" {
           path = "/"
           backend {
             service {
-              name = service-2048
+              name = "service-2048"
               port {
                 number = 80
               }

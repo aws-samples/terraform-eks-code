@@ -17,6 +17,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: service-2048
+                name: "service-2048"
                 port: 
                   number: 80
