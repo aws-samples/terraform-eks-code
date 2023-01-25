@@ -67,6 +67,33 @@ do
     printf "}\n" >> $of
 
 done
+# just for cicd k8s
+section="sampleapp"
+tabn=$(printf "terraform_locks_sampleapp" $section) 
+s3b=`terraform output -json s3_bucket | jq -r .[]`
+echo $s3b $tabn
+cd $d
+of=`echo "generated/backend-k8scicd.tf"`
+    # write out the backend config 
+    printf "" > $of
+    printf "terraform {\n" >> $of
+    printf "required_version = \"~> 1.3.3\"\n" >> $of
+    printf "required_providers {\n" >> $of
+    printf "  kubernetes = {\n" >> $of
+    printf "   source = \"hashicorp/kubernetes\"\n" >> $of
+    printf "   version = \"2.17.0\"\n" >> $of
+    printf "  }\n" >> $of
+    printf " }\n" >> $of
+    printf "backend \"s3\" {\n" >> $of
+    printf "bucket = \"%s\"\n"  $s3b >> $of
+    printf "key = \"terraform/%s.tfstate\"\n"  $tabn >> $of
+    printf "region = \"%s\"\n"  $reg >> $of
+    printf "dynamodb_table = \"%s\"\n"  $tabn >> $of
+    printf "encrypt = \"true\"\n"   >> $of
+    printf "}\n" >> $of
+    printf "}\n" >> $of
+    ##
+
 cd $d
 
 #cp generated/backend-tf-setup.tf backend-tf-setup.tf
