@@ -9,6 +9,6 @@ resource "aws_ecr_repository" "aws-cli" {
 
       encryption_configuration {
         encryption_type = "KMS"
-        kms_key = data.aws_ssm_parameter.tf-eks-keyid
+        kms_key = data.aws_ssm_parameter.tf-eks-keyid.value
     }
 }
