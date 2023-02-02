@@ -1,7 +1,7 @@
 resource "kubernetes_ingress_v1" "game-2048__ingress-2048" {
   #wait_for_load_balancer = true
   metadata {
-    annotations = {"alb.ingress.kubernetes.io/scheme" = "internal", "alb.ingress.kubernetes.io/target-type" = "ip", "alb.ingress.kubernetes.io/listen-ports" = "[{\"HTTP\": 8080}]" }
+    annotations = { "alb.ingress.kubernetes.io/scheme" = "internal", "alb.ingress.kubernetes.io/target-type" = "ip", "alb.ingress.kubernetes.io/listen-ports" = "[{\"HTTP\": 8080}]" }
     name        = "ingress-2048"
     namespace   = "game-2048"
   }

@@ -1,11 +1,11 @@
 resource "null_resource" "destroy" {
-depends_on=[aws_iam_policy.load-balancer-policy]
-triggers = {
-       always_run = timestamp()
-}
-provisioner "local-exec" {
+  depends_on = [aws_iam_policy.load-balancer-policy]
+  triggers = {
+    always_run = timestamp()
+  }
+  provisioner "local-exec" {
     on_failure  = continue
-    when    = destroy
+    when        = destroy
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
         #echo "Remove helm deployment"
@@ -20,5 +20,5 @@ provisioner "local-exec" {
         echo "done"
         fi
      EOT
-}
+  }
 }

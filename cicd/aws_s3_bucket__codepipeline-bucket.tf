@@ -9,14 +9,14 @@ output "Name" {
 
 resource "aws_s3_bucket" "codepipeline-bucket" {
   bucket = data.external.bucket_name.result.Name
-  tags           = {}
+  tags   = {}
 
   force_destroy = false
 
 }
 
 resource "aws_s3_bucket_versioning" "codepipeline-bucket" {
-   # Enable versioning so we can see the full revision history of our
+  # Enable versioning so we can see the full revision history of our
   # state files
   bucket = aws_s3_bucket.codepipeline-bucket.id
   versioning_configuration {

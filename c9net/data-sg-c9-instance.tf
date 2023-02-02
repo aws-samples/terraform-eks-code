@@ -1,11 +1,11 @@
-variable "c9label" { 
-description="Cloud9 IDE Name Label"
-type=string
-default="-cloud9-eks-te"
+variable "c9label" {
+  description = "Cloud9 IDE Name Label"
+  type        = string
+  default     = "-cloud9-eks-te"
 }
 
-output c9lab {
-    value = "%{ if var.c9label != "" } true %{else} false %{endif}"
+output "c9lab" {
+  value = "%{if var.c9label != ""} true %{else} false %{endif}"
 }
 
 
@@ -26,8 +26,8 @@ data "aws_iam_instance_profile" "c9ip" {
   name = data.aws_instance.c9inst.iam_instance_profile
 }
 
-output c9role {
-value=data.aws_iam_instance_profile.c9ip.role_arn
+output "c9role" {
+  value = data.aws_iam_instance_profile.c9ip.role_arn
 }
 
 

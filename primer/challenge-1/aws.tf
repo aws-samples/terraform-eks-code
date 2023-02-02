@@ -3,18 +3,18 @@ terraform {
   required_version = "~> 1.3.0"
   required_providers {
     aws = {
-    source = "hashicorp/aws"
-    #  Allow only version 3.39
-    version = "= 4.31.0"
+      source = "hashicorp/aws"
+      #  Allow only version 3.39
+      version = "= 4.31.0"
     }
-    
+
   }
 }
 
 provider "aws" {
-  region                  = var.region
+  region                   = var.region
   shared_credentials_files = ["~/.aws/credentials"]
-  profile                 = "default"
+  profile                  = "default"
 }
 
 variable "region" {

@@ -20,7 +20,7 @@ resource "aws_iam_role" "eks-nodegroup-ng-ma-NodeInstanceRole-1GFKA1037E1XO" {
   name                  = "eks-nodegroup-ng-ma-NodeInstanceRole-1GFKA1037E1XO"
   path                  = "/"
   tags = {
-    "Name"                                        = "eks-nodegroup-ng-maneksami2/NodeInstanceRole"
+    "Name" = "eks-nodegroup-ng-maneksami2/NodeInstanceRole"
   }
 }
 

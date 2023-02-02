@@ -21,7 +21,7 @@ resource "aws_security_group_rule" "sg-cicd-self" {
   from_port         = 0
   to_port           = 0
   protocol          = "-1"
-  self = true
+  self              = true
   security_group_id = data.aws_security_group.cicd-sg.id
 }
 

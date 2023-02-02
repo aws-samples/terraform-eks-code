@@ -3,7 +3,7 @@ resource "kubernetes_namespace" "game1-2048" {
     name = "game1-2048"
   }
 
-  timeouts {   
+  timeouts {
     delete = "20m"
   }
 }
@@ -13,7 +13,7 @@ resource "kubernetes_namespace" "game2-2048" {
     name = "game2-2048"
   }
 
-  timeouts {   
+  timeouts {
     delete = "20m"
   }
 }

@@ -2,9 +2,9 @@
 
 resource "aws_eks_node_group" "ng2" {
   #ami_type       = "AL2_x86_64"
-  depends_on     = [aws_launch_template.lt-ng2]
-  cluster_name   = data.aws_eks_cluster.eks_cluster.name
-  disk_size      = 0
+  depends_on    = [aws_launch_template.lt-ng2]
+  cluster_name  = data.aws_eks_cluster.eks_cluster.name
+  disk_size     = 0
   capacity_type = "SPOT"
   instance_types = [
     "m5.large",
@@ -20,17 +20,17 @@ resource "aws_eks_node_group" "ng2" {
   node_role_arn   = data.terraform_remote_state.iam.outputs.nodegroup_role_arn
   #release_version = "1.17.11-20201007"
   subnet_ids = [
-      data.terraform_remote_state.net.outputs.sub-priv1,
-      data.terraform_remote_state.net.outputs.sub-priv2,
-      data.terraform_remote_state.net.outputs.sub-priv3,
+    data.terraform_remote_state.net.outputs.sub-priv1,
+    data.terraform_remote_state.net.outputs.sub-priv2,
+    data.terraform_remote_state.net.outputs.sub-priv3,
   ]
   tags = {
-    "eks/cluster-name"                = data.aws_eks_cluster.eks_cluster.name
-    "eks/nodegroup-name"              = format("ng2-%s", data.aws_eks_cluster.eks_cluster.name)
-    "eks/nodegroup-type"              = "managed"
-    "eksnet" = "net-main"
+    "eks/cluster-name"   = data.aws_eks_cluster.eks_cluster.name
+    "eks/nodegroup-name" = format("ng2-%s", data.aws_eks_cluster.eks_cluster.name)
+    "eks/nodegroup-type" = "managed"
+    "eksnet"             = "net-main"
   }
- 
+
 
   launch_template {
     name    = aws_launch_template.lt-ng2.name

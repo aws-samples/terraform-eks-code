@@ -1,3 +1,3 @@
 data "aws_vpc" "dvpc" {
-default = true
+  default = true
 }

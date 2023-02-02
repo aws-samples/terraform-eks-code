@@ -47,21 +47,21 @@ resource "aws_security_group_rule" "eks-node-egress" {
 
 
 resource "aws_security_group_rule" "eks-all-node" {
-  type              = "ingress"
-  from_port         = 0
-  to_port           = 0
-  protocol          = "-1"
+  type                     = "ingress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
   source_security_group_id = data.terraform_remote_state.net.outputs.allnodes-sg
-  security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
+  security_group_id        = data.terraform_remote_state.net.outputs.cluster-sg
 }
 
 resource "aws_security_group_rule" "eks-node-all" {
-  type              = "ingress"
-  from_port         = 0
-  to_port           = 0
-  protocol          = "-1"
+  type                     = "ingress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
   source_security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
-  security_group_id = data.terraform_remote_state.net.outputs.allnodes-sg
+  security_group_id        = data.terraform_remote_state.net.outputs.allnodes-sg
 }
 
 resource "aws_security_group_rule" "eks-all-self" {
@@ -69,7 +69,7 @@ resource "aws_security_group_rule" "eks-all-self" {
   from_port         = 0
   to_port           = 0
   protocol          = "-1"
-  self = true
+  self              = true
   security_group_id = data.terraform_remote_state.net.outputs.cluster-sg
 }
 
@@ -78,6 +78,6 @@ resource "aws_security_group_rule" "eks-node-self" {
   from_port         = 0
   to_port           = 0
   protocol          = "-1"
-  self = true
+  self              = true
   security_group_id = data.terraform_remote_state.net.outputs.allnodes-sg
 }

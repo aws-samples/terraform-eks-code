@@ -4,7 +4,7 @@ data "aws_ec2_transit_gateway" "mytgw" {
     values = ["64512"]
   }
   filter {
-    name = "state"
+    name   = "state"
     values = ["available"]
   }
 }

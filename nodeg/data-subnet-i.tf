@@ -9,5 +9,5 @@ data "aws_subnet" "i2" {
 
 data "aws_subnet" "i3" {
   id = data.terraform_remote_state.net.outputs.sub-isol3
-  
+
 }

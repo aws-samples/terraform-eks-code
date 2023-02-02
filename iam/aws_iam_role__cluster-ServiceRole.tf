@@ -23,7 +23,7 @@ resource "aws_iam_role" "eks-cluster-ServiceRole-HUIGIC7K7HNJ" {
   name                  = "eks-cluster-ServiceRole-HUIGIC7K7HNJ"
   path                  = "/"
   tags = {
-    "Name"                                        = "eks-cluster/ServiceRole"
+    "Name" = "eks-cluster/ServiceRole"
 
   }
 }
