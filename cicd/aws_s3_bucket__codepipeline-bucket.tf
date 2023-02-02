@@ -34,3 +34,27 @@ resource "aws_s3_bucket_acl" "codepipeline-bucket" {
   acl    = "private"
 }
 
+
+
+resource "aws_s3_bucket_public_access_block" "pub_block_state" {
+  bucket = aws_s3_bucket.codepipeline-bucket.id
+
+  restrict_public_buckets = true
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" {
+  bucket = aws_s3_bucket.codepipeline-bucket.id
+
+  rule {
+    bucket_key_enabled = false
+
+    apply_server_side_encryption_by_default {
+      sse_algorithm     = "aws:kms"
+      kms_master_key_id = data.aws_ssm_parameter.tf-eks-keyid.value
+    }
+  }
+}
+
