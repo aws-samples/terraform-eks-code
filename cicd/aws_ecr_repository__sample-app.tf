@@ -5,6 +5,10 @@ resource "aws_ecr_repository" "sample-app" {
   image_scanning_configuration {
     scan_on_push = true
   }
+    encryption_configuration {
+        encryption_type = "KMS"
+        kms_key = data.aws_ssm_parameter.tf-eks-keyid.value
+  }
 }
 
 resource "aws_ecr_repository" "karpenter-webhook" {
@@ -13,6 +17,10 @@ resource "aws_ecr_repository" "karpenter-webhook" {
   force_delete = true
   image_scanning_configuration {
     scan_on_push = true
+  }
+    encryption_configuration {
+        encryption_type = "KMS"
+        kms_key = data.aws_ssm_parameter.tf-eks-keyid.value
   }
 }
 
@@ -23,6 +31,10 @@ resource "aws_ecr_repository" "karpenter-controller" {
   image_scanning_configuration {
     scan_on_push = true
   }
+    encryption_configuration {
+        encryption_type = "KMS"
+        kms_key = data.aws_ssm_parameter.tf-eks-keyid.value
+  }
 }
 
 
@@ -32,5 +44,9 @@ resource "aws_ecr_repository" "pause" {
   force_delete = true
   image_scanning_configuration {
     scan_on_push = true
+  }
+    encryption_configuration {
+        encryption_type = "KMS"
+        kms_key = data.aws_ssm_parameter.tf-eks-keyid.value
   }
 }
