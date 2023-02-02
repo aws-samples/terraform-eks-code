@@ -1,22 +1,22 @@
 resource "null_resource" "gen_backend" {
-triggers = {
+  triggers = {
     always_run = timestamp()
-}
-depends_on = [null_resource.sleep]
-provisioner "local-exec" {
-    when = create
+  }
+  depends_on = [null_resource.sleep]
+  provisioner "local-exec" {
+    when    = create
     command = "./gen-backend.sh"
-}
+  }
 }
 
 
 resource "null_resource" "sleep" {
-triggers = {
+  triggers = {
     always_run = timestamp()
-}
-depends_on = [aws_dynamodb_table.terraform_locks]
-provisioner "local-exec" {
-    when = create
+  }
+  depends_on = [aws_dynamodb_table.terraform_locks]
+  provisioner "local-exec" {
+    when    = create
     command = "sleep 5"
-}
+  }
 }

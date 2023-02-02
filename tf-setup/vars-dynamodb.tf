@@ -53,11 +53,11 @@ variable "table_name_tf-setup" {
 }
 
 variable "stages" {
-type=list(string)
-default=["tf-setup","net","iam","c9net","cluster","nodeg","cicd","eks-cidr","sampleapp"]
+  type    = list(string)
+  default = ["tf-setup", "net", "iam", "c9net", "cluster", "nodeg", "cicd", "eks-cidr", "sampleapp"]
 }
 
 variable "stagecount" {
-type=number
-default=9
+  type    = number
+  default = 9
 }

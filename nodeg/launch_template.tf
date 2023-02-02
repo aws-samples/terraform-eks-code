@@ -18,13 +18,13 @@ resource "aws_launch_template" "lt-ng1" {
 }
 
 
-  #block_device_mappings {
-  #  device_name = "/dev/sda1"
-
-  #  ebs {
-  #    volume_size = 20
-  #  }
-  #}
+ # block_device_mappings {
+ #   device_name = "/dev/sda1"
+#
+#    ebs {
+#      volume_size = 32
+#    }
+#  }
  
   
 ## Enable this when you use cluster autoscaler within cluster.
