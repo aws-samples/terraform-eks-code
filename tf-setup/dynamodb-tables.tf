@@ -6,7 +6,7 @@ resource "aws_dynamodb_table" "terraform_locks" {
   hash_key     = "LockID"
   server_side_encryption {
     enabled     = true
-    kms_key_arn = aws_kms_key.ekskey.key_id
+    kms_key_arn = aws_kms_key.ekskey.arn
   }
   attribute {
     name = "LockID"
