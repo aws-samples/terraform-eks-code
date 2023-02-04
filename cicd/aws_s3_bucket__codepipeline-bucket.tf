@@ -8,7 +8,8 @@ output "Name" {
 }
 
 resource "aws_s3_bucket" "codepipeline-bucket" {
-  bucket = data.external.bucket_name.result.Name
+  #bucket = data.external.bucket_name.result.Name
+  bucket = format("codep-tfeks-%s", data.aws_ssm_parameter.tf-eks-id.value)
   tags   = {}
 
   force_destroy = false
