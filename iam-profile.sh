@@ -1,7 +1,9 @@
 #! /bin/bash
 aws iam create-role --role-name eksworkshop-admin2 --assume-role-policy-document file://trust.json
 aws iam create-policy --policy-name tfeks2  --policy-document file://policy.json
+parn=$(aws iam list-policies --scope Local | jq -r '.Policies[] | select(.PolicyName=="tfeks2").Arn')
 aws iam attach-role-policy --role-name eksworkshop-admin2 --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+aws iam attach-role-policy --role-name eksworkshop-admin2 --policy-arn $parn
 
 instance_id=$(curl -sS http://169.254.169.254/latest/meta-data/instance-id)
 profile_name="eksworkshop-admin"
