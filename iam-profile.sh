@@ -1,14 +1,18 @@
 #! /bin/bash
-aws iam create-role --role-name eksworkshop-admin2 --assume-role-policy-document file://trust.json
+rolen="eksworkshop-admin2"
+profile_name="eksworkshop-admin2"
+aws iam create-role --role-name $rolen --assume-role-policy-document file://trust.json
 aws iam create-policy --policy-name tfeks2  --policy-document file://policy.json
 parn=$(aws iam list-policies --scope Local | jq -r '.Policies[] | select(.PolicyName=="tfeks2").Arn')
 aws iam attach-role-policy --role-name eksworkshop-admin2 --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
 aws iam attach-role-policy --role-name eksworkshop-admin2 --policy-arn $parn
-
+profile_name="eksworkshop-admin2"
+aws iam create-instance-profile --instance-profile-name $profile_name
+aws iam add-role-to-instance-profile --instance-profile-name $profile_name --role-name $rolen
 instance_id=$(curl -sS http://169.254.169.254/latest/meta-data/instance-id)
-profile_name="eksworkshop-admin"
-
-if aws ec2 associate-iam-instance-profile --iam-instance-profile "Name=$profile_name" --instance-id $instance_id; then
+ipa=$(aws ec2 describe-instances --instance-ids $instance_id --query Reservations[].Instances[].IamInstanceProfile | jq -r .[].Arn)
+iip=$(aws ec2 describe-iam-instance-profile-associations --filters "Name=instance-id,Values=$instance_id" --query IamInstanceProfileAssociations[].AssociationId | jq -r .[])
+if aws ec2 replace-iam-instance-profile-association --iam-instance-profile "Name=$profile_name" --association-id $iip; then
   echo "Profile associated successfully."
 else
   echo "ERROR: Encountered error associating instance profile eksworkshop-admin with Cloud9 environment"
