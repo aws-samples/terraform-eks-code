@@ -1,5 +1,5 @@
 #! /bin/bash
-sudo yum -yq install jq > /dev/null
+sudo yum -y -q install jq > /dev/null
 profile_name="eksworkshop-admin"
 instance_id=$(curl -sS http://169.254.169.254/latest/meta-data/instance-id)
 ipa=$(aws ec2 describe-instances --instance-ids $instance_id --query Reservations[].Instances[].IamInstanceProfile | jq -r .[].Arn)
