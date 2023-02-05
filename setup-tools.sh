@@ -38,7 +38,8 @@ aws sts get-caller-identity --query Arn | grep AWSCloud9SSMAccessRole > /dev/nul
 if [ $? -eq 0 ]; then
   rm -vf ${HOME}/.aws/credentials
 else
-  echo "ERROR: Could not find Instance profile AWSCloud9SSMAccessRole! - DO NOT PROCEED exiting"
+  echo "ERROR: Could not find Instance profile AWSCloud9SSMAccessRole! - DO NOT PROCEED"
+  echo "Check Cloud9 AWS Managed temporary credentials are disabled - in AWS Settings"
 fi
 
 echo "Setup Terraform cache"
