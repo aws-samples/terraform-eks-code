@@ -9,6 +9,6 @@ exit
 else
 echo "PASSED: Found Instance profile - proceed with the workshop"
 fi
-aws sts get-caller-identity --query Arn | grep AWSCloud9SSMAccessRole -q && echo "PASSED: IAM role valid" || echo "ERROR: IAM role not valid - DO NOT PROCEED"
+aws sts get-caller-identity --query Arn | grep AWSCloud9SSMAccessRole -q && echo "PASSED: IAM role valid" || echo "ERROR: IAM role not valid - DO NOT PROCEED"  && echo "Check Cloud9 AWS Managed temporary credentials are disabled - in AWS Settings"
 iname=$(aws ec2 describe-tags --filters "Name=resource-type,Values=instance" "Name=resource-id,Values=$instid" | jq -r '.Tags[] | select(.Key=="Name").Value')
-echo $iname| grep 'eks-terraform\|-Project-mod-' -q && echo "PASSED: Cloud9 IDE name is valid" || echo "ERROR: Cloud9 IDE name invalid! - DO NOT PROCEED" && echo "Check Cloud9 AWS Managed temporary credentials are disabled - in AWS Settings"
+echo $iname| grep 'eks-terraform\|-Project-mod-' -q && echo "PASSED: Cloud9 IDE name is valid" || echo "ERROR: Cloud9 IDE name invalid! - DO NOT PROCEED"
