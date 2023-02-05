@@ -19,24 +19,26 @@ rm -f awscliv2.zip
 rm -rf aws
 
 # setup for AWS cli
-aws sts get-caller-identity --query Arn | grep eksworkshop-admin > /dev/null
+export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
+export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
+export AZS=($(aws ec2 describe-availability-zones --query 'AvailabilityZones[].ZoneName' --output text --region $AWS_REGION))
+export TF_VAR_region=${AWS_REGION}
+test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo "AWS_REGION is not set !!"
+echo "export ACCOUNT_ID=${ACCOUNT_ID}" | tee -a ~/.bash_profile
+echo "export AWS_REGION=${AWS_REGION}" | tee -a ~/.bash_profile
+echo "export AZS=(${AZS[@]})" | tee -a ~/.bash_profile
+echo "export TF_VAR_region=${AWS_REGION}" | tee -a ~/.bash_profile
+  
+aws configure set default.region ${AWS_REGION}
+aws configure get region
+
+
+
+aws sts get-caller-identity --query Arn | grep AWSCloud9SSMAccessRole > /dev/null
 if [ $? -eq 0 ]; then
   rm -vf ${HOME}/.aws/credentials
-  export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
-  export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
-  export AZS=($(aws ec2 describe-availability-zones --query 'AvailabilityZones[].ZoneName' --output text --region $AWS_REGION))
-  export TF_VAR_region=${AWS_REGION}
-  test -n "$AWS_REGION" && echo AWS_REGION is "$AWS_REGION" || echo "AWS_REGION is not set !!"
-  echo "export ACCOUNT_ID=${ACCOUNT_ID}" | tee -a ~/.bash_profile
-  echo "export AWS_REGION=${AWS_REGION}" | tee -a ~/.bash_profile
-  echo "export AZS=(${AZS[@]})" | tee -a ~/.bash_profile
-  echo "export TF_VAR_region=${AWS_REGION}" | tee -a ~/.bash_profile
-  
-  aws configure set default.region ${AWS_REGION}
-  aws configure get region
 else
-  echo "ERROR: Could not find Instance profile eksworkshop-admin! - DO NOT PROCEED exiting"
-  exit
+  echo "ERROR: Could not find Instance profile AWSCloud9SSMAccessRole! - DO NOT PROCEED exiting"
 fi
 
 echo "Setup Terraform cache"
