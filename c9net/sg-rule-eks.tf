@@ -4,7 +4,7 @@ resource "aws_security_group_rule" "eks-all" {
   to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = [data.aws_vpc.vpc-default.cidr_block]
-  security_group_id = data.aws_ssm_parameter.cluster-sg
+  security_group_id = data.aws_ssm_parameter.net-cluster-sg
 }
 
 resource "aws_security_group_rule" "eks-all-cicd" {
@@ -13,7 +13,7 @@ resource "aws_security_group_rule" "eks-all-cicd" {
   to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = [data.aws_vpc.vpc-cicd.cidr_block]
-  security_group_id = data.aws_ssm_parameter.cluster-sg
+  security_group_id = data.aws_ssm_parameter.net-cluster-sg
 }
 
 resource "aws_security_group_rule" "eks-all-egress" {
@@ -21,7 +21,7 @@ resource "aws_security_group_rule" "eks-all-egress" {
   from_port         = 0
   to_port           = 0
   protocol          = "-1"
-  security_group_id = data.aws_ssm_parameter.cluster-sg
+  security_group_id = data.aws_ssm_parameter.net-cluster-sg
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
@@ -52,7 +52,7 @@ resource "aws_security_group_rule" "eks-all-node" {
   to_port                  = 0
   protocol                 = "-1"
   source_security_group_id = data.aws_ssm_parameter.allnodes-sg
-  security_group_id        = data.aws_ssm_parameter.cluster-sg
+  security_group_id        = data.aws_ssm_parameter.net-cluster-sg
 }
 
 resource "aws_security_group_rule" "eks-node-all" {
@@ -60,7 +60,7 @@ resource "aws_security_group_rule" "eks-node-all" {
   from_port                = 0
   to_port                  = 0
   protocol                 = "-1"
-  source_security_group_id = data.aws_ssm_parameter.cluster-sg
+  source_security_group_id = data.aws_ssm_parameter.net-cluster-sg
   security_group_id        = data.aws_ssm_parameter.allnodes-sg
 }
 
@@ -70,7 +70,7 @@ resource "aws_security_group_rule" "eks-all-self" {
   to_port           = 0
   protocol          = "-1"
   self              = true
-  security_group_id = data.aws_ssm_parameter.cluster-sg
+  security_group_id = data.aws_ssm_parameter.net-cluster-sg
 }
 
 resource "aws_security_group_rule" "eks-node-self" {

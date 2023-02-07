@@ -17,7 +17,6 @@ fi
 s3b=$(echo "aws_s3_bucket.terraform_state.id" | terraform console 2> /dev/null | jq -r .)
 
 echo $s3b > tmp-buck.txt
-echo $reg
 mkdir -p generated
 
 #default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr"]
