@@ -247,10 +247,10 @@ resource "aws_vpc_endpoint" "vpce-s3" {
   )
   private_dns_enabled = false
   route_table_ids = [
-    aws_route_table.rtb-0102c621469c344cd.id,
-    aws_route_table.rtb-041267f0474c24068.id,
-    aws_route_table.rtb-0939e7f3ae6e7b829.id,
-    aws_route_table.rtb-0329e787bbafcb2c4.id,
+    aws_route_table.rtb-p1.id,
+    aws_route_table.rtb-p2.id,
+    aws_route_table.rtb-p3.id,
+    aws_route_table.rtb-i.id,
   ]
   security_group_ids = []
   service_name       = format("com.amazonaws.%s.s3", data.aws_region.current.name)

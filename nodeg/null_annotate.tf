@@ -16,7 +16,7 @@ resource "null_resource" "annotate" {
         sub2=$(echo ${data.aws_subnet.i2.id})
         sub3=$(echo ${data.aws_subnet.i3.id})
         cn=$(echo ${data.aws_eks_cluster.eks_cluster.name})
-        tfid=$(echo ${var.tfid})
+        tfid=$(echo ${data.aws_ssm_parameter.tf-eks-id})
         echo $az1 $az2 $az3 $sub1 $sub2 $sub3 $cn $tfid
         echo -e "\x1B[33mAnnotate nodes ......\x1B[0m"
         ./annotate-nodes.sh $az1 $az2 $az3 $sub1 $sub2 $sub3 $cn $tfid

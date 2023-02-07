@@ -15,7 +15,4 @@ resource "aws_dynamodb_table" "terraform_locks" {
   point_in_time_recovery {
     enabled = true
   }
-
-
-
 }

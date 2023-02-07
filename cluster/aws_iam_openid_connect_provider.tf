@@ -34,6 +34,3 @@ resource "aws_iam_role" "cluster" {
   name               = format("irsa-%s-aws-node", aws_eks_cluster.cluster.name)
 }
 
-output "oidc_provider_arn" {
-  value = aws_iam_openid_connect_provider.cluster.arn
-}

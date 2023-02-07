@@ -21,5 +21,5 @@ resource "aws_iam_role_policy" "eks-nodegroup-ng-ma-NodeInstanceRole-1GFKA1037E1
       Version = "2012-10-17"
     }
   )
-  role = aws_iam_role.eks-nodegroup-ng-ma-NodeInstanceRole-1GFKA1037E1XO.id
+  role = aws_iam_role.eks-nodegroup-ng-ma-NodeInstanceRole.id
 }

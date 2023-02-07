@@ -4,6 +4,6 @@ resource "aws_security_group" "sg-01f8ab6431763bcb6" {
   tags = {
     "Name"  = format("eks-cluster-sg-%s",data.aws_ssm_parameter.tf-eks-cluster-name.value)
     "kubernetes.io/cluster/${data.aws_ssm_parameter.tf-eks-cluster-name.value}" = "owned"
-    "Label"                            = "TF-EKS Control Plane + Managed node ENI's"
+    "Label"  = "TF-EKS Control Plane + Managed node ENI's"
   }
 }

@@ -6,7 +6,3 @@ resource "aws_security_group" "allnodes-sg" {
     "Label" = "TF-EKS All Nodes Comms"
   }
 }
-
-output "allnodes-sg" {
-  value = aws_security_group.allnodes-sg.id
-}

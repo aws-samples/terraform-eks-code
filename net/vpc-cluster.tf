@@ -11,10 +11,3 @@ resource "aws_vpc" "cluster" {
   }
 }
 
-output "eks-vpc" {
-  value = aws_vpc.cluster.id
-}
-
-output "eks-cidr" {
-  value = aws_vpc.cluster.cidr_block
-}

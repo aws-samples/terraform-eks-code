@@ -17,5 +17,5 @@ resource "aws_iam_role_policy" "eks-cluster-ServiceRole-HUIGIC7K7HNJ__eks-cluste
       Version = "2012-10-17"
     }
   )
-  role = aws_iam_role.eks-cluster-ServiceRole-HUIGIC7K7HNJ.id
+  role = aws_iam_role.eks-cluster-ServiceRole.id
 }

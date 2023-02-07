@@ -21,7 +21,7 @@ echo $reg
 mkdir -p generated
 
 #default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr"]
-SECTIONS=('tf-setup' 'net' 'iam' 'c9net' 'cicd' 'cluster' 'nodeg' 'eks-cidr' 'sampleapp')
+SECTIONS=('tf-setup' 'net' 'iam' 'c9net' 'cicd' 'cluster' 'nodeg' 'sampleapp' 'fargate')
  
 for section in "${SECTIONS[@]}"
 do

@@ -7,6 +7,3 @@ resource "aws_security_group" "cluster-sg" {
   }
 }
 
-output "cluster-sg" {
-  value = aws_security_group.cluster-sg.id
-}

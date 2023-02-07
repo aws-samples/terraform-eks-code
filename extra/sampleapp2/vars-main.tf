@@ -1,1 +1,1 @@
-../../tf-setup/vars-main.tf
+../../common-files/vars-main.tf

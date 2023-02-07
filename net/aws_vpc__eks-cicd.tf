@@ -12,11 +12,3 @@ resource "aws_vpc" "vpc-cicd" {
   }
 }
 
-
-output "cicd-vpc" {
-  value = aws_vpc.vpc-cicd.id
-}
-
-output "cicd-cidr" {
-  value = aws_vpc.vpc-cicd.cidr_block
-}
