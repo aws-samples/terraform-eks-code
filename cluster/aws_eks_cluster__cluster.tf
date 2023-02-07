@@ -8,7 +8,7 @@ resource "aws_eks_cluster" "cluster" {
     "controllerManager",
     "scheduler",
   ]
-  name = var.cluster-name
+  name = data.aws_ssm_parameter.tf-eks-cluster-name.value
 
   role_arn = data.aws_ssm_parameter.cluster_service_role_arn.value
   tags     = {}

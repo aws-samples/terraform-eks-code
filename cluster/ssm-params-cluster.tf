@@ -9,8 +9,8 @@ resource "aws_ssm_parameter" "oidc_provider_arn" {
 }
 
 resource "aws_ssm_parameter" "cluster-name" {
-  name        = "/workshop/tf-eks/cluster-name"
-  description = "The EKS cluster name"
+  name        = "/workshop/tf-eks/eks-cluster-name"
+  description = "The actual EKS cluster name"
   type        = "String"
   value = aws_eks_cluster.cluster.name
   tags = {
