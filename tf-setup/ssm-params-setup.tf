@@ -59,7 +59,7 @@ resource "aws_ssm_parameter" "tf-eks-buck-name" {
   name        = "/workshop/tf-eks/bucket-name"
   description = "The Terraform State bucket name for the workshop"
   type        = "String"
-  value       = aws_s3_bucket.terraform_state[*].bucket
+  value       = aws_s3_bucket.bucket
 
   tags = {
     workshop = "tf-eks-workshop"
