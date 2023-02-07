@@ -10,7 +10,7 @@ resource "aws_eks_cluster" "cluster" {
   ]
   name = var.cluster-name
 
-  role_arn = data.aws_ssm_parameter.cluster_service_role_arn
+  role_arn = data.aws_ssm_parameter.cluster_service_role_arn.value
   tags     = {}
   version  = var.eks_version
 
@@ -23,12 +23,12 @@ resource "aws_eks_cluster" "cluster" {
       "0.0.0.0/0",
     ]
     security_group_ids = [
-      data.aws_ssm_parameter.net-cluster-sg,
+      data.aws_ssm_parameter.net-cluster-sg.value,
     ]
     subnet_ids = [
-      data.aws_ssm_parameter.sub-priv1,
-      data.aws_ssm_parameter.sub-priv2,
-      data.aws_ssm_parameter.sub-priv3,
+      data.aws_ssm_parameter.sub-priv1.value,
+      data.aws_ssm_parameter.sub-priv2.value,
+      data.aws_ssm_parameter.sub-priv3.value,
     ]
   }
   encryption_config {

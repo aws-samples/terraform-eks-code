@@ -11,12 +11,12 @@ resource "aws_eks_node_group" "ng1" {
     "eks/nodegroup-name" = format("ng1-%s", data.aws_eks_cluster.eks_cluster.name)
   }
   node_group_name = format("ng1-%s", data.aws_eks_cluster.eks_cluster.name)
-  node_role_arn   = data.aws_ssm_parameter.nodegroup_role_arn
+  node_role_arn   = data.aws_ssm_parameter.nodegroup_role_arn.value
 
   subnet_ids = [
-    data.aws_ssm_parameter.sub-priv1,
-    data.aws_ssm_parameter.sub-priv2,
-    data.aws_ssm_parameter.sub-priv3,
+    data.aws_ssm_parameter.sub-priv1.value,
+    data.aws_ssm_parameter.sub-priv2.value,
+    data.aws_ssm_parameter.sub-priv3.value,
   ]
   tags = {
     "eks/cluster-name"                            = data.aws_eks_cluster.eks_cluster.name

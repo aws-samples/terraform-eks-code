@@ -1,11 +1,11 @@
 resource "aws_launch_template" "lt-ng1" {
   instance_type          = "m6a.large"
-  key_name               = data.aws_ssm_parameter.key_name
+  key_name               = data.aws_ssm_parameter.key_name.value
   name                   = format("at-lt-%s-ng1", data.aws_eks_cluster.eks_cluster.name)
   tags                   = {}
   image_id               = data.aws_ssm_parameter.eksami.value
   user_data              = base64encode(local.eks-node-private-userdata)
-  vpc_security_group_ids = [data.aws_ssm_parameter.allnodes-sg]
+  vpc_security_group_ids = [data.aws_ssm_parameter.allnodes-sg.value]
   tag_specifications {
     resource_type = "instance"
     tags = {
