@@ -19,19 +19,20 @@ resource "helm_release" "karpenter" {
     value = format("%s.dkr.ecr.%s.amazonaws.com/karpenter/controller:v%s",data.aws_caller_identity.current.account_id,data.aws_region.current.name,var.karpenter_version)
   }
 
-  #set {
-  #  name  = "webhook.image"
-  #  value = format("%s.dkr.ecr.%s.amazonaws.com/karpenter/webhook:v%s",data.aws_caller_identity.current.account_id,data.aws_region.current.name,var.karpenter_version)
-  #}
 
   set {
-    name  = "clusterName"
+    name  = "aws.clusterName"
     value = data.aws_eks_cluster.eks.name
   }
 
   set {
-    name  = "clusterEndpoint"
+    name  = "aws.clusterEndpoint"
     value = data.aws_eks_cluster.eks.endpoint
+  }
+
+  set {
+    name  = "aws.isolatedVPC"
+    value = true
   }
 
 
