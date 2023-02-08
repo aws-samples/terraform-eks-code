@@ -21,18 +21,23 @@ resource "helm_release" "karpenter" {
 
 
   set {
-    name  = "aws.clusterName"
+    name  = "settings.aws.clusterName"
     value = data.aws_eks_cluster.eks.name
   }
 
   set {
-    name  = "aws.clusterEndpoint"
+    name  = "settings.aws.clusterEndpoint"
     value = data.aws_eks_cluster.eks.endpoint
   }
 
   set {
-    name  = "aws.isolatedVPC"
+    name  = "settings.aws.isolatedVPC"
     value = true
+  }
+
+  set {
+    name  = "settings.aws.defaultInstanceProfile"
+    value = aws_iam_role.karpenter_node.arn
   }
 
 
