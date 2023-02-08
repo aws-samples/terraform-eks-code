@@ -1,1 +1,1 @@
-../tf-setup/var-karpenter-version.tf
+../common-files/var-karpenter-version.tf

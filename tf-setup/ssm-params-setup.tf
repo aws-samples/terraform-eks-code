@@ -66,3 +66,14 @@ resource "aws_ssm_parameter" "tf-eks-buck-name" {
   }
 }
 
+resource "aws_ssm_parameter" "tf-eks-version" {
+  name        = "/workshop/tf-eks/eks-version"
+  description = "The EKS Version"
+  type        = "String"
+  value       = var.eks_version
+
+  tags = {
+    workshop = "tf-eks-workshop"
+  }
+}
+
