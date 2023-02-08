@@ -37,7 +37,7 @@ resource "helm_release" "karpenter" {
 
   set {
     name  = "settings.aws.defaultInstanceProfile"
-    value = aws_iam_role.karpenter_node.arn
+    value = aws_iam_instance_profile.karpenter_node.arn
   }
 
 
