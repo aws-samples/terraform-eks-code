@@ -28,9 +28,7 @@ resource "null_resource" "modify_aws_auth" {
             # get the chart
             rm -rf karpenter
             rm -rf karpenter-*.tgz
-            helm repo add karpenter https://charts.karpenter.sh
-            helm repo update
-            helm fetch karpenter/karpenter --version ${var.karpenter_version}
+            helm fetch oci://public.ecr.aws/karpenter/karpenter --version v${var.karpenter_version}
             tar -xzf karp*.tgz   
             #aws iam create-service-linked-role --aws-service-name spot.amazonaws.com 2> /dev/null  
         EOT

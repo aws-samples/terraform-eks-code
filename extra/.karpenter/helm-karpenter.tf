@@ -19,10 +19,10 @@ resource "helm_release" "karpenter" {
     value = format("%s.dkr.ecr.%s.amazonaws.com/karpenter/controller:v%s",data.aws_caller_identity.current.account_id,data.aws_region.current.name,var.karpenter_version)
   }
 
-  set {
-    name  = "webhook.image"
-    value = format("%s.dkr.ecr.%s.amazonaws.com/karpenter/webhook:v%s",data.aws_caller_identity.current.account_id,data.aws_region.current.name,var.karpenter_version)
-  }
+  #set {
+  #  name  = "webhook.image"
+  #  value = format("%s.dkr.ecr.%s.amazonaws.com/karpenter/webhook:v%s",data.aws_caller_identity.current.account_id,data.aws_region.current.name,var.karpenter_version)
+  #}
 
   set {
     name  = "clusterName"
@@ -35,17 +35,17 @@ resource "helm_release" "karpenter" {
   }
 
 
-  values = [
-    templatefile(
-      "${path.module}/templates/values.yaml.tpl",
-      {
-        "karpenter_iam_role"   = module.iam_assumable_role_karpenter.iam_role_arn,
-        "cluster_name"         = var.cluster-name,
-        "cluster_endpoint"     = data.aws_eks_cluster.eks.endpoint,
-        "karpenter_node_group" = ""
-      }
-    )
-  ]
+  #values = [
+  #  templatefile(
+  #    "${path.module}/templates/values.yaml.tpl",
+  #    {
+  #      "karpenter_iam_role"   = module.iam_assumable_role_karpenter.iam_role_arn,
+  #      "cluster_name"         = var.cluster-name,
+  #      "cluster_endpoint"     = data.aws_eks_cluster.eks.endpoint,
+  #      "karpenter_node_group" = ""
+  #    }
+  #  )
+  #]
 }
 
 # A default Karpenter Provisioner manifest is created as a sample.
