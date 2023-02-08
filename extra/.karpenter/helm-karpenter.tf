@@ -7,7 +7,8 @@ resource "helm_release" "karpenter" {
   ]
 
   namespace        = var.karpenter_namespace
-  create_namespace = true
+  #If using Fargate this should be false
+  create_namespace = false
 
   name       = "karpenter"
   #repository = "https://charts.karpenter.sh"
