@@ -17,3 +17,7 @@ data "aws_ssm_parameter" "tf-eks-region" {
 data "aws_ssm_parameter" "tf-eks-cluster-name" {
   name = "/workshop/tf-eks/cluster-name"
 }
+
+data "aws_ssm_parameter" "tf-eks-version" {
+  name = "/workshop/tf-eks/eks-version"
+}
