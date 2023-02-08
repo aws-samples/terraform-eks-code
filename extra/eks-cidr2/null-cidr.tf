@@ -7,6 +7,7 @@ resource "null_resource" "cidr2" {
     when        = create
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
+        sleep 5 # let nodes settle
         az1=$(echo ${data.aws_subnet.p1.availability_zone})
         az2=$(echo ${data.aws_subnet.p2.availability_zone})
         az3=$(echo ${data.aws_subnet.p3.availability_zone})
