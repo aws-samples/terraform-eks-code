@@ -13,7 +13,7 @@ resource "null_resource" "cidr2" {
         sub1=$(echo ${data.aws_subnet.p1.id})
         sub2=$(echo ${data.aws_subnet.p2.id})
         sub3=$(echo ${data.aws_subnet.p3.id})
-        cn=$(echo ${data.aws_eks_cluster.eks_cluster.name})
+        cn=$(echo ${nonsensitive(data.aws_eks_cluster.eks_cluster.name)})
         echo $az1 $az2 $az3 $sub1 $sub2 $sub3 $cn
         #echo -e "\x1B[35mCycle nodes for custom CNI setting (takes a few minutes) ......\x1B[0m"
         #./cni-cycle-nodes2.sh $cn
