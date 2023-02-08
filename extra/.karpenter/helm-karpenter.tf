@@ -26,7 +26,7 @@ resource "helm_release" "karpenter" {
 
   set {
     name  = "clusterName"
-    value = var.cluster-name
+    value = data.aws_eks_cluster.eks.name
   }
 
   set {
