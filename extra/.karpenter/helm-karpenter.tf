@@ -42,6 +42,11 @@ resource "helm_release" "karpenter" {
   }
 
 
+set {
+  name = "serviceAccount.annotations"
+  value = format("\"eks.amazonaws.com/role-arn\" = \"arn:aws:iam::%s:role/%s-karpenter\""),data.aws_caller_identity.current.account_id) 
+}
+
   #values = [
   #  templatefile(
   #    "${path.module}/templates/values.yaml.tpl",
