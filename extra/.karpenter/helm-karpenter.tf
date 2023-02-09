@@ -44,7 +44,7 @@ resource "helm_release" "karpenter" {
 
 set {
   name = "serviceAccount.annotations"
-  value = format(eks.amazonaws.com/role-arn = arn:aws:iam::%s:role/%s-karpenter",data.aws_caller_identity.current.account_id,data.aws_eks_cluster.eks.name) 
+  value = format("eks.amazonaws.com/role-arn = arn:aws:iam::%s:role/%s-karpenter",data.aws_caller_identity.current.account_id,data.aws_eks_cluster.eks.name) 
 }
 
   #values = [
