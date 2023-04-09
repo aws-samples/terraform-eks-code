@@ -41,3 +41,4 @@ jq
 
 **/.terraform.lock.hcl
 extra/.observability/priv-vars.tf
+.DS_Store
