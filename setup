@@ -28,9 +28,11 @@ echo "export ACCOUNT_ID=${ACCOUNT_ID}" | tee -a ~/.bash_profile
 echo "export AWS_REGION=${AWS_REGION}" | tee -a ~/.bash_profile
 echo "export AZS=(${AZS[@]})" | tee -a ~/.bash_profile
 echo "export TF_VAR_region=${AWS_REGION}" | tee -a ~/.bash_profile
-  
+
 aws configure set default.region ${AWS_REGION}
 aws configure get region
+
+
 
 
 
@@ -187,7 +189,7 @@ iip=$(aws ec2 describe-iam-instance-profile-associations --filters "Name=instanc
 if aws ec2 replace-iam-instance-profile-association --iam-instance-profile "Name=$profile_name" --association-id $iip; then
   aws cloud9 update-environment --environment-id $C9_PID --managed-credentials-action DISABLE
   rm -vf ${HOME}/.aws/credentials
-  echo "Profile associated successfully."
+  echo "Profile eksworkshop-admin associated successfully."
 else
   echo "ERROR: Encountered error associating instance profile eksworkshop-admin with Cloud9 environment"
 fi

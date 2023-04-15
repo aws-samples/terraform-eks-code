@@ -10,6 +10,6 @@ if [ "$ip" != "eksworkshop-admin" ] ; then
 echo "ERROR: Could not find Instance profile eksworkshop-admin - DO NOT PROCEED"
 exit
 else
-echo "PASSED: Found Instance profile - proceed with the workshop"
+echo "PASSED: Found Instance profile $ip - proceed with the workshop"
 fi
 
