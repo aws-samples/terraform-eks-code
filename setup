@@ -188,7 +188,7 @@ ipa=$(aws ec2 describe-instances --instance-ids $instance_id --query Reservation
 iip=$(aws ec2 describe-iam-instance-profile-associations --filters "Name=instance-id,Values=$instance_id" --query IamInstanceProfileAssociations[].AssociationId | jq -r .[])
 echo "Associate $profile_name"
 if aws ec2 replace-iam-instance-profile-association --iam-instance-profile "Name=$profile_name" --association-id $iip; then
-  if aws cloud9 update-environment --environment-id $C9_PID --managed-credentials-action DISABLE; then
+  if aws cloud9 update-environment --environment-id $C9_PID --managed-credentials-action DISABLE 2> /dev/null; then
     rm -vf ${HOME}/.aws/credentials
     echo "Profile eksworkshop-admin associated successfully."
   fi
