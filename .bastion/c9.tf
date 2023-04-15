@@ -6,7 +6,7 @@ resource "aws_cloud9_environment_ec2" "bastion" {
   image_id = "amazonlinux-2-x86_64"
   subnet_id = data.aws_ssm_parameter.sub-priv1.value
   # = format("arn:aws:sts::%s:assumed-role/WSParticipantRole/Participant",data.aws_caller_identity.current.account_id)
-
+  owner_arn=format("arn:aws:sts::%s:assumed-role/WSParticipantRole/Participant",data.aws_caller_identity.current.account_id)
 }
 
 
