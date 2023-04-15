@@ -196,7 +196,7 @@ else
   echo "ERROR: Encountered error associating instance profile eksworkshop-admin with Cloud9 environment"
 fi
 #
-echo "For final checks - run ./check.sh"
+echo "For final checks - run ./check"
 #
 
 
