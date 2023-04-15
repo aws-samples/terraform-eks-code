@@ -9,9 +9,3 @@ resource "aws_cloud9_environment_ec2" "bastion" {
   owner_arn=format("arn:aws:sts::%s:assumed-role/WSParticipantRole/Participant",data.aws_caller_identity.current.account_id)
 }
 
-
-resource "aws_cloud9_environment_membership" "bastion" {
-  environment_id = aws_cloud9_environment_ec2.bastion.id
-  permissions    = "read-write"
-  user_arn       =  format("arn:aws:sts::%s:assumed-role/WSParticipantRole/Participant",data.aws_caller_identity.current.account_id)
-}
