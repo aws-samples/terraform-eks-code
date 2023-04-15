@@ -38,7 +38,7 @@ resource "aws_eks_cluster" "cluster" {
     resources = ["secrets"]
   }
   provisioner "local-exec" {
-    command     = "until curl --output /dev/null --insecure --silent ${self.endpoint}/healthz; do sleep 1; done"
+    command     = "until curl --output /dev/null --insecure --silent ${self.endpoint}/healthz; do sleep 2; done"
     working_dir = path.module
   }
 
