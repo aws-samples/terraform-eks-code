@@ -2,7 +2,8 @@ resource "aws_ssm_parameter" "oidc_provider_arn" {
   name        = "/workshop/tf-eks/oidc_provider_arn"
   description = "The EKS cluster oidc arn"
   type        = "String"
-  value = aws_iam_openid_connect_provider.cluster.arn
+  #value = aws_iam_openid_connect_provider.cluster.arn
+  value = aws_eks_identity_provider_config.oidc.arn
   tags = {
     workshop = "tf-eks-workshop"
   }
