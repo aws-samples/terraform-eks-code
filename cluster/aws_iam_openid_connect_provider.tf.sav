@@ -18,7 +18,8 @@ data "aws_iam_policy_document" "cluster_assume_role_policy" {
 
     condition {
       test     = "StringEquals"
-      variable = "${replace(aws_iam_openid_connect_provider.cluster.url, "https://", "")}:sub"
+      #variable = "${replace(aws_iam_openid_connect_provider.cluster.url, "https://", "")}:sub"
+      variable = "${replace(aws_eks_cluster.cluster.identity.0.oidc.0.issuer, "https://", "")}:sub"
       values   = ["system:serviceaccount:kube-system:aws-node"]
     }
 
