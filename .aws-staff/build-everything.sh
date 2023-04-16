@@ -7,7 +7,8 @@ for i in $dirs; do
     cd ../$i
     echo " "
     echo "**** Building in $i ****"
-    tobuild=$(grep 'data\|resource' *.tf | grep '"' | grep  '{' | grep -v '#\|=' |  wc -l)
+     #tobuild=$(grep 'data\|resource' *.tf | grep '"' | grep  '{' | grep -v '#\|=' |  wc -l)
+    tobuild=$(grep 'data\|resource' *.tf | grep '"' | grep  '{' | cut -f2 -d ':' | grep -v '#\|=' | grep aws_ |  wc -l)
     rm -rf .terraform*
     terraform init -no-color > /dev/null
     rc=0
@@ -36,7 +37,7 @@ for i in $dirs; do
         fi
     fi
     if [ $rc -lt $tobuild ]; then echo "only $rc in tf state expected $tobuild" && break; fi
-    echo "Passed $i tests"
+    echo "Passed $i tests (found $rc resources expected minimum for this stage = $tobuild)"
     cd $cur
     date
 done
@@ -50,6 +51,4 @@ else
 echo "PASSED: running pod count $rc"
 fi
 
-# terraform state rm helm_release.aws-load-balancer-controller
-# helm ls -A | wc -l
-# 
+
