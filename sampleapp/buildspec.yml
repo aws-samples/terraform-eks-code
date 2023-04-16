@@ -98,7 +98,7 @@ phases:
       - rm -f terraform_1.4.5_linux_amd64.zip
 
       - echo "kubectl"
-      - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+      - curl --silent -LO https://storage.googleapis.com/kubernetes-release/release/v1.24.12/bin/linux/amd64/kubectl  > /dev/null
       - chmod +x ./kubectl
       - mv ./kubectl /usr/local/bin/kubectl
       
@@ -132,7 +132,6 @@ phases:
   post_build:
     commands:
       - echo "completed on `date`"
-
 
 artifacts:
   files:
