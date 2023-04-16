@@ -17,7 +17,7 @@ resource "aws_iam_role" "codebuild-eks-cicd-build-app-service-role" {
   )
   force_detach_policies = false
   max_session_duration  = 3600
-  name                  = format("codebuild-eks-service-role-%s",nonsensitive(data.aws_ssm_parameter.tf-eks-id.value))
+  name                  = format("%s-codebuild-eks-service-role",nonsensitive(data.aws_ssm_parameter.tf-eks-id.value))
   path                  = "/service-role/"
   tags                  = {}
 }

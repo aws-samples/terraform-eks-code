@@ -9,8 +9,6 @@ resource "null_resource" "gen_cluster_auth" {
     when        = create
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
-        #echo -e "\x1B[32m Testing Network Connectivity ${aws_eks_cluster.cluster.name}...should see port 443/tcp open  https\x1B[0m"
-        #./test.sh ${aws_eks_cluster.cluster.name}
         echo -e "\x1B[32m Checking Authorization ${aws_eks_cluster.cluster.name}...should see Server Version: v${var.eks_version}.xxx \x1B[0m"
         ./auth.sh ${aws_eks_cluster.cluster.name}
         echo "************************************************************************************"
