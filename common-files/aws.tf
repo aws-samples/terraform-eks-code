@@ -1,4 +1,5 @@
 terraform {
+  # specify minimum version of Terraform 
   required_version = "~> 1.4.2"
   required_providers {
     aws = {
@@ -30,6 +31,7 @@ terraform {
   }
 }
 
+# specify local directory for AWS credentials
 provider "aws" {
   region                   = var.region
   shared_credentials_files = ["~/.aws/credentials"]
