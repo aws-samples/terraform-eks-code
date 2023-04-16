@@ -17,10 +17,10 @@ resource "aws_iam_role" "eks-nodegroup-ng-ma-NodeInstanceRole" {
   )
   force_detach_policies = false
   max_session_duration  = 3600
-  name                  = "eks-nodegroup-ng-ma-NodeInstanceRole"
+  name                  = format("%s-eks-nodegroup-NodeInstanceRole",data.aws_ssm_parameter.tf-eks-id.value)
   path                  = "/"
   tags = {
-    "Name" = "eks-nodegroup-ng-maneksami2/NodeInstanceRole"
+    "Name" = format("%s-eks-nodegroup-ng-maneksami2/NodeInstanceRole",data.aws_ssm_parameter.tf-eks-id.value)
   }
 }
 

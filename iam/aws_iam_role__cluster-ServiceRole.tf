@@ -20,10 +20,10 @@ resource "aws_iam_role" "eks-cluster-ServiceRole" {
   )
   force_detach_policies = false
   max_session_duration  = 3600
-  name                  = "eks-cluster-ServiceRole"
+  name                  = format("%s-eks-cluster-ServiceRole",data.aws_ssm_parameter.tf-eks-id.value)
   path                  = "/"
   tags = {
-    "Name" = "eks-cluster/ServiceRole"
+    "Name" = format("%s-eks-cluster/ServiceRole",data.aws_ssm_parameter.tf-eks-id.value)
 
   }
 }
