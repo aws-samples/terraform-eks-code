@@ -1,11 +1,11 @@
 
-data "external" "bucket_name" {
-  program = ["bash", "get-bucket-name.sh"]
-}
+#data "external" "bucket_name" {
+#  program = ["bash", "get-bucket-name.sh"]
+#}
 
-output "Name" {
-  value = data.external.bucket_name.result.Name
-}
+#output "Name" {
+#  value = data.external.bucket_name.result.Name
+#}
 
 resource "aws_s3_bucket" "codepipeline-bucket" {
   #bucket = data.external.bucket_name.result.Name
