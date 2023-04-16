@@ -15,7 +15,7 @@ helm install karpenter oci://public.ecr.aws/karpenter/karpenter --version ${TAG}
   --set settings.aws.clusterEndpoint=${CLUSTER_ENDPOINT} \
   --set settings.aws.defaultInstanceProfile=KarpenterNodeInstanceProfile-${CLUSTER_NAME} \
   --set settings.aws.interruptionQueueName=${CLUSTER_NAME} \
-  --set controller.image=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/karpenter/controller:${TAG}
+  --set controller.image=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aws/karpenter/controller:${TAG}
   --wait
 
 

@@ -35,7 +35,7 @@ resource "kubernetes_deployment" "fargate1__logging_server" {
 
       spec {
         container {
-          image             = format("%s.dkr.ecr.%s.amazonaws.com/nginx", data.aws_caller_identity.current.account_id, data.aws_region.current.name)
+          image             = format("%s.dkr.ecr.%s.amazonaws.com/aws/nginx/nginx", data.aws_caller_identity.current.account_id, data.aws_region.current.name)
           image_pull_policy = "Always"
           name              = "nginx"
           port {

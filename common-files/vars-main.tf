@@ -20,7 +20,7 @@ variable "cluster-name" {
 
 variable "eks_version" {
   type    = string
-  default = "1.23"
+  default = "1.24"
 }
 
 variable "no-output" {

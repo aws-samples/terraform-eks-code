@@ -35,7 +35,7 @@ resource "kubernetes_deployment" "game1-2048__deployment1-2048" {
         termination_grace_period_seconds = 30
 
         container {
-          image             = format("%s.dkr.ecr.%s.amazonaws.com/sample-app", data.aws_caller_identity.current.account_id, data.aws_region.current.name)
+          image             = format("%s.dkr.ecr.%s.amazonaws.com/aws/awsandy/docker-2048", data.aws_caller_identity.current.account_id, data.aws_region.current.name)
           image_pull_policy = "Always"
           name              = "app1-2048"
           port {
@@ -90,7 +90,7 @@ resource "kubernetes_deployment" "game2-2048__deployment2-2048" {
         termination_grace_period_seconds = 30
 
         container {
-          image             = format("%s.dkr.ecr.%s.amazonaws.com/sample-app", data.aws_caller_identity.current.account_id, data.aws_region.current.name)
+          image             = format("%s.dkr.ecr.%s.amazonaws.com/aws/awsandy/docker-2048", data.aws_caller_identity.current.account_id, data.aws_region.current.name)
           image_pull_policy = "Always"
           name              = "app2-2048"
           port {

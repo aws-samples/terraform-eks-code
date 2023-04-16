@@ -17,7 +17,7 @@ resource "helm_release" "karpenter" {
 
   set {
     name  = "controller.image"
-    value = format("%s.dkr.ecr.%s.amazonaws.com/karpenter/controller:v%s",data.aws_caller_identity.current.account_id,data.aws_region.current.name,var.karpenter_version)
+    value = format("%s.dkr.ecr.%s.amazonaws.com/aws/karpenter/controller:v%s",data.aws_caller_identity.current.account_id,data.aws_region.current.name,var.karpenter_version)
   }
 
 
