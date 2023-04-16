@@ -2,7 +2,7 @@
 # aws_iam_policy.CodeBuildBasePolicy-eks-cicd-build-app:
 resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
   description = "Policy used in trust relationship with CodeBuild v0.4"
-  name        = formar("%s-CodeBuildBasePolicy-eks-cicd-build-app",data.aws_ssm_parameter.tf-eks-id.value)
+  name        = format("%s-CodeBuildBasePolicy-eks-cicd-build-app",data.aws_ssm_parameter.tf-eks-id.value)
   path        = "/service-role/"
   policy = jsonencode(
     {
