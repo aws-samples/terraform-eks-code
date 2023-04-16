@@ -114,7 +114,7 @@ phases:
       - rm -f ~/.kube/config
       - aws eks update-kubeconfig --name mycluster1
       - sleep 1
-      - #kubectl get nodes
+      - kubectl get nodes
       - ls -l
       - #
       - terraform init
