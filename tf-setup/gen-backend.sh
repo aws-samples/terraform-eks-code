@@ -94,5 +94,6 @@ of=`echo "generated/backend-k8scicd.tf"`
     ##
 
 cd $d
+terraform fmt --recursive
 
 exit 0
