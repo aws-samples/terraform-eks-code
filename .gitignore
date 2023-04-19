@@ -1,6 +1,6 @@
 # Local .terraform directories
 **/.terraform/*
-
+**/bin/*
 # .tfstate files
 *.tfstate
 *.tfstate.*
@@ -42,3 +42,4 @@ jq
 **/.terraform.lock.hcl
 extra/.observability/priv-vars.tf
 .DS_Store
+docker-extract.sh
