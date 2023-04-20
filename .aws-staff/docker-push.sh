@@ -4,6 +4,9 @@ if [[ $typ == "Linux" ]]; then
     cd ~/environment
     cp tfekscode/bin/Dockerfile .
 fi
+if [[ $typ == "Darwin" ]]; then
+    cd ../..
+fi
 docker build . -t tfekscode --platform amd64
 docker tag tfekscode:latest public.ecr.aws/awsandy/tfekscode
 docker push public.ecr.aws/awsandy/tfekscode
