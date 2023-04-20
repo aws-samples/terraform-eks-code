@@ -30,10 +30,10 @@ resource "aws_s3_bucket_request_payment_configuration" "codepipeline-bucket" {
   payer  = "BucketOwner"
 }
 
-resource "aws_s3_bucket_acl" "codepipeline-bucket" {
-  bucket = aws_s3_bucket.codepipeline-bucket.id
-  acl    = "private"
-}
+#resource "aws_s3_bucket_acl" "codepipeline-bucket" {
+#  bucket = aws_s3_bucket.codepipeline-bucket.id
+#  acl    = "private"
+#}
 
 
 
