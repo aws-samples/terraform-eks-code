@@ -36,17 +36,17 @@ resource "helm_release" "aws-load-balancer-controller" {
 
   set {
     name = "enable-shield"
-    value = false
+    value = "false"
   }
 
   set {
     name = "enable-waf" 
-    value = false
+    value = "false"
   }
 
   set {
     name = "enable-wafv2" 
-    value = false
+    value = "false"
   }
 
 
