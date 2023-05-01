@@ -20,6 +20,7 @@ docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/sample-app
 docker pull public.ecr.aws/eks-distro/kubernetes/pause:3.5
 docker tag public.ecr.aws/eks-distro/kubernetes/pause:3.5 $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pause:3.5
 docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pause:3.5
+#
 # karpenter stuff 
 # no longer used by karpenter chart
 #docker pull public.ecr.aws/karpenter/webhook:v${1}
