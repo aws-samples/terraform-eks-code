@@ -1,11 +1,11 @@
 terraform {
 
-  required_version = "~> 1.4.2"
+  required_version = "~> 1.4.4"
   required_providers {
     aws = {
       source = "hashicorp/aws"
       #  Allow only version 4.63
-      version = "= 4.63.0"
+      version = "= 4.65.0"
     }
   }
 }
