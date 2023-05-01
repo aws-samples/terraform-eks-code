@@ -32,5 +32,26 @@ resource "helm_release" "aws-load-balancer-controller" {
     value = "v2.5.0"
   }
 
+# https://github.com/kubernetes-sigs/aws-load-balancer-controller/issues/3035
+
+  set {
+    name = "enable-shield"
+    value = false
+  }
+
+  set {
+    name = "enable-waf" 
+    value = false
+  }
+
+  set {
+    name = "enable-wafv2" 
+    value = false
+  }
+
+
+
+
+
 }
 
