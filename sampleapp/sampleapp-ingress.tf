@@ -26,9 +26,9 @@ resource "kubernetes_ingress_v1" "game-2048__ingress-2048" {
   }
 }
 
-output "load_balancer_hostname" {
-  value = kubernetes_ingress_v1.game-2048__ingress-2048.status.0.load_balancer.0.ingress.0.hostname
-}
+#output "load_balancer_hostname" {
+#  value = kubernetes_ingress_v1.game-2048__ingress-2048.status.0.load_balancer.0.ingress.0.hostname
+#}
 
 # Display load balancer IP (typically present in GCP, or using Nginx ingress controller)
 #output "load_balancer_ip" {
