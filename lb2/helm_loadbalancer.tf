@@ -29,7 +29,7 @@ resource "helm_release" "aws-load-balancer-controller" {
 
   set {
     name  = "image.tag"
-    value = "v2.5.0"
+    value = "v2.5.1"
   }
 
 # https://github.com/kubernetes-sigs/aws-load-balancer-controller/issues/3035
