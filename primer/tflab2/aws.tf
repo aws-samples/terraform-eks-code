@@ -1,11 +1,10 @@
 terraform {
-
-  required_version = "~> 1.4.4"
+  required_version = "~> 1.5.0"
   required_providers {
     aws = {
       source = "hashicorp/aws"
-      #  Allow only version 4.63
-      version = "= 4.65.0"
+      #  Fix version version of the AWS provider
+      version = "= 5.3.0"
     }
   }
 }
@@ -21,7 +20,6 @@ variable "region" {
   type        = string
   default     = "eu-west-1"
 }
-
 
 
 

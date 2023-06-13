@@ -1,21 +1,11 @@
 terraform {
-  required_version = "~> 1.4.4"
+  required_version = "~> 1.5.0"
   required_providers {
     aws = {
       source = "hashicorp/aws"
-      #  lock provider to avoid issuesy 4.63  version of the AWS provider
-
-      version = "= 4.65.0"
+      #  Fix version version of the AWS provider
+      version = "= 5.3.0"
     }
-    null = {
-      source  = "hashicorp/null"
-      version = "~> 3.0"
-    }
-    external = {
-      source  = "hashicorp/external"
-      version = "~> 2.0"
-    }
-
   }
 }
 
@@ -24,14 +14,15 @@ provider "aws" {
   shared_credentials_files = ["~/.aws/credentials"]
   profile                  = "default"
 }
-provider "null" {}
-provider "external" {}
 
 variable "region" {
   description = "The name of the AWS Region"
   type        = string
   default     = "eu-west-1"
 }
+
+provider "null" {}
+provider "external" {}
 
 
 
