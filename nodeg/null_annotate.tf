@@ -9,13 +9,13 @@ resource "null_resource" "annotate" {
     when        = create
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
-        az1=$(echo ${nonsensitive(data.aws_subnet.i1.availability_zone)})
-        az2=$(echo ${nonsensitive(data.aws_subnet.i2.availability_zone)})
-        az3=$(echo ${nonsensitive(data.aws_subnet.i3.availability_zone)})
+        az1=$(echo ${data.aws_subnet.i1.availability_zone})
+        az2=$(echo ${data.aws_subnet.i2.availability_zone})
+        az3=$(echo ${data.aws_subnet.i3.availability_zone})
         sub1=$(echo ${nonsensitive(data.aws_subnet.i1.id)})
         sub2=$(echo ${nonsensitive(data.aws_subnet.i2.id)})
         sub3=$(echo ${nonsensitive(data.aws_subnet.i3.id)})
-        cn=$(echo ${nonsensitive(data.aws_eks_cluster.eks_cluster.name)})
+        cn=$(echo ${data.aws_eks_cluster.eks_cluster.name})
         tfid=$(echo ${nonsensitive(data.aws_ssm_parameter.tf-eks-id.value)})
         echo $az1 $az2 $az3 $sub1 $sub2 $sub3 $cn $tfid
         echo -e "\x1B[33mAnnotate nodes ......\x1B[0m"
