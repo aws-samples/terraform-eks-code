@@ -9,6 +9,7 @@ resource "null_resource" "gen_cluster_auth" {
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
         ./c9-auth.sh
+        ./auth-cicd.sh
         echo "************************************************************************************"
      EOT
   }
