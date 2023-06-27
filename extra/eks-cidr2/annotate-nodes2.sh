@@ -88,6 +88,6 @@ kubectl annotate node ${nn} k8s.amazonaws.com/eniConfig=${nz}-pod-netconfig2
 done
 if [ $curr -ne $target ]; then
 echo "Background reannotate"
-sleep 60 && ./reannotate-nodes.sh $CLUSTER > /dev/null &
+sleep 60 && ./reannotate-nodes.sh $CLUSTER &> /dev/null &
 fi
 
