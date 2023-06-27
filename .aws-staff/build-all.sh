@@ -7,7 +7,7 @@ curl -o iam_policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-lo
 cd $cur
 buildok=1
 #orig
-dirs="tf-setup net iam c9net cluster cicd nodeg lb2 sampleapp extra/nodeg2 extra/eks-cidr2 extra/sampleapp2 extra/fargate extra/fargateapp"
+dirs="tf-setup net iam c9net cicd cluster nodeg lb2 sampleapp extra/nodeg2 extra/eks-cidr2 extra/sampleapp2 extra/fargate extra/fargateapp"
 for i in `echo $dirs`;do
     ./build-stage.sh $i 2>&1 | tee -a build.log
     grep Error: build.log
