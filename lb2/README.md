@@ -1,5 +1,15 @@
 ### Troubleshoot
 
+Slow ingress deletion:
+https://github.com/kubernetes-sigs/aws-load-balancer-controller/issues/1879
+https://github.com/kubernetes-sigs/aws-load-balancer-controller/blob/v2.4.2/docs/deploy/upgrade/migrate_v1_v2.md#backwards-compatibility
+
+ * You'll need to manually add `elbv2.k8s.aws/targetGroupBinding=shared` description to that inbound rule so that AWSLoadBalancerController can delete such rule when you delete your Ingress.
+     * The following shell pipeline can be used to update the rules automatically. Replace `$REGION` and `$SG_ID` with your own values. After running it change `DryRun: true` to `DryRun: false` to have it actually update your security group:
+       ```
+       aws --region $REGION ec2 update-security-group-rule-descriptions-ingress --cli-input-json "$(aws --region $REGION ec2 describe-security-groups --group-ids $SG_ID | jq '.SecurityGroups[0] | {DryRun: true, GroupId: .GroupId ,IpPermissions: (.IpPermissions | map(select(.FromPort==0 and .ToPort==65535) | .UserIdGroupPairs |= map(.Description="elbv2.k8s.aws/targetGroupBinding=shared"))) }' -M)"
+
+
 helm search repo eks/aws-load-balancer-controller -l
 
 ```
@@ -69,3 +79,4 @@ cda77aab0b5561b48987226d3b1c851fa611924a5045ac3614f87" network for pod "aws-load
 ```
 
 Reannotate nodes
+
