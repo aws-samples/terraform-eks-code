@@ -28,13 +28,13 @@ resource "aws_iam_policy" "CodeBuildVpcPolicy-eks-cicd-build-app" {
             StringEquals = {
               "ec2:AuthorizedService" = "codebuild.amazonaws.com"
               "ec2:Subnet" = [
-                format("arn:aws:ec2:%s:%s:subnet/subnet-00cc72ac5b0b79dd4", data.aws_caller_identity.current.account_id, data.aws_region.current.name),
+                format("arn:aws:ec2:%s:%s:subnet/subnet-00cc72ac5b0b79dd4",data.aws_region.current.name,data.aws_caller_identity.current.account_id),
 
               ]
             }
           }
           Effect   = "Allow"
-          Resource = format("arn:aws:ec2:%s:%s:network-interface/*", data.aws_caller_identity.current.account_id, data.aws_region.current.name),
+          Resource = format("arn:aws:ec2:%s:%s:network-interface/*", data.aws_region.current.name, data.aws_caller_identity.current.account_id),
 
         },
       ]
