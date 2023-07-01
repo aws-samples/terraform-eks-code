@@ -39,4 +39,3 @@ jq
 **/notused/*
 
 **/.terraform.lock.hcl
-extra/.observability/priv-vars.tf
