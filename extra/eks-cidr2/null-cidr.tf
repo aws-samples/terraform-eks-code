@@ -1,12 +1,13 @@
 resource "null_resource" "cidr2" {
-triggers = {
+  triggers = {
     always_run = timestamp()
-}
-provisioner "local-exec" {
+  }
+  provisioner "local-exec" {
     on_failure  = fail
-    when=create
+    when        = create
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
+        sleep 5 # let nodes settle
         az1=$(echo ${data.aws_subnet.p1.availability_zone})
         az2=$(echo ${data.aws_subnet.p2.availability_zone})
         az3=$(echo ${data.aws_subnet.p3.availability_zone})
@@ -22,5 +23,5 @@ provisioner "local-exec" {
         echo -e "\x1B[32mShould see coredns on 100.64.x.y addresses ......\x1B[0m"
         echo -e "\x1B[32mkubectl get pods -A -o wide | grep coredns\x1B[0m"   
      EOT
-}
+  }
 }

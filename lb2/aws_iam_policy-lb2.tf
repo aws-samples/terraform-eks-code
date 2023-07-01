@@ -4,6 +4,6 @@ resource "aws_iam_policy" "load-balancer-policy" {
   path        = "/"
   description = "AWS LoadBalancer Controller IAM Policy"
 
-  policy = file("iam-policy.json")
-  
+  policy = file("iam_policy.json")
+
 }

@@ -17,7 +17,7 @@ resource "aws_iam_role" "AWSCodePipelineServiceRole-pipe-eksworkshop-app" {
   )
   force_detach_policies = false
   max_session_duration  = 3600
-  name                  = "AWSCodePipelineServiceRole-pipe-eksworkshop-app"
+  name                  = format("%s-AWSCodePipelineServiceRole-pipe-eksworkshop-app",data.aws_ssm_parameter.tf-eks-id.value)
   path                  = "/service-role/"
   tags                  = {}
 }

@@ -19,7 +19,7 @@ resource "aws_vpc_endpoint" "vpce-autoscaling" {
     aws_security_group.allnodes-sg.id,
     aws_security_group.cluster-sg.id
   ]
-  service_name = format("com.amazonaws.%s.autoscaling",data.aws_region.current.name)
+  service_name = format("com.amazonaws.%s.autoscaling", data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -52,7 +52,7 @@ resource "aws_vpc_endpoint" "vpce-ec2" {
     aws_security_group.allnodes-sg.id,
     aws_security_group.cluster-sg.id
   ]
-  service_name = format("com.amazonaws.%s.ec2",data.aws_region.current.name)
+  service_name = format("com.amazonaws.%s.ec2", data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -85,7 +85,7 @@ resource "aws_vpc_endpoint" "vpce-vpce-ec2messages" {
     aws_security_group.allnodes-sg.id,
     aws_security_group.cluster-sg.id
   ]
-  service_name = format("com.amazonaws.%s.ec2messages",data.aws_region.current.name)
+  service_name = format("com.amazonaws.%s.ec2messages", data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -118,7 +118,7 @@ resource "aws_vpc_endpoint" "vpce-ecrapi" {
     aws_security_group.allnodes-sg.id,
     aws_security_group.cluster-sg.id
   ]
-  service_name = format("com.amazonaws.%s.ecr.api",data.aws_region.current.name)
+  service_name = format("com.amazonaws.%s.ecr.api", data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -151,7 +151,7 @@ resource "aws_vpc_endpoint" "vpce-ecrdkr" {
     aws_security_group.allnodes-sg.id,
     aws_security_group.cluster-sg.id
   ]
-  service_name = format("com.amazonaws.%s.ecr.dkr",data.aws_region.current.name)
+  service_name = format("com.amazonaws.%s.ecr.dkr", data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -184,7 +184,7 @@ resource "aws_vpc_endpoint" "vpce-elb" {
     aws_security_group.allnodes-sg.id,
     aws_security_group.cluster-sg.id
   ]
-  service_name = format("com.amazonaws.%s.elasticloadbalancing",data.aws_region.current.name)
+  service_name = format("com.amazonaws.%s.elasticloadbalancing", data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -217,7 +217,7 @@ resource "aws_vpc_endpoint" "vpce-logs" {
     aws_security_group.allnodes-sg.id,
     aws_security_group.cluster-sg.id
   ]
-  service_name = format("com.amazonaws.%s.logs",data.aws_region.current.name)
+  service_name = format("com.amazonaws.%s.logs", data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -247,13 +247,13 @@ resource "aws_vpc_endpoint" "vpce-s3" {
   )
   private_dns_enabled = false
   route_table_ids = [
-    aws_route_table.rtb-0102c621469c344cd.id,
-    aws_route_table.rtb-041267f0474c24068.id,
-    aws_route_table.rtb-0939e7f3ae6e7b829.id,
-    aws_route_table.rtb-0329e787bbafcb2c4.id,
+    aws_route_table.rtb-p1.id,
+    aws_route_table.rtb-p2.id,
+    aws_route_table.rtb-p3.id,
+    aws_route_table.rtb-i.id,
   ]
   security_group_ids = []
-  service_name       = format("com.amazonaws.%s.s3",data.aws_region.current.name)
+  service_name       = format("com.amazonaws.%s.s3", data.aws_region.current.name)
   subnet_ids         = []
   tags               = {}
   vpc_endpoint_type  = "Gateway"
@@ -282,7 +282,7 @@ resource "aws_vpc_endpoint" "vpce-ssm" {
     aws_security_group.allnodes-sg.id,
     aws_security_group.cluster-sg.id
   ]
-  service_name = format("com.amazonaws.%s.ssm",data.aws_region.current.name)
+  service_name = format("com.amazonaws.%s.ssm", data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -315,7 +315,7 @@ resource "aws_vpc_endpoint" "vpce-ssmmessages" {
     aws_security_group.allnodes-sg.id,
     aws_security_group.cluster-sg.id
   ]
-  service_name = format("com.amazonaws.%s.ssmmessages",data.aws_region.current.name)
+  service_name = format("com.amazonaws.%s.ssmmessages", data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -348,7 +348,7 @@ resource "aws_vpc_endpoint" "vpce-sts" {
     aws_security_group.allnodes-sg.id,
     aws_security_group.cluster-sg.id
   ]
-  service_name = format("com.amazonaws.%s.sts",data.aws_region.current.name)
+  service_name = format("com.amazonaws.%s.sts", data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-i3.id,
     aws_subnet.subnet-i1.id,
@@ -361,3 +361,67 @@ resource "aws_vpc_endpoint" "vpce-sts" {
   timeouts {}
 }
 
+resource "aws_vpc_endpoint" "vpce-eks" {
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action    = "*"
+          Effect    = "Allow"
+          Principal = "*"
+          Resource  = "*"
+        },
+      ]
+    }
+  )
+  private_dns_enabled = true
+  route_table_ids     = []
+  security_group_ids = [
+    aws_security_group.allnodes-sg.id,
+    aws_security_group.cluster-sg.id
+  ]
+  service_name = format("com.amazonaws.%s.eks", data.aws_region.current.name)
+  subnet_ids = [
+    aws_subnet.subnet-i3.id,
+    aws_subnet.subnet-i1.id,
+    aws_subnet.subnet-i2.id,
+  ]
+  tags              = {}
+  vpc_endpoint_type = "Interface"
+  vpc_id            = aws_vpc.cluster.id
+
+  timeouts {}
+}
+
+
+resource "aws_vpc_endpoint" "vpce-grafana" {
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action    = "*"
+          Effect    = "Allow"
+          Principal = "*"
+          Resource  = "*"
+        },
+      ]
+    }
+  )
+  private_dns_enabled = true
+  route_table_ids     = []
+  security_group_ids = [
+    aws_security_group.allnodes-sg.id,
+    aws_security_group.cluster-sg.id
+  ]
+  service_name = format("com.amazonaws.%s.grafana", data.aws_region.current.name)
+  subnet_ids = [
+    aws_subnet.subnet-i3.id,
+    aws_subnet.subnet-i1.id,
+    aws_subnet.subnet-i2.id,
+  ]
+  tags              = {}
+  vpc_endpoint_type = "Interface"
+  vpc_id            = aws_vpc.cluster.id
+
+  timeouts {}
+}

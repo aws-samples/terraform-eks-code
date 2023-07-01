@@ -1,3 +1,4 @@
+# generate a random id used thoughout this build
 resource "random_id" "id1" {
   byte_length = 8
 }

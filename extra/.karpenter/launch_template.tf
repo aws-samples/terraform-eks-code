@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 data "aws_ssm_parameter" "bottlerocket_ami" {
-  name = "/aws/service/bottlerocket/aws-k8s-${var.bottlerocket_k8s_version}/x86_64/latest/image_id"
+  name = "/aws/service/bottlerocket/aws-k8s-${nonsensitive(data.aws_ssm_parameter.tf-eks-version.value)}/x86_64/latest/image_id"
 }
 
 # Need to create custom Launch Template to use Bottlerocket - https://github.com/aws/karpenter/issues/923

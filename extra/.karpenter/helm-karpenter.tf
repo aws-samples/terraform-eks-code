@@ -7,7 +7,8 @@ resource "helm_release" "karpenter" {
   ]
 
   namespace        = var.karpenter_namespace
-  create_namespace = true
+  #If using Fargate this should be false
+  create_namespace = false
 
   name       = "karpenter"
   #repository = "https://charts.karpenter.sh"
@@ -16,36 +17,47 @@ resource "helm_release" "karpenter" {
 
   set {
     name  = "controller.image"
-    value = format("%s.dkr.ecr.%s.amazonaws.com/karpenter/controller:v%s",data.aws_caller_identity.current.account_id,data.aws_region.current.name,var.karpenter_version)
+    value = format("%s.dkr.ecr.%s.amazonaws.com/aws/karpenter/controller:v%s",data.aws_caller_identity.current.account_id,data.aws_region.current.name,var.karpenter_version)
+  }
+
+
+  set {
+    name  = "settings.aws.clusterName"
+    value = data.aws_eks_cluster.eks.name
   }
 
   set {
-    name  = "webhook.image"
-    value = format("%s.dkr.ecr.%s.amazonaws.com/karpenter/webhook:v%s",data.aws_caller_identity.current.account_id,data.aws_region.current.name,var.karpenter_version)
-  }
-
-  set {
-    name  = "clusterName"
-    value = var.cluster-name
-  }
-
-  set {
-    name  = "clusterEndpoint"
+    name  = "settings.aws.clusterEndpoint"
     value = data.aws_eks_cluster.eks.endpoint
   }
 
+  set {
+    name  = "settings.aws.isolatedVPC"
+    value = true
+  }
 
-  values = [
-    templatefile(
-      "${path.module}/templates/values.yaml.tpl",
-      {
-        "karpenter_iam_role"   = module.iam_assumable_role_karpenter.iam_role_arn,
-        "cluster_name"         = var.cluster-name,
-        "cluster_endpoint"     = data.aws_eks_cluster.eks.endpoint,
-        "karpenter_node_group" = data.terraform_remote_state.nodeg.outputs.ng1-name
-      }
-    )
-  ]
+  set {
+    name  = "settings.aws.defaultInstanceProfile"
+    value = aws_iam_instance_profile.karpenter_node.arn
+  }
+
+
+set {
+  name = "serviceAccount.annotations"
+  value = format("{ \"eks.amazonaws.com/role-arn\" = \"arn:aws:iam::%s:role/%s-karpenter\"}",data.aws_caller_identity.current.account_id,data.aws_eks_cluster.eks.name) 
+}
+
+  #values = [
+  #  templatefile(
+  #    "${path.module}/templates/values.yaml.tpl",
+  #    {
+  #      "karpenter_iam_role"   = module.iam_assumable_role_karpenter.iam_role_arn,
+  #      "cluster_name"         = var.cluster-name,
+  #      "cluster_endpoint"     = data.aws_eks_cluster.eks.endpoint,
+  #      "karpenter_node_group" = ""
+  #    }
+  #  )
+  #]
 }
 
 # A default Karpenter Provisioner manifest is created as a sample.

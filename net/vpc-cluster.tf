@@ -7,14 +7,7 @@ resource "aws_vpc" "cluster" {
   enable_dns_support               = true
   instance_tenancy                 = "default"
   tags = {
-    "Name"                                        = format("eks-%s-cluster",data.aws_ssm_parameter.tf-eks-cluster-name.value)
+    "Name" = format("eks-%s-cluster", data.aws_ssm_parameter.tf-eks-cluster-name.value)
   }
 }
 
-output "eks-vpc" {
-  value = aws_vpc.cluster.id
-}
-
-output "eks-cidr" {
-  value = aws_vpc.cluster.cidr_block
-}

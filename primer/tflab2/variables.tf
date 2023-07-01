@@ -3,7 +3,7 @@ variable "mycount" {
 }
 
 variable "aws_vpc" {
-  type    = list
+  type    = list(any)
   default = ["vpc-10-1", "vpc-10-2"]
 }
 

@@ -1,9 +1,10 @@
 # Local .terraform directories
 **/.terraform/*
-
+**/bin/*
 # .tfstate files
 *.tfstate
 *.tfstate.*
+*.DS_Store
 
 # Crash log files
 crash.log
@@ -39,3 +40,6 @@ jq
 **/notused/*
 
 **/.terraform.lock.hcl
+extra/.observability/priv-vars.tf
+.DS_Store
+docker-extract.sh

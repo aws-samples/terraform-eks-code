@@ -1,4 +1,4 @@
-test -n "$1" && echo CLUSTER is "$1" || "echo CLUSTER is not set && exit"
+test -n "$1" && echo CLUSTER is "$1" || (echo "CLUSTER is not set - exit" && exit)
 CLUSTER=$(echo $1)
 comm=`printf "kubectl get node --selector='eks.amazonaws.com/nodegroup==ng2-%s' -o json" $CLUSTER`
 allnodes=`eval $comm`

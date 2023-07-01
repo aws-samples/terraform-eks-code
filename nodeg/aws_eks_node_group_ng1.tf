@@ -11,17 +11,17 @@ resource "aws_eks_node_group" "ng1" {
     "eks/nodegroup-name" = format("ng1-%s", data.aws_eks_cluster.eks_cluster.name)
   }
   node_group_name = format("ng1-%s", data.aws_eks_cluster.eks_cluster.name)
-  node_role_arn   = data.terraform_remote_state.iam.outputs.nodegroup_role_arn
- 
+  node_role_arn   = data.aws_ssm_parameter.nodegroup_role_arn.value
+
   subnet_ids = [
-      data.terraform_remote_state.net.outputs.sub-priv1,
-      data.terraform_remote_state.net.outputs.sub-priv2,
-      data.terraform_remote_state.net.outputs.sub-priv3,
+    data.aws_ssm_parameter.sub-priv1.value,
+    data.aws_ssm_parameter.sub-priv2.value,
+    data.aws_ssm_parameter.sub-priv3.value,
   ]
   tags = {
-    "eks/cluster-name"                = data.aws_eks_cluster.eks_cluster.name
-    "eks/nodegroup-name"              = format("ng1-%s", data.aws_eks_cluster.eks_cluster.name)
-    "eks/nodegroup-type"              = "managed"
+    "eks/cluster-name"                            = data.aws_eks_cluster.eks_cluster.name
+    "eks/nodegroup-name"                          = format("ng1-%s", data.aws_eks_cluster.eks_cluster.name)
+    "eks/nodegroup-type"                          = "managed"
     "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = data.aws_eks_cluster.eks_cluster.name
   }
   #version = "1.17"

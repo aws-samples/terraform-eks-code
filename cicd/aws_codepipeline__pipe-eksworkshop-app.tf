@@ -19,7 +19,7 @@ resource "aws_codepipeline" "pipe-eksworkshop-app" {
         "BranchName"           = "master"
         "OutputArtifactFormat" = "CODE_ZIP"
         "PollForSourceChanges" = "true"
-        "RepositoryName"       = "eksworkshop-app"
+        "RepositoryName"       = aws_codecommit_repository.eksworkshop-app.repository_name
       }
       input_artifacts = []
       name            = "Source"

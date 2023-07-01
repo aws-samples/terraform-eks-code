@@ -1,1 +1,1 @@
-../tf-setup/aws-data.tf
+../common-files/aws-data.tf

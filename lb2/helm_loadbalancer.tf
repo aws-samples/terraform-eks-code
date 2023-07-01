@@ -6,11 +6,11 @@ provider "helm" {
 
 resource "helm_release" "aws-load-balancer-controller" {
   name       = "aws-load-balancer-controller"
-  depends_on=[null_resource.post-policy]
+  depends_on = [null_resource.post-policy]
 
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
-  namespace = "kube-system"
+  namespace  = "kube-system"
 
   set {
     name  = "clusterName"
@@ -24,13 +24,34 @@ resource "helm_release" "aws-load-balancer-controller" {
 
   set {
     name  = "image.repository"
-    value = format("602401143452.dkr.ecr.%s.amazonaws.com/amazon/aws-load-balancer-controller",var.region)
+    value = format("602401143452.dkr.ecr.%s.amazonaws.com/amazon/aws-load-balancer-controller", var.region)
   }
 
   set {
     name  = "image.tag"
-    value = "v2.4.2"
+    value = "v2.5.1"
   }
+
+# https://github.com/kubernetes-sigs/aws-load-balancer-controller/issues/3035
+
+  set {
+    name = "enable-shield"
+    value = "false"
+  }
+
+  set {
+    name = "enable-waf" 
+    value = "false"
+  }
+
+  set {
+    name = "enable-wafv2" 
+    value = "false"
+  }
+
+
+
+
 
 }
 

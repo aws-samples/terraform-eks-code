@@ -2,7 +2,7 @@
 # aws_iam_policy.CodeBuildBasePolicy-eks-cicd-build-app:
 resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
   description = "Policy used in trust relationship with CodeBuild v0.4"
-  name        = "CodeBuildBasePolicy-eks-cicd-build-app"
+  name        = format("%s-CodeBuildBasePolicy-eks-cicd-build-app",data.aws_ssm_parameter.tf-eks-id.value)
   path        = "/service-role/"
   policy = jsonencode(
     {
@@ -15,8 +15,8 @@ resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
           ]
           Effect = "Allow"
           Resource = [
-             format("arn:aws:logs:%s:%s:log-group:/aws/codebuild/eks-cicd-build-app",data.aws_region.current.name,data.aws_caller_identity.current.account_id),
-             format("arn:aws:logs:%s:%s:log-group:/aws/codebuild/eks-cicd-build-app:*", data.aws_region.current.name,data.aws_caller_identity.current.account_id)
+            format("arn:aws:logs:%s:%s:log-group:/aws/codebuild/eks-cicd-build-app", data.aws_region.current.name, data.aws_caller_identity.current.account_id),
+            format("arn:aws:logs:%s:%s:log-group:/aws/codebuild/eks-cicd-build-app:*", data.aws_region.current.name, data.aws_caller_identity.current.account_id)
           ]
         },
         {
@@ -29,7 +29,7 @@ resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
           ]
           Effect = "Allow"
           Resource = [
-            format("arn:aws:s3:::codepipeline-%s-*",data.aws_region.current.name)
+            format("arn:aws:s3:::codepipeline-%s-*", data.aws_region.current.name)
           ]
         },
         {
@@ -38,7 +38,7 @@ resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
           ]
           Effect = "Allow"
           Resource = [
-            format("arn:aws:codecommit:%s:%s:Terraform-EKS", data.aws_region.current.name,data.aws_caller_identity.current.account_id),
+            format("arn:aws:codecommit:%s:%s:Terraform-EKS", data.aws_region.current.name, data.aws_caller_identity.current.account_id),
           ]
         },
         {
@@ -52,7 +52,7 @@ resource "aws_iam_policy" "CodeBuildBasePolicy-eks-cicd-build-app" {
           Effect = "Allow"
           Resource = [
             #format("arn:aws:codebuild:%s:%s:report-group/eks-cicd-build-app-*",data.aws_caller_identity.current.account_id, data.aws_region.current.name),
-            format("arn:aws:codebuild:%s:%s:report-group/eks-cicd-build-app-*",data.aws_region.current.name,data.aws_caller_identity.current.account_id),
+            format("arn:aws:codebuild:%s:%s:report-group/eks-cicd-build-app-*", data.aws_region.current.name, data.aws_caller_identity.current.account_id),
           ]
         },
       ]

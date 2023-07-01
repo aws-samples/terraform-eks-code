@@ -1,0 +1,73 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "access-analyzer:ValidatePolicy",
+                "cloudtrail:DescribeTrails",
+                "cloudtrail:GetTrailStatus",
+                "cloudtrail:PutInsightSelectors",
+                "compute-optimizer:GetEnrollmentStatus",
+                "iam:GetAccountSummary",
+                "iam:AttachRolePolicy",
+                "iam:CreateRole",
+                "iam:CreatePolicy",
+                "iam:GetRole",
+                "iam:GetPolicy*",
+                "iam:DeletePolicy",
+                "iam:GetServiceLinkedRoleDeletionStatus",
+                "iam:TagRole",
+                "iam:List*",
+                "iam:GetRole*",
+                "iam:DetachRolePolicy",
+                "iam:DeleteRole*",
+                "iam:PutRolePolicy",
+                "iam:GetInstanceProfile",
+                "sts:GetCallerIdentity",
+                "eks:*",
+                "ecr:*",
+                "ec2:*",
+                "ssm:*",
+                "cloud9:*",
+                "kms:*",
+                "cloudwatch:*",
+                "logs:*",
+                "codebuild:*",
+                "codecommit:*",
+                "codepipeline:*",
+                "autoscaling:*",
+                "elasticloadbalancing:*",
+                "ec2messages:*",
+                "s3:*",
+                "vpc-lattice:*",
+                "vpc-lattice-svcs:*",
+                "iam:CreateUser",
+                "iam:DeleteUser",
+                "iam:GetUser",
+                "iam:TagUser",
+                "iam:AttachUserPolicy",
+                "iam:DetachUserPolicy",
+                "iam:CreateInstanceProfile",
+                "iam:AddRoleToInstanceProfile",
+                "dynamodb:*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:PassRole",
+                "iam:AttachRolePolicy",
+                "iam:CreateRole",
+                "iam:CreateServiceLinkedRole",
+                "iam:GetServiceLinkedRoleDeletionStatus",
+                "iam:ListInstanceProfilesForRole",
+                "iam:CreateOpenIDConnectProvider",
+                "iam:GetOpenIDConnectProvider",
+                "iam:DeleteOpenIDConnectProvider"
+            ],
+            "Resource": "*"
+        }
+    ]
+}

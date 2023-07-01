@@ -34,10 +34,10 @@ variable "table_name_nodeg" {
   default     = "terraform_locks_nodeg"
 }
 
-variable "table_name_eks-cidr" {
+variable "table_name_fargate" {
   description = "The name of the DynamoDB table. Must be unique in this AWS account."
   type        = string
-  default     = "terraform_locks_eks-cidr"
+  default     = "terraform_locks_fargate"
 }
 
 variable "table_name_sampleapp" {
@@ -53,11 +53,11 @@ variable "table_name_tf-setup" {
 }
 
 variable "stages" {
-type=list(string)
-default=["tf-setup","net","iam","c9net","cluster","nodeg","cicd","eks-cidr","sampleapp"]
+  type    = list(string)
+  default = ["tf-setup", "net", "iam", "c9net", "cluster", "nodeg", "cicd", "sampleapp", "fargate" ]
 }
 
 variable "stagecount" {
-type=number
-default=9
+  type    = number
+  default = 9
 }
