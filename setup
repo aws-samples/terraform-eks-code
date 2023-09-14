@@ -181,7 +181,7 @@ cd ~/environment/tfekscode/lb2
 curl --silent -o iam_policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.0/docs/install/iam_policy.json
 cd $this
 profile_name="eksworkshop-admin"
-inst ance_id=$(curl -sS http://169.254.169.254/latest/meta-data/instance-id)
+instance_id=$(curl -sS http://169.254.169.254/latest/meta-data/instance-id)
 ipa=$(aws ec2 describe-instances --instance-ids $instance_id --query Reservations[].Instances[].IamInstanceProfile | jq -r .[].Arn)
 iip=$(aws ec2 describe-iam-instance-profile-associations --filters "Name=instance-id,Values=$instance_id" --query IamInstanceProfileAssociations[].AssociationId | jq -r .[])
 echo "Associate $profile_name"
