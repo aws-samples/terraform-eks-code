@@ -43,3 +43,6 @@ jq
 extra/.observability/priv-vars.tf
 .DS_Store
 docker-extract.sh
+.DS_Store
+Private.md
+.DS_Store
