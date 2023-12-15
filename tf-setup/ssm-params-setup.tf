@@ -22,7 +22,7 @@ resource "aws_ssm_parameter" "tf-eks-keyid" {
 
 resource "aws_ssm_parameter" "tf-eks-keyarn" {
   name        = "/workshop/tf-eks/keyarn"
-  description = "The keyid for the workshop"
+  description = "The key arn for the workshop"
   type        = "String"
   value       = aws_kms_key.ekskey.arn
 
