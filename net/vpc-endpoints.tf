@@ -7,9 +7,13 @@ module "vpc_endpoints" {
   security_group_name_prefix = "${local.name}-vpc-endpoints-"
   security_group_description = "VPC endpoint security group"
   security_group_rules = {
-    ingress_https = {
-      description = "HTTPS from VPC"
+    ingress_https1 = {
+      description = "HTTPS from VPC 1"
       cidr_blocks = [module.vpc.vpc_cidr_block]
+    }
+    ingress_https2 = {
+      description = "HTTPS from VPC 2"
+      cidr_blocks = [module.vpc.aws_vpc_ipv4_cidr_block_association]
     }
   }
 
