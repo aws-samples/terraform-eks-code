@@ -17,71 +17,71 @@ module "vpc_endpoints" {
     
     ssm = {
       service             = "ssm"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     ec2messages = {
       service             = "ec2messages"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     ec2 = {
       service             = "ec2"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       #policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
     },
     logs = {
       service             = "logs"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       #policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
     },
     xray = {
       service             = "xray"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     elasticloadbalancing = {
       service             = "elasticloadbalancing"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     ecr_api = {
       service             = "ecr.api"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       #policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
     },
     ecr_dkr = {
       service             = "ecr.dkr"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       #policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
     },
     autoscaling = {
       service             = "autoscaling"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     }
     sts = {
       service             = "sts"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     }
     kms = {
       service             = "kms"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     secretsmanager = {
       service             = "secretsmanager"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     ssmmessages = {
       service             = "ssmmessages"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     s3 = {
@@ -94,52 +94,52 @@ module "vpc_endpoints" {
     },
     eks = {
       service             = "eks"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     efs = {
       service             = "elasticfilesystem"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     grafana = {
       service             = "grafana"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     cloudwatch = {
       service             = "monitoring"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     cloudwatch_logs = {
       service             = "logs"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     cloudwatch_events = {
       service             = "events"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     codebuild = {
       service             = "codebuild"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     codecommit = {
       service             = "codecommit"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     codedeploy = {
       service             = "codedeploy"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
     codepipeline = {
       service             = "codepipeline"
-      private_dns_enabled = true
+      #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
       tags = merge(local.tags, {
         Project  = "Secret"
