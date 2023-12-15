@@ -13,7 +13,7 @@ module "vpc_endpoints" {
     }
     ingress_https2 = {
       description = "HTTPS from VPC 2"
-      cidr_blocks = [module.vpc.aws_vpc_ipv4_cidr_block_association.this]
+      cidr_blocks = [element(local.secondary_cidr_blocks, 0)]
     }
   }
 
