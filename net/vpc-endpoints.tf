@@ -107,11 +107,6 @@ module "vpc_endpoints" {
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
-    prometheus = {
-      service             = "prometheus"
-      private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
     cloudwatch = {
       service             = "monitoring"
       private_dns_enabled = true
@@ -146,12 +141,13 @@ module "vpc_endpoints" {
       service             = "codepipeline"
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
+      tags = merge(local.tags, {
+        Project  = "Secret"
+        Endpoint = "true"
+      })
     }
 
-    tags = merge(local.tags, {
-      Project  = "Secret"
-      Endpoint = "true"
-    })
+
   }
 }
 
