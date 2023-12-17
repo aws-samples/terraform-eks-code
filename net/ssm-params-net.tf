@@ -41,9 +41,35 @@ resource "aws_ssm_parameter" "cicd-cidr" {
   }
 }
 
+resource "aws_ssm_parameter" "private_subnets" {
+name        = "/workshop/tf-eks/private_subnets"
+  description = "The private subnets for cluster"
+  type        = "StringList"
+  value = jsonencode(module.vpc.private_subnets)
+  tags = {
+    workshop = "tf-eks-workshop"
+  }
+}  
 
+resource "aws_ssm_parameter" "intra_subnets" {
+name        = "/workshop/tf-eks/intra_subnets"
+  description = "The intra subnets for cluster"
+  type        = "StringList"
+  value = jsonencode(module.vpc.intra_subnets)
+  tags = {
+    workshop = "tf-eks-workshop"
+  }
+}  
 
-
+resource "aws_ssm_parameter" "private_rtb" {
+name        = "/workshop/tf-eks/private_rtb"
+  description = "The private route table id for cluster"
+  type        = "StringList"
+  value = module.vpc.aws_route_table.private.id
+  tags = {
+    workshop = "tf-eks-workshop"
+  }
+} 
 
 
 
