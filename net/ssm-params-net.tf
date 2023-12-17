@@ -9,6 +9,16 @@ resource "aws_ssm_parameter" "cicd-vpc" {
   }
 }
 
+resource "aws_ssm_parameter" "cicd-vpc" {
+  name        = "/workshop/tf-eks/cicd-vpc"
+  description = "The cicd vpc id"
+  type        = "String"
+  value = module.vpc.vpc_id
+  tags = {
+    workshop = "tf-eks-workshop"
+  }
+}
+
 
 resource "aws_ssm_parameter" "eks-cidr" {
   name        = "/workshop/tf-eks/eks-cidr"
