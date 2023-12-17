@@ -51,7 +51,7 @@ data "aws_ecrpublic_authorization_token" "token" {
 
 locals {
   #name            = "ex-${replace(basename(path.cwd), "_", "-")}"
-  name            = data.aws_ssm_parameter.tf-eks-cluster-name.value
+  name            = nonsensitive(data.aws_ssm_parameter.tf-eks-cluster-name.value)
   cluster_version = data.aws_ssm_parameter.tf-eks-version.value
   region          = data.aws_ssm_parameter.tf-eks-region.value
 
@@ -60,7 +60,7 @@ locals {
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
-    Example    = "cluster1"
+    Example    = local.name
     GithubRepo = "terraform-aws-eks"
     GithubOrg  = "terraform-aws-modules"
   }
