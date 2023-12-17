@@ -97,7 +97,7 @@ module "eks" {
   }
 
 
-  vpc_id                   = data.aws_ssm_parameter.cluster1_vpcid.value
+  vpc_id                   = data.aws_ssm_parameter.eks-vpc.value
   subnet_ids               = jsondecode(data.aws_ssm_parameter.private_subnets.value)
   control_plane_subnet_ids = jsondecode(data.aws_ssm_parameter.intra_subnets.value)
 
