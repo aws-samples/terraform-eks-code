@@ -1,6 +1,6 @@
 locals {
   #name            = "ex-${replace(basename(path.cwd), "_", "-")}"
-  name            = data.aws_ssm_parameter.tf-eks-cluster-name.value
+  name            = nonsensitive(data.aws_ssm_parameter.tf-eks-cluster-name.value)
   cluster_version = data.aws_ssm_parameter.tf-eks-version.value
   region          = var.region
 
