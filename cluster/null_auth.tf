@@ -9,7 +9,7 @@ resource "null_resource" "gen_cluster_auth" {
     when        = create
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
-        CLUSTER_NAME=$(echo ${var.CLUSTER1_NAME})
+        CLUSTER_NAME=$(echo ${data.aws_ssm_parameter.tf-eks-cluster-name.value})
         echo "Cluster name = $CLUSTER_NAME"
         aws eks update-kubeconfig --name $CLUSTER_NAME
         #eksctl utils write-kubeconfig --cluster $CLUSTER_NAME
