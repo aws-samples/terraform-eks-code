@@ -78,6 +78,15 @@ module "eks" {
   cluster_name                   = local.name
   cluster_version                = local.cluster_version
   cluster_endpoint_public_access = true
+  cluster_endpoint_private_access = true
+
+
+    # External encryption key
+  create_kms_key = false
+  cluster_encryption_config = {
+    resources        = ["secrets"]
+    provider_key_arn = module.kms.key_arn
+  }
 
   cluster_addons = {
     kube-proxy = {
@@ -104,6 +113,22 @@ module "eks" {
   # Fargate profiles use the cluster primary security group so these are not utilized
   create_cluster_security_group = false
   create_node_security_group    = false
+
+  cluster_security_group_additional_rules = {
+    # Test: https://github.com/terraform-aws-modules/terraform-aws-eks/pull/2319
+    ingress_source_security_group_id = {
+      description              = "Ingress from another computed security group"
+      protocol                 = "tcp"
+      from_port                = 443
+      to_port                  = 443
+      type                     = "ingress"
+      cidr_blocks = [data.aws_vpc.vpc-default.cidr_block]
+    }
+  }
+
+
+
+
 
   manage_aws_auth_configmap = true
   aws_auth_roles = [
@@ -224,6 +249,19 @@ module "ebs_csi_driver_irsa" {
       namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
     }
   }
+
+  tags = local.tags
+}
+
+
+module "kms" {
+  source  = "terraform-aws-modules/kms/aws"
+  version = "~> 1.5"
+
+  aliases               = ["eks/${local.name}"]
+  description           = "${local.name} cluster encryption key"
+  enable_default_policy = true
+  key_owners            = [data.aws_caller_identity.current.arn]
 
   tags = local.tags
 }
