@@ -51,9 +51,9 @@ data "aws_ecrpublic_authorization_token" "token" {
 
 locals {
   #name            = "ex-${replace(basename(path.cwd), "_", "-")}"
-  name            = var.CLUSTER1_NAME
-  cluster_version = "1.27"
-  region          = var.region
+  name            = data.aws_ssm_parameter.tf-eks-cluster-name.value
+  cluster_version = data.aws_ssm_parameter.tf-eks-version.value
+  region          = data.aws_ssm_parameter.tf-eks-region.value
 
 
   vpc_cidr = "10.0.0.0/16"
@@ -126,7 +126,7 @@ module "eks" {
       max_size        = 3
       desired_size    = 2
       #subnet_ids      = module.vpc.private_subnets
-      subnet_ids      =  jsondecode(data.aws_ssm_parameter.cluster1_vpc_private_subnets.value)
+      subnet_ids      =  jsondecode(data.aws_ssm_parameter.private_subnets.value)
     }
 
 
