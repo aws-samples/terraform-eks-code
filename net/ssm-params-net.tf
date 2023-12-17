@@ -71,5 +71,25 @@ name        = "/workshop/tf-eks/private_rtb"
   }
 } 
 
+resource "aws_ssm_parameter" "intra_rtb" {
+name        = "/workshop/tf-eks/intra_rtb"
+  description = "The intra route table id for cluster"
+  type        = "String"
+  value = element(module.vpc.intra_route_table_ids,0)
+  tags = {
+    workshop = "tf-eks-workshop"
+  }
+} 
+
+resource "aws_ssm_parameter" "public_rtb" {
+name        = "/workshop/tf-eks/public_rtb"
+  description = "The public route table id for cluster"
+  type        = "String"
+  value = element(module.vpc.public_route_table_ids,0)
+  tags = {
+    workshop = "tf-eks-workshop"
+  }
+} 
+
 
 
