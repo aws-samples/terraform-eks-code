@@ -98,8 +98,8 @@ module "eks" {
 
 
   vpc_id                   = data.aws_ssm_parameter.cluster1_vpcid.value
-  subnet_ids               = jsondecode(data.aws_ssm_parameter.cluster1_vpc_private_subnets.value)
-  control_plane_subnet_ids = jsondecode(data.aws_ssm_parameter.cluster1_vpc_intra_subnets.value)
+  subnet_ids               = jsondecode(data.aws_ssm_parameter.private_subnets.value)
+  control_plane_subnet_ids = jsondecode(data.aws_ssm_parameter.intra_subnets.value)
 
   # Fargate profiles use the cluster primary security group so these are not utilized
   create_cluster_security_group = false
