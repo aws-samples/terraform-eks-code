@@ -65,7 +65,7 @@ resource "aws_ssm_parameter" "private_rtb" {
 name        = "/workshop/tf-eks/private_rtb"
   description = "The private route table id for cluster"
   type        = "String"
-  value = module.vpc.private_route_table_ids
+  value = element(module.vpc.private_route_table_ids,0)
   tags = {
     workshop = "tf-eks-workshop"
   }
