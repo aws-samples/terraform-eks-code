@@ -64,8 +64,8 @@ name        = "/workshop/tf-eks/intra_subnets"
 resource "aws_ssm_parameter" "private_rtb" {
 name        = "/workshop/tf-eks/private_rtb"
   description = "The private route table id for cluster"
-  type        = "StringList"
-  value = jsonencode(module.vpc.private_route_table_ids)
+  type        = "String"
+  value = module.vpc.private_route_table_ids
   tags = {
     workshop = "tf-eks-workshop"
   }
