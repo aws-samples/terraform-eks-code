@@ -135,7 +135,7 @@ module "eks" {
     # NOTE - if creating multiple security groups with this module, only tag the
     # security group that Karpenter should utilize with the following tag
     # (i.e. - at most, only one security group should have this tag in your account)
-    "karpenter.sh/discovery" = "cluster1"
+    "karpenter.sh/discovery" = local.name
   })
 
 }
