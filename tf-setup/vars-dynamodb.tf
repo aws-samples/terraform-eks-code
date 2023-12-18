@@ -4,7 +4,7 @@ variable "table_name_net" {
   default     = "terraform_locks_net"
 }
 
-variable "table_name_iam" {
+variable "table_name_addons" {
   description = "The name of the DynamoDB table. Must be unique in this AWS account."
   type        = string
   default     = "terraform_locks_iam"
@@ -54,7 +54,7 @@ variable "table_name_tf-setup" {
 
 variable "stages" {
   type    = list(string)
-  default = ["tf-setup", "net", "iam", "c9net", "cluster", "nodeg", "cicd", "sampleapp", "fargate" ]
+  default = ["tf-setup", "net", "addons", "c9net", "cluster", "nodeg", "cicd", "sampleapp", "fargate" ]
 }
 
 variable "stagecount" {
