@@ -1,42 +1,42 @@
 
 
 provider "kubernetes" {
-  host                   = data.aws_ssm_parameter.cluster1_endpoint.value
-  cluster_ca_certificate = base64decode(data.aws_ssm_parameter.cluster1_certificate_authority_data.value)
+  host                   = data.aws_ssm_parameter.endpoint.value
+  cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
   config_path = "~/.kube/config"
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "aws"
     # This requires the awscli to be installed locally where Terraform is executed
-    args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster1_name.value]
+    args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
   }
 }
 
 provider "helm" {
   kubernetes {
-    host                   = data.aws_ssm_parameter.cluster1_endpoint.value
-    cluster_ca_certificate = base64decode(data.aws_ssm_parameter.cluster1_certificate_authority_data.value)
+    host                   = data.aws_ssm_parameter.endpoint.value
+    cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
 
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
       # This requires the awscli to be installed locally where Terraform is executed
-      args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster1_name.value]
+      args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
     }
   }
 }
 
 provider "kubectl" {
   apply_retry_count      = 5
-  host                   = data.aws_ssm_parameter.cluster1_endpoint.value
-  cluster_ca_certificate = base64decode(data.aws_ssm_parameter.cluster1_certificate_authority_data.value)
+  host                   = data.aws_ssm_parameter.endpoint.value
+  cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
   load_config_file       = false
 
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "aws"
     # This requires the awscli to be installed locally where Terraform is executed
-    args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster1_name.value]
+    args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
   }
 }
 
@@ -55,10 +55,10 @@ module "eks_blueprints_addons" {
 
 
 
-  cluster_name      = data.aws_ssm_parameter.cluster1_name.value
-  cluster_endpoint  = data.aws_ssm_parameter.cluster1_endpoint.value
-  cluster_version   = data.aws_ssm_parameter.cluster1_version.value
-  oidc_provider_arn = data.aws_ssm_parameter.cluster1_oidc_provider_arn.value
+  cluster_name      = data.aws_ssm_parameter.cluster-name.value
+  cluster_endpoint  = data.aws_ssm_parameter.endpoint.value
+  cluster_version   = data.aws_ssm_parameter.tf-eks-version.value
+  oidc_provider_arn = data.aws_ssm_parameter.oidc_provider_arn.value
 
   enable_aws_load_balancer_controller     = true
  
@@ -91,7 +91,7 @@ module "eks_blueprints_addons" {
     create_namespace = true
     depends_on = [module.eks_blueprints_addons.aws_load_balancer_controller]
   }
-  external_dns_route53_zone_arns = [data.aws_route53_zone.keycloak.arn]
+  #external_dns_route53_zone_arns = [data.aws_route53_zone.keycloak.arn]
 
 
   enable_aws_privateca_issuer             = false
@@ -155,7 +155,7 @@ module "eks_blueprints_addons" {
     set = [
       {
         name  = "vpcId"
-        value = data.aws_ssm_parameter.cluster1_vpcid.value
+        value = data.aws_ssm_parameter.eks-vpc.value
       },
     ]
   }
