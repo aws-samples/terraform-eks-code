@@ -47,11 +47,11 @@ module "eks_blueprints_addons" {
   source = "aws-ia/eks-blueprints-addons/aws"
   version = "~> 1.11" #ensure to update this to the latest/desired version
 
-  eks_addons = { 
-    amazon-cloudwatch-observability = {
-        most_recent = true
-      }
-  }
+  #eks_addons = { 
+  #  amazon-cloudwatch-observability = {
+  #      most_recent = true
+  #    }
+  #}
 
   cluster_name      = data.aws_ssm_parameter.cluster-name.value
   cluster_endpoint  = data.aws_ssm_parameter.endpoint.value
