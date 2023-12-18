@@ -47,7 +47,8 @@ module "eks_blueprints_addons" {
   source = "aws-ia/eks-blueprints-addons/aws"
   version = "~> 1.11" #ensure to update this to the latest/desired version
 
-  eks_addons = {  
+  eks_addons = { 
+    depends_on = [module.eks_blueprints_addons.aws_load_balancer_controller]
     amazon-cloudwatch-observability = {
         most_recent = true
       }
