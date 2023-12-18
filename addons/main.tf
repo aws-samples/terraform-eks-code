@@ -48,13 +48,10 @@ module "eks_blueprints_addons" {
   version = "~> 1.11" #ensure to update this to the latest/desired version
 
   eks_addons = { 
-    depends_on = [module.eks_blueprints_addons.aws_load_balancer_controller]
     amazon-cloudwatch-observability = {
         most_recent = true
       }
   }
-
-
 
   cluster_name      = data.aws_ssm_parameter.cluster-name.value
   cluster_endpoint  = data.aws_ssm_parameter.endpoint.value

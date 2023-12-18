@@ -103,8 +103,12 @@ module "eks" {
     coredns = {
       most_recent = true
     }
-  }
 
+    amazon-cloudwatch-observability = {
+        most_recent = true
+      }
+
+  }
 
   vpc_id                   = data.aws_ssm_parameter.eks-vpc.value
   subnet_ids               = jsondecode(data.aws_ssm_parameter.private_subnets.value)
