@@ -114,7 +114,7 @@ module "eks_blueprints_addons" {
   #  name_prefix       = format("eks-%s-fargate-",data.aws_ssm_parameter.cluster1_name.value)
   #  name = format("/%s/fargate",data.aws_ssm_parameter.cluster1_name.value)
   #  retention_in_days = 7
-  #  #kms_key_id        = "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
+  #  #kms_key_id        = "arn:aws:kms:us-west-2:xxxx:key/1234abcd-12ab-34cd-56ef-1234567890ab"
   #  skip_destroy      = false
   #}
 
