@@ -63,7 +63,7 @@ module "eks_blueprints_addons" {
 
   enable_aws_load_balancer_controller     = true
  
-  enable_fargate_fluentbit                = true # get logs for fargate pods
+  enable_fargate_fluentbit                = false # get logs for fargate pods
   #enable_cluster_proportional_autoscaler = true
   #enable_karpenter                       = true
   #enable_kube_prometheus_stack           = true
