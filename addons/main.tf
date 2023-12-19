@@ -88,7 +88,7 @@ module "eks_blueprints_addons" {
     name          = "external-dns"
     namespace     = "external-dns"
     create_namespace = true
-    depends_on = [module.eks_blueprints_addons.aws_load_balancer_controller,module.eks_blueprints_addons.time_sleep]
+    depends_on = [module.eks_blueprints_addons.aws_load_balancer_controller,null_resource.sleep]
   }
   #external_dns_route53_zone_arns = [data.aws_route53_zone.keycloak.arn]
 

@@ -7,7 +7,7 @@ resource "null_resource" "sleep" {
     when        = create
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
-        sleep 60
+        sleep 45
      EOT
   }
 }
