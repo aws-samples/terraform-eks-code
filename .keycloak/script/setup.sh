@@ -122,7 +122,6 @@ if [[ $? -ne 0 ]]; then
     exit
 fi
 
-
 aws grafana update-workspace-authentication \
     --authentication-providers SAML \
     --workspace-id $WORKSPACE_ID \
