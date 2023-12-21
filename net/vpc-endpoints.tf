@@ -18,76 +18,24 @@ module "vpc_endpoints" {
   }
 
   endpoints = {
-    
-    ssm = {
-      service             = "ssm"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
+
+    { for service in toset(["autoscaling", "elasticloadbalancing", "ecr.api", "ecr.dkr", "ec2", "ec2messages", "efs", "eks", "kms", "logs", "ssm", "ssmmessages", "sts", "xray"]) :
+      replace(service, ".", "_") =>
+      {
+        service             = service
+        subnet_ids          = module.vpc.private_subnets
+        private_dns_enabled = true
+        tags                = { Name = "${local.name}-${service}" }
+      }
     },
-    ec2messages = {
-      service             = "ec2messages"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
-    ec2 = {
-      service             = "ec2"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      #policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
-    },
-    logs = {
-      service             = "logs"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      #policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
-    },
-    xray = {
-      service             = "xray"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
-    elasticloadbalancing = {
-      service             = "elasticloadbalancing"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
-    ecr_api = {
-      service             = "ecr.api"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      #policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
-    },
-    ecr_dkr = {
-      service             = "ecr.dkr"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      #policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
-    },
-    autoscaling = {
-      service             = "autoscaling"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    }
-    sts = {
-      service             = "sts"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    }
-    kms = {
-      service             = "kms"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
+
+
     secretsmanager = {
       service             = "secretsmanager"
       #private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
     },
-    ssmmessages = {
-      service             = "ssmmessages"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
+
     s3 = {
       service         = "s3"
       service_type    = "Gateway"
@@ -96,16 +44,7 @@ module "vpc_endpoints" {
         Name = "${local.name}-s3-vpc-endpoint"
       }
     },
-    eks = {
-      service             = "eks"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
-    efs = {
-      service             = "elasticfilesystem"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
+
     grafana = {
       service             = "grafana"
       #private_dns_enabled = true

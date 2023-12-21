@@ -40,5 +40,13 @@ module "vpc" {
     "karpenter.sh/discovery" = local.name
   }
 
+  enable_flow_log                                 = true
+  flow_log_destination_type                       = "cloud-watch-logs"
+  create_flow_log_cloudwatch_log_group            = true
+  create_flow_log_cloudwatch_iam_role             = true
+  flow_log_cloudwatch_log_group_retention_in_days = 7
+  flow_log_log_format                             = "$${interface-id} $${srcaddr} $${srcport} $${pkt-src-aws-service} $${dstaddr} $${dstport} $${pkt-dst-aws-service} $${protocol} $${flow-direction} $${traffic-path} $${action} $${log-status} $${subnet-id} $${az-id} $${sublocation-type} $${sublocation-id}"
+
+
   tags = local.tags
 }
