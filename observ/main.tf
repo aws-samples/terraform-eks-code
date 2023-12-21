@@ -51,6 +51,7 @@ module "aws_observability_accelerator" {
   # As Grafana shares a different lifecycle, we recommend using an existing workspace.
   managed_grafana_workspace_id = data.aws_ssm_parameter.tf-eks-grafana-id.value
   #enable_dashboard=true
+
 }
 
 # eks 
@@ -60,6 +61,9 @@ module "eks_monitoring" {
   source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring"
 
   eks_cluster_id = data.aws_ssm_parameter.cluster-name.value
+
+
+  #enable_fluxcd=false
 
   # deploys AWS Distro for OpenTelemetry operator into the cluster ! required
   enable_amazon_eks_adot = true
