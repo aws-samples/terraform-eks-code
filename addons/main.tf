@@ -84,7 +84,6 @@ module "eks_blueprints_addons" {
 
   enable_external_dns                    = true
   external_dns = {
-
     name          = "external-dns"
     namespace     = "external-dns"
     create_namespace = true
