@@ -89,7 +89,7 @@ module "eks_blueprints_addons" {
     create_namespace = true
     depends_on = [null_resource.sleep]
   }
-  #external_dns_route53_zone_arns = [data.aws_route53_zone.keycloak.arn]
+  external_dns_route53_zone_arns = [data.aws_route53_zone.phz.arn]
 
 
   enable_aws_privateca_issuer             = false
