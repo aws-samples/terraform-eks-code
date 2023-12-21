@@ -7,8 +7,8 @@ date >> build.log
 #cd $cur
 buildok=1
 #orig
-dirs="tf-setup net iam c9net cicd cluster nodeg lb2 sampleapp extra/nodeg2 extra/eks-cidr2 extra/sampleapp2 extra/fargate extra/fargateapp"
-dirs="tf-setup net c9net cluster"
+#dirs="tf-setup net iam c9net cicd cluster nodeg lb2 sampleapp extra/nodeg2 extra/eks-cidr2 extra/sampleapp2 extra/fargate extra/fargateapp"
+dirs="tf-setup net c9net cluster addons"
 
 for i in `echo $dirs`;do
     ./build-stage.sh $i 2>&1 | tee -a build.log
