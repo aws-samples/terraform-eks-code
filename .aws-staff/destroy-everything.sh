@@ -14,7 +14,8 @@ if [ "$buck" != "" ]; then
 fi
 #
 # lb, lb sg, launch template
-set -e
+
+set -e # turn on error checking - exit if error
 echo "pass 1 ...."
 cur=$(pwd)
 date
@@ -53,5 +54,5 @@ for i in $dirs; do
     date
 done
 echo "Done"
-
+set +e # turn off error checking 
 exit
