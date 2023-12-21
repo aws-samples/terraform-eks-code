@@ -69,7 +69,7 @@ module "eks_monitoring" {
   enable_amazon_eks_adot = true
 
   # reusing existing certificate manager? set to false  defaults to true
-  enable_cert_manager = false
+  enable_cert_manager = true
 
   # enable EKS API server monitoring
   enable_apiserver_monitoring = true
