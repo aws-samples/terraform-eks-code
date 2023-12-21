@@ -18,8 +18,17 @@ module "vpc_endpoints" {
   }
 
   endpoints = merge({
-
-    { for service in toset(["autoscaling", "elasticloadbalancing", "ecr.api", "ecr.dkr", "ec2", "ec2messages", "efs", "eks", "kms", "logs", "ssm", "ssmmessages", "sts", "xray"]) :
+    # ECR images are stored on S3
+    s3 = {
+      service         = "s3"
+      service_type    = "Gateway"
+      route_table_ids = module.vpc.private_route_table_ids
+      tags = {
+        Name = "${local.name}-s3"
+      }
+    }
+    },
+    { for service in toset(["autoscaling", "ecr.api", "ecr.dkr", "ec2", "ec2messages", "sts", "logs", "ssm", "ssmmessages"]) :
       replace(service, ".", "_") =>
       {
         service             = service
@@ -27,70 +36,6 @@ module "vpc_endpoints" {
         private_dns_enabled = true
         tags                = { Name = "${local.name}-${service}" }
       }
-    },
-
-
-    secretsmanager = {
-      service             = "secretsmanager"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
-
-    s3 = {
-      service         = "s3"
-      service_type    = "Gateway"
-      route_table_ids = module.vpc.private_route_table_ids
-      tags = {
-        Name = "${local.name}-s3-vpc-endpoint"
-      }
-    },
-
-    grafana = {
-      service             = "grafana"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
-    cloudwatch = {
-      service             = "monitoring"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
-    cloudwatch_logs = {
-      service             = "logs"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
-    cloudwatch_events = {
-      service             = "events"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
-    codebuild = {
-      service             = "codebuild"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
-    codecommit = {
-      service             = "codecommit"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
-    codedeploy = {
-      service             = "codedeploy"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-    },
-    codepipeline = {
-      service             = "codepipeline"
-      #private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      tags = merge(local.tags, {
-        Project  = "Secret"
-        Endpoint = "true"
-      })
-    }
-
-
   })
 }
 
