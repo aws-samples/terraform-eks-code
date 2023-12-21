@@ -34,7 +34,9 @@ data "aws_ssm_parameter" "public_rtb" {
   name        = "/workshop/tf-eks/public_rtb"
 } 
 
-
+data "aws_ssm_parameter" "phz-id" {
+  name        = "/workshop/tf-eks/phz-id"
+} 
 
 
 
