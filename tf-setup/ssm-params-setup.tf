@@ -75,3 +75,12 @@ resource "aws_ssm_parameter" "tf-eks-version" {
   }
 }
 
+resource "aws_ssm_parameter" "tf-eks-grafana-id" {
+  name        = "/workshop/tf-eks/grafana-id"
+  description = "The Grafana workspace id"
+  type        = "String"
+  value       = aws_grafana_workspace.workshop.id
+  tags = {
+    workshop = "tf-eks-workshop"
+  }
+}

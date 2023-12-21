@@ -1,44 +1,42 @@
 provider "kubernetes" {
-  host                   = data.aws_ssm_parameter.cluster1_endpoint.value
-  cluster_ca_certificate = base64decode(data.aws_ssm_parameter.cluster1_certificate_authority_data.value)
+  host                   = data.aws_ssm_parameter.endpoint.value
+  cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
   config_path = "~/.kube/config"
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "aws"
     # This requires the awscli to be installed locally where Terraform is executed
-    args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster1_name.value]
+    args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
   }
 }
 
 provider "helm" {
   kubernetes {
-    host                   = data.aws_ssm_parameter.cluster1_endpoint.value
-    cluster_ca_certificate = base64decode(data.aws_ssm_parameter.cluster1_certificate_authority_data.value)
+    host                   = data.aws_ssm_parameter.endpoint.value
+    cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
 
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
       # This requires the awscli to be installed locally where Terraform is executed
-      args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster1_name.value]
+      args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
     }
   }
 }
 
 provider "kubectl" {
   apply_retry_count      = 5
-  host                   = data.aws_ssm_parameter.cluster1_endpoint.value
-  cluster_ca_certificate = base64decode(data.aws_ssm_parameter.cluster1_certificate_authority_data.value)
+  host                   = data.aws_ssm_parameter.endpoint.value
+  cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
   load_config_file       = false
 
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "aws"
     # This requires the awscli to be installed locally where Terraform is executed
-    args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster1_name.value]
+    args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
   }
 }
-
-
 
 ## base
 
@@ -51,7 +49,7 @@ module "aws_observability_accelerator" {
   #eks_cluster_id = data.aws_ssm_parameter.cluster1_name.value
 
   # As Grafana shares a different lifecycle, we recommend using an existing workspace.
-  managed_grafana_workspace_id = aws_grafana_workspace.workshop.id
+  managed_grafana_workspace_id = data.aws_ssm_parameter.tf-eks-grafana-id.value
   #enable_dashboard=true
 }
 
@@ -61,7 +59,7 @@ module "eks_monitoring" {
 
   source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring"
 
-  eks_cluster_id = data.aws_ssm_parameter.cluster1_name.value
+  eks_cluster_id = data.aws_ssm_parameter.cluster-name.value
 
   # deploys AWS Distro for OpenTelemetry operator into the cluster ! required
   enable_amazon_eks_adot = true
