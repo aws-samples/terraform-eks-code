@@ -1,3 +1,4 @@
+kubectl delete ns myapplications-ns
 export CURRET_PET=keycloak
 export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='keycloak.local'].CertificateArn" --include keyTypes=RSA_4096 --output text)
 envsubst < "manifest-template.yaml" > "keycloak.yaml"
