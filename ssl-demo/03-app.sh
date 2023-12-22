@@ -1,5 +1,5 @@
 export CURRET_PET=keycloak
-export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='keycloack.local'].CertificateArn" --include keyTypes=RSA_4096 --output text)
+export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='keycloak.local'].CertificateArn" --include keyTypes=RSA_4096 --output text)
 envsubst < "manifest-template.yaml" > "keycloak.yaml"
 #export CURRET_PET=rabbit
 #export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='rabbit.local'].CertificateArn" --include keyTypes=RSA_4096 --output text)
@@ -14,4 +14,4 @@ kubectl create ns myapplications-ns
 #kubectl apply -f ./hamster.yaml 
 #kubectl apply -f ./chipmunk.yaml 
 #kubectl apply -f ./rabbit.yaml
-kubectl apply -f ./keycloack.yaml
+kubectl apply -f ./keycloak.yaml
