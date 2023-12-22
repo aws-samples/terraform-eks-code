@@ -16,16 +16,15 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: ${CURRET_PET}.local
-      http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: ${CURRET_PET}-service
-              port:
-                number: 80
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ${CURRET_PET}-service
+            port:
+              number: 80
 
 ---
 apiVersion: v1
