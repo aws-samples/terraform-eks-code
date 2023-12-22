@@ -1,3 +1,4 @@
+rm -f manifest-template.yaml
 cat << 'EoF' > manifest-template.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
