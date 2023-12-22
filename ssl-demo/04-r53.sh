@@ -8,3 +8,4 @@ aws route53 create-hosted-zone --name hamster.local \
 aws route53 create-hosted-zone --name chipmunk.local \
 --caller-reference my-chipmunk-zone \
 --hosted-zone-config Comment="chipmunk local",PrivateZone=true --vpc VPCRegion=eu-west-1,VPCId=$vpcid
+
