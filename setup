@@ -191,8 +191,8 @@ fi
 #
 sudo mv ~/environment/tfekscode/.eks-workshop-support/reset-environment /usr/local/bin/reset-environment >/dev/null
 sudo mv ~/environment/tfekscode/.eks-workshop-support/use-cluster /usr/local/bin/use-cluster >/dev/null
-#mkdir -p ~/.bashrc.d
-cat ~/environment/tfekscode/.eks-workshop-support/aliases.bash ~/.bashrc.d/aliases.bash
+mkdir -p ~/.bashrc.d
+cp ~/environment/tfekscode/.eks-workshop-support/aliases.bash ~/.bashrc.d/aliases.bash
 
 echo "Verify ...."
 for command in jq aws wget kubectl terraform eksctl helm kubectx reset-environment use-cluster ; do
