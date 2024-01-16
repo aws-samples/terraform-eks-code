@@ -49,10 +49,10 @@ if [ ! -f $HOME/.terraform.d/plugin-cache ]; then
 fi
 echo "Setup kubectl"
 if [ ! $(which kubectl 2>/dev/null) ]; then
-  echo "Install kubectl v1.24.12"
-  #curl -LO https://dl.k8s.io/release/v1.28.0/bin/linux/amd64/kubectl
+  echo "Install kubectl v1.28.5"
+  #https://dl.k8s.io/release/v1.28.5/bin/linux/amd64/kubectl
   #https://dl.k8s.io/release/v1.24.14/bin/linux/amd64/kubectl
-  curl --silent -LO https://dl.k8s.io/release/v1.24.14/bin/linux/amd64/kubectl >/dev/null
+  curl --silent -LO https://dl.k8s.io/release/v1.28.5/bin/linux/amd64/kubectl >/dev/null
   chmod +x ./kubectl
   sudo mv ./kubectl /usr/local/bin/kubectl >/dev/null
   kubectl completion bash >>~/.bash_completion
@@ -68,10 +68,10 @@ fi
 
 if [ ! $(which helm 2>/dev/null) ]; then
   echo "helm"
-  wget -q https://get.helm.sh/helm-v3.11.3-linux-amd64.tar.gz >/dev/null
-  tar -zxf helm-v3.11.3-linux-amd64.tar.gz
+  wget -q https://get.helm.sh/helm-v3.13.3-linux-amd64.tar.gz >/dev/null
+  tar -zxf helm-v3.13.3-linux-amd64.tar.gz
   sudo mv linux-amd64/helm /usr/local/bin/helm >/dev/null
-  rm -rf helm-v3.11.3-linux-amd64.tar.gz linux-amd64
+  rm -rf helm-v3.13.3-linux-amd64.tar.gz linux-amd64
 fi
 echo "add helm repos"
 helm repo add eks https://aws.github.io/eks-charts
@@ -95,10 +95,7 @@ curl --silent "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/
 sudo yum install -y session-manager-plugin.rpm >/dev/null
 rm -f ~/environment/session-manager-plugin.rpm
 #
-echo "install tfsec ..."
-wget -q https://github.com/aquasecurity/tfsec/releases/download/v1.28.1/tfsec-linux-amd64
-sudo mv tfsec-linux-amd64 /usr/bin/tfsec
-sudo chmod 755 /usr/bin/tfsec
+
 #
 # cleanup key_pair if already there
 aws ec2 delete-key-pair --key-name "eksworkshop" >/dev/null
@@ -196,3 +193,12 @@ fi
 #
 echo "For final checks - run ./check"
 #
+# setup for eksworkshop.com
+#
+sudo mv ~/environment/tfekscode/.eks-workshop-support/reset-environment /usr/local/bin/reset-environment >/dev/null
+sudo mv ~/environment/tfekscode/.eks-workshop-support/use-cluster /usr/local/bin/use-cluster >/dev/null
+#mkdir -p ~/.bashrc.d
+cat ~/environment/tfekscode/.eks-workshop-support/aliases.bash ~/.bashrc.d/aliases.bash
+
+
+
