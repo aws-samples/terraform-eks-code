@@ -1,6 +1,7 @@
 vpcid=$(aws ssm get-parameter --name /workshop/tf-eks/eks-vpc --query Parameter.Value --output text)
+keyz=$(aws route53 list-hosted-zones | jq -r '.HostedZones[] | select(.Name=="keycloak.local.").Id' | cut -f3 -d'/')
 aws route53 create-hosted-zone --name keycloak.local \
---caller-reference my-keycloak-zone3 \
+--caller-reference my-keycloak-zone4 \
 --hosted-zone-config Comment="keycloak local",PrivateZone=true --vpc VPCRegion=eu-west-1,VPCId=$vpcid
 if [[ $? -ne 0 ]];then
   echo "phz failure exiting ..."
