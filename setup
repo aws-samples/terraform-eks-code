@@ -151,10 +151,6 @@ df -m /
 #
 #
 
-echo "Verify ...."
-for command in jq aws wget kubectl terraform eksctl helm kubectx; do
-  which $command &>/dev/null && echo "$command in path" || echo "$command NOT FOUND"
-done
 
 this=$(pwd)
 #echo "sample apps"
@@ -199,6 +195,11 @@ sudo mv ~/environment/tfekscode/.eks-workshop-support/reset-environment /usr/loc
 sudo mv ~/environment/tfekscode/.eks-workshop-support/use-cluster /usr/local/bin/use-cluster >/dev/null
 #mkdir -p ~/.bashrc.d
 cat ~/environment/tfekscode/.eks-workshop-support/aliases.bash ~/.bashrc.d/aliases.bash
+
+echo "Verify ...."
+for command in jq aws wget kubectl terraform eksctl helm kubectx reset-environment use-cluster ; do
+  which $command &>/dev/null && echo "$command in path" || echo "$command NOT FOUND"
+done
 
 
 
