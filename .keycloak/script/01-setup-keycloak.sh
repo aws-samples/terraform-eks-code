@@ -1,10 +1,15 @@
-openssl req -new -x509 -sha256 -nodes -newkey rsa:4096 -keyout private_keycloak.key -out certificate_keycloak.crt -subj "/CN=keycloak.local"
-aws acm import-certificate --certificate fileb://certificate_keycloak.crt --private-key fileb://private_keycloak.key
 vpcid=$(aws ssm get-parameter --name /workshop/tf-eks/eks-vpc --query Parameter.Value --output text)
 aws route53 create-hosted-zone --name keycloak.local \
---caller-reference my-keycloak-zone \
+--caller-reference my-keycloak-zone2 \
 --hosted-zone-config Comment="keycloak local",PrivateZone=true --vpc VPCRegion=eu-west-1,VPCId=$vpcid
+if [[ $? -ne 0 ]];then
+  echo "phz failure exiting ..."
+  exit
+fi
 keyz=$(aws route53 list-hosted-zones | jq -r '.HostedZones[] | select(.Name=="keycloak.local.").Id' | cut -f3 -d'/')
+openssl req -new -x509 -sha256 -nodes -newkey rsa:4096 -keyout private_keycloak.key -out certificate_keycloak.crt -subj "/CN=keycloak.local"
+aws acm import-certificate --certificate fileb://certificate_keycloak.crt --private-key fileb://private_keycloak.key
+sleep 2
 export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='keycloak.local'].CertificateArn" --include keyTypes=RSA_4096 --output text)
 export HOSTED_ZONE=keycloak.local
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
