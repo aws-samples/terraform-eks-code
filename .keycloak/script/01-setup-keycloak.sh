@@ -32,6 +32,9 @@ auth:
   adminPassword: $KEYCLOAK_PASSWORD
 keycloakConfigCli:
   enabled: true
+  extraEnvVars:
+  - name: KEYCLOAK_LOG_LEVEL
+    value: DEBUG
   configuration:
     realm.json: |
       {
