@@ -15,6 +15,11 @@ echo $WORKSPACE_ENDPOINT
 echo $KEYCLOAK_PASSWORD
 export WORKSPACE_ID=$(aws grafana list-workspaces --query 'workspaces[0].id' --output text)
 export SAML_URL=https://keycloak.local/realms/keycloak-blog/protocol/saml/descriptor
+echo "VPC ID=$vpcid"
+echo "Key zone=$keyz"
+echo "ACM Arn"=$ACM_ARN
+echo "Grafana endpoint=$WORKSPACE_ENDPOINT"
+echo $KEYCLOAK_PASSWORD
 cat << EOF > keycloak_values.yaml
 auth:
   adminUser: admin
