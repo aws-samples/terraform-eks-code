@@ -1,9 +1,12 @@
 echo "Install OS tools"
-sudo yum -y -q -e 0 install jq moreutils nmap >/dev/null
+sudo yum -y -q -e 0 install jq moreutils yum-utils nmap >/dev/null
 echo "Update OS tools"
 sudo yum update -y >/dev/null
 echo "Update pip"
 sudo pip install --upgrade pip 2 &>/dev/null
+# For Terraform:
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+sudo yum -y install terraform
 
 #
 # AWS cli v2 is now the default in cloud9
@@ -186,6 +189,8 @@ if [[ ! -z $C9_PID ]];then
     echo "ERROR: Encountered error associating instance profile eksworkshop-admin with Cloud9 environment"
   fi
 fi
+# for karpenter provisioner
+aws iam create-service-linked-role --aws-service-name spot.amazonaws.com
 
 # setup for eksworkshop.com
 #

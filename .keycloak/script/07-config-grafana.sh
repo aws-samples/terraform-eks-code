@@ -1,5 +1,6 @@
 # needs LB url in here >
-export SAML_URL=https://keycloak.local/realms/keycloak-blog/protocol/saml/descriptor
+lbdns=$(kubectl get ingress -n keycloak -o json | jq -r '.items[].status.loadBalancer.ingress[].hostname')
+export SAML_URL=https://${lbdns}/realms/keycloak-blog/protocol/saml/descriptor
 aws grafana update-workspace-authentication \
     --authentication-providers SAML \
     --workspace-id $WORKSPACE_ID \
