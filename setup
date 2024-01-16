@@ -200,6 +200,8 @@ echo "Verify ...."
 for command in jq aws wget kubectl terraform eksctl helm kubectx reset-environment use-cluster ; do
   which $command &>/dev/null && echo "$command in path" || echo "$command NOT FOUND"
 done
-
+#
+echo "For final checks - run ./check"
+#
 
 
