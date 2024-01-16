@@ -7,7 +7,7 @@ if [[ $? -ne 0 ]];then
   exit
 fi
 keyz=$(aws route53 list-hosted-zones | jq -r '.HostedZones[] | select(.Name=="keycloak.local.").Id' | cut -f3 -d'/')
-openssl req -new -x509 -sha256 -nodes -newkey rsa:4096 -keyout private_keycloak.key -out certificate_keycloak.crt -subj "/CN=keycloak.local"
+openssl req -new -x509 -sha256 -nodes -newkey rsa:2048 -keyout private_keycloak.key -out certificate_keycloak.crt -subj "/CN=keycloak.local"
 aws acm import-certificate --certificate fileb://certificate_keycloak.crt --private-key fileb://private_keycloak.key
 sleep 2
 export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='keycloak.local'].CertificateArn" --include keyTypes=RSA_4096 --output text)
