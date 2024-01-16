@@ -29,6 +29,7 @@ cat << EOF > keycloak_values.yaml
 auth:
   adminUser: admin
   adminPassword: $KEYCLOAK_PASSWORD
+proxy: edge
 keycloakConfigCli:
   enabled: true
   configuration:
