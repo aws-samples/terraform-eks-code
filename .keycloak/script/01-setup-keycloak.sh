@@ -1,14 +1,14 @@
 domain=testdomain.local
 vpcid=$(aws ssm get-parameter --name /workshop/tf-eks/eks-vpc --query Parameter.Value --output text)
 keyz=$(aws route53 list-hosted-zones | jq -r '.HostedZones[] | select(.Name=="testdomain.local.").Id' | cut -f3 -d'/')
-aws route53 create-hosted-zone --name $domain \
---caller-reference my-keycloak-zone5 \
---hosted-zone-config Comment="testdomain local",PrivateZone=true --vpc VPCRegion=eu-west-1,VPCId=$vpcid
-if [[ $? -ne 0 ]];then
-  echo "phz failure exiting ..."
-  exit
-fi
-keyz=$(aws route53 list-hosted-zones | jq -r '.HostedZones[] | select(.Name=="testdomain.local.").Id' | cut -f3 -d'/')
+#aws route53 create-hosted-zone --name $domain \
+#--caller-reference my-keycloak-zone5 \
+#--hosted-zone-config Comment="testdomain local",PrivateZone=true --vpc VPCRegion=eu-west-1,VPCId=$vpcid
+#if [[ $? -ne 0 ]];then
+#  echo "phz failure exiting ..."
+#  exit
+#fi
+#keyz=$(aws route53 list-hosted-zones | jq -r '.HostedZones[] | select(.Name=="testdomain.local.").Id' | cut -f3 -d'/')
 openssl req -new -x509 -sha256 -nodes -newkey rsa:2048 -keyout private_keycloak.key -out certificate_keycloak.crt -subj "/CN=keycloak.testdomain.local"
 aws acm import-certificate --certificate fileb://certificate_keycloak.crt --private-key fileb://private_keycloak.key
 sleep 2
