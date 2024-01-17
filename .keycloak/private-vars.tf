@@ -1,4 +1,4 @@
 variable "dn" {
   type    = string
-  default = "local"
+  default = "testdomain.local"
 }

@@ -1,9 +1,9 @@
 resource "aws_grafana_workspace" "workshop"  {
   account_access_type      = "CURRENT_ACCOUNT"
   authentication_providers = ["SAML"]
-  permission_type          = "SERVICE_MANAGED"
+  permission_type          = "CUSTOMER_MANAGED"
   role_arn                 = aws_iam_role.grafana.arn
-  name = "demo-amg"     # must match  keycloak stuff
+  name = "keycloak-blog"     # must match  keycloak stuff
 }
 
 resource "aws_iam_role" "grafana" {
