@@ -3,7 +3,7 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install keycloak bitnami/keycloak \
     --create-namespace \
     --namespace keycloak \
-    --version 17.3.6 \
+    --version 16.1.7 \
     -f keycloak_values.yaml
     
 if [[ $? -ne 0 ]]; then

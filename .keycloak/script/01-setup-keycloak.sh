@@ -34,8 +34,8 @@ auth:
 keycloakConfigCli:
   enabled: true
   extraEnvVars:
-  - name: KEYCLOAK_LOG_LEVEL
-    value: DEBUG
+    - name: KEYCLOAK_LOG_LEVEL
+      value: DEBUG
   configuration:
     realm.json: |
       {
@@ -132,7 +132,6 @@ ingress:
     alb.ingress.kubernetes.io/target-type: 'ip'
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
-    alb.ingress.kubernetes.io/certificate-arn: ${ACM_ARN}
   hostname: keycloak.testdomain.local
 EOF
 
