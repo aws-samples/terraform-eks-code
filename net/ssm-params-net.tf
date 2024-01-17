@@ -95,13 +95,7 @@ resource "aws_ssm_parameter" "phz-id" {
 name        = "/workshop/tf-eks/phz-id"
   description = "The id for private hosted zone"
   type        = "String"
-  value = aws_route53_zone.resource local_file name {
-    sensitive_content = ""
-    filename             = "${path.module}/files/outputfile"
-    file_permission      = 0777
-    directory_permission = 0777
-  }
-  .id
+  value = aws_route53_zone.local.id
 tags = {
     workshop = "tf-eks-workshop"
   }
