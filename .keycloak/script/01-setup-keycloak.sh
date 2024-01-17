@@ -36,6 +36,8 @@ keycloakConfigCli:
   extraEnvVars:
     - name: KEYCLOAK_LOG_LEVEL
       value: DEBUG
+    - name: KEYCLOAK_URL
+      value: "https://keycloak.testdomain.local"
   configuration:
     realm.json: |
       {
