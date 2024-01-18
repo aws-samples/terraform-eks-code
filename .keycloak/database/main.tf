@@ -24,7 +24,7 @@ module "aurora_mysql" {
   vpc_id                = data.aws_ssm_parameter.eks-vpc.value
   #subnets               = var.database_subnets
   create_security_group = true
-  allowed_cidr_blocks   = data.aws_ssm_parameter.eks-cidr.value
+  allowed_cidr_blocks   = [data.aws_ssm_parameter.eks-cidr.value]
   db_subnet_group_name = data.aws_ssm_parameter.database_subnet_group_name.value
   #security_group_rules = {
   #  vpc_ingress = {
