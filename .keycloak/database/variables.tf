@@ -17,22 +17,22 @@ variable "database_name" {
   default = "keycloak"
 }
 
-variable "cluster_sg_id" {
-  type        = string
-  description = "EKS Cluster SG ID"
-}
+#variable "cluster_sg_id" {
+#  type        = string
+#  description = "EKS Cluster SG ID"
+#}
 
-variable "vpc_id" {
-  type        = string
-  description = "Keycloak VPC ID from the EKS module"
-}
+#variable "vpc_id" {
+#  type        = string
+#  description = "Keycloak VPC ID from the EKS module"
+#}
 
-variable "database_subnets" {
-  type        = list
-  description = "Keycloak VPC database subnets"
-}
+#variable "database_subnets" {
+#  type        = list
+#  description = "Keycloak VPC database subnets"
+#}
 
-variable "database_subnets_cidr_blocks" {
-  type        = list
-  description = "Keycloak VPC cidr_blocks of database subnets"
-}
+#variable "database_subnets_cidr_blocks" {
+#  type        = list
+#  description = "Keycloak VPC cidr_blocks of database subnets"
+#}
