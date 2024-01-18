@@ -134,6 +134,6 @@ ingress:
     alb.ingress.kubernetes.io/target-type: 'ip'
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
-  hostname: keycloak.testdomain.local
+    alb.ingress.kubernetes.io/certificate-arn: $ACM_ARN
 EOF
 
