@@ -23,6 +23,9 @@ module "vpc" {
   
   # 10.0.52.0/24 and 10.0.53.0/24 and 10.0.54.0/24
   intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
+  
+  # 10.0.56.0/24 and 10.0.57.0/24 and 10.0.57.0/24
+  database_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 56)]
 
   enable_nat_gateway = true
   single_nat_gateway = true

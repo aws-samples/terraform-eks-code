@@ -34,6 +34,15 @@ data "aws_ssm_parameter" "public_rtb" {
   name        = "/workshop/tf-eks/public_rtb"
 } 
 
+data "aws_ssm_parameter" "database_subnets" {
+  name        = "/workshop/tf-eks/database_subnets"
+} 
+
+data "aws_ssm_parameter" "database_subnet_group_name" {
+  name        = "/workshop/tf-eks/database_subnet_group_name"
+}
+
+
 data "aws_ssm_parameter" "phz-id" {
   name        = "/workshop/tf-eks/phz-id"
 } 
