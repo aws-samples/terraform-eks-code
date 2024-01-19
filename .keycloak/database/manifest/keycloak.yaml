@@ -55,7 +55,7 @@ spec:
         - name: DB_VENDOR
           value: mysql
         - name: DB_ADDR
-          value: "${DB_ADDR}"
+          value: "${DB_HOSTNAME}"
         - name: DB_USERNAME
           value: "admin"
         - name: DB_PASSWORD
