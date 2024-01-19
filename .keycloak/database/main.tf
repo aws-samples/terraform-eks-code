@@ -32,7 +32,7 @@ module "aurora_mysql" {
   create_security_group = true
   security_group_rules = {
     vpc_ingress = {
-      cidr_blocks = data.aws_ssm_parameter.eks-cidr.value
+      cidr_blocks = [data.aws_ssm_parameter.eks-cidr.value]
     }
   }
 
