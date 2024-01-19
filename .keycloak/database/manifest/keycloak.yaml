@@ -51,15 +51,15 @@ spec:
         - name: KEYCLOAK_ADMIN
           value: "admin"
         - name: KEYCLOAK_ADMIN_PASSWORD
-          value: ${KEYCLOAK_PASSWORD}
+          value: "${KEYCLOAK_PASSWORD}"
         - name: DB_VENDOR
           value: mysql
         - name: DB_ADDR
-          value: ${DB_ADDR}
+          value: "${DB_ADDR}"
         - name: DB_USERNAME
           value: "admin"
         - name: DB_PASSWORD
-          value: ${KEYCLOAK_PASSWORD}
+          value: "${KEYCLOAK_PASSWORD}"
         - name: DB_PORT
           value: "3306"
         - name: DB_DATABASE
