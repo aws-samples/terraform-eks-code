@@ -24,22 +24,25 @@ module "aurora_mysql" {
 
   vpc_id                = data.aws_ssm_parameter.eks-vpc.value
   #subnets               = var.database_subnets
-  create_security_group = true
+ 
   allowed_cidr_blocks   = [data.aws_ssm_parameter.eks-cidr.value]
   create_db_subnet_group = false
   db_subnet_group_name = data.aws_ssm_parameter.database_subnet_group_name.value
-  #security_group_rules = {
-  #  vpc_ingress = {
-  #    cidr_blocks = module.vpc.private_subnets_cidr_blocks
-  #  }
-  #}
+
+  create_security_group = true
+  security_group_rules = {
+    vpc_ingress = {
+      cidr_blocks = module.vpc.private_subnets_cidr_blocks
+    }
+  }
 
   monitoring_interval = 60
 
   apply_immediately   = true
   skip_final_snapshot = true
 
-  allowed_security_groups = [data.aws_ssm_parameter.cluster-sg.value]
+  #allowed_security_groups = [data.aws_ssm_parameter.cluster-sg.value]
+  vpc_security_group_ids =  [data.aws_ssm_parameter.cluster-sg.value]
 
   db_parameter_group_name         = aws_db_parameter_group.mysql.id
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.mysql.id
@@ -55,7 +58,7 @@ module "aurora_mysql" {
   enable_http_endpoint = true
   database_name        = var.database_name
 
-  create_random_password = false
+  #create_random_password = false
   master_username        = var.db_username
   master_password        = var.db_password
 }
