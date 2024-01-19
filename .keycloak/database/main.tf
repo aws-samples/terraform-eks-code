@@ -59,6 +59,7 @@ module "aurora_mysql" {
   database_name        = var.database_name
 
   #create_random_password = false
+  manage_master_user_password = false
   master_username        = var.db_username
   master_password        = var.db_password
 }
