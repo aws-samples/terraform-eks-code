@@ -93,9 +93,9 @@ spec:
   ingressClassName: alb
   tls:
     - hosts:
-      - keycloak.${HOSTED_DOMAIN}
+      - keycloak.${HOSTED_ZONE}
   rules:
-  - host: keycloak.${HOSTED_DOMAIN}
+  - host: keycloak.${HOSTED_ZONE}
     http:
       paths:
       - path: /
