@@ -51,19 +51,19 @@ spec:
         - name: KEYCLOAK_ADMIN
           value: "admin"
         - name: KEYCLOAK_ADMIN_PASSWORD
-          value: "<input_keycloak_password>"
+          value: ${KEYCLOAK_PASSWORD}
         - name: DB_VENDOR
           value: mysql
         - name: DB_ADDR
-          value: "<input_db_address>"
+          value: ${DB_ADDR}
         - name: DB_USERNAME
-          value: "auroraserverless"
+          value: "admin"
         - name: DB_PASSWORD
-          value: "<input_db_password>"
+          value: ${KEYCLOAK_PASSWORD}
         - name: DB_PORT
           value: "3306"
         - name: DB_DATABASE
-          value: "keycloakdemo"
+          value: "keycloak"
         - name: KC_PROXY
           value: "edge"
         ports:
@@ -86,16 +86,16 @@ metadata:
     alb.ingress.kubernetes.io/target-type: instance
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTP": 8080}, {"HTTPS": 443}]'
     alb.ingress.kubernetes.io/tags: environment=demo,team=builder
-    alb.ingress.kubernetes.io/certificate-arn: <input_your_cert_arn>
+    alb.ingress.kubernetes.io/certificate-arn: $ACM_ARN
   labels:
     app: app-keycloak
 spec:
   ingressClassName: alb
   tls:
     - hosts:
-      - keycloak.<input_your_domain_name>.com
+      - keycloak.${HOSTED_DOMAIN}
   rules:
-  - host: keycloak.<input_your_domain_name>.com
+  - host: keycloak.${HOSTED_DOMAIN}
     http:
       paths:
       - path: /

@@ -1,5 +1,6 @@
 domain=testdomain.local
 vpcid=$(aws ssm get-parameter --name /workshop/tf-eks/eks-vpc --query Parameter.Value --output text)
+dbh=$(aws ssm get-parameter --name /workshop/tf-eks/db_hostname --query Parameter.Value --output text)
 keyz=$(aws route53 list-hosted-zones | jq -r '.HostedZones[] | select(.Name=="testdomain.local.").Id' | cut -f3 -d'/')
 #aws route53 create-hosted-zone --name $domain \
 #--caller-reference my-keycloak-zone5 \
@@ -21,3 +22,4 @@ export WORKSPACE_ENDPOINT=$(aws grafana list-workspaces --query 'workspaces[0].e
 echo $WORKSPACE_ENDPOINT
 echo $KEYCLOAK_PASSWORD
 export WORKSPACE_ID=$(aws grafana list-workspaces --query 'workspaces[0].id' --output text)
+cat manifest/keycloak.yml > keycloak.yml
