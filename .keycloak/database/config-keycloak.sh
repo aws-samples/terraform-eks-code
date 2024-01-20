@@ -9,3 +9,4 @@ com=`printf "docker run \
     -e IMPORT_FILES_LOCATIONS='/config/*' \
     -v config:/config \
     adorsys/keycloak-config-cli:latest" $kchn $KEYCLOAK_PASSWORD`
+echo $com
