@@ -3,11 +3,13 @@ vpcid=$(aws ssm get-parameter --name /workshop/tf-eks/eks-vpc --query Parameter.
 export DB_HOSTNAME=$(aws ssm get-parameter --name /workshop/tf-eks/db_hostname --query Parameter.Value --output text)
 keyz=$(aws route53 list-hosted-zones | jq -r '.HostedZones[] | select(.Name=="testdomain.local.").Id' | cut -f3 -d'/')
 export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='keycloak.testdomain.local'].CertificateArn" --include keyTypes=RSA_2048 --output text)
-if [[ $ACM_ARN == *"acm"* ]];then
-    aws acm delete-certificate --certificate-arn $ACM_ARN
+for i in $ACM_ARN; do
+if [[ $i == *"acm"* ]];then
+    aws acm delete-certificate --certificate-arn $i
 else
     echo "No existing cert to delete"
 fi
+done
 #aws route53 create-hosted-zone --name $domain \
 #--caller-reference my-keycloak-zone5 \
 #--hosted-zone-config Comment="testdomain local",PrivateZone=true --vpc VPCRegion=eu-west-1,VPCId=$vpcid
