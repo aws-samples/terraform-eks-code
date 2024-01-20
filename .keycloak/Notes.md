@@ -4,7 +4,13 @@ Keycloak cli
 https://github.com/adorsys/keycloak-config-cli?tab=readme-ov-file
 
 
+kubectl port-forward keycloak-7f8c46dfb-72xrp 8080:8080
+put public ip for LB in /etc/hosts   for   keycloak.testdomain.local
+config preview URL to keycloak.testdomain.local
 
+
+
+preview app (open in new window)
 
 
 docker run \

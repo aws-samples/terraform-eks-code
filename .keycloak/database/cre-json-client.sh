@@ -8,34 +8,9 @@ export WORKSPACE_ID=$(aws grafana list-workspaces --query 'workspaces[0].id' --o
 #export SAML_URL=https://keycloak.local/realms/keycloak-blog/protocol/saml/descriptor
 echo "Grafana endpoint=$WORKSPACE_ENDPOINT"
 echo $KEYCLOAK_PASSWORD
-cat << EOF > config/keycloak_config.json
+
+cat << EOF > config/keycloak_client.json
 {
-  "realm": "keycloak-blog",
-  "enabled": true,
-  "roles": {
-    "realm": [
-      {
-        "name": "admin"
-      }
-    ]
-  },
-  "users": [
-    {
-      "username": "admin",
-      "email": "admin@keycloak",
-      "enabled": true,
-      "firstName": "Admin",
-      "realmRoles": [
-        "admin"
-      ],
-      "credentials": [
-        {
-          "type": "password",
-          "value": "${KEYCLOAK_PASSWORD}"
-        }
-      ]
-    }
-  ],
   "clients": [
     {
       "clientId": "https://${WORKSPACE_ENDPOINT}/saml/metadata",
@@ -93,3 +68,4 @@ cat << EOF > config/keycloak_config.json
   ]
 }
 EOF
+
