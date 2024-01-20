@@ -7,6 +7,6 @@ com=`printf "docker run \
     -e KEYCLOAK_AVAILABILITYCHECK_ENABLED=true \
     -e KEYCLOAK_AVAILABILITYCHECK_TIMEOUT=120s \
     -e IMPORT_FILES_LOCATIONS='/config/*' \
-    -v config:/config \
+    -v /home/ec2-user/environment/tfekscode/.keycloak/database/config:/config \
     adorsys/keycloak-config-cli:latest" $kchn $KEYCLOAK_PASSWORD`
 echo $com
