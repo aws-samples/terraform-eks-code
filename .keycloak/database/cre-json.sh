@@ -6,7 +6,6 @@ echo $WORKSPACE_ENDPOINT
 echo $KEYCLOAK_PASSWORD
 export WORKSPACE_ID=$(aws grafana list-workspaces --query 'workspaces[0].id' --output text)
 #export SAML_URL=https://keycloak.local/realms/keycloak-blog/protocol/saml/descriptor
-
 echo "Grafana endpoint=$WORKSPACE_ENDPOINT"
 echo $KEYCLOAK_PASSWORD
 cat << EOF > keycloak_values.json
@@ -19,77 +18,77 @@ cat << EOF > keycloak_values.json
         "name": "admin"
       }
     ]
-    },
-    "users": [
-          {
-            "username": "admin",
-            "email": "admin@keycloak",
-            "enabled": true,
-            "firstName": "Admin",
-            "realmRoles": [
-              "admin"
-            ],
-            "credentials": [
-              {
-                "type": "password",
-                "value": "${KEYCLOAK_PASSWORD}"
-              }
-            ]
-          }
-    ],
-    "clients": [
-      {
-            "clientId": "https://${WORKSPACE_ENDPOINT}/saml/metadata",
-            "name": "amazon-managed-grafana",
-            "enabled": true,
-            "protocol": "saml",
-            "adminUrl": "https://${WORKSPACE_ENDPOINT}/login/saml",
-            "redirectUris": [
-              "https://${WORKSPACE_ENDPOINT}/saml/acs"
-            ],
-            "attributes": {
-              "saml.authnstatement": "true",
-              "saml.server.signature": "true",
-              "saml_name_id_format": "email",
-              "saml_force_name_id_format": "true",
-              "saml.assertion.signature": "true",
-              "saml.client.signature": "false"
-            },
-            "defaultClientScopes": [],
-            "protocolMappers": [
-              {
-                "name": "name",
-                "protocol": "saml",
-                "protocolMapper": "saml-user-property-mapper",
-                "consentRequired": false,
-                "config": {
-                  "attribute.nameformat": "Unspecified",
-                  "user.attribute": "firstName",
-                  "attribute.name": "displayName"
-                }
-              },
-              {
-                "name": "email",
-                "protocol": "saml",
-                "protocolMapper": "saml-user-property-mapper",
-                "consentRequired": false,
-                "config": {
-                  "attribute.nameformat": "Unspecified",
-                  "user.attribute": "email",
-                  "attribute.name": "mail"
-                }
-              },
-              {
-                "name": "role list",
-                "protocol": "saml",
-                "protocolMapper": "saml-role-list-mapper",
-                "config": {
-                  "single": "true",
-                  "attribute.nameformat": "Unspecified",
-                  "attribute.name": "role"
-                }
+  },
+  "users": [
+    {
+      "username": "admin",
+      "email": "admin@keycloak",
+      "enabled": true,
+      "firstName": "Admin",
+      "realmRoles": [
+        "admin"
+      ],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "${KEYCLOAK_PASSWORD}"
         }
-    ]
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "https://${WORKSPACE_ENDPOINT}/saml/metadata",
+      "name": "amazon-managed-grafana",
+      "enabled": true,
+      "protocol": "saml",
+      "adminUrl": "https://${WORKSPACE_ENDPOINT}/login/saml",
+      "redirectUris": [
+        "https://${WORKSPACE_ENDPOINT}/saml/acs"
+      ],
+      "attributes": {
+          "saml.authnstatement": "true",
+          "saml.server.signature": "true",
+          "saml_name_id_format": "email",
+          "saml_force_name_id_format": "true",
+          "saml.assertion.signature": "true",
+          "saml.client.signature": "false"
+      },
+      "defaultClientScopes": [],
+      "protocolMappers": [
+        {
+          "name": "name",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "Unspecified",
+            "user.attribute": "firstName",
+            "attribute.name": "displayName"
+          }
+        },
+        {
+          "name": "email",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.nameformat": "Unspecified",
+            "user.attribute": "email",
+            "attribute.name": "mail"
+          }
+        },
+        {
+          "name": "role list",
+          "protocol": "saml",
+          "protocolMapper": "saml-role-list-mapper",
+          "config": {
+            "single": "true",
+            "attribute.nameformat": "Unspecified",
+            "attribute.name": "role"
+          }
+        }
+      ]
     }
   ]
 }
