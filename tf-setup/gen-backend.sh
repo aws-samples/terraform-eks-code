@@ -1,5 +1,10 @@
 #!/bin/bash
-cp dot-terraform.rc $HOME/.terraformrc
+echo "Setup Terraform cache"
+if [ ! -f $HOME/.terraform.d/plugin-cache ]; then
+  mkdir -p $HOME/.terraform.d/plugin-cache
+  cp dot-terraform.rc $HOME/.terraformrc
+fi
+
 d=`pwd`
 sleep 5
 reg=`terraform output -json region | jq -r .[]`
