@@ -16,3 +16,6 @@ aws efs delete-file-system --file-system-id $fsid
 #
 dbi=$(aws rds describe-db-instances --query DBInstances[].DBInstanceIdentifier --output text)
 aws rds delete-db-instance --db-instance-identifier $dbi --skip-final-snapshot
+#
+# delete VPC eksctl-eks-workshop-cluster
+#
