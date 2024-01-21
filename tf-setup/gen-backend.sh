@@ -71,7 +71,7 @@ do
     printf "provider \"aws\" {\n" >> $of
     printf "region = var.region\n"  >> $of
     printf "shared_credentials_files = [\"~/.aws/credentials\"]\n" >> $of
-    printf "profile = var.profile\n" >> $of
+    #printf "profile = var.profile\n" >> $of
     printf "}\n" >> $of
 
 done
