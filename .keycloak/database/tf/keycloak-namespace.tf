@@ -1,4 +1,4 @@
-resource "kubernetes_namespace" "keycloak" {
+resource "kubernetes_namespace_v1" "keycloak" {
   metadata {
     annotations = {
       name = "keycloak"
