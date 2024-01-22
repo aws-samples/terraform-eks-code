@@ -1,3 +1,5 @@
+# problem addressing  keycloak.testdomain.local
+#
 kchn="keycloak.testdomain.local"
 export KEYCLOAK_PASSWORD="keycloakpass123"
 com=`printf "docker run \
