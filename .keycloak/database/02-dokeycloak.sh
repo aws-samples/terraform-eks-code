@@ -1,4 +1,7 @@
-domain=testdomain.local
+#domain=testdomain.local
+export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+export HOSTED_ZONE=$ACCOUNT_ID.awsandy.people.aws.dev
+domain=$ACCOUNT_ID.awsandy.people.aws.dev
 reg=$(aws configure get region)
 vpcid=$(aws ssm get-parameter --name /workshop/tf-eks/eks-vpc --query Parameter.Value --output text)
 export DB_HOSTNAME=$(aws ssm get-parameter --name /workshop/tf-eks/db_hostname --query Parameter.Value --output text)
@@ -6,7 +9,8 @@ keyz=$(aws route53 list-hosted-zones | jq -r '.HostedZones[] | select(.Name=="te
 defvpc=$(aws ec2 describe-vpcs | jq -r '.Vpcs[] | select(.IsDefault==true).VpcId')
 aws route53 create-vpc-association-authorization --hosted-zone-id $keyz --vpc VPCRegion=$reg,VPCId=$defvpc --region $reg
 #
-export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='keycloak.testdomain.local'].CertificateArn" --include keyTypes=RSA_2048 --output text)
+#export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='keycloak.testdomain.local'].CertificateArn" --include keyTypes=RSA_2048 --output text)
+export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='keycloak.$HOSTED_ZONE'].CertificateArn" --include keyTypes=RSA_2048 --output text)
 for i in $ACM_ARN; do
 if [[ $i == *"acm"* ]];then
     aws acm delete-certificate --certificate-arn $i
@@ -23,11 +27,12 @@ done
 #fi
 #keyz=$(aws route53 list-hosted-zones | jq -r '.HostedZones[] | select(.Name=="testdomain.local.").Id' | cut -f3 -d'/')
 
-openssl req -new -x509 -sha256 -nodes -newkey rsa:2048 -keyout private_keycloak.key -out certificate_keycloak.crt -subj "/CN=keycloak.testdomain.local"
-aws acm import-certificate --certificate fileb://certificate_keycloak.crt --private-key fileb://private_keycloak.key
-sleep 2
+#openssl req -new -x509 -sha256 -nodes -newkey rsa:2048 -keyout private_keycloak.key -out certificate_keycloak.crt -subj "/CN=keycloak.testdomain.local"
+#aws acm import-certificate --certificate fileb://certificate_keycloak.crt --private-key fileb://private_keycloak.key
+#sleep 2
 export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='keycloak.testdomain.local'].CertificateArn" --include keyTypes=RSA_2048 --output text)
-export HOSTED_ZONE=testdomain.local
+export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='keycloak.$HOSTED_ZONE'].CertificateArn" --include keyTypes=RSA_2048 --output text)
+#export HOSTED_ZONE=testdomain.local
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 #export HOSTED_ZONE=$ACCOUNT_ID.awsandy.people.aws.dev
 export KEYCLOAK_PASSWORD="keycloakpass123"
