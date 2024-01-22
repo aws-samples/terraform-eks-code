@@ -5,26 +5,27 @@ https://github.com/adorsys/keycloak-config-cli?tab=readme-ov-file
 
 --------------
 
-$ kubectl exec -it keycloak-7f8c46dfb-72xrp -- /bin/bash                                                                         
+$ kubectl -n keycloak exec -it $(kubectl get pod -n keycloak -o json | jq -r '.items[].metadata.name') -- /bin/bash                                                                         
 bash-4.4$ cd /opt/keycloak/bin/ 
 bash-4.4$ ls
 client  kcadm.bat  kcadm.sh  kc.bat  kcreg.bat  kcreg.sh  kc.sh
 
-bash-4.4$ ./kcadm.sh config credentials --server http://localhost:8080 --realm master --user admin
+bash-4.4$ ./kcadm.sh config credentials --server http://localhost:8080 --realm master --user admin --password keycloakpass123
 Logging into http://localhost:8080 as user admin of realm master
 Enter password: ***************
 bash-4.4$ ./kcadm.sh update realms/master -s sslRequired=NONE
 
 bash-4.4$ exit
 
-bash-4.4$ kcadm.sh create realms -f - << EOF
+bash-4.4$ ./kcadm.sh create realms -f - << EOF
 { "realm": "demorealm", "enabled": true }
 EOF
 
 -----------------
 
-
-
+kubectl -n keycloak exec -it $(kubectl get pod -n keycloak -o json | jq -r '.items[].metadata.name') -- /bin/bash -c "cd /opt/keycloak/bin/ && 
+./kcadm.sh config credentials --server http://localhost:8080 --realm master --user admin --password keycloakpass123 && exit"
+kubectl exec -it sss-pod-four  -- bash -c "echo hi > /mnt/sss/testnew.txt" 
 
 kubectl port-forward keycloak-7f8c46dfb-72xrp 8080:8080
 put public ip for LB in /etc/hosts   for   keycloak.testdomain.local
