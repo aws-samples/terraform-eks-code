@@ -18,7 +18,7 @@ resource "aws_route53_record" "keycloak" {
   records         = [each.value.record]
   ttl             = 300
   type            = each.value.type
-  zone_id         = data.aws_ssm_parameter.hzid.value
+  zone_id         = aws_route53_zone.keycloak.id
 }
 
 resource "aws_acm_certificate_validation" "keycloak" {     ## should take ~ 3 minutes
