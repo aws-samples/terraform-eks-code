@@ -1,5 +1,5 @@
 resource "aws_acm_certificate" "keycloak" {
-  domain_name = format("keycloak.%s",data.aws_ssm_parameter.dns-name.value)
+  domain_name = format("keycloak.%s",aws_route53_zone.keycloak.id)
   validation_method = "DNS"
 }
 
