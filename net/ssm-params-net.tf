@@ -118,7 +118,7 @@ resource "aws_ssm_parameter" "phz-id" {
 name        = "/workshop/tf-eks/phz-id"
   description = "The id for private hosted zone"
   type        = "String"
-  value = aws_route53_zone.local.id
+  value = aws_route53_zone.keycloak.id
 tags = {
     workshop = "tf-eks-workshop"
   }
