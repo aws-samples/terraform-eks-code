@@ -1,4 +1,4 @@
-lbhn=$(kubectl get ingress -o json | jq -r '.items[].status.loadBalancer.ingress[].hostname')
+lbhn=$(kubectl -n keycloak get ingress -o json | jq -r '.items[].status.loadBalancer.ingress[].hostname')
 export KEYCLOAK_PASSWORD="keycloakpass123"
 com=`printf "docker run \
     -e KEYCLOAK_URL="http://%s:8080/" \
