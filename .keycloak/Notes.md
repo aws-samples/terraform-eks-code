@@ -77,3 +77,25 @@ aws route53 change-resource-record-sets --hosted-zone-id <Private-hosted-zone-id
 
 
 aws route53 change-resource-record-sets --hosted-zone-id Z013560735H8VUPXL2MHI --change-batch '{"Changes": [ { "Action": "CREATE", "ResourceRecordSet": { "Name": "Z32O12XQLNTSW2", "Type": "A", "AliasTarget":{ "HostedZoneId": "k8s-default-ingressk-7fa2167de4-1928413011.eu-west-1.elb.amazonaws.com","DNSName": "", "EvaluateTargetHealth": false } } } ]}'
+
+
+
+
+aws route53 change-resource-record-sets \
+  --hosted-zone-id $zoneid \
+  --change-batch '{
+          "Comment": "CREATE NS a record ",
+          "Changes": [{
+          "Action": "CREATE",
+                "ResourceRecordSet": {
+                                    "Name": "571596003809.awsandy.people.aws.dev",
+                                    "Type": "NS",
+                                    "TTL": 300,
+                                 "ResourceRecords": [
+                                  {"Value": "ns-1482.awsdns-57.org"},
+                                  {"Value": "ns-180.awsdns-22.com"},
+                                  {"Value": "ns-1946.awsdns-51.co.uk"},
+                                  {"Value": "ns-837.awsdns-40.net"}
+                                  ]
+          }}]
+}'

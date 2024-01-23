@@ -6,7 +6,9 @@ resource "aws_route53_zone" "keycloak" {
 
 resource "local_file" "json_config" {
   content         = <<EOF
-{
+aws route53 change-resource-record-sets \
+  --hosted-zone-id $zoneid \
+  --change-batch '{
           "Comment": "CREATE NS a record ",
           "Changes": [{
           "Action": "CREATE",
@@ -21,7 +23,7 @@ resource "local_file" "json_config" {
                                   {"Value": "${aws_route53_zone.keycloak.name_servers[3]}"}
                                   ]
           }}]
-}
+}'
 EOF
   filename        = "/home/ec2-user/environment/${data.aws_caller_identity.current.account_id}-dns.json"
   file_permission = "0640"
