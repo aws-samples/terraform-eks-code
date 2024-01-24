@@ -1,7 +1,8 @@
 cd ~/environment
-time eksctl delete cluster  --name eks-workshop     # ~8min
+delete-environment
+time eksctl delete cluster --name eks-workshop     # ~8min
 #
-# Why dekete these ? - EFS so can zap VPC (has eni)
+# Why delete these ? - EFS so can zap VPC (has eni)
 #
 fsid=$(aws efs describe-file-systems --query FileSystems[].FileSystemId --output text)
 for mtid in $(aws efs describe-mount-targets --file-system-id $fsid --query MountTargets[].MountTargetId --output text);do
@@ -17,5 +18,5 @@ aws efs delete-file-system --file-system-id $fsid
 dbi=$(aws rds describe-db-instances --query DBInstances[].DBInstanceIdentifier --output text)
 aws rds delete-db-instance --db-instance-identifier $dbi --skip-final-snapshot
 #
-# delete VPC eksctl-eks-workshop-cluster
+echo "delete VPC eksctl-eks-workshop-cluster"
 #

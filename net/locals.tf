@@ -9,9 +9,12 @@ locals {
   secondary_cidr_blocks = ["100.65.0.0/16"]
   azs      = slice(data.aws_availability_zones.az.names, 0, 3)
 
+
+  # for compatibility with eksworkshop.com
   tags = {
-    Example    = local.name
-    GithubRepo = "terraform-aws-eks"
-    GithubOrg  = "terraform-aws-modules"
+    created-by = "eks-workshop-v2"
+    env        = var.cluster_name
+    workshop    = "tf-eks"
   }
+
 }
