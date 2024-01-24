@@ -6,7 +6,7 @@ reg=$(aws configure get region)
 vpcid=$(aws ssm get-parameter --name /workshop/tf-eks/eks-vpc --query Parameter.Value --output text)
 keyz=$(aws route53 list-hosted-zones | jq -r '.HostedZones[] | select(.Name=="'$domain'.").Id' | cut -f3 -d'/')
 kchn=$(echo keycloak.$ACCOUNT_ID.awsandy.people.aws.dev)
-lbhn=$(kubectl get ingress -o json | jq -r '.items[].status.loadBalancer.ingress[].hostname')
+lbhn=$(kubectl -n keycloak get ingress -o json | jq -r '.items[].status.loadBalancer.ingress[].hostname')
 com=$(printf "aws elbv2 describe-load-balancers | jq -r '.LoadBalancers[] | select(.DNSName == \"%s\").CanonicalHostedZoneId'" $lbhn)
 lbhz=$(eval $com)
 echo "$keyz $kchn $lbhz $lbhn"
