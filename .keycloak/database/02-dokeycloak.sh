@@ -39,5 +39,7 @@ export KEYCLOAK_PASSWORD="keycloakpass123"
 export WORKSPACE_ENDPOINT=$(aws grafana list-workspaces --query 'workspaces[0].endpoint' --output text)
 echo $WORKSPACE_ENDPOINT
 echo $KEYCLOAK_PASSWORD
+echo $keyz
+echo $ACM_ARN
 export WORKSPACE_ID=$(aws grafana list-workspaces --query 'workspaces[0].id' --output text)
 envsubst < manifest/keycloak.yaml > keycloak.yaml
