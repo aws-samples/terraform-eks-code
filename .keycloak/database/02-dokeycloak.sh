@@ -7,7 +7,7 @@ vpcid=$(aws ssm get-parameter --name /workshop/tf-eks/eks-vpc --query Parameter.
 export DB_HOSTNAME=$(aws ssm get-parameter --name /workshop/tf-eks/db_hostname --query Parameter.Value --output text)
 keyz=$(aws route53 list-hosted-zones | jq -r '.HostedZones[] | select(.Name=="'$domain'.").Id' | cut -f3 -d'/')
 defvpc=$(aws ec2 describe-vpcs | jq -r '.Vpcs[] | select(.IsDefault==true).VpcId')
-#aws route53 create-vpc-association-authorization --hosted-zone-id $keyz --vpc VPCRegion=$reg,VPCId=$defvpc --region $reg
+aws route53 create-vpc-association-authorization --hosted-zone-id $keyz --vpc VPCRegion=$reg,VPCId=$defvpc --region $reg
 #
 #export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='keycloak.testdomain.local'].CertificateArn" --include keyTypes=RSA_2048 --output text)
 #export ACM_ARN=$(aws acm list-certificates --query "CertificateSummaryList[?DomainName=='keycloak.$HOSTED_ZONE'].CertificateArn" --include keyTypes=RSA_2048 --output text)
