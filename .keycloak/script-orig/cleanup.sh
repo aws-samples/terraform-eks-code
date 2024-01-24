@@ -1,0 +1,1 @@
+eksctl delete cluster --name export CLUSTER_NAME=mgmt-workshop

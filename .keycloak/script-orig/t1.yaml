@@ -1,0 +1,34 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: tf-workshop
+  region: eu-west-1
+  version: 1.27
+addons:
+  - name: vpc-cni
+iam:
+  withOIDC: true
+  serviceAccounts:
+    - metadata:
+      name: aws-load-balancer-controller
+      namespace: aws-lb
+      roleName: keycloak-blog-aws-lb-controller
+      roleOnly: true
+      wellKnownPolicies:
+        awsLoadBalancerController: true
+    - metadata:
+        name: external-dns
+        namespace: external-dns
+        roleName: keycloak-blog-external-dns
+        roleOnly: true
+        wellKnownPolicies:
+          externalDNS: true
+managedNodeGroups:
+  - name: main
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+    instanceType: t3.large
+    privateNetworking: true
