@@ -29,7 +29,7 @@ module "vpc" {
 
   public_subnet_suffix  = "SubnetPublic"
   private_subnet_suffix = "SubnetPrivate"
-  datrabase_subnet_suffix = "SubnetDatabase"
+  database_subnet_suffix = "SubnetDatabase"
 
 
   enable_nat_gateway = true
