@@ -10,4 +10,6 @@ if [[ $? -ne 0 ]]; then
     echo "Error helm installing Keycloak"
     exit
 fi
+# --version 15.1.8 \
+# --version 12.3.0 \
 
