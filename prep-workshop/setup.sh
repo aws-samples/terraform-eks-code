@@ -5,6 +5,7 @@ if [ ! -f $HOME/.terraform.d/plugin-cache ]; then
 fi
 echo "Install flux cli"
 curl -s https://fluxcd.io/install.sh | sudo bash
+flux --version
 #echo "Install kubectl v1.27.7"
 #curl -LO https://dl.k8s.io/release/v1.27.7/bin/linux/amd64/kubectl
 #curl --silent -LO https://dl.k8s.io/release/v1.24.14/bin/linux/amd64/kubectl >/dev/null

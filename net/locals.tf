@@ -13,7 +13,7 @@ locals {
   # for compatibility with eksworkshop.com
   tags = {
     created-by = "eks-workshop-v2"
-    env        = var.cluster_name
+    env        = var.cluster-name
     workshop    = "tf-eks"
   }
 
