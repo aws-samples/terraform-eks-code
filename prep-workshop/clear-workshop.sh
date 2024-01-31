@@ -19,4 +19,8 @@ dbi=$(aws rds describe-db-instances --query DBInstances[].DBInstanceIdentifier -
 aws rds delete-db-instance --db-instance-identifier $dbi --skip-final-snapshot
 #
 echo "delete VPC eksctl-eks-workshop-cluster"
+vpcid=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=eksctl-eks-workshop-cluster/VPC --query Vpcs[].VpcId --output text)
+echo $vpcid
+echo "await RDS deletion then"
+echo "aws ec2 delete-vpc --vpc-id $vpcid"
 #
