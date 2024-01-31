@@ -13,7 +13,8 @@ data "aws_instance" "c9inst" {
 
   filter {
     name   = "tag:Name"
-    values = ["*${var.c9label}*"]
+    #values = ["*${var.c9label}*"]
+    values = ["aws-cloud9-eks-workshop*"]
   }
   filter {
     name   = "instance-state-name"
