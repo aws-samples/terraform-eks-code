@@ -8,3 +8,4 @@ mkdir -p private
 GITHUB_APP_FILE=$(ls github-app-* | head -n1)
 mv ${GITHUB_APP_FILE} private/github-integration.yaml
 chmod 600 private/*
+echo "Next get and store you github private access token into private/github-token"
