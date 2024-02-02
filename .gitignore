@@ -1,6 +1,7 @@
 # Local .terraform directories
 **/.terraform/*
 **/bin/*
+idp/private/*
 # .tfstate files
 *.tfstate
 *.tfstate.*
