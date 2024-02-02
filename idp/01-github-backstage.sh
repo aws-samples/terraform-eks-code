@@ -7,3 +7,4 @@ npx '@backstage/cli' create-github-app ${GITHUB_ORG_NAME}
 mkdir -p private
 GITHUB_APP_FILE=$(ls github-app-* | head -n1)
 mv ${GITHUB_APP_FILE} private/github-integration.yaml
+chmod 600 private/*
