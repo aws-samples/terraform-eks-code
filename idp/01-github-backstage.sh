@@ -1,3 +1,4 @@
+cd ~/environment/idp
 export GITHUB_ORG_NAME=awsandyorg
 npx '@backstage/cli' create-github-app ${GITHUB_ORG_NAME}
 # If prompted, select all for permissions or select permissions listed in this page https://backstage.io/docs/integrations/github/github-apps#app-permissions
