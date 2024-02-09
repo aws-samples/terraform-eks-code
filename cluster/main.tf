@@ -158,6 +158,10 @@ module "eks" {
       desired_size    = 2
       #subnet_ids      = module.vpc.private_subnets
       subnet_ids      =  jsondecode(data.aws_ssm_parameter.private_subnets.value)
+      iam_role_additional_policies = [ 
+          "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+          "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+      ]
     }
 
 

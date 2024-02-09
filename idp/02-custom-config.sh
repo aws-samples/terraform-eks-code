@@ -14,3 +14,6 @@ cmd=$(printf "sed -i'.orig' -e 's/Z0REPLACEME/%s/g' config.yaml" $hzn)
 eval $cmd
 cmd=$(printf "sed -i'.orig' -e 's/sudbomain.domain.root/%s/g' config.yaml" $domain)
 eval $cmd
+cmd=$(printf "sed -i'.orig' -e 's/: true/: false/g' config.yaml")
+eval $cmd
+# stop cert manager install:

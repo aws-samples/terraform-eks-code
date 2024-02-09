@@ -21,6 +21,18 @@ aws rds delete-db-instance --db-instance-identifier $dbi --skip-final-snapshot
 echo "delete VPC eksctl-eks-workshop-cluster"
 vpcid=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=eksctl-eks-workshop-cluster/VPC --query Vpcs[].VpcId --output text)
 echo $vpcid
+
+sgs=$(aws ec2 describe-security-groups --filters Name=vpc-id,Values=$vpcid --query SecurityGroups[].GroupId --output text)
+for i in $sgs;do 
+echo $i
+aws ec2 delete-security-group --group-id $i
+done
+for i in $sgs;do 
+echo $i
+aws ec2 delete-security-group --group-id $i
+done
 echo "await RDS deletion then"
+#aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text
 echo "aws ec2 delete-vpc --vpc-id $vpcid"
+aws ec2 delete-vpc --vpc-id $vpcid
 #

@@ -1,0 +1,11 @@
+{
+    "realm": "keycloak-blog",
+    "enabled": true,
+    "roles": {
+      "realm": [
+        {
+          "name": "admin"
+        }
+      ]
+    }
+}
