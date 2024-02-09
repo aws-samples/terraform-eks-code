@@ -148,8 +148,8 @@ module "eks_blueprints_addons" {
 
   aws_load_balancer_controller = {
     #namespace=kubernetes_namespace_v1.aws_load_balancer_controller.id
-    namespace="aws-lb-controller"
-    create_namespace = true
+    namespace="kube-system"
+    #create_namespace = true
     set = [
       {
         name  = "vpcId"
