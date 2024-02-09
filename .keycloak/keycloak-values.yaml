@@ -1,0 +1,17 @@
+auth:
+  adminUser: admin
+  adminPassword: keycloakpass123
+proxy: edge
+keycloakConfigCli:
+  enabled: false
+service:
+  type: ClusterIP
+ingress:
+  enabled: true
+  ingressClassName: alb
+  pathType: Prefix
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: 'ip'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+  hostname: keycloak.191146365370.awsandy.people.aws.dev

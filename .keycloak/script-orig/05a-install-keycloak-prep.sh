@@ -9,7 +9,7 @@ auth:
   adminUser: admin
   adminPassword: $KEYCLOAK_PASSWORD
 keycloakConfigCli:
-  enabled: true
+  enabled: false
   configuration:
     realm.json: |
       {
