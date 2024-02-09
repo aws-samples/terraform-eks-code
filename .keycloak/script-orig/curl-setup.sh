@@ -14,5 +14,10 @@ curl -sS -H "Content-Type: application/json" \
   -H "Authorization: bearer ${KEYCLOAK_TOKEN}" \
   -X POST --data @config-payloads/realm-payload.json \
   localhost:8080/admin/realms
+echo "creating test users"
+curl -sS -H "Content-Type: application/json" \
+  -H "Authorization: bearer ${KEYCLOAK_TOKEN}" \
+  -X POST --data @config-payloads/users.json \
+  localhost:8080/admin/realms/keycloak-blog/users
 
 

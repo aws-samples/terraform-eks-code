@@ -1,0 +1,15 @@
+{
+    "username": "admin",
+    "email": "admin@keycloak",
+    "enabled": true,
+    "firstName": "Admin",
+    "realmRoles": [
+      "admin"
+    ],
+    "credentials": [
+      {
+        "type": "password",
+        "value": "keycloakpass123"
+      }
+    ]
+  }
