@@ -4,6 +4,6 @@ dnsl=$(dig $acc.awsandy.people.aws.dev NS +short | wc -l)
 if [[ $dnsl -gt 0 ]]; then
     # install cert
     terraform init
-    terraforn apply -auto-approve
+    terraform apply -auto-approve
 # prep config
 fi
