@@ -1,6 +1,6 @@
 auth:
   adminUser: admin
-  adminPassword: keycloakpass123
+  adminPassword: $KEYCLOAK_PASSWORD
 proxy: edge
 keycloakConfigCli:
   enabled: false
@@ -14,4 +14,4 @@ ingress:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: 'ip'
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-  hostname: keycloak.191146365370.awsandy.people.aws.dev
+  hostname: keycloak.$HOSTED_ZONE
