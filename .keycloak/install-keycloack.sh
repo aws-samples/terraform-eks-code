@@ -22,8 +22,24 @@ helm install keycloak bitnami/keycloak \
     -f keycloak_values.yaml
 echo $?
 if [[ $? -eq 0 ]];then
+    envsubst < config-payloads/users.json.proto > config-payloads/users.json
+    envsubst < config-payloads/client.json.proto > config-payloads/client.json
+    kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=keycloak -n keycloak  --timeout=30s
+    kubectl port-forward -n keycloak svc/keycloak 8080:8080 > /dev/null 2>&1 &
+    pid=$!
 
-
+    # Default token expires in one minute. May need to extend. very ugly
+    KEYCLOAK_TOKEN=$(curl -sS  --fail-with-body -X POST -H "Content-Type: application/x-www-form-urlencoded" \
+    --data-urlencode "username=cnoe-admin" \
+    --data-urlencode "password=${ADMIN_PASSWORD}" \
+    --data-urlencode "grant_type=password" \
+    --data-urlencode "client_id=admin-cli" \
+    localhost:8080/realms/master/protocol/openid-connect/token | jq -e -r '.access_token')
+    
+    curl -sS -H "Content-Type: application/json"   -H "Authorization: bearer ${KEYCLOAK_TOKEN}"   -X POST --data @config-payloads/realm.json   localhost:8080/admin/realms
+    curl -sS -H "Content-Type: application/json"   -H "Authorization: bearer ${KEYCLOAK_TOKEN}"   -X POST --data @config-payloads/users.json   localhost:8080/admin/realms/keycloak-blog/users
+    curl -sS -H "Content-Type: application/json"   -H "Authorization: bearer ${KEYCLOAK_TOKEN}"   -X POST --data @config-payloads/client.json   localhost:8080/admin/realms/keycloak-blog/clients
+    kill $pid
 else
     echo "Helm chart failed to install"
 fi

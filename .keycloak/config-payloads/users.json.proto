@@ -9,7 +9,7 @@
   "credentials": [
     {
       "type": "password",
-      "value": "keycloakpass123"
+      "value": "${KEYCLOAK_PASSWORD}"
     }
   ]
 }
