@@ -25,7 +25,7 @@ if [[ $? -eq 0 ]];then
     envsubst < config-payloads/users.json.proto > config-payloads/users.json
     envsubst < config-payloads/client.json.proto > config-payloads/client.json
     kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=keycloak -n keycloak  --timeout=30s
-    kubectl port-forward -n keycloak svc/keycloak 8080:8080 > /dev/null 2>&1 &
+    kubectl port-forward -n keycloak svc/keycloak 8080:80 > /dev/null 2>&1 &
     pid=$!
     # Default token expires in one minute. May need to extend. very ugly
     KEYCLOAK_TOKEN=$(curl -sS  --fail-with-body -X POST -H "Content-Type: application/x-www-form-urlencoded" \
