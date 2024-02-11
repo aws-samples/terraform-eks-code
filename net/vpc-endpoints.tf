@@ -28,7 +28,7 @@ module "vpc_endpoints" {
       }
     }
     },
-    { for service in toset(["autoscaling", "ecr.api", "ecr.dkr", "ec2", "ec2messages", "sts", "logs", "ssm", "ssmmessages"]) :
+    { for service in toset(["autoscaling", "ecr.api", "ecr.dkr", "ec2", "guardduty-data", "ec2messages", "sts", "logs", "ssm", "ssmmessages"]) :
       replace(service, ".", "_") =>
       {
         service             = service
