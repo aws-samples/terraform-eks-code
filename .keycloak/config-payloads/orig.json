@@ -20,20 +20,20 @@
             "credentials": [
                 {
                     "type": "password",
-                    "value": "keycloakpass123"
+                    "value": "${KEYCLOAK_PASSWORD}"
                 }
             ]
         }
     ],
     "clients": [
         {
-            "clientId": "https://g-a1df84822f.grafana-workspace.eu-west-1.amazonaws.com/saml/metadata",
+            "clientId": "https://${WORKSPACE_ENDPOINT}/saml/metadata",
             "name": "amazon-managed-grafana",
             "enabled": true,
             "protocol": "saml",
-            "adminUrl": "https://g-a1df84822f.grafana-workspace.eu-west-1.amazonaws.com/login/saml",
+            "adminUrl": "https://${WORKSPACE_ENDPOINT}/login/saml",
             "redirectUris": [
-                "https://g-a1df84822f.grafana-workspace.eu-west-1.amazonaws.com/saml/acs"
+                "https://${WORKSPACE_ENDPOINT}/saml/acs"
             ],
             "attributes": {
                 "saml.authnstatement": "true",
