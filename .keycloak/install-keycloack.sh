@@ -1,4 +1,6 @@
 #
+helm uninstall keycloaf -n keycloak
+kubectl delete ns keycloak
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export HOSTED_ZONE=$ACCOUNT_ID.awsandy.people.aws.dev
 export KEYCLOAK_PASSWORD="keycloakpass123"
@@ -29,12 +31,11 @@ if [[ $? -eq 0 ]];then
     pid=$!
     # Default token expires in one minute. May need to extend. very ugly
     KEYCLOAK_TOKEN=$(curl -sS  --fail-with-body -X POST -H "Content-Type: application/x-www-form-urlencoded" \
-    --data-urlencode "username=cnoe-admin" \
-    --data-urlencode "password=${ADMIN_PASSWORD}" \
+    --data-urlencode "username=admin" \
+    --data-urlencode "password=${KEYCLOAK_PASSWORD}" \
     --data-urlencode "grant_type=password" \
     --data-urlencode "client_id=admin-cli" \
     localhost:8080/realms/master/protocol/openid-connect/token | jq -e -r '.access_token')
-
     curl -sS -H "Content-Type: application/json"   -H "Authorization: bearer ${KEYCLOAK_TOKEN}"   -X POST --data @config-payloads/realm.json   localhost:8080/admin/realms
     curl -sS -H "Content-Type: application/json"   -H "Authorization: bearer ${KEYCLOAK_TOKEN}"   -X POST --data @config-payloads/users.json   localhost:8080/admin/realms/keycloak-blog/users
     curl -sS -H "Content-Type: application/json"   -H "Authorization: bearer ${KEYCLOAK_TOKEN}"   -X POST --data @config-payloads/client.json   localhost:8080/admin/realms/keycloak-blog/clients
@@ -46,3 +47,4 @@ fi
 # prep config
 
 fi
+echo $WORKSPACE_ENDPOINT
