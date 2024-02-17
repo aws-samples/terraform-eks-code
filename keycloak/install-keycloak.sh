@@ -1,4 +1,5 @@
 #
+chmod 640 /home/ec2-user/.kube/config
 echo "Cleaning up if required .."
 helm uninstall keycloak -n keycloak &>/dev/null
 kubectl delete ns keycloak &>/dev/null
@@ -27,6 +28,7 @@ if [[ $dnsl -gt 0 ]]; then
     if [[ $? -eq 0 ]]; then
         envsubst <config-payloads/users.json.proto >config-payloads/users.json
         envsubst <config-payloads/client.json.proto >config-payloads/client.json
+        echo " "
         echo "waiting for keycloak pod to be ready ~90 seconds..."
         kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=keycloak -n keycloak --timeout=150s
         if [[ $? -eq 0 ]]; then
@@ -35,7 +37,7 @@ if [[ $dnsl -gt 0 ]]; then
             com="kubectl port-forward -n keycloak svc/keycloak 8080:80"
             eval $com &
             sleep 5
-            ps -ef | grep port-forward | grep -v grep
+            #ps -ef | grep port-forward | grep -v grep
             # Default token expires in one minute. May need to extend. very ugly
             KEYCLOAK_TOKEN=$(curl -sS --fail-with-body -X POST -H "Content-Type: application/x-www-form-urlencoded" \
                 --data-urlencode "username=admin" \
@@ -53,7 +55,7 @@ if [[ $dnsl -gt 0 ]]; then
                 --authentication-providers SAML \
                 --workspace-id $WORKSPACE_ID \
                 --saml-configuration \
-                idpMetadata={url=$SAML_URL},assertionAttributes={role=role},roleValues={admin=admin}
+                idpMetadata={url=$SAML_URL},assertionAttributes={role=role},roleValues={admin=admin} &> /dev/null
         else
             echo "keycloak not ready?"
             kubectl get pods -n keycloak
