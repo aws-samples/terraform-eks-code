@@ -8,7 +8,7 @@ export WORKSPACE_ENDPOINT=$(aws grafana list-workspaces --query 'workspaces[0].e
 # validate dns exit of not valid
 dnsl=$(dig $ACCOUNT_ID.awsandy.people.aws.dev NS +short | wc -l)
 if [[ $dnsl -gt 0 ]]; then
-    echo "setup Terraform cert"
+    echo "Setup keycloak certificate"
     # install cert
     terraform init
     terraform apply -auto-approve
@@ -21,12 +21,12 @@ if [[ $dnsl -gt 0 ]]; then
         --create-namespace \
         --namespace keycloak \
         -f keycloak_values.yaml
-    echo $?
     if [[ $? -eq 0 ]]; then
         envsubst <config-payloads/users.json.proto >config-payloads/users.json
         envsubst <config-payloads/client.json.proto >config-payloads/client.json
+        echo "waiting for keycloak..."
         kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=keycloak -n keycloak --timeout=30s
-        kubectl port-forward -n keycloak svc/keycloak 8080:80 >/dev/null 2>&1 &
+        kubectl port-forward -n keycloak svc/keycloak 8080:80 &> /dev/null  &
         pid=$!
         # Default token expires in one minute. May need to extend. very ugly
         KEYCLOAK_TOKEN=$(curl -sS --fail-with-body -X POST -H "Content-Type: application/x-www-form-urlencoded" \
