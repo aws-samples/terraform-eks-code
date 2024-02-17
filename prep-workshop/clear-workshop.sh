@@ -3,7 +3,7 @@ echo "This will take ~ 20 minutes"
 #delete-environment
 # helm and ns delete ?
 #
-time eksctl delete cluster --name eks-workshop # ~8min
+eksctl delete cluster --name eks-workshop # ~8min
 #
 # Why delete these ? - EFS so can zap VPC (has eni)
 #
@@ -18,6 +18,7 @@ aws efs delete-file-system --file-system-id $fsid
 #
 # Same for RDS
 #
+echo "Delete RDS Instance..."
 dbi=$(aws rds describe-db-instances --query DBInstances[].DBInstanceIdentifier --output text)
 aws rds delete-db-instance --db-instance-identifier $dbi --skip-final-snapshot &> /dev/null
 #
@@ -41,7 +42,8 @@ for i in $sgs; do
     echo $i
     aws ec2 delete-security-group --group-id $i &> /dev/null
 done
+echo "Delete the vpc ...."
 echo "aws ec2 delete-vpc --vpc-id $vpcid"
 aws ec2 delete-vpc --vpc-id $vpcid
-echo "done"
+echo "Done"
 #
