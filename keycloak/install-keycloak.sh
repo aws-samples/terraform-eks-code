@@ -1,6 +1,7 @@
 #
-helm uninstall keycloak -n keycloak &> /dev/null
-kubectl delete ns keycloak &> /dev/null
+echo "Cleaning up if required .."
+helm uninstall keycloak -n keycloak &>/dev/null
+kubectl delete ns keycloak &>/dev/null
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export HOSTED_ZONE=$ACCOUNT_ID.awsandy.people.aws.dev
 export KEYCLOAK_PASSWORD="keycloakpass123"
@@ -25,20 +26,25 @@ if [[ $dnsl -gt 0 ]]; then
         envsubst <config-payloads/users.json.proto >config-payloads/users.json
         envsubst <config-payloads/client.json.proto >config-payloads/client.json
         echo "waiting for keycloak..."
-        kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=keycloak -n keycloak --timeout=30s
-        kubectl port-forward -n keycloak svc/keycloak 8080:80 &> /dev/null  &
-        pid=$!
-        # Default token expires in one minute. May need to extend. very ugly
-        KEYCLOAK_TOKEN=$(curl -sS --fail-with-body -X POST -H "Content-Type: application/x-www-form-urlencoded" \
-            --data-urlencode "username=admin" \
-            --data-urlencode "password=${KEYCLOAK_PASSWORD}" \
-            --data-urlencode "grant_type=password" \
-            --data-urlencode "client_id=admin-cli" \
-            localhost:8080/realms/master/protocol/openid-connect/token | jq -e -r '.access_token')
-        curl -sS -H "Content-Type: application/json" -H "Authorization: bearer ${KEYCLOAK_TOKEN}" -X POST --data @config-payloads/realm.json localhost:8080/admin/realms
-        curl -sS -H "Content-Type: application/json" -H "Authorization: bearer ${KEYCLOAK_TOKEN}" -X POST --data @config-payloads/users.json localhost:8080/admin/realms/keycloak-blog/users
-        curl -sS -H "Content-Type: application/json" -H "Authorization: bearer ${KEYCLOAK_TOKEN}" -X POST --data @config-payloads/client.json localhost:8080/admin/realms/keycloak-blog/clients
-        kill $pid
+        kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=keycloak -n keycloak --timeout=60s
+        if [[ $? -eq 0 ]]; then
+            kubectl port-forward -n keycloak svc/keycloak 8080:80 &>/dev/null &
+            pid=$!
+            # Default token expires in one minute. May need to extend. very ugly
+            KEYCLOAK_TOKEN=$(curl -sS --fail-with-body -X POST -H "Content-Type: application/x-www-form-urlencoded" \
+                --data-urlencode "username=admin" \
+                --data-urlencode "password=${KEYCLOAK_PASSWORD}" \
+                --data-urlencode "grant_type=password" \
+                --data-urlencode "client_id=admin-cli" \
+                localhost:8080/realms/master/protocol/openid-connect/token | jq -e -r '.access_token')
+            curl -sS -H "Content-Type: application/json" -H "Authorization: bearer ${KEYCLOAK_TOKEN}" -X POST --data @config-payloads/realm.json localhost:8080/admin/realms
+            curl -sS -H "Content-Type: application/json" -H "Authorization: bearer ${KEYCLOAK_TOKEN}" -X POST --data @config-payloads/users.json localhost:8080/admin/realms/keycloak-blog/users
+            curl -sS -H "Content-Type: application/json" -H "Authorization: bearer ${KEYCLOAK_TOKEN}" -X POST --data @config-payloads/client.json localhost:8080/admin/realms/keycloak-blog/clients
+            kill $pid
+        else
+            echo "keycloak not ready?"
+            kubectl get pods -n keycloak
+        fi
     else
         echo "Helm chart failed to install"
     fi
