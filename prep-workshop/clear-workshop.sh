@@ -1,6 +1,8 @@
 cd ~/environment
 echo "This will take ~ 20 minutes"
-delete-environment
+#delete-environment
+# helm and ns delete ?
+#
 time eksctl delete cluster --name eks-workshop # ~8min
 #
 # Why delete these ? - EFS so can zap VPC (has eni)
