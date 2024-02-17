@@ -41,13 +41,6 @@ for i in $sgs; do
     echo $i
     aws ec2 delete-security-group --group-id $i &> /dev/null
 done
-echo "await RDS deletion"
-rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text)
-while [[ $rdsst != "" ]]; do
-    echo $rdsst
-    sleep 10
-    rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text)
-done
 echo "aws ec2 delete-vpc --vpc-id $vpcid"
 aws ec2 delete-vpc --vpc-id $vpcid
 echo "done"
