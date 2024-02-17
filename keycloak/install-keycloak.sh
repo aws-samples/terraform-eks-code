@@ -56,6 +56,8 @@ if [[ $dnsl -gt 0 ]]; then
                 --workspace-id $WORKSPACE_ID \
                 --saml-configuration \
                 idpMetadata={url=$SAML_URL},assertionAttributes={role=role},roleValues={admin=admin} &> /dev/null
+            kpw=$(kubectl get secret --namespace keycloak keycloak -o jsonpath="{.data.admin-password}" | base64 -d)
+            echo "keycloak admin password = $kpw"
         else
             echo "keycloak not ready?"
             kubectl get pods -n keycloak
