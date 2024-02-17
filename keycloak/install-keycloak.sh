@@ -1,6 +1,6 @@
 #
-helm uninstall keycloaf -n keycloak
-kubectl delete ns keycloak
+helm uninstall keycloak -n keycloak &> /dev/null
+kubectl delete ns keycloak &> /dev/null
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export HOSTED_ZONE=$ACCOUNT_ID.awsandy.people.aws.dev
 export KEYCLOAK_PASSWORD="keycloakpass123"
