@@ -25,10 +25,12 @@ if [[ $dnsl -gt 0 ]]; then
     if [[ $? -eq 0 ]]; then
         envsubst <config-payloads/users.json.proto >config-payloads/users.json
         envsubst <config-payloads/client.json.proto >config-payloads/client.json
-        echo "waiting for keycloak..."
+        echo "waiting for keycloak running pod ..."
         kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=keycloak -n keycloak --timeout=150s
         if [[ $? -eq 0 ]]; then
-            kubectl port-forward -n keycloak svc/keycloak 8080:80 &>/dev/null &
+            sleep 10
+            echo "start port forwarding for local config"
+            kubectl port-forward -n keycloak svc/keycloak 8080:80 &> /dev/null &
             pid=$!
             # Default token expires in one minute. May need to extend. very ugly
             KEYCLOAK_TOKEN=$(curl -sS --fail-with-body -X POST -H "Content-Type: application/x-www-form-urlencoded" \
