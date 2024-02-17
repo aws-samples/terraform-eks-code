@@ -45,5 +45,5 @@ if [[ $dnsl -gt 0 ]]; then
     echo "Workspace endpoint = $WORKSPACE_ENDPOINT"
 # prep config
 else
-    echo "DNS unexpected response - please discuss with workshop host"
+    echo "ERROR: DNS unexpected response - please discuss with workshop host"
 fi
