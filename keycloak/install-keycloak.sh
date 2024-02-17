@@ -26,7 +26,7 @@ if [[ $dnsl -gt 0 ]]; then
         envsubst <config-payloads/users.json.proto >config-payloads/users.json
         envsubst <config-payloads/client.json.proto >config-payloads/client.json
         echo "waiting for keycloak..."
-        kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=keycloak -n keycloak --timeout=60s
+        kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=keycloak -n keycloak --timeout=150s
         if [[ $? -eq 0 ]]; then
             kubectl port-forward -n keycloak svc/keycloak 8080:80 &>/dev/null &
             pid=$!
