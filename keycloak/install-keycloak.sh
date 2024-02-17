@@ -6,6 +6,8 @@ export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export HOSTED_ZONE=$ACCOUNT_ID.awsandy.people.aws.dev
 export KEYCLOAK_PASSWORD="keycloakpass123"
 export WORKSPACE_ENDPOINT=$(aws grafana list-workspaces --query 'workspaces[0].endpoint' --output text)
+export WORKSPACE_ID=$(aws grafana list-workspaces --query 'workspaces[0].id' --output text)
+export SAML_URL=https://keycloak.$HOSTED_ZONE/realms/keycloak-blog/protocol/saml/descriptor
 # validate dns exit of not valid
 dnsl=$(dig $ACCOUNT_ID.awsandy.people.aws.dev NS +short | wc -l)
 if [[ $dnsl -gt 0 ]]; then
@@ -46,6 +48,12 @@ if [[ $dnsl -gt 0 ]]; then
             curl -sS -H "Content-Type: application/json" -H "Authorization: bearer ${KEYCLOAK_TOKEN}" -X POST --data @config-payloads/client.json localhost:8080/admin/realms/keycloak-blog/clients
             pid=$(ps -ef | grep port-forward | grep -v grep | awk '{print $2}')
             kill $pid
+            echo "Update Grafana config ...."
+            aws grafana update-workspace-authentication \
+                --authentication-providers SAML \
+                --workspace-id $WORKSPACE_ID \
+                --saml-configuration \
+                idpMetadata={url=$SAML_URL},assertionAttributes={role=role},roleValues={admin=admin}
         else
             echo "keycloak not ready?"
             kubectl get pods -n keycloak
