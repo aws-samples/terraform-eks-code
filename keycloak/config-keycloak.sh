@@ -1,5 +1,5 @@
 echo "start port forwarding for local config"
-kubectl port-forward -n keycloak svc/keycloak 8080:80 &>/dev/null
+kubectl port-forward -n keycloak svc/keycloak 8080:80 &> /dev/null &
 pid=$!
 # Default token expires in one minute. May need to extend. very ugly
 KEYCLOAK_TOKEN=$(curl -sS --fail-with-body -X POST -H "Content-Type: application/x-www-form-urlencoded" \
