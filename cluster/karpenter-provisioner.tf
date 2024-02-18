@@ -1,25 +1,26 @@
-resource "kubectl_manifest" "karpenter_node_class" {
+resource "kubectl_manifest" "karpenter_provisioner" {
   yaml_body = <<-YAML
-    apiVersion: karpenter.k8s.aws/v1beta1
-    kind: EC2NodeClass
+    apiVersion: karpenter.sh/v1alpha5
+    kind: Provisioner
     metadata:
       name: default
     spec:
-      amiFamily: AL2
-      role: ${module.karpenter.node_iam_role_name}
-      subnetSelectorTerms:
-        - tags:
-            karpenter.sh/discovery: ${module.eks.cluster_name}
-      securityGroupSelectorTerms:
-        - tags:
-            karpenter.sh/discovery: ${module.eks.cluster_name}
-      tags:
-        karpenter.sh/discovery: ${module.eks.cluster_name}
-        app.kubernetes.io/created-by: eks-workshop
+      requirements:
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["spot"]
+      limits:
+        resources:
+          cpu: 1000
+      providerRef:
+        name: default
+      ttlSecondsAfterEmpty: 30
   YAML
 
   depends_on = [
     helm_release.karpenter
   ]
 }
+
+
 

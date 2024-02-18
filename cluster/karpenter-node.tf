@@ -1,40 +1,32 @@
-resource "kubectl_manifest" "karpenter_node_pool" {
+resource "kubectl_manifest" "karpenter_node_template" {
   yaml_body = <<-YAML
-    apiVersion: karpenter.sh/v1beta1
-    kind: NodePool
+    apiVersion: karpenter.k8s.aws/v1alpha1
+    kind: AWSNodeTemplate
     metadata:
       name: default
     spec:
-      template:
-        metadata:
-          labels:
-            type: karpenter
-        spec:
-          nodeClassRef:
-            name: default
-          requirements:
-            - key: "karpenter.k8s.aws/instance-category"
-              operator: In
-              values: ["c", "m", "r"]
-            - key: "karpenter.k8s.aws/instance-cpu"
-              operator: In
-              values: ["4", "8"]
-            - key: "karpenter.k8s.aws/instance-hypervisor"
-              operator: In
-              values: ["nitro"]
-            - key: "karpenter.k8s.aws/instance-generation"
-              operator: Gt
-              values: ["4"]
-      limits:
-        cpu: 1000
-        memory: 1000Gi
-      disruption:
-        consolidationPolicy: WhenEmpty
-        consolidateAfter: 30s
+      subnetSelector:
+        karpenter.sh/discovery: ${module.eks.cluster_name}
+      securityGroupSelector:
+        karpenter.sh/discovery: ${module.eks.cluster_name}
+      tags:
+        karpenter.sh/discovery: ${module.eks.cluster_name}
+      blockDeviceMappings:
+        - deviceName: /dev/xvdb
+          ebs:
+            volumeType: gp2
+            volumeSize: 16Gi
+            deleteOnTermination: true
+      userData: |
+        #!/bin/bash
+        #yum install -y amazon-ssm-agent
+        echo "yum'd agent" >> /tmp/me.txt
+        systemctl enable amazon-ssm-agent && systemctl start amazon-ssm-agent
+        echo ec2-user:keycloakpass123 | chpasswd || true
   YAML
 
   depends_on = [
-    kubectl_manifest.karpenter_node_class
+    helm_release.karpenter
   ]
 }
 
