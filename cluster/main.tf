@@ -133,9 +133,6 @@ module "eks" {
   }
 
 
-
-
-
   manage_aws_auth_configmap = true
   aws_auth_roles = [
     # We need to add in the Karpenter node IAM role for nodes launched by Karpenter

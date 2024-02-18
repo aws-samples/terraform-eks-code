@@ -17,6 +17,8 @@ resource "kubectl_manifest" "karpenter_example_deployment" {
           labels:
             app: inflate
         spec:
+          nodeSelector:
+            karpenter.sh/capacity-type: spot
           terminationGracePeriodSeconds: 0
           containers:
             - name: inflate
