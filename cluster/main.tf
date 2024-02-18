@@ -134,18 +134,18 @@ module "eks" {
   }
 
 
-  manage_aws_auth_configmap = true
-  aws_auth_roles = [
+  #manage_aws_auth_configmap = true
+  #aws_auth_roles = [
     # We need to add in the Karpenter node IAM role for nodes launched by Karpenter
-    {
-      rolearn  = module.karpenter.iam_role_arn
-      username = "system:node:{{EC2PrivateDNSName}}"
-      groups = [
-        "system:bootstrappers",
-        "system:nodes",
-      ]
-    },
-  ]
+   # {
+   #   rolearn  = module.karpenter.iam_role_arn
+   #   username = "system:node:{{EC2PrivateDNSName}}"
+   #   groups = [
+   #     "system:bootstrappers",
+   #     "system:nodes",
+   #   ]
+   # },
+  #]
 
   eks_managed_node_groups = {
     mg_5 = {
