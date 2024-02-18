@@ -6,6 +6,9 @@ resource "kubectl_manifest" "karpenter_node_pool" {
       name: default
     spec:
       template:
+        metadata:
+          labels:
+            type: karpenter
         spec:
           nodeClassRef:
             name: default
@@ -24,6 +27,7 @@ resource "kubectl_manifest" "karpenter_node_pool" {
               values: ["4"]
       limits:
         cpu: 1000
+        memory: 1000Gi
       disruption:
         consolidationPolicy: WhenEmpty
         consolidateAfter: 30s
