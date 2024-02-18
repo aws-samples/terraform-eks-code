@@ -6,6 +6,7 @@ resource "kubectl_manifest" "karpenter_example_deployment" {
     kind: Deployment
     metadata:
       name: inflate
+      namespace: other
     spec:
       replicas: 0
       selector:
@@ -19,10 +20,10 @@ resource "kubectl_manifest" "karpenter_example_deployment" {
           terminationGracePeriodSeconds: 0
           containers:
             - name: inflate
-              image: public.ecr.aws/eks-distro/kubernetes/pause:3.7
+              image: public.ecr.aws/eks-distro/kubernetes/pause:3.2
               resources:
                 requests:
-                  cpu: "1"
+                  memory: 1Gi
           priorityClassName: low-priority
   YAML
 

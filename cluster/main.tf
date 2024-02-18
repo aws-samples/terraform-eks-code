@@ -218,7 +218,7 @@ resource "helm_release" "karpenter" {
   repository_username = data.aws_ecrpublic_authorization_token.token.user_name
   repository_password = data.aws_ecrpublic_authorization_token.token.password
   chart               = "karpenter"
-  #version             = "v0.21.1"
+  # v0.33+ goes to beta apis - might break things !!
   version             = "v0.31.2"
 
   set {
