@@ -155,7 +155,7 @@ module "eks" {
       instance_types  = ["t3a.large"]
       min_size        = 0
       max_size        = 6
-      desired_size    = 2
+      desired_size    = 3
       #subnet_ids      = module.vpc.private_subnets
       subnet_ids      =  jsondecode(data.aws_ssm_parameter.private_subnets.value)
       iam_role_additional_policies = {
