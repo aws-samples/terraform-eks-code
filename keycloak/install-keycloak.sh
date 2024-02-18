@@ -3,6 +3,8 @@ chmod 640 /home/ec2-user/.kube/config
 echo "Cleaning up if required .."
 helm uninstall keycloak -n keycloak &>/dev/null
 kubectl delete ns keycloak &>/dev/null
+terraform init -upgrade
+terraform destroy -auto-approve
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export HOSTED_ZONE=$ACCOUNT_ID.awsandy.people.aws.dev
 export KEYCLOAK_PASSWORD="keycloakpass123"
@@ -14,7 +16,6 @@ dnsl=$(dig $ACCOUNT_ID.awsandy.people.aws.dev NS +short | wc -l)
 if [[ $dnsl -gt 0 ]]; then
     echo "Setup keycloak certificate"
     # install cert
-    terraform init -upgrade
     terraform apply -auto-approve
     # install keycloak
     sleep 5
@@ -29,8 +30,8 @@ if [[ $dnsl -gt 0 ]]; then
         envsubst <config-payloads/users.json.proto >config-payloads/users.json
         envsubst <config-payloads/client.json.proto >config-payloads/client.json
         echo " "
-        echo "waiting for keycloak pod to be ready ~90 seconds..."
-        kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=keycloak -n keycloak --timeout=150s
+        echo "waiting for keycloak pod to be ready ~120 seconds..."
+        kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=keycloak -n keycloak --timeout=180s
         if [[ $? -eq 0 ]]; then
             sleep 10
             echo "start port forwarding for local config"
