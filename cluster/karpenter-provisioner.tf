@@ -9,6 +9,9 @@ resource "kubectl_manifest" "karpenter_provisioner" {
         - key: karpenter.sh/capacity-type
           operator: In
           values: ["spot","on-demand"]
+        - key: "node.kubernetes.io/instance-type"
+          operator: In
+          values: ["c5.large", "m5.large", "r5.large", "m5.xlarge"]
       limits:
         resources:
           cpu: 1000
