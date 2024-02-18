@@ -14,7 +14,7 @@ dnsl=$(dig $ACCOUNT_ID.awsandy.people.aws.dev NS +short | wc -l)
 if [[ $dnsl -gt 0 ]]; then
     echo "Setup keycloak certificate"
     # install cert
-    terraform init
+    terraform init -upgrade
     terraform apply -auto-approve
     # install keycloak
     sleep 5
