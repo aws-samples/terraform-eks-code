@@ -153,7 +153,7 @@ module "eks" {
     mg_5 = {
       node_group_name = "managed-ondemand"
       instance_types  = ["t3a.large"]
-      min_size        = 0
+      min_size        = 3
       max_size        = 6
       desired_size    = 3
       #subnet_ids      = module.vpc.private_subnets
