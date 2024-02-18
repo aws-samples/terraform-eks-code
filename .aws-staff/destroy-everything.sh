@@ -2,15 +2,17 @@ echo "Pre cli based actions ..."
 userid=$(aws iam list-service-specific-credentials --user-name git-user | jq -r .ServiceSpecificCredentials[0].ServiceSpecificCredentialId)
 if [ "$userid" != "null" ]; then
     echo "destroying git user credentaisl for $userid"
-    aws iam delete-service-specific-credential --service-specific-credential-id $userid --user-name git-user
+    aws iam delete-service-specific-credential --service-specific-credential-id $userid --user-name git-user &> /dev/null
 fi
+helm uninstall keycloak -n keycloak &>/dev/null
+kubectl delete ns keycloak &>/dev/null
 # Empty codepipeline bucket ready for delete
 buck=$(aws s3 ls | grep codep-tfeks | awk '{print $3}')
 echo "buck=$buck"
 if [ "$buck" != "" ]; then
     echo "Emptying bucket $buck"
     comm=$(printf "aws s3 rm s3://%s --recursive" $buck)
-    eval $comm
+    eval $comm 
 fi
 #
 # lb, lb sg, launch template
