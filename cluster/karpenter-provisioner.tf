@@ -15,6 +15,7 @@ resource "kubectl_manifest" "karpenter_node_class" {
             karpenter.sh/discovery: ${module.eks.cluster_name}
       tags:
         karpenter.sh/discovery: ${module.eks.cluster_name}
+        app.kubernetes.io/created-by: eks-workshop
   YAML
 
   depends_on = [
