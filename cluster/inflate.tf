@@ -7,6 +7,7 @@ resource "kubernetes_namespace_v1" "other" {
 }
 
 resource "kubectl_manifest" "karpenter_example_deployment" {
+  depends_on=[kubernetes_namespace_v1.other]
   yaml_body = <<-YAML
     apiVersion: apps/v1
     kind: Deployment
