@@ -1,5 +1,11 @@
 # Example deployment using the [pause image](https://www.ianlewis.org/en/almighty-pause-container)
 # and starts with zero replicas
+resource "kubernetes_namespace_v1" "other" {
+  metadata {
+    name = "other"
+  }
+}
+
 resource "kubectl_manifest" "karpenter_example_deployment" {
   yaml_body = <<-YAML
     apiVersion: apps/v1

@@ -15,13 +15,13 @@ resource "kubectl_manifest" "karpenter_node_pool" {
               values: ["c", "m", "r"]
             - key: "karpenter.k8s.aws/instance-cpu"
               operator: In
-              values: ["4", "8", "16", "32"]
+              values: ["4", "8"]
             - key: "karpenter.k8s.aws/instance-hypervisor"
               operator: In
               values: ["nitro"]
             - key: "karpenter.k8s.aws/instance-generation"
               operator: Gt
-              values: ["2"]
+              values: ["4"]
       limits:
         cpu: 1000
       disruption:
