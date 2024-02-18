@@ -183,19 +183,14 @@ module "eks" {
 module "karpenter" {
 
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
-  version = "19.16.0"
+  #version = "19.16.0"
 
   cluster_name           = module.eks.cluster_name
+  enable_irsa            = true
   irsa_oidc_provider_arn = module.eks.oidc_provider_arn
-
-
-  iam_role_additional_policies = [ 
-    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
-     "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-  ]
   
 
-  policies = {
+  node_iam_role_additional_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     AmazonEKSWorkerNodePolicy = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
     AmazonEC2ContainerRegistryReadOnly = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
@@ -205,6 +200,14 @@ module "karpenter" {
 
   tags = local.tags
 }
+
+module "karpenter_disabled" {
+  source = "terraform-aws-modules/eks/aws//modules/karpenter"
+
+  create = false
+}
+
+
 
 resource "helm_release" "karpenter" {
   namespace        = "karpenter"
@@ -216,32 +219,21 @@ resource "helm_release" "karpenter" {
   repository_password = data.aws_ecrpublic_authorization_token.token.password
   chart               = "karpenter"
   # v0.33+ goes to beta apis - might break things !!
-  version             = "v0.31.4"
+  version             = "v0.33.1"
 
-  set {
-    name  = "settings.aws.clusterName"
-    value = module.eks.cluster_name
-  }
 
-  set {
-    name  = "settings.aws.clusterEndpoint"
-    value = module.eks.cluster_endpoint
-  }
+  values = [
+    <<-EOT
+    settings:
+      clusterName: ${module.eks.cluster_name}
+      clusterEndpoint: ${module.eks.cluster_endpoint}
+      interruptionQueue: ${module.karpenter.queue_name}
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: ${module.karpenter.iam_role_arn}
+    EOT
+  ]
 
-  set {
-    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-    value = module.karpenter.irsa_arn
-  }
-
-  set {
-    name  = "settings.aws.defaultInstanceProfile"
-    value = module.karpenter.instance_profile_name
-  }
-
-  set {
-    name  = "settings.aws.interruptionQueueName"
-    value = module.karpenter.queue_name
-  }
 }
 
 
