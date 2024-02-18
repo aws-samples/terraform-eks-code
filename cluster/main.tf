@@ -219,7 +219,7 @@ resource "helm_release" "karpenter" {
   repository_password = data.aws_ecrpublic_authorization_token.token.password
   chart               = "karpenter"
   # v0.33+ goes to beta apis - might break things !!
-  version             = "v0.31.2"
+  version             = "v0.31.4"
 
   set {
     name  = "settings.aws.clusterName"
