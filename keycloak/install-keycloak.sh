@@ -25,6 +25,7 @@ if [[ $dnsl -gt 0 ]]; then
     helm install keycloak bitnami/keycloak \
         --create-namespace \
         --namespace keycloak \
+        --version 18.3.4 \
         -f keycloak_values.yaml
     if [[ $? -eq 0 ]]; then
         envsubst <config-payloads/users.json.proto >config-payloads/users.json
