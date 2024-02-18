@@ -8,7 +8,7 @@ resource "kubectl_manifest" "karpenter_provisioner" {
       requirements:
         - key: karpenter.sh/capacity-type
           operator: In
-          values: ["spot","on-demand"]
+          values: ["spot"]
       limits:
         resources:
           cpu: 1000
