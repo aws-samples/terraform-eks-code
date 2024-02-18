@@ -38,7 +38,7 @@ if [[ $dnsl -gt 0 ]]; then
             echo "start port forwarding for local config"
             com="kubectl port-forward -n keycloak svc/keycloak 8080:80"
             eval $com &
-            sleep 5
+            sleep 6
             #ps -ef | grep port-forward | grep -v grep
             # Default token expires in one minute. May need to extend. very ugly
             KEYCLOAK_TOKEN=$(curl -sS --fail-with-body -X POST -H "Content-Type: application/x-www-form-urlencoded" \
@@ -57,7 +57,7 @@ if [[ $dnsl -gt 0 ]]; then
                 --authentication-providers SAML \
                 --workspace-id $WORKSPACE_ID \
                 --saml-configuration \
-                idpMetadata={url=$SAML_URL},assertionAttributes={role=role},roleValues={admin=admin} &> /dev/null
+                idpMetadata={url=$SAML_URL},assertionAttributes={role=role},roleValues={admin=admin}
             kpw=$(kubectl get secret --namespace keycloak keycloak -o jsonpath="{.data.admin-password}" | base64 -d)
             echo "keycloak admin password = $kpw"
         else
