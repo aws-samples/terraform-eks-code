@@ -142,8 +142,8 @@ module "eks_blueprints_addons" {
   }
 
   metrics_server = {
-    namespace="metrics"
-    create_namespace = true
+    namespace="kube-system"
+    #create_namespace = true
   }
 
   aws_load_balancer_controller = {
