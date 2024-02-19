@@ -20,3 +20,10 @@ kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=ip-100-
 drain a node:
 kubectl drain --ignore-daemonsets ip-100-65-56-96.eu-west-1.compute.internal --delete-emptydir-data
 Karpenter should then mop up ?
+
+
+
+/eks-workshop/terraform
+terraform destroy
+/eks-workshop/hooks
+cleanup.sh
