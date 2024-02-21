@@ -17,6 +17,14 @@ locals {
   istio_charts_url = "https://istio-release.storage.googleapis.com/charts"
 }
 
+variable "istio-namespace" {
+  description = "The name of the istio namespace"
+  type        = string
+  default     = "istio-system"
+}
+
+
+
 resource "helm_release" "istio-base" {
   repository       = local.istio_charts_url
   chart            = "base"
