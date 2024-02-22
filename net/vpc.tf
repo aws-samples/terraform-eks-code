@@ -25,7 +25,7 @@ module "vpc" {
   intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
   
   # 10.0.56.0/24 and 10.0.57.0/24 and 10.0.57.0/24
-  database_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 56)]
+  #database_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 56)]
 
   public_subnet_suffix  = "SubnetPublic"
   private_subnet_suffix = "SubnetPrivate"

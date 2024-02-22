@@ -11,6 +11,7 @@ resource "kubectl_manifest" "karpenter_node_template" {
         karpenter.sh/discovery: ${module.eks.cluster_name}
       tags:
         karpenter.sh/discovery: ${module.eks.cluster_name}
+        Name: karpenter-${module.eks.cluster_name}
       blockDeviceMappings:
         - deviceName: /dev/xvdb
           ebs:

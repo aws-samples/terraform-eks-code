@@ -62,15 +62,15 @@ name        = "/workshop/tf-eks/intra_subnets"
 }  
 
 
-resource "aws_ssm_parameter" "database_subnets" {
-name        = "/workshop/tf-eks/database_subnets"
-  description = "The intra subnets for cluster"
-  type        = "StringList"
-  value = jsonencode(module.vpc.database_subnets)
-  tags = {
-    workshop = "tf-eks-workshop"
-  }
-} 
+#resource "aws_ssm_parameter" "database_subnets" {
+#name        = "/workshop/tf-eks/database_subnets"
+#  description = "The intra subnets for cluster"
+#  type        = "StringList"
+#  value = jsonencode(module.vpc.database_subnets)
+#  tags = {
+#    workshop = "tf-eks-workshop"
+#  }
+#} 
 
 
 resource "aws_ssm_parameter" "database_subnet_group_name" {
