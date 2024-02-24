@@ -41,14 +41,18 @@ if [[ $dnsl -gt 0 ]]; then
             sleep 6
             #ps -ef | grep port-forward | grep -v grep
             # Default token expires in one minute. May need to extend. very ugly
+            echo "Get Keycloak Token"
             KEYCLOAK_TOKEN=$(curl -sS --fail-with-body -X POST -H "Content-Type: application/x-www-form-urlencoded" \
                 --data-urlencode "username=admin" \
                 --data-urlencode "password=${KEYCLOAK_PASSWORD}" \
                 --data-urlencode "grant_type=password" \
                 --data-urlencode "client_id=admin-cli" \
                 localhost:8080/realms/master/protocol/openid-connect/token | jq -e -r '.access_token')
+            echo "Add keycloak realm"
             curl -sS -H "Content-Type: application/json" -H "Authorization: bearer ${KEYCLOAK_TOKEN}" -X POST --data @config-payloads/realm.json localhost:8080/admin/realms
+            echo "Add admin user to realm"
             curl -sS -H "Content-Type: application/json" -H "Authorization: bearer ${KEYCLOAK_TOKEN}" -X POST --data @config-payloads/users.json localhost:8080/admin/realms/keycloak-blog/users
+            echo "Add grafana client configuration to realm"
             curl -sS -H "Content-Type: application/json" -H "Authorization: bearer ${KEYCLOAK_TOKEN}" -X POST --data @config-payloads/client.json localhost:8080/admin/realms/keycloak-blog/clients
             pid=$(ps -ef | grep port-forward | grep -v grep | awk '{print $2}')
             kill $pid
