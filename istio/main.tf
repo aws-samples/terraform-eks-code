@@ -86,7 +86,8 @@ resource "kubernetes_namespace_v1" "istio-ingress" {
 resource "helm_release" "istio-ingress" {
   repository = local.istio_charts_url
   chart      = "gateway"
-  name       = "istio-ingress"
+  #name       = "istio-ingress"
+  name       = "istio-ingressgateway"   # to match selector in sample app
   namespace  = kubernetes_namespace_v1.istio-ingress.id
   version    = "1.20.3"
   depends_on = [helm_release.istiod]
