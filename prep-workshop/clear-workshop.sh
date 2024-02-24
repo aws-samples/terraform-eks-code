@@ -64,7 +64,7 @@ if [[ $vpcid != "" ]]; then
         aws ec2 delete-security-group --group-id $i &>/dev/null
     done
     # delete subnets
-
+    sleep 10
     echo "Delete the vpc ...."
     echo "aws ec2 delete-vpc --vpc-id $vpcid"
     aws ec2 delete-vpc --vpc-id $vpcid
