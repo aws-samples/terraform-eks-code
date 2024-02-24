@@ -16,11 +16,13 @@ fi
 #
 echo "Delete RDS Instance..."
 dbi=$(aws rds describe-db-instances --query DBInstances[].DBInstanceIdentifier --output text)
-aws rds delete-db-instance --db-instance-identifier $dbi --skip-final-snapshot &>/dev/null
+if [[ $dbi != "" ]]; then
+    aws rds delete-db-instance --db-instance-identifier $dbi --skip-final-snapshot &>/dev/null
 #
 #delete-environment
 # helm and ns delete ?
 #
+fi
 echo "Delete the EKS cluster ...."
 eksctl delete cluster --name eks-workshop # ~8min
 #
@@ -33,37 +35,40 @@ while [[ $rdsst != "" ]]; do
     sleep 10
     rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text)
 done
-echo "delete VPC eksctl-eks-workshop-cluster"
+
 vpcid=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=eksctl-eks-workshop-cluster/VPC --query Vpcs[].VpcId --output text)
 echo $vpcid
+if [[ $vpcid != "" ]]; then
+    echo "delete VPC eksctl-eks-workshop-cluster"
 
-sgs=$(aws ec2 describe-security-groups --filters Name=vpc-id,Values=$vpcid --query SecurityGroups[].GroupId --output text)
-for i in $sgs; do
-    echo $i
-    aws ec2 delete-security-group --group-id $i &>/dev/null
-done
-for i in $sgs; do
-    echo $i
-    aws ec2 delete-security-group --group-id $i &>/dev/null
-done
-## 2nd go at security groups
-vpcid=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=eksctl-eks-workshop-cluster/VPC --query Vpcs[].VpcId --output text)
-echo $vpcid
+    sgs=$(aws ec2 describe-security-groups --filters Name=vpc-id,Values=$vpcid --query SecurityGroups[].GroupId --output text)
+    for i in $sgs; do
+        echo $i
+        aws ec2 delete-security-group --group-id $i &>/dev/null
+    done
+    for i in $sgs; do
+        echo $i
+        aws ec2 delete-security-group --group-id $i &>/dev/null
+    done
+    ## 2nd go at security groups
+    vpcid=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=eksctl-eks-workshop-cluster/VPC --query Vpcs[].VpcId --output text)
+    echo $vpcid
 
-sgs=$(aws ec2 describe-security-groups --filters Name=vpc-id,Values=$vpcid --query SecurityGroups[].GroupId --output text)
-for i in $sgs; do
-    echo $i
-    aws ec2 delete-security-group --group-id $i &>/dev/null
-done
-for i in $sgs; do
-    echo $i
-    aws ec2 delete-security-group --group-id $i &>/dev/null
-done
-# delete subnets
+    sgs=$(aws ec2 describe-security-groups --filters Name=vpc-id,Values=$vpcid --query SecurityGroups[].GroupId --output text)
+    for i in $sgs; do
+        echo $i
+        aws ec2 delete-security-group --group-id $i &>/dev/null
+    done
+    for i in $sgs; do
+        echo $i
+        aws ec2 delete-security-group --group-id $i &>/dev/null
+    done
+    # delete subnets
 
-echo "Delete the vpc ...."
-echo "aws ec2 delete-vpc --vpc-id $vpcid"
-aws ec2 delete-vpc --vpc-id $vpcid
+    echo "Delete the vpc ...."
+    echo "aws ec2 delete-vpc --vpc-id $vpcid"
+    aws ec2 delete-vpc --vpc-id $vpcid
+fi
 echo "Done"
 date
 #
