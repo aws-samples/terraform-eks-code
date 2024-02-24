@@ -38,9 +38,9 @@ data "aws_ssm_parameter" "public_rtb" {
 #  name        = "/workshop/tf-eks/database_subnets"
 #} 
 
-data "aws_ssm_parameter" "database_subnet_group_name" {
-  name        = "/workshop/tf-eks/database_subnet_group_name"
-}
+#data "aws_ssm_parameter" "database_subnet_group_name" {
+#  name        = "/workshop/tf-eks/database_subnet_group_name"
+#}
 
 
 data "aws_ssm_parameter" "phz-id" {
