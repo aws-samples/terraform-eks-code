@@ -16,13 +16,7 @@ echo "Delete RDS Instance..."
 dbi=$(aws rds describe-db-instances --query DBInstances[].DBInstanceIdentifier --output text)
 aws rds delete-db-instance --db-instance-identifier $dbi --skip-final-snapshot &> /dev/null
 #
-echo "await RDS deletion"
-rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text)
-while [[ $rdsst != "" ]]; do
-    echo $rdsst
-    sleep 10
-    rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text)
-done
+
 
 #delete-environment
 # helm and ns delete ?
@@ -31,6 +25,13 @@ eksctl delete cluster --name eks-workshop # ~8min
 #
 # Why delete these ? - EFS so can zap VPC (has eni)
 #
+echo "await RDS db instance deletion ..."
+rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text)
+while [[ $rdsst != "" ]]; do
+    echo $rdsst
+    sleep 10
+    rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text)
+done
 echo "delete VPC eksctl-eks-workshop-cluster"
 vpcid=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=eksctl-eks-workshop-cluster/VPC --query Vpcs[].VpcId --output text)
 echo $vpcid
