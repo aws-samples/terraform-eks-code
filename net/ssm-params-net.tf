@@ -73,15 +73,15 @@ name        = "/workshop/tf-eks/intra_subnets"
 #} 
 
 
-resource "aws_ssm_parameter" "database_subnet_group_name" {
-  name        = "/workshop/tf-eks/database_subnet_group_name"
-  description = "Database subnet group name"
-  type        = "String"
-  value = module.vpc.database_subnet_group_name
-  tags = {
-    workshop = "tf-eks-workshop"
-  }
-}
+#resource "aws_ssm_parameter" "database_subnet_group_name" {
+#  name        = "/workshop/tf-eks/database_subnet_group_name"
+#  description = "Database subnet group name"
+#  type        = "String"
+#  value = module.vpc.database_subnet_group_name
+#  tags = {
+#    workshop = "tf-eks-workshop"
+#  }
+#}
 
 
 resource "aws_ssm_parameter" "private_rtb" {
