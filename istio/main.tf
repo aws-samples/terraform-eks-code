@@ -88,7 +88,7 @@ resource "helm_release" "istio-ingress" {
   chart      = "gateway"
   #name       = "istio-ingress"
   name       = "istio-ingressgateway"   # to match selector in sample app
-  ´name       = "ingressgateway"   # to match selector in sample app
+  #name       = "ingressgateway"   # to match selector in sample app
   namespace  = kubernetes_namespace_v1.istio-ingress.id
   version    = "1.20.3"
   depends_on = [helm_release.istiod]
