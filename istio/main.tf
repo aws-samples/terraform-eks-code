@@ -95,6 +95,14 @@ module "eks_blueprints_addons" {
         namespace        = "istio-ingress" # per https://github.com/istio/istio/blob/master/manifests/charts/gateways/istio-ingress/values.yaml#L2
         create_namespace = true
 
+        set = [
+            {
+            name  = "resources.requests.cpu"
+            value = "110m"
+            }
+        ]
+
+
         values = [
             yamlencode(
             {
