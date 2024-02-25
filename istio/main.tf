@@ -99,51 +99,51 @@ module "eks_blueprints_addons" {
             {
             name  = "resources.requests.cpu"
             value = "110m"
-            }
+            },
             {
             name  = "service.ports[0].name"
             value = "status-port"
-            }
+            },
             {
             name  = "service.ports[0].port"
             value = "15021"
-            }
+            },
             {
             name  = "service.ports[0].protocol"
             value = "TCP"
-            }
+            },
             {
             name  = "service.ports[0].targetPort"
             value = "15021"
-            }
-                        {
+            },
+            {
             name  = "service.ports[1].name"
             value = "http2"
-            }
+            },
             {
             name  = "service.ports[1].port"
             value = "80"
-            }
+            },
             {
             name  = "service.ports[1].protocol"
             value = "TCP"
-            }
+            },
             {
             name  = "service.ports[1].targetPort"
             value = "8080"
-            }
+            },
             {            
             name  = "service.ports[2].name"
             value = "https"
-            }
+            },
             {
             name  = "service.ports[2].port"
             value = "443"
-            }
+            },
             {
             name  = "service.ports[2].protocol"
             value = "TCP"
-            }
+            },
             {
             name  = "service.ports[2].targetPort"
             value = "443"
