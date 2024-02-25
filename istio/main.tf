@@ -88,7 +88,14 @@ resource "helm_release" "istio-ingress" {
   chart      = "gateway"
   #name       = "istio-ingress"
   name       = "istio-ingressgateway"   # to match selector in sample app
+  ´name       = "ingressgateway"   # to match selector in sample app
   namespace  = kubernetes_namespace_v1.istio-ingress.id
   version    = "1.20.3"
   depends_on = [helm_release.istiod]
+  # need to listen on  port to 8080 ?????
+  #"gateways.istio-ingressgateway.ports[1].targetPort=80"
+  set {
+    name = "service.ports[1].targetPort"
+    value = "8080"
+  }
 }
