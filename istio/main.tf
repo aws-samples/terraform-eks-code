@@ -1,5 +1,3 @@
-# istio via Terraform
-
 provider "kubernetes" {
   host                   = data.aws_ssm_parameter.endpoint.value
   cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
@@ -40,111 +38,92 @@ provider "kubectl" {
   }
 }
 
-
 locals {
-  istio_charts_url = "https://istio-release.storage.googleapis.com/charts"
-}
+  istio_chart_url     = "https://istio-release.storage.googleapis.com/charts"
+  istio_chart_version = "1.20.2"
 
-variable "istio-namespace" {
-  description = "The name of the istio namespace"
-  type        = string
-  default     = "istio-system"
 }
 
 
+module "eks_blueprints_addons" {
+  
+    source = "aws-ia/eks-blueprints-addons/aws"
+    version = "~> 1.11" #ensure to update this to the latest/desired version
 
-resource "helm_release" "istio-base" {
-  repository       = local.istio_charts_url
-  chart            = "base"
-  name             = "istio-base"
-  namespace        = var.istio-namespace
-  version          = "1.20.3"
-  create_namespace = true
-}
+    #eks_addons = { 
+    #  amazon-cloudwatch-observability = {
+    #      most_recent = true
+    #    }
+    #}
 
+    cluster_name      = data.aws_ssm_parameter.cluster-name.value
+    cluster_endpoint  = data.aws_ssm_parameter.endpoint.value
+    cluster_version   = data.aws_ssm_parameter.tf-eks-version.value
+    oidc_provider_arn = data.aws_ssm_parameter.oidc_provider_arn.value
 
-resource "helm_release" "istiod" {
-  repository       = local.istio_charts_url
-  chart            = "istiod"
-  name             = "istiod"
-  namespace        = var.istio-namespace
-  create_namespace = true
-  version          = "1.20.3"
-  depends_on       = [helm_release.istio-base]
-}
+  
+ 
+    helm_releases = {
+        istio-base = {
+        chart         = "base"
+        chart_version = local.istio_chart_version
+        repository    = local.istio_chart_url
+        name          = "istio-base"
+        namespace     = kubernetes_namespace_v1.istio_system.metadata[0].name
+        }
 
-resource "kubernetes_namespace_v1" "istio-ingress" {
-  metadata {
-    labels = {
-      istio-injection = "enabled"
+        istiod = {
+        chart         = "istiod"
+        chart_version = local.istio_chart_version
+        repository    = local.istio_chart_url
+        name          = "istiod"
+        namespace     = kubernetes_namespace_v1.istio_system.metadata[0].name
+
+        set = [
+            {
+            name  = "meshConfig.accessLogFile"
+            value = "/dev/stdout"
+            }
+        ]
+        }
+
+        istio-ingress = {
+        chart            = "gateway"
+        chart_version    = local.istio_chart_version
+        repository       = local.istio_chart_url
+        name             = "istio-ingress"
+        namespace        = "istio-ingress" # per https://github.com/istio/istio/blob/master/manifests/charts/gateways/istio-ingress/values.yaml#L2
+        create_namespace = true
+
+        values = [
+            yamlencode(
+            {
+                labels = {
+                istio = "ingressgateway"
+                }
+                service = {
+                annotations = {
+                    "service.beta.kubernetes.io/aws-load-balancer-type"            = "external"
+                    "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" = "ip"
+                    "service.beta.kubernetes.io/aws-load-balancer-scheme"          = "internet-facing"
+                    "service.beta.kubernetes.io/aws-load-balancer-attributes"      = "load_balancing.cross_zone.enabled=true"
+                }
+                }
+            }
+            )
+        ]
+        }
     }
 
-    name = "istio-ingress"
+
+  tags = {
+    Environment = "dev"
   }
 }
 
-resource "helm_release" "istio-ingress" {
-  repository = local.istio_charts_url
-  chart      = "gateway"
-  #name       = "istio-ingress"
-  name       = "istio-ingressgateway"   # to match selector in sample app
-  #name       = "ingressgateway"   # to match selector in sample app
-  namespace  = kubernetes_namespace_v1.istio-ingress.id
-  version    = "1.20.3"
-  depends_on = [helm_release.istiod]
-  # need to listen on  port to 8080 ?????
-  #"gateways.istio-ingressgateway.ports[1].targetPort=80"
-    set {
-        name  = "service.ports[0].name"
-        value = "status-port"
-    }
-    set {
-        name  = "service.ports[0].port"
-        value = "15021"
-    }
-    set {
-        name  = "service.ports[0].protocol"
-        value = "TCP"
-    }
-    set {
-        name  = "service.ports[0].targetPort"
-        value = "15021"
-    }
-    set {
-        name  = "service.ports[1].name"
-        value = "http2"
-    }
-    set {
-        name  = "service.ports[1].port"
-        value = "80"
-    }
-    set {
-        name  = "service.ports[1].protocol"
-        value = "TCP"
-    }
-    set {
-        name  = "service.ports[1].targetPort"
-        value = "8080"
-    }
-    set {
-        name  = "service.ports[2].name"
-        value = "https"
-    }
-    set {
-        name  = "service.ports[2].port"
-        value = "443"
-    }
-    set {
-        name  = "service.ports[2].protocol"
-        value = "TCP"
-    }
-    set {
-        name  = "service.ports[2].targetPort"
-        value = "443"
-    }
 
-  set {
-    name = "resources.requests.cpu"
-    value = "110m"
+resource "kubernetes_namespace_v1" "istio_system" {
+  metadata {
+    name = "istio-system"
   }
 }
