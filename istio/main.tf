@@ -94,10 +94,55 @@ resource "helm_release" "istio-ingress" {
   depends_on = [helm_release.istiod]
   # need to listen on  port to 8080 ?????
   #"gateways.istio-ingressgateway.ports[1].targetPort=80"
-  set {
-    name = "service.ports[1].targetPort"
-    value = "8080"
-  }
+    set {
+        name  = "service.ports[0].name"
+        value = "status-port"
+    }
+    set {
+        name  = "service.ports[0].port"
+        value = "15021"
+    }
+    set {
+        name  = "service.ports[0].protocol"
+        value = "TCP"
+    }
+    set {
+        name  = "service.ports[0].targetPort"
+        value = "15021"
+    }
+    set {
+        name  = "service.ports[1].name"
+        value = "http2"
+    }
+    set {
+        name  = "service.ports[1].port"
+        value = "80"
+    }
+    set {
+        name  = "service.ports[1].protocol"
+        value = "TCP"
+    }
+    set {
+        name  = "service.ports[1].targetPort"
+        value = "8080"
+    }
+    set {
+        name  = "service.ports[2].name"
+        value = "https"
+    }
+    set {
+        name  = "service.ports[2].port"
+        value = "443"
+    }
+    set {
+        name  = "service.ports[2].protocol"
+        value = "TCP"
+    }
+    set {
+        name  = "service.ports[2].targetPort"
+        value = "443"
+    }
+
   set {
     name = "resources.requests.cpu"
     value = "110m"
