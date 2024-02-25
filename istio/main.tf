@@ -98,4 +98,8 @@ resource "helm_release" "istio-ingress" {
   #  name = "service.ports[1].targetPort"
   #  value = "8080"
   #}
+  set {
+    name = "resources.requests.cpu"
+    value = "110"
+  }
 }
