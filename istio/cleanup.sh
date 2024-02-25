@@ -4,3 +4,4 @@ kubectl delete -f samples/bookinfo/networking/bookinfo-gateway.yaml
 kubectl delete -f samples/bookinfo/platform/kube/bookinfo.yaml
 cd ~/environment/tfekscode/istio
 terraform destroy -auto-approve
+istioctl uninstall --purge
