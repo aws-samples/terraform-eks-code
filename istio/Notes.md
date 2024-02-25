@@ -28,19 +28,24 @@ helm show values istio/gateway
 
 https://aws.amazon.com/blogs/mt/monitoring-and-visualizing-amazon-eks-signals-with-kiali-and-aws-managed-open-source-services/
 
-kubectl delete -f samples/addons
+cd ~/environment/istio-1.20.3
 kubectl apply -f samples/addons
-kubectl describe cm kiali -n istio-system | grep url
-
-
-kubectl port-forward -n istio-system svc/$ks 20001:20001 --address 0.0.0.0
 kubectl port-forward -n istio-system svc/$ks 8080:20001 --address 0.0.0.0
+
+
+kubectl describe cm kiali -n istio-system | grep url
+kubectl delete -f samples/addons
 
 
 http://$cloud9IP:20001/kiali
 
 external c9:
 https://docs.aws.amazon.com/cloud9/latest/user-guide/app-preview.html#app-preview-preview-app
+
+
+open 8080 on SG
+get ec2 dns name & use port 8080
+http://ec2-3-252-213-117.eu-west-1.compute.amazonaws.com:8080
 
 
 
