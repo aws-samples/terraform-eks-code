@@ -100,6 +100,6 @@ resource "helm_release" "istio-ingress" {
   #}
   set {
     name = "resources.requests.cpu"
-    value = "110"
+    value = "110m"
   }
 }
