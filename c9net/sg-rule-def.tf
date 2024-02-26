@@ -15,3 +15,12 @@ resource "aws_security_group_rule" "sg-def-eks-all" {
   cidr_blocks       = [data.aws_ssm_parameter.eks-cidr.value]
   security_group_id = data.aws_security_group.c9sg.id
 }
+
+resource "aws_security_group_rule" "sg-def-eks-all" {
+  type              = "ingress"
+  from_port         = 8080
+  to_port           = 8080
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = data.aws_security_group.c9sg.id
+}
