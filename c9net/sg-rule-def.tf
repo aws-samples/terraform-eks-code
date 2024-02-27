@@ -16,7 +16,7 @@ resource "aws_security_group_rule" "sg-def-eks-all" {
   security_group_id = data.aws_security_group.c9sg.id
 }
 
-resource "aws_security_group_rule" "sg-def-eks-all" {
+resource "aws_security_group_rule" "sg-def-eks-8080" {
   type              = "ingress"
   from_port         = 8080
   to_port           = 8080
