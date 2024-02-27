@@ -46,12 +46,9 @@ module "aws_observability_accelerator" {
   source = "github.com/aws-observability/terraform-aws-observability-accelerator?ref=v2.10.0"
   enable_managed_prometheus = true
   aws_region     = data.aws_region.current.name
-  #eks_cluster_id = data.aws_ssm_parameter.cluster1_name.value
 
   # As Grafana shares a different lifecycle, we recommend using an existing workspace.
   managed_grafana_workspace_id = data.aws_ssm_parameter.tf-eks-grafana-id.value
-  #enable_dashboard=true
-
 }
 
 # eks 
@@ -106,15 +103,3 @@ module "eks_monitoring" {
 }
 
 
-# Deploy the ADOT Container Insights
-
-#
-#
-#module "eks_container_insights" {
-#
-#  source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-container-insights"
-
-  #source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-container-insights?ref=v2.5.4"
-#
-#  eks_cluster_id = data.aws_ssm_parameter.cluster1_name.value
-#}
