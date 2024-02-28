@@ -73,13 +73,7 @@ if [[ $vpcid != "" ]]; then
     echo "aws ec2 delete-vpc --vpc-id $vpcid"
     aws ec2 delete-vpc --vpc-id $vpcid
     if [[ $? -ne 0 ]];then
-        echo "sleep 30s for sync ..."
-        echo "Delete the vpc ...."
-        echo "aws ec2 delete-vpc --vpc-id $vpcid"
-        aws ec2 delete-vpc --vpc-id $vpcid
-        if [[ $? -ne 0 ]];then
             echo "wait 1 miniute then re-run ./clear-workshop.sh"
-        fi
     fi
 fi
 echo "Done"
