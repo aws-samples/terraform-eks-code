@@ -58,16 +58,29 @@ if [[ $vpcid != "" ]]; then
     for i in $sgs; do
         echo $i
         aws ec2 delete-security-group --group-id $i &>/dev/null
+        sleep 1
     done
+    echo "sleep 30s for sync ..."
+    sleep 30
     for i in $sgs; do
         echo $i
         aws ec2 delete-security-group --group-id $i &>/dev/null
+        sleep 1
     done
     # delete subnets
-    sleep 10
+    echo "sleep 30s for sync ..."
     echo "Delete the vpc ...."
     echo "aws ec2 delete-vpc --vpc-id $vpcid"
     aws ec2 delete-vpc --vpc-id $vpcid
+    if [[ $? -ne 0 ]];then
+        echo "sleep 30s for sync ..."
+        echo "Delete the vpc ...."
+        echo "aws ec2 delete-vpc --vpc-id $vpcid"
+        aws ec2 delete-vpc --vpc-id $vpcid
+        if [[ $? -ne 0 ]];then
+            echo "wait 1 miniute then re-run ./clear-workshop.sh"
+        fi
+    fi
 fi
 echo "Done"
 date
