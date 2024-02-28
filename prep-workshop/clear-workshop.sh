@@ -1,5 +1,5 @@
 cd ~/environment
-echo "This will take ~ 20 minutes"
+echo "This will take ~ 10 minutes"
 date
 fsid=$(aws efs describe-file-systems --query FileSystems[].FileSystemId --output text)
 if [[ $fsid != "" ]]; then
