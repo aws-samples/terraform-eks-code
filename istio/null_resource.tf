@@ -2,7 +2,7 @@ resource "null_resource" "restart" {
   triggers = {
     always_run = timestamp()
   }
-  depends_on = [eks_blueprints_addons]
+  depends_on = [eks_blueprints_addons.istio]
   provisioner "local-exec" {
     on_failure  = fail
     when        = create
