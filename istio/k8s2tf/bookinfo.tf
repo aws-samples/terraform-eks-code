@@ -100,7 +100,6 @@ resource "kubernetes_service_v1" "sample__details" {
     }
     name      = "details"
     namespace = kubernetes_namespace_v1.sample.metadata[0].name
-    wait_for_load_balancer = true
   }
 
   spec {
@@ -326,7 +325,7 @@ resource "kubernetes_deployment_v1" "sample__details-v1" {
         node_selector                    = {}
         restart_policy                   = "Always"
         scheduler_name                   = "default-scheduler"
-        service_account_name             = kubernetes_service_account_v1.sample__default.metadata.name
+        service_account_name             = kubernetes_service_account_v1.sample__default.metadata[0].name
         share_process_namespace          = false
         termination_grace_period_seconds = 30
 
@@ -413,7 +412,7 @@ resource "kubernetes_deployment_v1" "sample__productpage-v1" {
         node_selector                    = {}
         restart_policy                   = "Always"
         scheduler_name                   = "default-scheduler"
-        service_account_name             = kubernetes_service_account_v1.sample__bookinfo-productpage.metadata.name
+        service_account_name             = kubernetes_service_account_v1.sample__bookinfo-productpage.metadata[0].name
         share_process_namespace          = false
         termination_grace_period_seconds = 30
 
@@ -513,7 +512,7 @@ resource "kubernetes_deployment_v1" "sample__ratings-v1" {
         node_selector                    = {}
         restart_policy                   = "Always"
         scheduler_name                   = "default-scheduler"
-        service_account_name             = kubernetes_service_account_v1.sample__bookinfo-ratings.metadata.name
+        service_account_name             = kubernetes_service_account_v1.sample__bookinfo-ratings.metadata[0].name
         share_process_namespace          = false
         termination_grace_period_seconds = 30
 
@@ -600,7 +599,7 @@ resource "kubernetes_deployment_v1" "sample__reviews-v1" {
         node_selector                    = {}
         restart_policy                   = "Always"
         scheduler_name                   = "default-scheduler"
-        service_account_name             = kubernetes_service_account_v1.sample__bookinfo-reviews.metadata.name
+        service_account_name             = kubernetes_service_account_v1.sample__bookinfo-reviews.metadata[0].name
         share_process_namespace          = false
         termination_grace_period_seconds = 30
 
@@ -716,7 +715,7 @@ resource "kubernetes_deployment_v1" "sample__reviews-v2" {
         node_selector                    = {}
         restart_policy                   = "Always"
         scheduler_name                   = "default-scheduler"
-        service_account_name             = kubernetes_service_account_v1.sample__bookinfo-reviews.metadata.name
+        service_account_name             = kubernetes_service_account_v1.sample__bookinfo-reviews.metadata[0].name
         share_process_namespace          = false
         termination_grace_period_seconds = 30
 
@@ -832,7 +831,7 @@ resource "kubernetes_deployment_v1" "sample__reviews-v3" {
         node_selector                    = {}
         restart_policy                   = "Always"
         scheduler_name                   = "default-scheduler"
-        service_account_name             = kubernetes_service_account_v1.sample__bookinfo-reviews.metadata.name
+        service_account_name             = kubernetes_service_account_v1.sample__bookinfo-reviews.metadata[0].name
         share_process_namespace          = false
         termination_grace_period_seconds = 30
 
