@@ -22,7 +22,7 @@ resource "kubernetes_service_account_v1" "sample__bookinfo-details" {
       "account" = "details"
     }
     name      = "bookinfo-details"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   timeouts {}
@@ -38,7 +38,7 @@ resource "kubernetes_service_account_v1" "sample__bookinfo-productpage" {
       "account" = "productpage"
     }
     name      = "bookinfo-productpage"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   timeouts {}
@@ -54,7 +54,7 @@ resource "kubernetes_service_account_v1" "sample__bookinfo-ratings" {
       "account" = "ratings"
     }
     name      = "bookinfo-ratings"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   timeouts {}
@@ -70,7 +70,7 @@ resource "kubernetes_service_account_v1" "sample__bookinfo-reviews" {
       "account" = "reviews"
     }
     name      = "bookinfo-reviews"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   timeouts {}
@@ -84,7 +84,7 @@ resource "kubernetes_service_account_v1" "sample__default" {
     annotations = {}
     labels      = {}
     name        = "default"
-    namespace   = kubernetes_namespace_v1.sample.metadata.name
+    namespace   = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   timeouts {}
@@ -99,7 +99,7 @@ resource "kubernetes_service_v1" "sample__details" {
       "service" = "details"
     }
     name      = "details"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
     wait_for_load_balancer = true
   }
 
@@ -145,7 +145,7 @@ resource "kubernetes_service_v1" "sample__productpage" {
       "service" = "productpage"
     }
     name      = "productpage"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   spec {
@@ -190,7 +190,7 @@ resource "kubernetes_service_v1" "sample__ratings" {
       "service" = "ratings"
     }
     name      = "ratings"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   spec {
@@ -235,7 +235,7 @@ resource "kubernetes_service_v1" "sample__reviews" {
       "service" = "reviews"
     }
     name      = "reviews"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   spec {
@@ -282,7 +282,7 @@ resource "kubernetes_deployment_v1" "sample__details-v1" {
       "version" = "v1"
     }
     name      = "details-v1"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   spec {
@@ -369,7 +369,7 @@ resource "kubernetes_deployment_v1" "sample__productpage-v1" {
       "version" = "v1"
     }
     name      = "productpage-v1"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   spec {
@@ -469,7 +469,7 @@ resource "kubernetes_deployment_v1" "sample__ratings-v1" {
       "version" = "v1"
     }
     name      = "ratings-v1"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   spec {
@@ -556,7 +556,7 @@ resource "kubernetes_deployment_v1" "sample__reviews-v1" {
       "version" = "v1"
     }
     name      = "reviews-v1"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   spec {
@@ -672,7 +672,7 @@ resource "kubernetes_deployment_v1" "sample__reviews-v2" {
       "version" = "v2"
     }
     name      = "reviews-v2"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   spec {
@@ -788,7 +788,7 @@ resource "kubernetes_deployment_v1" "sample__reviews-v3" {
       "version" = "v3"
     }
     name      = "reviews-v3"
-    namespace = kubernetes_namespace_v1.sample.metadata.name
+    namespace = kubernetes_namespace_v1.sample.metadata[0].name
   }
 
   spec {
