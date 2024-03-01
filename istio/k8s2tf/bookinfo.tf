@@ -311,7 +311,7 @@ resource "kubernetes_deployment_v1" "sample__details-v1" {
         node_selector                    = {}
         restart_policy                   = "Always"
         scheduler_name                   = "default-scheduler"
-        service_account_name             = kubernetes_service_account_v1.sample__details.metadata[0].name
+        service_account_name             = kubernetes_service_account_v1.sample__bookinfo-details.metadata[0].name
         share_process_namespace          = false
         termination_grace_period_seconds = 30
 
