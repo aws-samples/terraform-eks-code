@@ -76,20 +76,6 @@ resource "kubernetes_service_account_v1" "sample__bookinfo-reviews" {
   timeouts {}
 }
 
-# kubernetes_service_account_v1.sample__default:
-resource "kubernetes_service_account_v1" "sample__default" {
-  automount_service_account_token = false
-
-  metadata {
-    annotations = {}
-    labels      = {}
-    name        = "default"
-    namespace   = kubernetes_namespace_v1.sample.metadata[0].name
-  }
-
-  timeouts {}
-}
-
 # kubernetes_service_v1.sample__details:
 resource "kubernetes_service_v1" "sample__details" {
   metadata {
