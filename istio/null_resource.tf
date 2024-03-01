@@ -8,8 +8,9 @@ resource "null_resource" "restart" {
     when        = create
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
-       sleep 30
+       sleep 35
        kubectl rollout restart deployment istio-ingress -n istio-ingress
+       sleep 10
      EOT
   }
 }
