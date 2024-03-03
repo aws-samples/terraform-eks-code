@@ -13,7 +13,7 @@ kubectl delete ns catalog &> /dev/null
 kubectl delete ns checkout &> /dev/null
 kubectl delete ns carts &> /dev/null
 kubectl delete ns orders &> /dev/null
-kubectl delete ns orders &> /dev/null
+kubectl delete ns rabbitmq &> /dev/null
 
 # Empty codepipeline bucket ready for delete
 buck=$(aws s3 ls | grep codep-tfeks | awk '{print $3}')
