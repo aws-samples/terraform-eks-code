@@ -156,6 +156,9 @@ module "eks" {
       min_size        = 3
       max_size        = 6
       desired_size    = 3
+      labels = {
+        workshop-default = "yes"
+      }
       subnet_ids      =  jsondecode(data.aws_ssm_parameter.private_subnets.value)
       iam_role_additional_policies = {
         AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
