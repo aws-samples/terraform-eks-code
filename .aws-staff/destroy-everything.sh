@@ -4,15 +4,16 @@ if [ "$userid" != "null" ]; then
     echo "destroying git user credentaisl for $userid"
     aws iam delete-service-specific-credential --service-specific-credential-id $userid --user-name git-user &> /dev/null
 fi
-helm uninstall keycloak -n keycloak &>/dev/null
-kubectl delete ns keycloak &>/dev/null
-kubectl delete ns sample &>/dev/null
-kubectl delete ns ui &>/dev/null
-kubectl delete ns assets &>/dev/null
-kubectl delete ns catalog &>/dev/null
-kubectl delete ns carts &>/dev/null
-kubectl delete ns orders &>/dev/null
-kubectl delete ns orders &>/dev/null
+helm uninstall keycloak -n keycloak &> /dev/null
+kubectl delete ns keycloak &> /dev/null
+kubectl delete ns sample &> /dev/null
+kubectl delete ns ui &> /dev/null
+kubectl delete ns assets &> /dev/null
+kubectl delete ns catalog &> /dev/null
+kubectl delete ns checkout &> /dev/null
+kubectl delete ns carts &> /dev/null
+kubectl delete ns orders &> /dev/null
+kubectl delete ns orders &> /dev/null
 
 # Empty codepipeline bucket ready for delete
 buck=$(aws s3 ls | grep codep-tfeks | awk '{print $3}')
