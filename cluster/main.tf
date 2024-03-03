@@ -96,6 +96,15 @@ module "eks" {
     vpc-cni    = {
         most_recent              = true
         before_compute           = true
+        configuration_values = jsonencode({
+          env = {
+            ENABLE_POD_ENI                    = "true"
+            ENABLE_PREFIX_DELEGATION          = "true"
+            POD_SECURITY_GROUP_ENFORCING_MODE = "standard"
+          }
+          enableNetworkPolicy = "true"
+      })
+
     }
 
     coredns = {
