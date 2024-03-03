@@ -150,13 +150,12 @@ module "eks" {
   ]
 
   eks_managed_node_groups = {
-    mg_5 = {
-      node_group_name = "managed-ondemand"
+    default = {
+      node_group_name = "default"
       instance_types  = ["t3a.large"]
       min_size        = 3
       max_size        = 6
       desired_size    = 3
-      #subnet_ids      = module.vpc.private_subnets
       subnet_ids      =  jsondecode(data.aws_ssm_parameter.private_subnets.value)
       iam_role_additional_policies = {
         AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
