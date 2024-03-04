@@ -73,9 +73,11 @@ if [[ $vpcid != "" ]]; then
     echo "aws ec2 delete-vpc --vpc-id $vpcid"
     aws ec2 delete-vpc --vpc-id $vpcid
     if [[ $? -ne 0 ]];then
-            echo "If VPC $vpcid still exists - wait 1 miniute then re-run ./clear-workshop.sh"
+            echo ""
+            echo "If VPC $vpcid still exists/failed to delete - wait 1 miniute then re-run ./clear-workshop.sh"
+            echo ""
+    else
+        echo "Done"
     fi
 fi
-echo "Done"
-date
 #
