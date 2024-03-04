@@ -82,6 +82,6 @@ if [[ $vpcid != "" ]]; then
         echo "Done"
     fi
 else
-    echo "null vpcid exiting ..."
+    echo "Could not find EKS VPC exiting ..."
 fi
 #
