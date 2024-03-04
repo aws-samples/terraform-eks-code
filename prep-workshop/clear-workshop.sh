@@ -28,15 +28,15 @@ eksctl delete cluster --name eks-workshop 2>/dev/null # ~8min
 #
 # Why delete these ? - EFS so can zap VPC (has eni)
 #
-#if [[ $dbi != "" ]]; then
+if [[ $dbi != "" ]]; then
     echo "await RDS db instance deletion ..."
-    rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text 2>/dev/null || true)
+    rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text 2>/dev/null )
     while [[ $rdsst != "" ]]; do
         echo $rdsst
         sleep 10
         rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text)
     done
-#fi
+fi
 
 vpcid=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=eksctl-eks-workshop-cluster/VPC --query Vpcs[].VpcId --output text)
 echo $vpcid
