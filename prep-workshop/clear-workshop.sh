@@ -81,5 +81,7 @@ if [[ $vpcid != "" ]]; then
     else
         echo "Done"
     fi
+else
+    echo "null vpcid exiting ..."
 fi
 #
