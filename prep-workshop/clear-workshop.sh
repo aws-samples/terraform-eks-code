@@ -58,14 +58,14 @@ if [[ $vpcid != "" ]]; then
 
     sgs=$(aws ec2 describe-security-groups --filters Name=vpc-id,Values=$vpcid --query SecurityGroups[].GroupId --output text)
     for i in $sgs; do
-        echo $i
+        echo "Deleting $i"
         aws ec2 delete-security-group --group-id $i &>/dev/null
         sleep 1
     done
     echo "sleep 30s for sync ..."
     sleep 30
     for i in $sgs; do
-        echo $i
+        echo "Deleting $i"
         aws ec2 delete-security-group --group-id $i &>/dev/null
         sleep 1
     done
