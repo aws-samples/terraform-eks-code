@@ -37,7 +37,7 @@ if [[ $dbi != "" ]]; then
         rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text)
     done
 fi
-
+echo "VPC "
 vpcid=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=eksctl-eks-workshop-cluster/VPC --query Vpcs[].VpcId --output text)
 echo $vpcid
 if [[ $vpcid != "" ]]; then
