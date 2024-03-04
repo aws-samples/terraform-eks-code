@@ -15,7 +15,7 @@ fi
 # Same for RDS
 #
 echo "Delete RDS Instance..."
-dbi=$(aws rds describe-db-instances --query DBInstances[].DBInstanceIdentifier --output text)
+dbi=$(aws rds describe-db-instances --query DBInstances[].DBInstanceIdentifier --output text 2> /dev/null || true)
 if [[ $dbi != "" ]]; then
     aws rds delete-db-instance --db-instance-identifier $dbi --skip-final-snapshot &>/dev/null
 #
@@ -24,7 +24,7 @@ if [[ $dbi != "" ]]; then
 #
 fi
 echo "Delete the EKS cluster ...."
-eksctl delete cluster --name eks-workshop # ~8min
+eksctl delete cluster --name eks-workshop 2> /dev/null # ~8min
 #
 # Why delete these ? - EFS so can zap VPC (has eni)
 #
