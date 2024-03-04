@@ -15,7 +15,7 @@ fi
 # Same for RDS
 #
 echo "Delete RDS Instance..."
-dbi=$(aws rds describe-db-instances --query DBInstances[].DBInstanceIdentifier --output text 2> /dev/null || true)
+dbi=$(aws rds describe-db-instances --query DBInstances[].DBInstanceIdentifier --output text 2>/dev/null || true)
 if [[ $dbi != "" ]]; then
     aws rds delete-db-instance --db-instance-identifier $dbi --skip-final-snapshot &>/dev/null
 #
@@ -24,17 +24,19 @@ if [[ $dbi != "" ]]; then
 #
 fi
 echo "Delete the EKS cluster ...."
-eksctl delete cluster --name eks-workshop 2> /dev/null # ~8min
+eksctl delete cluster --name eks-workshop 2>/dev/null # ~8min
 #
 # Why delete these ? - EFS so can zap VPC (has eni)
 #
-echo "await RDS db instance deletion ..."
-rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text 2>/dev/null)
-while [[ $rdsst != "" ]]; do
-    echo $rdsst
-    sleep 10
-    rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text)
-done
+#if [[ $dbi != "" ]]; then
+    echo "await RDS db instance deletion ..."
+    rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text 2>/dev/null || true)
+    while [[ $rdsst != "" ]]; do
+        echo $rdsst
+        sleep 10
+        rdsst=$(aws rds describe-db-instances --db-instance-identifier eks-workshop-catalog --query 'DBInstances[].DBInstanceStatus' --output text)
+    done
+#fi
 
 vpcid=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=eksctl-eks-workshop-cluster/VPC --query Vpcs[].VpcId --output text)
 echo $vpcid
@@ -72,10 +74,10 @@ if [[ $vpcid != "" ]]; then
     echo "Delete the vpc ...."
     echo "aws ec2 delete-vpc --vpc-id $vpcid"
     aws ec2 delete-vpc --vpc-id $vpcid
-    if [[ $? -ne 0 ]];then
-            echo ""
-            echo "If VPC $vpcid still exists/failed to delete - wait 1 miniute then re-run ./clear-workshop.sh"
-            echo ""
+    if [[ $? -ne 0 ]]; then
+        echo ""
+        echo "If VPC $vpcid still exists/failed to delete - wait 1 miniute then re-run ./clear-workshop.sh"
+        echo ""
     else
         echo "Done"
     fi
