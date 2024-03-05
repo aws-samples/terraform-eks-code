@@ -16,6 +16,7 @@ module "vpc_endpoints" {
       cidr_blocks = [element(local.secondary_cidr_blocks, 0)]
     }
     egress_https = {
+      type="egress"
       description = "HTTPS out of VPC"
       cidr_blocks = ["0.0.0.0/0"]
     }
