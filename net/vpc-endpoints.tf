@@ -15,6 +15,10 @@ module "vpc_endpoints" {
       description = "HTTPS from VPC 2"
       cidr_blocks = [element(local.secondary_cidr_blocks, 0)]
     }
+    egress_https = {
+      description = "HTTPS out of VPC"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
   }
 
   endpoints = merge({
