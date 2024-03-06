@@ -20,6 +20,13 @@ module "vpc_endpoints" {
       description = "HTTPS out of VPC"
       cidr_blocks = ["0.0.0.0/0"]
     }
+    egress_ssh = {
+      type="egress"
+      from_port=22
+      to_port=22
+      description = "HTTPS out of VPC"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
   }
 
   endpoints = merge({
