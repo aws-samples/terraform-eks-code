@@ -48,3 +48,5 @@ docker-extract.sh
 Private.md
 .DS_Store
 .aws-staff/NOTES.md
+.notused/idp/private/github-token
+.notused/idp/private/github-integration.yaml
