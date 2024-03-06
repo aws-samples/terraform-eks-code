@@ -22,4 +22,4 @@ aws codebuild delete-project --name eks-workshop-retail-store-sample-manifest
 aws codebuild delete-project --name eks-workshop-retail-store-sample-amd64
 aws codebuild delete-project --name eks-workshop-retail-store-sample-arm64
 aws codepipeline delete-pipeline --name eks-workshop-retail-store-sample
-helm uninstall aws-load-balancer-controller -n kube-system
+#helm uninstall aws-load-balancer-controller -n kube-system
