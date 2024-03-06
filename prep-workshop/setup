@@ -1,5 +1,6 @@
-echo "Install flux"
-curl -s https://fluxcd.io/install.sh | sudo bash
+# Dont put in latest version of flux cli - clashes with EKS workshop
+#echo "Install flux"
+#curl -s https://fluxcd.io/install.sh | sudo bash
 echo "Setup Terraform cache"
 if [ ! -f $HOME/.terraform.d/plugin-cache ]; then
   mkdir -p $HOME/.terraform.d/plugin-cache
