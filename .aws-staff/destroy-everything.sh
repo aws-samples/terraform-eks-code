@@ -42,6 +42,7 @@ for i in $dirs; do
         if [[ $? -ne 0 ]];then
             rm -rf .terrform*
             terraform init -upgrade
+            echo "*** $?"
             terraform destroy -auto-approve
             if [[ $? -eq 0 ]];then
                 echo "terraform destroy in $i succeeded"
