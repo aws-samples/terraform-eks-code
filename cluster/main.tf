@@ -73,7 +73,7 @@ locals {
 module "eks" {
   #source = "../.."
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.21.0"
+  #version = "19.21.0"
   
   cluster_name                   = local.name
   cluster_version                = local.cluster_version
@@ -81,6 +81,7 @@ module "eks" {
   cluster_endpoint_private_access = true
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
+  enable_cluster_creator_admin_permissions = true
 
     # External encryption key
   create_kms_key = false
