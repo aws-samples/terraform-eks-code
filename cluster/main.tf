@@ -231,7 +231,6 @@ module "eks" {
 # Karpenter
 ################################################################################
 
-
 module "karpenter" {
 
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
