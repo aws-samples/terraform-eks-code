@@ -26,7 +26,7 @@ fi
 #
 # lb, lb sg, launch template
 
-set -e # turn on error checking - exit if error
+#set -e # turn on error checking - exit if error
 echo "pass 1 ...."
 cur=$(pwd)
 date
