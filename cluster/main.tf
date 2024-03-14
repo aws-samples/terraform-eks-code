@@ -280,6 +280,9 @@ resource "helm_release" "karpenter" {
         effect: "NoSchedule"
     EOT
   ]
+  depends_on = [
+    module.eks.module.eks_managed_node_group
+  ]
 }
 
 
