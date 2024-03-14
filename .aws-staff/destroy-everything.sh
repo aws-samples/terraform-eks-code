@@ -38,7 +38,7 @@ for i in $dirs; do
     echo "**** Destroying in $i ****"
     if [[ -d ".terraform" ]]; then
         echo "**** terraform destroy in $i ****"
-        terraform destroy -auto-approve
+        terraform destroy -auto-approve 2&> /dev/null
         if [[ $? -ne 0 ]];then
             rm -rf .terrform*
             terraform init -upgrade
