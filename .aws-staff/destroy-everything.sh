@@ -35,8 +35,9 @@ dirs="istio keycloak observ addons cluster c9net net"
 for i in $dirs; do
     cd $cur
     cd ../$i
+    echo "**** Destroying in $i ****"
     if [[ -d .terraform ]]; then
-        echo "**** Destroying in $i ****"
+        echo "**** terraform destroy in $i ****"
         terraform destroy -auto-approve
         if [[ $? -eq 0 ]];then
             rm -rf .terrform*
