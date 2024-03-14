@@ -39,10 +39,14 @@ for i in $dirs; do
     if [[ -d ".terraform" ]]; then
         echo "**** terraform destroy in $i ****"
         terraform destroy -auto-approve
-        if [[ $? -eq 0 ]];then
+        if [[ $? -ne 0 ]];then
             rm -rf .terrform*
             terraform init -upgrade
             terraform destroy -auto-approve
+            if [[ $? -eq 0 ]];then
+                echo "terraform destroy in $i succeeded"
+                rm -rf .terrform*
+            fi
         fi
     else
         echo "no .terraform directory found skipping ..."
