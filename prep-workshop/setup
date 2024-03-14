@@ -17,6 +17,15 @@ if [ ! $(which kubectl 2>/dev/null) ]; then
   kubectl completion bash >>~/.bash_completion
 fi
 #
+if [ ! $(which helm 2>/dev/null) ]; then
+  echo "Install helm..."
+  wget -q https://get.helm.sh/helm-v3.14.3-linux-amd64.tar.gz >/dev/null
+  tar -zxf helm-v3.14.3-linux-amd64.tar.gz
+  sudo mv linux-amd64/helm /usr/local/bin/helm >/dev/null
+  rm -rf helm-v3.14.3-linux-amd64.tar.gz linux-amd64
+fi
+echo "add helm repos"
+helm repo add eks https://aws.github.io/eks-charts
 echo "Setup Terraform cache"
 if [ ! -f $HOME/.terraform.d/plugin-cache ]; then
   mkdir -p $HOME/.terraform.d/plugin-cache
