@@ -82,6 +82,37 @@ module "eks" {
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
   enable_cluster_creator_admin_permissions = true
+  authentication_mode = "API_AND_CONFIG_MAP" # this mode is default
+
+
+# When enabling authentication_mode = "API_AND_CONFIG_MAP" , 
+# EKS will automatically create an access entry for the IAM role(s) used by 
+# managed nodegroup(s) and Fargate profile(s).
+# There are no additional actions required by users. 
+# For self-managed nodegroups and the Karpenter sub-module, 
+# this project automatically adds the access entry on behalf of users 
+# so there are no additional actions required by users.
+
+
+# optional additions
+#access_entries = {
+#    # One access entry with a policy associated
+#    example = {
+#      kubernetes_groups = []
+#      principal_arn     = "arn:aws:iam::123456789012:role/something"
+
+#      policy_associations = {
+#        example = {
+#          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+#          access_scope = {
+#            namespaces = ["default"]
+#            type       = "namespace"
+#          }
+#        }
+#      }
+#    }
+#}
+
 
     # External encryption key
   create_kms_key = false
@@ -142,19 +173,6 @@ module "eks" {
     }
   }
 
-
-  manage_aws_auth_configmap = true
-  aws_auth_roles = [
-    # We need to add in the Karpenter node IAM role for nodes launched by Karpenter
-    {
-      rolearn  = module.karpenter.iam_role_arn
-      username = "system:node:{{EC2PrivateDNSName}}"
-      groups = [
-        "system:bootstrappers",
-        "system:nodes",
-      ]
-    },
-  ]
 
   eks_managed_node_groups = {
     default = {
