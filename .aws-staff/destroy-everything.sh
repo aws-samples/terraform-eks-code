@@ -14,15 +14,14 @@ kubectl delete ns checkout &> /dev/null
 kubectl delete ns carts &> /dev/null
 kubectl delete ns orders &> /dev/null
 kubectl delete ns rabbitmq &> /dev/null
-flux uninstall -s
-
+flux uninstall -s &> /dev/null
 # Empty codepipeline bucket ready for delete
 buck=$(aws s3 ls | grep codep-tfeks | awk '{print $3}')
 echo "buck=$buck"
 if [ "$buck" != "" ]; then
     echo "Emptying bucket $buck"
     comm=$(printf "aws s3 rm s3://%s --recursive" $buck)
-    eval $comm 
+    eval $comm  &> /dev/null
 fi
 #
 # lb, lb sg, launch template
@@ -36,10 +35,13 @@ dirs="istio keycloak observ addons cluster c9net net"
 for i in $dirs; do
     cd $cur
     cd ../$i
-    echo "**** Destroying in $i ****"
-    rm -rf .terrform*
-    terraform init >/dev/null
-    terraform destroy -auto-approve
+    if [[ -d .terraform ]]; then
+        echo "**** Destroying in $i ****"
+        terraform destroy -auto-approve
+        if [[ $? -eq 0 ]];then
+            rm -rf .terrform*
+        fi
+    fi
     cd $cur
     date
 done
