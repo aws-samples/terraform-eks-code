@@ -41,9 +41,11 @@ for i in $dirs; do
         terraform destroy -auto-approve 2&> /dev/null
         if [[ $? -ne 0 ]];then
             rm -rf .terrform*
-            terraform init -upgrade
+            echo "Init ..."
+            terraform init -upgrade > /dev/null
             if [[ $? -ne 0 ]];then
                 mv backend-$i.tf backend-$i.tf.sav
+                echo "moved backend & Init ..."
                 terraform init -upgrade
             fi
             terraform destroy -auto-approve
