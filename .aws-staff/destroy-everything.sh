@@ -46,6 +46,9 @@ for i in $dirs; do
             if [[ $? -eq 0 ]];then
                 echo "terraform destroy in $i succeeded"
                 rm -rf .terrform*
+            else
+                echo "terraform destroy in $i failed"
+                exit
             fi
         else
             echo "terraform destroy in $i succeeded"
