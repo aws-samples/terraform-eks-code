@@ -1,7 +1,7 @@
 echo "Pre cli based actions ..."
 userid=$(aws iam list-service-specific-credentials --user-name git-user 2> /dev/null | jq -r .ServiceSpecificCredentials[0].ServiceSpecificCredentialId)
 if [ "$userid" != "null" ]; then
-    echo "destroying git user credentaisl for $userid"
+    echo "destroying git user credentails for $userid"
     aws iam delete-service-specific-credential --service-specific-credential-id $userid --user-name git-user &> /dev/null
 fi
 helm uninstall keycloak -n keycloak &> /dev/null
