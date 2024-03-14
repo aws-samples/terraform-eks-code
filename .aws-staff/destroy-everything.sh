@@ -47,6 +47,9 @@ for i in $dirs; do
                 echo "terraform destroy in $i succeeded"
                 rm -rf .terrform*
             fi
+        else
+            echo "terraform destroy in $i succeeded"
+            rm -rf .terrform*
         fi
     else
         echo "no .terraform directory found skipping ..."
