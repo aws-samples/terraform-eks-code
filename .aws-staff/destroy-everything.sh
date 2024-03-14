@@ -42,6 +42,8 @@ for i in $dirs; do
         if [[ $? -eq 0 ]];then
             rm -rf .terrform*
         fi
+    else
+        echo "no .terraform directory found skipping ..."
     fi
     cd $cur
     date
