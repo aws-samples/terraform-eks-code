@@ -40,7 +40,7 @@ for i in $dirs; do
         echo "**** terraform destroy in $i ****"
         terraform destroy -auto-approve 2&> /dev/null
         if [[ $? -ne 0 ]];then
-            rm -rf .terrform*
+            rm -rf .terraform*
             echo "Init ..."
             terraform init -upgrade > /dev/null
             if [[ $? -ne 0 ]];then
@@ -51,14 +51,14 @@ for i in $dirs; do
             terraform destroy -auto-approve
             if [[ $? -eq 0 ]];then
                 echo "terraform destroy in $i succeeded"
-                rm -rf .terrform*
+                rm -rf .terraform*
             else
                 echo "terraform destroy in $i failed"
                 exit
             fi
         else
             echo "terraform destroy in $i succeeded"
-            rm -rf .terrform*
+            rm -rf .terraform*
         fi
     else
         echo "no .terraform directory found skipping ..."
