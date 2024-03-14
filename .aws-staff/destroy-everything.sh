@@ -46,7 +46,7 @@ for i in $dirs; do
             if [[ $? -ne 0 ]];then
                 mv backend-$i.tf backend-$i.tf.sav
                 echo "moved backend & Init ..."
-                terraform init -upgrade
+                terraform init -reconfigure
             fi
             terraform destroy -auto-approve
             if [[ $? -eq 0 ]];then
