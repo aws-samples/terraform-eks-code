@@ -41,27 +41,10 @@ for i in $dirs; do
     rc=$(terraform state list | grep aws_ | wc -l)
     
     # double check the helm chart has gone in
-    if [ "$i" == "lb2" ] ; then
-        hc=$(helm ls -A | wc -l )
-        if [ $hc -lt 2 ]; then
-            echo "retry helm chart"
-            terraform state rm helm_release.aws-load-balancer-controller
-            terraform plan -out tfplan -no-color
-            terraform apply tfplan -no-color && terraform init -force-copy -no-color
-            
-        fi
-    fi
+    
     if [ $rc -lt $tobuild ]; then echo "only $rc in tf state expected $tobuild .. exit .." && exit; fi
 
 
-    #echo "check state counts"
-    #rsc=`terraform state list | wc -l`
-    #lsc=`terraform state list -state=terraform.tfstate | wc -l`
-    #echo "$rsc $lsc"
-    #if [ $rsc -ne $lsc ]; then
-    #    echo "Remote state != local state count ... exit ..."
-    #    exit
-    #fi
     echo "PASSED $i tests (found $rc resources expected minimum for this stage = $tobuild)"
     cd $cur
     
