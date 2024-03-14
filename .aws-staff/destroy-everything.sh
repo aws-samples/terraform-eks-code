@@ -41,6 +41,8 @@ for i in $dirs; do
         terraform destroy -auto-approve
         if [[ $? -eq 0 ]];then
             rm -rf .terrform*
+            terraform init -upgrade
+            terraform destroy -auto-approve
         fi
     else
         echo "no .terraform directory found skipping ..."
