@@ -231,13 +231,6 @@ module "eks" {
 # Karpenter
 ################################################################################
 
-module "karpenter_disabled" {
-  source = "../../modules/karpenter"
-
-  create = false
-}
-
-
 
 module "karpenter" {
 
