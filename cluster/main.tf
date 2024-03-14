@@ -281,7 +281,7 @@ resource "helm_release" "karpenter" {
     EOT
   ]
   depends_on = [
-    module.eks.module.eks_managed_node_group
+    module.eks.eks_managed_node_group
   ]
 }
 
