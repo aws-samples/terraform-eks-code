@@ -36,7 +36,7 @@ for i in $dirs; do
     cd $cur
     cd ../$i
     echo "**** Destroying in $i ****"
-    if [[ -d .terraform ]]; then
+    if [[ -d ".terraform" ]]; then
         echo "**** terraform destroy in $i ****"
         terraform destroy -auto-approve
         if [[ $? -eq 0 ]];then
