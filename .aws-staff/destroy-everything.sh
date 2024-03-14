@@ -42,7 +42,10 @@ for i in $dirs; do
         if [[ $? -ne 0 ]];then
             rm -rf .terrform*
             terraform init -upgrade
-            echo "*** $?"
+            if [[ $? -ne 0 ]];then
+                mv backend-$i.tf backend-$i.tf.sav
+                terraform init -upgrade
+            fi
             terraform destroy -auto-approve
             if [[ $? -eq 0 ]];then
                 echo "terraform destroy in $i succeeded"
