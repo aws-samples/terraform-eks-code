@@ -213,6 +213,14 @@ module "eks" {
 # Karpenter
 ################################################################################
 
+module "karpenter_disabled" {
+  source = "../../modules/karpenter"
+
+  create = false
+}
+
+
+
 module "karpenter" {
 
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
