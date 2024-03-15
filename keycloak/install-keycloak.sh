@@ -8,8 +8,8 @@ terraform destroy -auto-approve
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export HOSTED_ZONE=$ACCOUNT_ID.awsandy.people.aws.dev
 export KEYCLOAK_PASSWORD="keycloakpass123"
-export WORKSPACE_ENDPOINT=$(aws grafana list-workspaces --query 'workspaces[0].endpoint' --output text)
-export WORKSPACE_ID=$(aws grafana list-workspaces --query 'workspaces[0].id' --output text)
+export WORKSPACE_ENDPOINT=$(aws grafana list-workspaces | jq -r '.workspaces[] | select(.name=="keycloak-blog").endpoint')
+export WORKSPACE_ID=$(aws grafana list-workspaces | jq -r '.workspaces[] | select(.name=="keycloak-blog").id')
 export SAML_URL=https://keycloak.$HOSTED_ZONE/realms/keycloak-blog/protocol/saml/descriptor
 # validate dns exit of not valid
 dnsl=$(dig $ACCOUNT_ID.awsandy.people.aws.dev NS +short | wc -l)
