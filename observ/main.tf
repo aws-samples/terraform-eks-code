@@ -36,8 +36,8 @@ data "aws_grafana_workspace" "this" {
 
 module "eks_monitoring" {
 
-  #source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring"
-  source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring?ref=v2.0.0"
+  source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring"
+  #source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring?ref=v2.0.0"
 
   eks_cluster_id = data.aws_ssm_parameter.cluster-name.value
 
@@ -60,19 +60,27 @@ module "eks_monitoring" {
   target_secret_namespace = "grafana-operator"
   grafana_url             = module.aws_observability_accelerator.managed_grafana_workspace_endpoint
 
-  # control the publishing of dashboards by specifying the boolean value for the variable 'enable_dashboards', default is 'true'
-  #enable_dashboards = var.enable_dashboards
-  #dashboards_folder_id            = module.aws_observability_accelerator.grafana_dashboards_folder_id
-  managed_prometheus_workspace_id = module.aws_observability_accelerator.managed_prometheus_workspace_id
 
-  managed_prometheus_workspace_endpoint = module.aws_observability_accelerator.managed_prometheus_workspace_endpoint
-  managed_prometheus_workspace_region   = module.aws_observability_accelerator.managed_prometheus_workspace_region
+  # control the publishing of dashboards by specifying the boolean value for the variable 'enable_dashboards', default is 'true'
+  enable_dashboards = var.enable_dashboards
+
+  # creates a new Amazon Managed Prometheus workspace, defaults to true
+  enable_managed_prometheus       = true
+  #managed_prometheus_workspace_id = var.managed_prometheus_workspace_id
+  managed_prometheus_workspace_id = module.aws_observability_accelerator.managed_prometheus_workspace_id
+  # sets up the Amazon Managed Prometheus alert manager at the workspace level
+  enable_alertmanager = true
 
   # optional, defaults to 60s interval and 15s timeout
   prometheus_config = {
     global_scrape_interval = "60s"
     global_scrape_timeout  = "15s"
   }
+
+
+  # control the publishing of dashboards by specifying the boolean value for the variable 'enable_dashboards', default is 'true'
+  #enable_dashboards = var.enable_dashboards
+  #dashboards_folder_id            = module.aws_observability_accelerator.grafana_dashboards_folder_id
 
   enable_logs = true # logs for the observability accelerator itself (I think)
   enable_tracing = true
