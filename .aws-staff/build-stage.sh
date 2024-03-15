@@ -29,18 +29,13 @@ for i in $dirs; do
 
         #echo "Terraform Plan"
         #pc=$(terraform plan -json -out tfplan | jq '.changes' | grep -v null | jq .add | tail -1)
-        terraform apply tfplan -no-color -json > apply.json
-        rc=$(cat apply.json | jq '.changes' | grep -v null | jq .add | tail -1)
-
-        #terraform apply tfplan -no-color && terraform init -force-copy -no-color
-        #echo "State to S3. ."
-        #terraform init -force-copy -no-color
-
-        #rc=$(terraform state list | grep aws_ | wc -l)
+        terraform apply tfplan -no-color
+        
+        rc=$( terraform state list | grep -v 'data.' | wc -l)
 
     # double check the helm chart has gone in
     fi
-    if [ $rc -lt $tobuild ]; then echo "only $rc in tf state expected $tobuild .. exit .." && exit; fi
+    if [[ $rc -lt $tobuild ]]; then echo "only $rc in tf state expected $tobuild .. exit .." && exit; fi
 
     echo "PASSED $i tests (found $rc resources expected minimum for this stage = $tobuild)"
     cd $cur
