@@ -58,11 +58,11 @@ module "eks_monitoring" {
   grafana_api_key         = aws_grafana_workspace_api_key.key.key
   target_secret_name      = "grafana-admin-credentials"
   target_secret_namespace = "grafana-operator"
-  grafana_url             = module.aws_observability_accelerator.managed_grafana_workspace_endpoint
+  grafana_url             = data.aws_grafana_workspace.this.endpoint
 
 
   # control the publishing of dashboards by specifying the boolean value for the variable 'enable_dashboards', default is 'true'
-  enable_dashboards = var.enable_dashboards
+  enable_dashboards = true
 
   # creates a new Amazon Managed Prometheus workspace, defaults to true
   enable_managed_prometheus       = true
