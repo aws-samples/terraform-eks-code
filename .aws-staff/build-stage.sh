@@ -32,7 +32,11 @@ for i in $dirs; do
         terraform apply tfplan -no-color
         
         rc=$( terraform state list | grep -v 'data.' | wc -l)
-
+        if [[ $rc -lt $tobuild ]]; then
+            echo "quick retry" 
+            terraform plan -out tfplan 
+            terraform apply tfplan -no-color
+        fi
     # double check the helm chart has gone in
     fi
     if [[ $rc -lt $tobuild ]]; then echo "only $rc in tf state expected $tobuild .. exit .." && exit; fi
