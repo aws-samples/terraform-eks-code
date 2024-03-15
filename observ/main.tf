@@ -24,6 +24,14 @@ provider "helm" {
   }
 }
 
+#resource "aws_prometheus_workspace" "amp-demo" {
+#  alias = "amp-demo"
+
+#  tags = {
+#    Environment = "amp-tfeks-workshop"
+#  }
+#}
+
 
 ## base
 
@@ -35,7 +43,7 @@ data "aws_grafana_workspace" "this" {
 # eks 
 
 module "eks_monitoring" {
-
+  #depends_on = [aws_prometheus_workspace.amp-demo]
   source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring"
   #source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring?ref=v2.0.0"
 
@@ -67,7 +75,7 @@ module "eks_monitoring" {
   # creates a new Amazon Managed Prometheus workspace, defaults to true
   enable_managed_prometheus       = true
   #managed_prometheus_workspace_id = var.managed_prometheus_workspace_id
-  managed_prometheus_workspace_id = module.aws_observability_accelerator.managed_prometheus_workspace_id
+  #managed_prometheus_workspace_id = module.aws_observability_accelerator.managed_prometheus_workspace_id
   # sets up the Amazon Managed Prometheus alert manager at the workspace level
   enable_alertmanager = true
 
