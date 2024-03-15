@@ -80,7 +80,7 @@ for i in $dirs; do
     #terraform destroy -target module.eks.aws_eks_addon.aws-ebs-csi-driver -auto-approve
     #terraform destroy -target amazon-cloudwatch-observability -auto-approve
     terraform destroy -target helm_release.karpenter -auto-approve
-    echo "EHS Managed Node Group delete ~9m"
+    echo "EKS Managed Node Group delete ~9m"
     terraform destroy -target module.eks.module.eks_managed_node_group -auto-approve # gets addons too
     echo "EKS Cluster delete ~3m"
     terraform destroy -target module.eks.aws_eks_cluster.this -auto-approve
