@@ -114,7 +114,8 @@ module "eks" {
 #}
 
 
-    # External encryption key
+# External encryption key
+
   create_kms_key = false
   cluster_encryption_config = {
     resources        = ["secrets"]
@@ -282,6 +283,7 @@ resource "helm_release" "karpenter" {
   ]
   depends_on = [
     module.eks.eks_managed_node_group
+    #module.eks.module.eks_managed_node_group.aws_eks_node_group
   ]
 }
 
