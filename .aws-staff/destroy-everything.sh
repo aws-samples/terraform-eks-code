@@ -85,7 +85,6 @@ for i in $dirs; do
     echo "EKS Cluster delete ~3m"
     terraform destroy -target module.eks.aws_eks_cluster.this -auto-approve
     terraform destroy -target module.eks -auto-approve
-    terraform destroy -target module.eks.aws_cloudwatch -auto-approve
     terraform destroy -auto-approve >/dev/null
     rm -f tfplan terraform*
     rm -rf .terraform
@@ -107,4 +106,4 @@ for i in $dirs; do
     date
 done
 echo "Done"
-set +e # turn off error checking
+#set +e # turn off error checking
