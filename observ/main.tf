@@ -31,16 +31,6 @@ data "aws_grafana_workspace" "this" {
   workspace_id = data.aws_ssm_parameter.tf-eks-grafana-id.value
 }
 
-module "aws_observability_accelerator" {
-  # use release tags and check for the latest versions
-  # https://github.com/aws-observability/terraform-aws-observability-accelerator/releases
-  source = "github.com/aws-observability/terraform-aws-observability-accelerator?ref=v2.12.1"
-  enable_managed_prometheus = true
-  aws_region     = data.aws_region.current.name
-
-  # As Grafana shares a different lifecycle, we recommend using an existing workspace.
-  managed_grafana_workspace_id = data.aws_ssm_parameter.tf-eks-grafana-id.value
-}
 
 # eks 
 
