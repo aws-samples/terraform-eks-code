@@ -69,22 +69,8 @@ for i in $dirs; do
     cd $cur
     date
 done
+
 dirs="cluster"
-for i in $dirs; do
-    cd ../$i
-    echo "**** Destroying in $i ****"
-    if [[ -d ".terraform" ]]; then
-        terraform destroy module.eks -auto-approve >/dev/null
-        terraform destroy -auto-approve >/dev/null
-        rm -f tfplan terraform*
-        rm -rf .terraform
-    fi
-    cd $cur
-    date
-done
-echo "Done"
-exit
-dirs="c9net net tf-setup"
 for i in $dirs; do
     cd ../$i
     echo "**** Destroying in $i ****"
@@ -103,6 +89,19 @@ for i in $dirs; do
     terraform destroy -auto-approve >/dev/null
     rm -f tfplan terraform*
     rm -rf .terraform
+    fi
+    cd $cur
+    date
+done
+dirs="c9net net tf-setup"
+for i in $dirs; do
+    cd ../$i
+    echo "**** Destroying in $i ****"
+    if [[ -d ".terraform" ]]; then
+        terraform destroy module.eks -auto-approve >/dev/null
+        terraform destroy -auto-approve >/dev/null
+        rm -f tfplan terraform*
+        rm -rf .terraform
     fi
     cd $cur
     date
