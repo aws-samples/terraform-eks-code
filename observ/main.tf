@@ -87,9 +87,6 @@ module "eks_monitoring" {
 
   #tags = local.tags
 
-  depends_on = [
-    module.aws_observability_accelerator
-  ]
 }
 
 
