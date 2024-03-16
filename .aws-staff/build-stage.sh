@@ -22,6 +22,10 @@ for i in $dirs; do
     tobuild=$(cat tfplan.json | jq '.changes' | grep -v null | jq .add | tail -1)
     toremove=$(cat tfplan.json | jq '.changes' | grep -v null | jq .remove | tail -1)
     echo "tobuild = $tobuild  toremove=$toremove"
+    if [[ $tobuild == "" ]]; then 
+        echo "unexpected nothing to build .. exiting"
+        exit 
+    fi
     if [[ $tobuild -gt 0 ]]; then
 
         if [[ $tobuild != $toremove ]]; then
