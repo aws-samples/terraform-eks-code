@@ -1,5 +1,6 @@
 echo "Checking workshop setup ..."
-instid=`curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id`
+TOKEN=$(curl -s --request PUT "http://169.254.169.254/latest/api/token" --header "X-aws-ec2-metadata-token-ttl-seconds: 3600")
+instid=$(curl -s http://169.254.169.254/latest/meta-data/instance-id --header "X-aws-ec2-metadata-token: $TOKEN")
 iname=$(aws ec2 describe-tags --filters "Name=resource-type,Values=instance" "Name=resource-id,Values=$instid" | jq -r '.Tags[] | select(.Key=="Name").Value')
 echo $iname| grep 'eks-terraform\|-Project-mod-' -q && echo "PASSED: Cloud9 IDE name is valid " || echo "ERROR: Cloud9 IDE name invalid! - DO NOT PROCEED"
 #echo $instid
