@@ -2,8 +2,8 @@ export REPOSITORY_OWNER="aws-samples"
 export REPOSITORY_NAME="eks-workshop-v2"
 export REPOSITORY_REF="main"
 rm -f installer.sh setup.sh
-wget https://raw.githubusercontent.com/aws-samples/eks-workshop-v2/main/lab/scripts/installer.sh > /dev/null
-wget https://raw.githubusercontent.com/aws-samples/eks-workshop-v2/main/lab/scripts/setup.sh > /dev/null
+wget https://raw.githubusercontent.com/aws-samples/eks-workshop-v2/main/lab/scripts/installer.sh &> /dev/null
+wget https://raw.githubusercontent.com/aws-samples/eks-workshop-v2/main/lab/scripts/setup.sh &> /dev/null
 sed -i'.orig.' "s/set -e/#set -e/" installer.sh
 chmod +x installer.sh
 chmod +x setup.sh
