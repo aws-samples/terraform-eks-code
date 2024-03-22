@@ -7,10 +7,13 @@ wget https://raw.githubusercontent.com/aws-samples/eks-workshop-v2/main/lab/scri
 sed -i'.orig.' "s/set -e/#set -e/" installer.sh
 chmod +x installer.sh
 chmod +x setup.sh
-sudo ./installer.sh > /dev/null
+echo "Running installer.sh ....."
+(sudo ./installer.sh) &> /dev/null
 ls -l / | grep eks-workshop | grep ec2  > /dev/null
 if [ $? -eq 0 ]; then
+    echo "Install utils into /usr/local/bin"
     sudo ./local.sh
+    echo "Setup local bash environment ....."
     ./setup.sh
 else
     echo "Root installer.sh may have failed"
