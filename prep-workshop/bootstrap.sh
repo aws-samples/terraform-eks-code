@@ -39,6 +39,7 @@ if [[ ! -z $C9_PID ]]; then
     aws configure set default.region $AWS_REGION
     aws configure set region $AWS_REGION
 fi
+./check
 echo "Now run...."
 echo " "
 echo "source ~/.bashrc"
