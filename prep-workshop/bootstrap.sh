@@ -9,7 +9,10 @@ chmod +x setup.sh
 sudo ./installer.sh
 ls -l / | grep eks-workshop | grep ec2 2& > /dev/null
 if [ $? -eq 0 ]; then
+    sudo ./local.sh
     ./setup.sh
 else
     echo "Root installer.sh may have failed"
 fi
+echo "Now run...."
+echo "source ~/.bashrc"
