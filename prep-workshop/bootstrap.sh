@@ -7,7 +7,7 @@ sed -i'.orig.' "s/set -e/#set -e/" installer.sh
 chmod +x installer.sh
 chmod +x setup.sh
 sudo ./installer.sh
-ls -l / | grep eks-workshop | grep ec2 2& > /dev/null
+ls -l / | grep eks-workshop | grep ec2  > /dev/null
 if [ $? -eq 0 ]; then
     sudo ./local.sh
     ./setup.sh
