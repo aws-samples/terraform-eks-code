@@ -7,7 +7,7 @@ wget https://raw.githubusercontent.com/aws-samples/eks-workshop-v2/main/lab/scri
 sed -i'.orig.' "s/set -e/#set -e/" installer.sh
 chmod +x installer.sh
 chmod +x setup.sh
-sudo ./installer.sh
+sudo ./installer.sh > /dev/null
 ls -l / | grep eks-workshop | grep ec2  > /dev/null
 if [ $? -eq 0 ]; then
     sudo ./local.sh
