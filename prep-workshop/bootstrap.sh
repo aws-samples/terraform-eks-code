@@ -19,4 +19,5 @@ else
     echo "Root installer.sh may have failed"
 fi
 echo "Now run...."
+echo " "
 echo "source ~/.bashrc"
