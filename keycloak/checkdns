@@ -1,6 +1,7 @@
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 if [[ -z $TF_VAR_awsalias ]]; then
-    echo "ERROR: DNS unexpected response - please discuss with workshop host"
+    echo "ERROR: TF_VAR_awsalias needs to be set to your AWS hosts alais - please discuss with workshop host"
+    echo "export TF_VAR_awsalias=<host alias>"
 else
     dnsl=$(dig $ACCOUNT_ID.$TF_VAR_awsalias.people.aws.dev NS +short | wc -l)
     if [[ $dnsl -gt 0 ]]; then
