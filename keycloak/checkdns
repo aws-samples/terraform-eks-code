@@ -1,7 +1,11 @@
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-dnsl=$(dig $ACCOUNT_ID.awsandy.people.aws.dev NS +short | wc -l)
-if [[ $dnsl -gt 0 ]]; then
-    echo "DNS setup ok - please proceed"
-else
+if [[ -z $TF_VAR_awsalias ]]; then
     echo "ERROR: DNS unexpected response - please discuss with workshop host"
+else
+    dnsl=$(dig $ACCOUNT_ID.$TF_VAR_awsalias.people.aws.dev NS +short | wc -l)
+    if [[ $dnsl -gt 0 ]]; then
+        echo "DNS setup ok - please proceed"
+    else
+        echo "ERROR: DNS unexpected response - please discuss with workshop host"
+    fi
 fi
