@@ -30,13 +30,5 @@ variable "no-output" {
   sensitive   = true
 }
 
-#variable "dn" {
-#  type    = string
-#  default = "testdomain.local"
-#}
 
-variable "dn" {
-  type    = string
-  default = "awsandy.people.aws.dev"
-}
 
