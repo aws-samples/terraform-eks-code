@@ -28,7 +28,6 @@ for i in $dirs; do
     fi
     if [[ $tobuild -gt 0 ]]; then
 
-        if [[ $tobuild != $toremove ]]; then
             # array elements in here so special rule
 
             #echo "Terraform Plan"
@@ -36,14 +35,14 @@ for i in $dirs; do
             terraform apply tfplan -no-color
 
             rc=$(terraform state list | grep -v 'data.' | wc -l)
+            
             if [[ $rc -lt $tobuild ]]; then
+                echo "rc = $rc  tobuild=$tobuild"
                 echo "quick retry"
                 terraform plan -out tfplan
                 terraform apply tfplan -no-color
             fi
-        else
-            echo "$tobuild == $toremove so skipped ....."
-        fi
+
     # double check the helm chart has gone in
     fi
     if [[ $rc -lt $tobuild ]]; then echo "only $rc in tf state expected $tobuild .. exit .." && exit; fi
