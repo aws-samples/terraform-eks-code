@@ -23,7 +23,6 @@ resource "kubectl_manifest" "karpenter_example_deployment" {
               resources:
                 requests:
                   cpu: "1"
-          priorityClassName: low-priority
   YAML
 
   depends_on = [
