@@ -1,4 +1,8 @@
 #
+if [[ -z "${TF_VAR_awsalias}" ]]; then
+    echo "ERROR: TF_VAR_awsalias needs to be set to your AWS hosts alais - please discuss with workshop host"
+    echo "export TF_VAR_awsalias=<host alias>"
+fi
 chmod 640 /home/ec2-user/.kube/config
 echo "Cleaning up if required .."
 helm uninstall keycloak -n keycloak &>/dev/null
