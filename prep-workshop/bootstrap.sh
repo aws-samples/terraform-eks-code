@@ -40,6 +40,8 @@ if [[ ! -z $C9_PID ]]; then
     aws configure set default.region $AWS_REGION
     aws configure set region $AWS_REGION
 fi
+echo "Add SPOT service linked role"
+aws iam create-service-linked-role --aws-service-name spot.amazonaws.com || true
 echo "Now run...."
 echo " "
 echo "source ~/.bashrc"
