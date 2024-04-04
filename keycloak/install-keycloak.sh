@@ -6,7 +6,7 @@ kubectl delete ns keycloak &>/dev/null
 terraform init -upgrade
 terraform destroy -auto-approve
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-export HOSTED_ZONE=$ACCOUNT_ID.awsandy.people.aws.dev
+export HOSTED_ZONE=$ACCOUNT_ID.$TF_VAR_awsalias.people.aws.dev
 export KEYCLOAK_PASSWORD="keycloakpass123"
 export WORKSPACE_ENDPOINT=$(aws grafana list-workspaces | jq -r '.workspaces[] | select(.name=="keycloak-blog").endpoint')
 export WORKSPACE_ID=$(aws grafana list-workspaces | jq -r '.workspaces[] | select(.name=="keycloak-blog").id')
