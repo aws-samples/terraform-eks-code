@@ -16,6 +16,8 @@ resource "null_resource" "gen_cluster_auth" {
         #context=$(kubectl config get-contexts -o name | grep $CLUSTER_NAME)
         ##kubectl config rename-context $context $CLUSTER_NAME
         kubectl version && kubectl get nodes
+        sleep 5
+        ./do-karpenter.sh
      EOT
   }
 }

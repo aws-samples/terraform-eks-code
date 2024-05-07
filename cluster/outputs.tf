@@ -266,5 +266,8 @@ output "instance_profile_unique" {
   value       = try(module.karpenter.aws_iam_instance_profile.this[0].unique_id, null)
 }
 
-
+output "karpenter_role_iam_role_name" {
+  description = "The Karpenter node role name"
+  value       = try(module.karpenter.node_iam_role_name, null)
+}
 

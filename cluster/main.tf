@@ -261,7 +261,8 @@ resource "helm_release" "karpenter" {
   chart               = "karpenter"
   # v0.33+ goes to beta apis - might break things !!
   #version             = "v0.31.2"
-  version             = "0.35.1"
+  version             = "0.35.4"
+  wait = false
 
 
   values = [
