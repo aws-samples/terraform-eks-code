@@ -24,4 +24,3 @@ echo "ERROR: Found only $rc pods running - expected 23"
 else
 echo "PASSED: running pod count $rc"
 fi
-
