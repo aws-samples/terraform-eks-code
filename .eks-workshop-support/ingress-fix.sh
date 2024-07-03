@@ -8,7 +8,6 @@
 if [[ -z "${EKS_CLUSTER_NAME}" ]]; then
     export EKS_CLUSTER_NAME=$(eksctl get cluster | awk -F" " '{print $1}')
 fi
-echo "EKS Cluster Name: ${EKS_CLUSTER_NAME}"
 export TF_VAR_eks_cluster_id="$EKS_CLUSTER_NAME"
 if [[ -z "${LBC_ROLE_ARN}" ]]; then
     export LBC_ROLE_ARN=$(aws iam list-roles | jq -r '.Roles[] | select(.RoleName | contains("alb-controller-")).RoleName')
