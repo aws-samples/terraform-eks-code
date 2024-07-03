@@ -1,3 +1,0 @@
-#!/bin/bash
-set -e
-curl -fsSL https://raw.githubusercontent.com/aws-samples/eks-workshop-v2/build-8f0a123/lab/bin/reset-environment | bash -s -- $1
