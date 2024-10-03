@@ -5,7 +5,7 @@
 module "vpc" {
 
   source  = "terraform-aws-modules/vpc/aws"
-  version = "5.4.0"
+  version = "5.13.0"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -54,6 +54,15 @@ module "vpc" {
   create_flow_log_cloudwatch_iam_role             = true
   flow_log_cloudwatch_log_group_retention_in_days = 7
   flow_log_log_format                             = "$${interface-id} $${srcaddr} $${srcport} $${pkt-src-aws-service} $${dstaddr} $${dstport} $${pkt-dst-aws-service} $${protocol} $${flow-direction} $${traffic-path} $${action} $${log-status} $${subnet-id} $${az-id} $${sublocation-type} $${sublocation-id}"
+
+  # Manage so we can name
+  manage_default_network_acl    = true
+  default_network_acl_tags      = { Name = "${var.cluster_name}-default" }
+  manage_default_route_table    = true
+  default_route_table_tags      = { Name = "${var.cluster_name}-default" }
+  manage_default_security_group = true
+  default_security_group_tags   = { Name = "${var.cluster_name}-default" }
+
 
 
   tags = local.tags
