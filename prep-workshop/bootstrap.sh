@@ -2,7 +2,7 @@ export REPOSITORY_OWNER="aws-samples"
 export REPOSITORY_NAME="eks-workshop-v2"
 export REPOSITORY_REF="main"
 sudo yum install -y jq 
-export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
+export AWS_REGION=$(ec2-metadata | grep region | cut -f2 -d':' | tr -d ' ')
 rm -f installer.sh setup.sh
 wget https://raw.githubusercontent.com/aws-samples/eks-workshop-v2/main/lab/scripts/installer.sh &>/dev/null
 wget https://raw.githubusercontent.com/aws-samples/eks-workshop-v2/main/lab/scripts/setup.sh &>/dev/null
@@ -43,6 +43,7 @@ if [[ ! -z $C9_PID ]]; then
 fi
 echo "Add SPOT service linked role"
 aws iam create-service-linked-role --aws-service-name spot.amazonaws.com &> /dev/null || true
+./resize_osdisk.sh
 echo "Now run...."
 echo " "
 echo "source ~/.bashrc"
