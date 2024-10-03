@@ -3,7 +3,7 @@
 VOLUME_SIZE=${1:-32}
 
 # Get the ID of the environment host Amazon EC2 instance.
-INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data//instance-id)
+INSTANCE_ID=$(ec2-metadata -i | cut -f2 -d':' | tr -d ' ')
 
 # Get the ID of the Amazon EBS volume associated with the instance.
 VOLUME_ID=$(aws ec2 describe-instances \
