@@ -17,12 +17,18 @@ resource "kubectl_manifest" "karpenter_example_deployment" {
             app: inflate
         spec:
           terminationGracePeriodSeconds: 0
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 3000
+            fsGroup: 2000
           containers:
             - name: inflate
               image: public.ecr.aws/eks-distro/kubernetes/pause:3.7
               resources:
                 requests:
                   cpu: "1"
+              securityContext:
+                allowPrivilegeEscalation: false
   YAML
 
   depends_on = [
