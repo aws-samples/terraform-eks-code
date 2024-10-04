@@ -273,7 +273,7 @@ resource "helm_release" "karpenter" {
   # v0.33+ goes to beta apis - might break things !!
   #version             = "v0.31.2"
   #version             = "0.35.4"
-  version = "1.0.5"
+  version = "1.0.3"
   wait = false
 
   values = [
