@@ -257,6 +257,11 @@ module "karpenter" {
   tags = local.tags
 }
 
+module "karpenter_disabled" {
+  source  = "terraform-aws-modules/eks/aws//modules/karpenter"
+  create = false
+}
+
 resource "helm_release" "karpenter" {
   namespace        = "karpenter"
   create_namespace = true
