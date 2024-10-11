@@ -216,7 +216,7 @@ module "eks" {
     }
 
 
-  }
+  
       
   metadata_options = {
         http_endpoint               = "enabled"
