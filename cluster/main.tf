@@ -177,12 +177,6 @@ module "eks" {
 
   eks_managed_node_groups = {
     default = {
-      metadata_options = {
-        http_endpoint               = "enabled"
-        http_tokens                 = "optional"
-        instance_metadata_tags      = "disabled"
-        http_put_response_hop_limit = "3"
-      }
       node_group_name = "default"
       instance_types  = ["t3a.large"]
       min_size        = 3
@@ -219,7 +213,7 @@ module "eks" {
           type                          = "ingress"
           source_cluster_security_group = true
         }
-
+      }
     
     }
 
