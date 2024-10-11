@@ -213,11 +213,16 @@ module "eks" {
           type                          = "ingress"
           source_cluster_security_group = true
         }
-      }
-    
     }
 
 
+  }
+      
+  metadata_options = {
+        http_endpoint               = "enabled"
+        http_tokens                 = "optional"
+        instance_metadata_tags      = "disabled"
+        http_put_response_hop_limit = "3"
   }
   tags = merge(local.tags, {
     # NOTE - if creating multiple security groups with this module, only tag the
