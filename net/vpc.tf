@@ -30,7 +30,7 @@ module "vpc" {
   private_subnet_ipv6_prefixes  = [3, 4, 5]
   intra_subnet_ipv6_prefixes = [6, 7, 8]
 
-
+  private_subnet_assign_ipv6_address_on_creation  = true
 
 
 
