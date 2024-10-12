@@ -84,6 +84,7 @@ module "eks" {
   authentication_mode = "API_AND_CONFIG_MAP" # this mode is default
 
   cluster_ip_family = "ipv6"
+  create_cni_ipv6_iam_policy = true
 
 # When enabling authentication_mode = "API_AND_CONFIG_MAP" , 
 # EKS will automatically create an access entry for the IAM role(s) used by 
