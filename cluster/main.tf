@@ -285,12 +285,12 @@ resource "helm_release" "karpenter" {
     settings:
       clusterName: ${module.eks.cluster_name}
       clusterEndpoint: ${module.eks.cluster_endpoint}
+      #interruptionQueue: ${module.karpenter.queue_name}
       
-      interruptionQueue: ${module.karpenter.aws_sqs_queue.this[0].name}
     EOT
   ]
 }
-
+#interruptionQueue: ${module.karpenter.aws_sqs_queue.this[0].name}
 #interruptionQueue: ${module.karpenter.queue_name}
 
 module "ebs_csi_driver_irsa" {
