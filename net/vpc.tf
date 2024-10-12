@@ -13,6 +13,8 @@ module "vpc" {
 
   azs             = local.azs
 
+  enable_ipv6                                   = true
+  public_subnet_assign_ipv6_address_on_creation = true
 
   private_subnets = concat(
     [for k, v in local.azs : cidrsubnet(element(local.secondary_cidr_blocks, 0), 2, k)]
@@ -23,7 +25,15 @@ module "vpc" {
   
   # 10.0.52.0/24 and 10.0.53.0/24 and 10.0.54.0/24
   intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
-  
+
+  public_subnet_ipv6_prefixes   = [0, 1, 2]
+  private_subnet_ipv6_prefixes  = [3, 4, 5]
+  intra_subnet_ipv6_prefixes = [6, 7, 8]
+
+
+
+
+
   # 10.0.56.0/24 and 10.0.57.0/24 and 10.0.57.0/24
   #database_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 56)]
 

@@ -177,6 +177,12 @@ module "eks" {
 
   eks_managed_node_groups = {
     default = {
+      metadata_options = {
+        http_endpoint               = "enabled"
+        http_tokens                 = "optional"
+        instance_metadata_tags      = "disabled"
+        http_put_response_hop_limit = "3"
+      }
       node_group_name = "default"
       instance_types  = ["t3a.large"]
       min_size        = 3
@@ -232,12 +238,20 @@ module "eks" {
 # Karpenter
 ################################################################################
 
+################################################################################
+# Karpenter
+################################################################################
+
 module "karpenter" {
 
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
   #version = "19.16.0"
 
   cluster_name           = module.eks.cluster_name
+  enable_v1_permissions = true
+
+  enable_pod_identity             = true
+  create_pod_identity_association = true
   enable_irsa            = true
   irsa_oidc_provider_arn = module.eks.oidc_provider_arn
 
@@ -252,6 +266,11 @@ module "karpenter" {
   tags = local.tags
 }
 
+module "karpenter_disabled" {
+  source  = "terraform-aws-modules/eks/aws//modules/karpenter"
+  create = false
+}
+
 resource "helm_release" "karpenter" {
   namespace        = "karpenter"
   create_namespace = true
@@ -262,26 +281,21 @@ resource "helm_release" "karpenter" {
   chart               = "karpenter"
   # v0.33+ goes to beta apis - might break things !!
   #version             = "v0.31.2"
-  version             = "0.35.4"
+  #version             = "0.35.4"
+  version = "1.0.6"
   wait = false
-
 
   values = [
     <<-EOT
+    serviceAccount:
+      name: ${module.karpenter.service_account}
     settings:
       clusterName: ${module.eks.cluster_name}
       clusterEndpoint: ${module.eks.cluster_endpoint}
       interruptionQueue: ${module.karpenter.queue_name}
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: ${module.karpenter.iam_role_arn}
-    tolerations:
-      - key: 'eks.amazonaws.com/compute-type'
-        operator: Equal
-        value: fargate
-        effect: "NoSchedule"
     EOT
   ]
+
   depends_on = [
     module.eks.eks_managed_node_group
     #module.eks.module.eks_managed_node_group.aws_eks_node_group
