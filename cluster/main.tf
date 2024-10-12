@@ -240,10 +240,6 @@ module "eks" {
 # Karpenter
 ################################################################################
 
-################################################################################
-# Karpenter
-################################################################################
-
 module "karpenter" {
 
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
@@ -254,8 +250,6 @@ module "karpenter" {
 
   enable_pod_identity             = true
   create_pod_identity_association = true
-  enable_irsa            = true
-  irsa_oidc_provider_arn = module.eks.oidc_provider_arn
 
   node_iam_role_additional_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
@@ -273,19 +267,16 @@ module "karpenter_disabled" {
   create = false
 }
 
+
 resource "helm_release" "karpenter" {
-  namespace        = "karpenter"
-  create_namespace = true
+  namespace           = "kube-system"
   name                = "karpenter"
   repository          = "oci://public.ecr.aws/karpenter"
   repository_username = data.aws_ecrpublic_authorization_token.token.user_name
   repository_password = data.aws_ecrpublic_authorization_token.token.password
   chart               = "karpenter"
-  # v0.33+ goes to beta apis - might break things !!
-  #version             = "v0.31.2"
-  #version             = "0.35.4"
-  version = "1.0.6"
-  wait = false
+  version             = "1.0.6"
+  wait                = false
 
   values = [
     <<-EOT
@@ -294,16 +285,13 @@ resource "helm_release" "karpenter" {
     settings:
       clusterName: ${module.eks.cluster_name}
       clusterEndpoint: ${module.eks.cluster_endpoint}
-      interruptionQueue: ${module.karpenter.queue_name}
+      
+      interruptionQueue: ${module.karpenter.aws_sqs_queue.this[0].name}
     EOT
-  ]
-
-  depends_on = [
-    module.eks.eks_managed_node_group
-    #module.eks.module.eks_managed_node_group.aws_eks_node_group
   ]
 }
 
+#interruptionQueue: ${module.karpenter.queue_name}
 
 module "ebs_csi_driver_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"

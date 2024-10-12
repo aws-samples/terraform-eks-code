@@ -271,3 +271,8 @@ output "karpenter_role_iam_role_name" {
   value       = try(module.karpenter.node_iam_role_name, null)
 }
 
+output "karpenter_queue_name" {
+  description = "The name of the created Amazon SQS queue"
+  value       = module.karpenter.queue_name
+}
+
