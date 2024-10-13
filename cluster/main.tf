@@ -72,7 +72,7 @@ locals {
 module "eks" {
   #source = "../.."
   source  = "terraform-aws-modules/eks/aws"
-  #version = "19.21.0"
+  version = "20.26.0"
   
   cluster_name                   = local.name
   cluster_version                = local.cluster_version
@@ -247,7 +247,7 @@ module "eks" {
 module "karpenter" {
 
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
-  #version = "19.16.0"
+  version = "20.26.0"
 
   cluster_name           = module.eks.cluster_name
 
@@ -257,8 +257,6 @@ module "karpenter" {
 
   #enable_irsa            = true
   #irsa_oidc_provider_arn = module.eks.oidc_provider_arn
-
-
 
   node_iam_role_additional_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
