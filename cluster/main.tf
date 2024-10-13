@@ -250,7 +250,7 @@ module "karpenter" {
   #version = "19.16.0"
 
   cluster_name           = module.eks.cluster_name
-  
+
   enable_v1_permissions = true
   enable_pod_identity             = true
   create_pod_identity_association = true
@@ -294,7 +294,7 @@ resource "helm_release" "karpenter" {
     settings:
       clusterName: ${module.eks.cluster_name}
       clusterEndpoint: ${module.eks.cluster_endpoint}
-      #interruptionQueue: ${module.karpenter.queue_name}
+      interruptionQueue: ${module.karpenter.queue_name}
       
     EOT
   ]
