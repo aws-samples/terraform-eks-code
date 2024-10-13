@@ -48,7 +48,7 @@ do
     printf "  aws = {\n" >> $of
     printf "   source = \"hashicorp/aws\"\n" >> $of
     printf "#  Lock version to avoid unexpected problems\n" >> $of
-    printf "   version = \"5.69.0\"\n" >> $of
+    printf "   version = \"5.71.0\"\n" >> $of
     printf "  }\n" >> $of
     printf "  kubernetes = {\n" >> $of
     printf "   source = \"hashicorp/kubernetes\"\n" >> $of

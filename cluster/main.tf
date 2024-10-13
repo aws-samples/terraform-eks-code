@@ -240,6 +240,10 @@ module "eks" {
 # Karpenter
 ################################################################################
 
+# the EKS Terraform module does not manage/deploy the Karpenter controller/chart or any manifests - that is left up to users . 
+#The Karpenter sub-module just provisions the necessary AWS infrastructure components for Karpenter 
+# (IAM roles, policies, SQS queue, EventBridge rules, etc.)
+
 module "karpenter" {
 
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
@@ -250,6 +254,11 @@ module "karpenter" {
 
   enable_pod_identity             = true
   create_pod_identity_association = true
+
+  #enable_irsa            = true
+  #irsa_oidc_provider_arn = module.eks.oidc_provider_arn
+
+
 
   node_iam_role_additional_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
@@ -262,10 +271,10 @@ module "karpenter" {
   tags = local.tags
 }
 
-module "karpenter_disabled" {
-  source  = "terraform-aws-modules/eks/aws//modules/karpenter"
-  create = false
-}
+#module "karpenter_disabled" {
+#  source  = "terraform-aws-modules/eks/aws//modules/karpenter"
+#  create = false
+#}
 
 
 resource "helm_release" "karpenter" {
