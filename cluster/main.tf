@@ -250,8 +250,8 @@ module "karpenter" {
   #version = "19.16.0"
 
   cluster_name           = module.eks.cluster_name
+  
   enable_v1_permissions = true
-
   enable_pod_identity             = true
   create_pod_identity_association = true
 
@@ -271,11 +271,11 @@ module "karpenter" {
   tags = local.tags
 }
 
-#module "karpenter_disabled" {
-#  source  = "terraform-aws-modules/eks/aws//modules/karpenter"
-#  create = false
-#}
+module "karpenter_disabled" {
+  source = "../../modules/karpenter"
 
+  create = false
+}
 
 resource "helm_release" "karpenter" {
   namespace           = "kube-system"
