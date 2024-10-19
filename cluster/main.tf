@@ -270,8 +270,7 @@ module "karpenter" {
 }
 
 module "karpenter_disabled" {
-  source = "../../modules/karpenter"
-
+  source  = "terraform-aws-modules/eks/aws//modules/karpenter"
   create = false
 }
 
