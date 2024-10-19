@@ -181,9 +181,9 @@ module "eks" {
     default = {
       metadata_options = {
         http_endpoint               = "enabled"
-        http_tokens                 = "optional"
+        http_tokens                 = "required"
         instance_metadata_tags      = "disabled"
-        http_put_response_hop_limit = "3"
+        http_put_response_hop_limit = "2"
       }
       node_group_name = "default"
       instance_types  = ["t3a.large"]
