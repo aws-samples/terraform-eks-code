@@ -20,7 +20,7 @@ resource "kubectl_manifest" "karpenter_node_class" {
         httpTokens: required
         instance_metadata_tags: disabled
       tags:
-        karpenter.sh/discovery: "${CLUSTER_NAME}"
+        karpenter.sh/discovery: ${module.eks.cluster_name}
   YAML
 
   depends_on = [
