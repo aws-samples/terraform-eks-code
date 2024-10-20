@@ -13,8 +13,14 @@ resource "kubectl_manifest" "karpenter_node_class" {
       securityGroupSelectorTerms:
         - tags:
             karpenter.sh/discovery: ${module.eks.cluster_name}
+      metadataOptions:
+        httpEndpoint: enabled
+        httpProtocolIPv6: disabled
+        httpPutResponseHopLimit: 1 # This is changed to disable IMDS access from containers not on the host network
+        httpTokens: required
+        instance_metadata_tags      = "disabled"
       tags:
-        karpenter.sh/discovery: ${module.eks.cluster_name}
+        karpenter.sh/discovery: "${CLUSTER_NAME}"
   YAML
 
   depends_on = [
