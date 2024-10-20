@@ -1,7 +1,7 @@
 resource "aws_ec2_instance_metadata_defaults" "eu-west-1" {
   http_endpoint               = "enabled"
   http_tokens                 = "required"
-  http_put_response_hop_limit = 1
+  http_put_response_hop_limit = 3
   instance_metadata_tags      = "disabled"
 }
 
