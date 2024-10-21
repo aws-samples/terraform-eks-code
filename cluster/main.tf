@@ -189,7 +189,7 @@ module "eks" {
       instance_types  = ["t3a.large"]
       min_size        = 1
       max_size        = 6
-      desired_size    = 2
+      desired_size    = 3
       labels = {
         workshop-default = "yes"
       }
