@@ -130,14 +130,14 @@ module "eks" {
     vpc-cni    = {
         most_recent              = true
         before_compute           = true
-        configuration_values = jsonencode({
-          env = {
-            ENABLE_POD_ENI                    = "true"
-            ENABLE_PREFIX_DELEGATION          = "true"
-            POD_SECURITY_GROUP_ENFORCING_MODE = "standard"
-          }
-          enableNetworkPolicy = "true"
-      })
+        #configuration_values = jsonencode({
+        #  env = {
+            #ENABLE_POD_ENI                    = "true"
+       #     ENABLE_PREFIX_DELEGATION          = "true"
+       #     POD_SECURITY_GROUP_ENFORCING_MODE = "standard"
+       #   }
+       # enableNetworkPolicy = "true"
+      #})
 
     }
 
@@ -187,9 +187,9 @@ module "eks" {
       }
       node_group_name = "default"
       instance_types  = ["t3a.large"]
-      min_size        = 3
+      min_size        = 1
       max_size        = 6
-      desired_size    = 3
+      desired_size    = 1
       labels = {
         workshop-default = "yes"
       }
