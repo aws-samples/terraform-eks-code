@@ -24,7 +24,7 @@ resource "kubectl_manifest" "karpenter_node_class" {
   YAML
 
   depends_on = [
-    helm_release.karpenter,aws_ec2_instance_metadata_defaults.eu-west-1
+    helm_release.karpenter,aws_ec2_instance_metadata_defaults.metadata
   ]
 }
 
