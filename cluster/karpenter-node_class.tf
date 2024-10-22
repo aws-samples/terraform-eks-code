@@ -1,6 +1,9 @@
 
 
 # amiSelectorTerms: -name <- automatically upgrade when a new AL2 EKS Optimized AMI is released. This is unsafe for production workloads. Validate AMIs in lower environments before deploying them to production.
+#amiFamily: Bottlerocket
+#amiFamily: AL2023
+
 
 resource "kubectl_manifest" "karpenter_node_class" {
   yaml_body = <<-YAML

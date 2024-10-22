@@ -92,6 +92,7 @@ module "eks" {
 
   cluster_ip_family = "ipv6"
   create_cni_ipv6_iam_policy = true
+  ## need to use this ^^  with karpenter nodes
 
 # When enabling authentication_mode = "API_AND_CONFIG_MAP" , 
 # EKS will automatically create an access entry for the IAM role(s) used by 
@@ -258,12 +259,20 @@ module "karpenter" {
 
   cluster_name           = module.eks.cluster_name
 
+  cluster_ip_family      = "ipv6"
+  node_iam_role_attach_cni_policy = true
+
   enable_v1_permissions = true
   enable_pod_identity             = true
   create_pod_identity_association = true
 
+
+
   #enable_irsa            = true
   #irsa_oidc_provider_arn = module.eks.oidc_provider_arn
+  #reuse above
+  #node_iam_role_arn    = module.eks.eks_managed_node_groups["default"].iam_role_arn
+
 
   node_iam_role_additional_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
@@ -271,6 +280,8 @@ module "karpenter" {
     AmazonEC2ContainerRegistryReadOnly = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
     AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
     CloudWatchAgentServerPolicy = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+    ## needed ?
+    #AmazonEKS_CNI_IPv6_Policy= format("arn:aws:iam::%s:policy/AmazonEKS_CNI_IPv6_Policy",data.aws_caller_identity.current.account_id)
   }
 
   tags = local.tags
