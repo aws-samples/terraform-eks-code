@@ -1,9 +1,4 @@
-resource "aws_ec2_instance_metadata_defaults" "eu-west-1" {
-  http_endpoint               = "enabled"
-  http_tokens                 = "required"
-  http_put_response_hop_limit = 3
-  instance_metadata_tags      = "disabled"
-}
+
 
 # amiSelectorTerms: -name <- automatically upgrade when a new AL2 EKS Optimized AMI is released. This is unsafe for production workloads. Validate AMIs in lower environments before deploying them to production.
 

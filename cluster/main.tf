@@ -4,6 +4,13 @@ provider "aws" {
   alias  = "virginia"
 }
 
+resource "aws_ec2_instance_metadata_defaults" "metadata" {
+  http_endpoint               = "enabled"
+  http_tokens                 = "required"
+  http_put_response_hop_limit = 1
+  instance_metadata_tags      = "disabled"
+}
+
 provider "kubernetes" {
   host                   = module.eks.cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
