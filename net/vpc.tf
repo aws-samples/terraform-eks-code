@@ -5,7 +5,7 @@
 module "vpc" {
 
   source  = "terraform-aws-modules/vpc/aws"
-  version = "5.13.0"
+  version = "5.14.0"
 
   name = local.name
   cidr = local.vpc_cidr
@@ -15,7 +15,9 @@ module "vpc" {
 
   enable_ipv6                                   = true
   public_subnet_assign_ipv6_address_on_creation = true
-
+  private_subnet_assign_ipv6_address_on_creation  = true
+  intra_subnet_assign_ipv6_address_on_creation  = true
+ 
   private_subnets = concat(
     [for k, v in local.azs : cidrsubnet(element(local.secondary_cidr_blocks, 0), 2, k)]
   )
@@ -29,9 +31,6 @@ module "vpc" {
   public_subnet_ipv6_prefixes   = [0, 1, 2]
   private_subnet_ipv6_prefixes  = [3, 4, 5]
   intra_subnet_ipv6_prefixes = [6, 7, 8]
-
-  private_subnet_assign_ipv6_address_on_creation  = true
-
 
 
   # 10.0.56.0/24 and 10.0.57.0/24 and 10.0.57.0/24
