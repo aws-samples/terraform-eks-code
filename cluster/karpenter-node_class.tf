@@ -2,7 +2,7 @@
 
 # amiSelectorTerms: -name <- automatically upgrade when a new AL2 EKS Optimized AMI is released. This is unsafe for production workloads. Validate AMIs in lower environments before deploying them to production.
 #amiFamily: Bottlerocket
-#amiFamily: AL2023
+#amiFamily: AL2023 - default AL2
 
 
 resource "kubectl_manifest" "karpenter_node_class" {
@@ -11,8 +11,6 @@ resource "kubectl_manifest" "karpenter_node_class" {
     kind: EC2NodeClass
     metadata:
       name: default
-    spec:
-      amiFamily: AL2023
       role: ${module.karpenter.node_iam_role_name}
       subnetSelectorTerms:
         - tags:
