@@ -9,7 +9,7 @@ module "vpc" {
 
   name = local.name
   cidr = local.vpc_cidr
-  secondary_cidr_blocks = local.secondary_cidr_blocks
+  #secondary_cidr_blocks = local.secondary_cidr_blocks
 
   azs             = local.azs
 
