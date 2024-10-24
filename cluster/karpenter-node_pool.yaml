@@ -1,12 +1,13 @@
-apiVersion: karpenter.sh/v1beta1
+apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:
   name: default
 spec:
   template:
+    metadata:
+      labels:
+        type: karpenter
     spec:
-      nodeClassRef:
-        name: default
       requirements:
         - key: "karpenter.k8s.aws/instance-category"
           operator: In
@@ -20,8 +21,14 @@ spec:
         - key: "karpenter.k8s.aws/instance-generation"
           operator: Gt
           values: ["4"]
+      nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
+        name: default
+      expireAfter: 72h
   limits:
-    cpu: 1000
+    cpu: "1000"
+    memory: 1000Gi
   disruption:
-    consolidationPolicy: WhenEmpty
+    consolidationPolicy: WhenEmptyOrUnderutilized
     consolidateAfter: 30s
