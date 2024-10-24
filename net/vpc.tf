@@ -18,11 +18,13 @@ module "vpc" {
   private_subnet_assign_ipv6_address_on_creation  = true
   intra_subnet_assign_ipv6_address_on_creation  = true
  
-  # 100.64.
-  private_subnets = concat(
-    [for k, v in local.azs : cidrsubnet(element(local.secondary_cidr_blocks, 0), 2, k)]
-  )
+  # 100.64.0.0/18  2= added tp  100.65.0.0/16
+  #private_subnets = concat(
+  #  [for k, v in local.azs : cidrsubnet(element(local.secondary_cidr_blocks, 0), 2, k)]
+  #)
   
+  # /22 10.0.0.0/22 and 10.0.4.0/22 and 10.0.8.0/22
+  private_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 6, k * 4)
   # 10.0.48.0/24 and 10.0.49.0/24 and 10.0.50.0/24
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
   
