@@ -14,4 +14,4 @@ spec:
     - tags:
         karpenter.sh/discovery: $CLUSTER_NAME
   tags:
-    app.kubernetes.io/created-by: eks-workshop
+    app.kubernetes.io/created-by: $CLUSTER_NAME
