@@ -6,6 +6,7 @@ if [ "$userid" != "" ]; then
 fi
 kubectl version &>/dev/null
 if [[ $? -eq 0 ]]; then
+    echo "zap std app"
     kubectl delete ns keycloak &>/dev/null
     kubectl delete ns sample &>/dev/null
     kubectl delete ns ui &>/dev/null
@@ -15,8 +16,14 @@ if [[ $? -eq 0 ]]; then
     kubectl delete ns carts &>/dev/null
     kubectl delete ns orders &>/dev/null
     kubectl delete ns rabbitmq &>/dev/null
+    echo "zap Flux"
     flux uninstall -s &>/dev/null
     helm uninstall keycloak -n keycloak &>/dev/null
+    echo "zap Karpenter"
+    kubectl delete nodepool default
+    kubectl delete ec2nodeclass default
+    kubectl -n kube-system scale deployment karpenter --replicas 0
+    sleep 2
 fi
 
 # Empty codepipeline bucket ready for delete
@@ -75,19 +82,23 @@ for i in $dirs; do
     cd ../$i
     echo "**** Destroying in $i ****"
     if [[ -d ".terraform" ]]; then
-    #kubectl delete ns amazon-cloudwatch
-    #kubextl delete deployment ebs-csi-controller -n kube-system
-    #terraform destroy -target module.eks.aws_eks_addon.aws-ebs-csi-driver -auto-approve
-    #terraform destroy -target amazon-cloudwatch-observability -auto-approve
-    terraform destroy -target helm_release.karpenter -auto-approve
-    echo "EKS Managed Node Group delete ~9m"
-    terraform destroy -target module.eks.module.eks_managed_node_group -auto-approve # gets addons too
-    echo "EKS Cluster delete ~3m"
-    terraform destroy -target module.eks.aws_eks_cluster.this -auto-approve
-    terraform destroy -target module.eks -auto-approve
-    terraform destroy -auto-approve >/dev/null
-    rm -f tfplan terraform*
-    rm -rf .terraform
+        #kubectl delete ns amazon-cloudwatch
+        #kubextl delete deployment ebs-csi-controller -n kube-system
+        #terraform destroy -target module.eks.aws_eks_addon.aws-ebs-csi-driver -auto-approve
+        #terraform destroy -target amazon-cloudwatch-observability -auto-approve
+        terraform destroy -target helm_release.karpenter -auto-approve
+        echo "EKS Managed Node Group delete ~9m"
+        terraform destroy -target module.eks.module.eks_managed_node_group -auto-approve # gets addons too
+        echo "EKS Cluster delete ~3m"
+        terraform destroy -target module.eks.aws_eks_cluster.this -auto-approve
+        terraform destroy -target module.eks -auto-approve
+        terraform destroy -auto-approve 
+        if [[ $? -eq 0 ]]; then
+            rm -f tfplan terraform*
+            rm -rf .terraform
+        else
+            exit
+        fi
     fi
     cd $cur
     date
