@@ -18,7 +18,7 @@ for i in $dirs; do
     #terraform init -no-color -force-copy > /dev/null
     terraform init -no-color >/dev/null
     rc=0
-    terraform plan -json -out tfplan >tfplan.json
+    terraform plan -json -out tfplan > tfplan.json
     tobuild=$(cat tfplan.json | jq '.changes' | grep -v null | jq .add | tail -1)
     toremove=$(cat tfplan.json | jq '.changes' | grep -v null | jq .remove | tail -1)
     echo "tobuild = $tobuild  toremove = $toremove"
