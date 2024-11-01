@@ -19,8 +19,9 @@ resource "null_resource" "gen_cluster_auth" {
         ##kubectl config rename-context $context $CLUSTER_NAME
         kubectl version && kubectl get nodes
         sleep 2
-        envsubst < karpenter-node_class.yaml | kubectl apply -f -
-        envsubst < karpenter-node_pool.yaml | kubectl apply -f -
+        envsubst < karpenter-node_class.yaml.proto >  karpenter-node_class.yaml
+        kubectl apply -f karpenter-node_class.yaml
+        kubectl apply -f karpenter-node_pool.yaml 
      EOT
   }
 }
