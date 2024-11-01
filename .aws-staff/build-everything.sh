@@ -1,6 +1,6 @@
 date
 cur=`pwd`
-dirs="tf-setup net iam c9net cicd cluster nodeg lb2 sampleapp extra/nodeg2 extra/eks-cidr2 extra/sampleapp2 extra/fargate extra/fargateapp"
+dirs="tf-setup net cluster nodeg lb2 sampleapp extra/nodeg2 extra/eks-cidr2 extra/sampleapp2 extra/fargate extra/fargateapp"
 for i in $dirs; do
     cd $cur
     cd ../$i

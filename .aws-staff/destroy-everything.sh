@@ -103,7 +103,7 @@ for i in $dirs; do
     cd $cur
     date
 done
-dirs="c9net net tf-setup"
+dirs="net tf-setup"
 for i in $dirs; do
     cd ../$i
     echo "**** Destroying in $i ****"
