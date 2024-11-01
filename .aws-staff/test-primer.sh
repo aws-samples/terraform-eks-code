@@ -1,6 +1,5 @@
 date
 cur=`pwd`
-#dirs="tf-setup net iam c9net cluster nodeg cicd eks-cidr lb2 sampleapp"
 dirs="primer/tflab1-complete primer/tflab2"
 for i in $dirs; do
     cd $cur

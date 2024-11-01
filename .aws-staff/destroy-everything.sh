@@ -40,7 +40,6 @@ fi
 echo "pass 1 ...."
 cur=$(pwd)
 date
-#dirs="extra/.karpenter extra/fargateapp extra/fargate extra/sampleapp2 extra/eks-cidr2 extra/nodeg2 sampleapp lb2 cicd nodeg cluster c9net iam net"
 dirs="istio keycloak observ addons"
 for i in $dirs; do
     cd $cur

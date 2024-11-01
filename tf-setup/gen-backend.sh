@@ -24,8 +24,7 @@ s3b=$(echo "aws_s3_bucket.terraform_state.id" | terraform console 2> /dev/null |
 echo $s3b > tmp-buck.txt
 mkdir -p generated
 
-#default=["net","iam","c9net","cluster","nodeg","cicd","eks-cidr"]
-SECTIONS=('tf-setup' 'net' 'c9net' 'cluster' 'addons' 'observ' )
+SECTIONS=('tf-setup' 'net' 'cluster' 'addons' 'observ' )
  
 for section in "${SECTIONS[@]}"
 do
