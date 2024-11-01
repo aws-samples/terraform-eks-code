@@ -3,7 +3,7 @@ resource "aws_security_group_rule" "sg-def-22" {
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  cidr_blocks       = [data.aws_ssm_parameter.eks-cidr.value]
+  cidr_blocks       = [module.vpc.vpc_cidr_block]
   security_group_id = data.aws_security_group.c9sg.id
 }
 
@@ -12,7 +12,7 @@ resource "aws_security_group_rule" "sg-def-eks-all" {
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
-  cidr_blocks       = [data.aws_ssm_parameter.eks-cidr.value]
+  cidr_blocks       = [module.vpc.vpc_cidr_block]
   security_group_id = data.aws_security_group.c9sg.id
 }
 
