@@ -1,5 +1,5 @@
 resource "aws_default_security_group" "default" {
-  vpc_id = data.aws_ssm_parameter.eks-vpc.value
+  vpc_id = module.vpc.vpc_id
 
   ingress {
     protocol  = -1
