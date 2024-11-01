@@ -1,6 +1,11 @@
 echo "Pass 2 cli based actions ..."
+
 accid=$(aws --output json sts get-caller-identity | jq -r '.Account' )
 lbarn=$(printf "arn:aws:iam::%s:policy/AWSLoadBalancerControllerIAMPolicy" $accid)
+aws logs delete-log-group --log-group-name /aws/eks/eks-workshop/cluster
+aws kms delete-alias --alias-name alias/eks/eks-workshop
+#arn:aws:iam::566972129213:policy/AmazonEKS_CNI_IPv6_Policy
+aws iam delete-policy --policy-arn arn:aws:iam::$accid:policy/AmazonEKS_CNI_IPv6_Policy
 aws iam delete-policy --policy-arn $lbarn || echo "no LB policy to delete"
 aws dynamodb delete-table --table-name terraform_locks_net || echo "terraform_locks_net"
 aws dynamodb delete-table --table-name terraform_locks_iam || echo "terraform_locks_iam"
