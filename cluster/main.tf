@@ -58,7 +58,7 @@ module "eks" {
 
   cluster_compute_config = {
     enabled    = true
-    node_pools = ["general-purpose"]
+    node_pools = ["general-purpose","system"]
   }
 
 # External encryption key
@@ -78,7 +78,7 @@ module "eks" {
 
   vpc_id                   = data.aws_ssm_parameter.eks-vpc.value
   subnet_ids               = jsondecode(data.aws_ssm_parameter.private_subnets.value)
-  control_plane_subnet_ids = jsondecode(data.aws_ssm_parameter.intra_subnets.value)
+  #control_plane_subnet_ids = jsondecode(data.aws_ssm_parameter.intra_subnets.value)
 
 
   cluster_security_group_additional_rules = {
