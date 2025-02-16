@@ -10,6 +10,7 @@ module "vpc_endpoints" {
     ingress_https1 = {
       description = "HTTPS from VPC 1"
       cidr_blocks = [module.vpc.vpc_cidr_block]
+      ipv6_cidr_blocks       = [module.vpc.vpc_ipv6_cidr_block]
     }
     ingress_https2 = {
       description = "HTTPS from VPC 2"
@@ -19,6 +20,7 @@ module "vpc_endpoints" {
       type="egress"
       description = "HTTPS out of VPC"
       cidr_blocks = ["0.0.0.0/0"]
+      ipv6_cidr_blocks       = ["::/0"]
     }
     egress_ssh = {
       type="egress"
