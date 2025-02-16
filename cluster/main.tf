@@ -130,6 +130,7 @@ module "eks" {
       cidr_blocks = [data.aws_vpc.vpc-default.cidr_block]
     }
   }
+}
 
 module "disabled_eks" {
   source  = "terraform-aws-modules/eks/aws"
