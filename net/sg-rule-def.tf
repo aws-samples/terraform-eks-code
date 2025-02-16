@@ -12,7 +12,7 @@ resource "aws_security_group_rule" "sg-def-ipv6" {
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  cidr_blocks       = [module.vpc.vpc_ipv6_cidr_block]
+  ipv6_cidr_blocks       = [module.vpc.vpc_ipv6_cidr_block]
   security_group_id = data.aws_security_group.c9sg.id
 }
 
