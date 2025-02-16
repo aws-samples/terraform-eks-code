@@ -15,7 +15,7 @@ resource "aws_default_security_group" "default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  egress_ipv6 {
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
