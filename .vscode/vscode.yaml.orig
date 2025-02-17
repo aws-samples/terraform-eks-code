@@ -1,6 +1,10 @@
 Description: Create a VSCode code-server instance with an Amazon CloudFront distribution.
 
 Parameters:
+  EC2KeyPair:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html
+    Default: terraform-andyt
   InstanceVolumeSize:
     Type: Number
     Description: The volume size in GB
@@ -59,6 +63,7 @@ Metadata:
           default: Instance Configuration
         Parameters:
           - InstanceVolumeSize
+          - EC2KeyPair
       - Label:
           default: Code Server Configuration
         Parameters:
@@ -69,6 +74,8 @@ Metadata:
     ParameterLabels:
       InstanceVolumeSize:
         default: Attached volume size
+      EC2KeyPair:
+        default: EC2 key pair name
       HomeFolder:
         default: Folder to open in code server when launching
       DevServerBasePath:
@@ -681,6 +688,7 @@ Resources:
   VSCodeInstanceEC2Instance:
     Type: AWS::EC2::Instance
     Properties:
+      KeyName: !Ref EC2KeyPair
       BlockDeviceMappings:
         - Ebs:
             VolumeSize: !Ref InstanceVolumeSize
