@@ -10,7 +10,7 @@ rc=0
 dirs=$1
 for i in $dirs; do
     cd $cur
-    cd ../$i
+    cd ~/environment/tfekscode/$i
     echo " "
     echo "**** Building in $i ****"
     rm -rf .terraform* backend.tf
