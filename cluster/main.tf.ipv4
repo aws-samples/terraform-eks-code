@@ -90,7 +90,6 @@ module "eks" {
       to_port                  = 443
       type                     = "ingress"
       cidr_blocks = [data.aws_vpc.vpc-default.cidr_block]
-      ipv6_cidr_blocks       = [module.vpc.vpc_ipv6_cidr_block]
     }
   }
 }
