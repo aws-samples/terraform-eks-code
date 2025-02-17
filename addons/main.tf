@@ -40,7 +40,9 @@ provider "kubectl" {
   }
 }
 
-
+# eks auto mode does load balancer 
+# with auto-mode just do
+# metrics server, external_dns
 
 module "eks_blueprints_addons" {
   
@@ -58,14 +60,14 @@ module "eks_blueprints_addons" {
   cluster_version   = data.aws_ssm_parameter.tf-eks-version.value
   oidc_provider_arn = data.aws_ssm_parameter.oidc_provider_arn.value
 
-  enable_aws_load_balancer_controller     = true
+  #enable_aws_load_balancer_controller     = true
  
   enable_fargate_fluentbit                = false # get logs for fargate pods
   #enable_cluster_proportional_autoscaler = true
   #enable_karpenter                       = true
   #enable_kube_prometheus_stack           = true
   enable_metrics_server                   = true
-  enable_aws_cloudwatch_metrics           = true # container insights
+  #enable_aws_cloudwatch_metrics           = true # container insights
 
   enable_cert_manager                     = false   #turned on in observability accel)
   #cert_manager_route53_hosted_zone_arns  = [format("arn:aws:route53:::hostedzone/%s",data.aws_ssm_parameter.hzid.value)] 
@@ -146,17 +148,17 @@ module "eks_blueprints_addons" {
     #create_namespace = true
   }
 
-  aws_load_balancer_controller = {
+  #aws_load_balancer_controller = {
     #namespace=kubernetes_namespace_v1.aws_load_balancer_controller.id
-    namespace="kube-system"
+  #  namespace="kube-system"
     #create_namespace = true
-    set = [
-      {
-        name  = "vpcId"
-        value = data.aws_ssm_parameter.eks-vpc.value
-      },
-    ]
-  }
+  #  set = [
+  #    {
+  #      name  = "vpcId"
+  #      value = data.aws_ssm_parameter.eks-vpc.value
+  #    },
+  #  ]
+  #}
 
   #enable_external_secrets = true    # do in addons
 
