@@ -24,7 +24,6 @@ aws configure set default.region $AWS_REGION
 aws configure set region $AWS_REGION
 echo "Add SPOT service linked role"
 aws iam create-service-linked-role --aws-service-name spot.amazonaws.com &> /dev/null || true
-./resize_osdisk.sh
 echo "Now run...."
 echo " "
 echo "source ~/.bashrc"
