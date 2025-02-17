@@ -174,4 +174,4 @@ fi
 
 mkdir -p /eks-workshop
 
-chown ec2-user /eks-workshop
+chown participant /eks-workshop

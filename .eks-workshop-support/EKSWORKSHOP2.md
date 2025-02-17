@@ -261,7 +261,7 @@ fi
 
 default_nodegroup_name=$(echo "$nodegroup_output" | jq '.nodegroups[0]')
 
-cat << EOT > /home/ec2-user/.bashrc.d/env.bash
+cat << EOT > /home/participant/.bashrc.d/env.bash
 aws eks update-kubeconfig --name ${cluster_name}
 set -a
 EKS_CLUSTER_NAME=${cluster_name}

@@ -35,7 +35,7 @@ aws route53 change-resource-record-sets \
           }}]
 }'
 EOF
-  filename        = "/home/ec2-user/environment/setup-${data.aws_caller_identity.current.account_id}-dns.sh"
+  filename        = "/home/participant/environment/setup-${data.aws_caller_identity.current.account_id}-dns.sh"
   file_permission = "0640"
 }
 

@@ -5,6 +5,6 @@ com=`printf "docker run \
     -e KEYCLOAK_USER="admin" \
     -e KEYCLOAK_PASSWORD="%s" \
     -e IMPORT_FILES_LOCATIONS='/config/*' \
-    -v /home/ec2-user/environment/tfekscode/.keycloak/database/config:/config \
+    -v /home/participant/environment/tfekscode/.keycloak/database/config:/config \
     adorsys/keycloak-config-cli:latest" $lbhn $KEYCLOAK_PASSWORD`
 echo $com
