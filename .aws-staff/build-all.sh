@@ -1,4 +1,5 @@
 echo "circa 45 minutes ..."
+
 rm -f build.log
 date >> build.log
 buildok=1
