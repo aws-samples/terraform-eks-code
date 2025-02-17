@@ -1,8 +1,6 @@
 export REPOSITORY_OWNER="aws-samples"
 export REPOSITORY_NAME="eks-workshop-v2"
 export REPOSITORY_REF="main"
-ln -s /Workshop ~/environment
-sudo ln -s /home/participant /home/ec2-user
 sudo yum install -y jq  amazon-ec2-utils
 export AWS_REGION=$(ec2-metadata | grep local-hostname | cut -f2 -d'.')
 rm -f installer.sh setup.sh
