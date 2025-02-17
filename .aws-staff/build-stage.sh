@@ -11,6 +11,10 @@ dirs=$1
 for i in $dirs; do
     cd $cur
     cd ~/environment/tfekscode/$i
+    if [ $? -ne 0 ]; then
+        echo "directory $i does not exist .. exiting"
+        exit
+    fi
     echo " "
     echo "**** Building in $i ****"
     rm -rf .terraform* backend.tf
