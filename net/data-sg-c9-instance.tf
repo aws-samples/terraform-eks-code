@@ -1,20 +1,8 @@
-variable "c9label" {
-  description = "Cloud9 IDE Name Label"
-  type        = string
-  default     = "-cloud9-eks-work"
-}
-
-output "c9lab" {
-  value = "%{if var.c9label != ""} true %{else} false %{endif}"
-}
-
-
 data "aws_instance" "c9inst" {
 
   filter {
     name   = "tag:Name"
-    #values = ["*${var.c9label}*"]
-    values = ["aws-cloud9-eks-workshop*"]
+    values = ["VSCodeServer"]
   }
   filter {
     name   = "instance-state-name"
