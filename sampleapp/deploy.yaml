@@ -1060,10 +1060,11 @@ metadata:
     app.kuberneres.io/owner: retail-store-sample
     app.kubernetes.io/managed-by: Helm
   annotations:
-    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-  loadBalancerClass: eks.amazonaws.com/nlb 
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing 
+    service.beta.kubernetes.io/aws-load-balancer-ip-address-type: dualstack
 spec:
   type: LoadBalancer
+  loadBalancerClass: eks.amazonaws.com/nlb
   ports:
     - port: 80
       targetPort: http
