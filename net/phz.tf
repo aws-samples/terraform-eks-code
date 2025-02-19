@@ -1,5 +1,5 @@
 resource "aws_route53_zone" "keycloak" {
-  name = format("%s.%s.%s",data.aws_caller_identity.current.account_id,data.aws_ssm_parameter.tf-eks-id.value)
+  name = format("%s.%s.%s",data.aws_caller_identity.current.account_id,data.aws_ssm_parameter.tf-eks-id.value,var.dn)
   
 }
 
