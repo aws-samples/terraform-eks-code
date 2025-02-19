@@ -4,7 +4,7 @@ variable "awsalias" {
 
 
 resource "aws_acm_certificate" "keycloak" {
-  domain_name       = format("keycloak.%s.%s.people.aws.dev",data.aws_caller_identity.current.account_id,var.awsalias)
+  domain_name       = format("keycloak.%s.%s.people.aws.dev",data.aws_caller_identity.current.account_id,data.aws_ssm_parameter.tf-eks-id.value)
   validation_method = "DNS"
 }
 

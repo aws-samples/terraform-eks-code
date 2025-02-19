@@ -2,63 +2,57 @@ if [ $1 = "" ]; then
     echo "must provide a stage directory .. exiting"
 fi
 date
-if [[ -z "${TF_VAR_awsalias}" ]]; then
-    echo "ERROR: TF_VAR_awsalias needs to be set to your AWS hosts alais - please discuss with workshop host"
-    echo "export TF_VAR_awsalias=<host alias>"
 
-else
+cur=$(pwd)
+buildok=1
+rc=0
 
-    cur=$(pwd)
-    buildok=1
+dirs=$1
+for i in $dirs; do
+    cd $cur
+    cd ~/environment/tfekscode/$i
+    if [ $? -ne 0 ]; then
+        echo "directory $i does not exist .. exiting"
+        exit
+    fi
+    echo " "
+    echo "**** Building in $i ****"
+    rm -rf .terraform* backend.tf
+    echo "Terraform Init"
+    #terraform init -no-color -force-copy > /dev/null
+    terraform init -no-color >/dev/null
     rc=0
+    pwd
+    terraform plan -json -out tfplan >tfplan.json
+    tobuild=$(cat tfplan.json | jq '.changes' | grep -v null | jq .add | tail -1)
+    toremove=$(cat tfplan.json | jq '.changes' | grep -v null | jq .remove | tail -1)
+    echo "tobuild = $tobuild  toremove = $toremove"
+    if [[ $tobuild == "" ]]; then
+        echo "unexpected nothing to build .. exiting"
+        exit
+    fi
+    if [[ $tobuild -gt 0 ]]; then
 
-    dirs=$1
-    for i in $dirs; do
-        cd $cur
-        cd ~/environment/tfekscode/$i
-        if [ $? -ne 0 ]; then
-            echo "directory $i does not exist .. exiting"
-            exit
-        fi
-        echo " "
-        echo "**** Building in $i ****"
-        rm -rf .terraform* backend.tf
-        echo "Terraform Init"
-        #terraform init -no-color -force-copy > /dev/null
-        terraform init -no-color >/dev/null
-        rc=0
-        pwd
-        terraform plan -json -out tfplan >tfplan.json
-        tobuild=$(cat tfplan.json | jq '.changes' | grep -v null | jq .add | tail -1)
-        toremove=$(cat tfplan.json | jq '.changes' | grep -v null | jq .remove | tail -1)
-        echo "tobuild = $tobuild  toremove = $toremove"
-        if [[ $tobuild == "" ]]; then
-            echo "unexpected nothing to build .. exiting"
-            exit
-        fi
-        if [[ $tobuild -gt 0 ]]; then
+        # array elements in here so special rule
 
-            # array elements in here so special rule
+        #echo "Terraform Plan"
+        #pc=$(terraform plan -json -out tfplan | jq '.changes' | grep -v null | jq .add | tail -1)
+        terraform apply tfplan -no-color
 
-            #echo "Terraform Plan"
-            #pc=$(terraform plan -json -out tfplan | jq '.changes' | grep -v null | jq .add | tail -1)
+        rc=$(terraform state list | grep -v 'data.' | wc -l)
+
+        if [[ $rc -lt $tobuild ]]; then
+            echo "rc = $rc  tobuild=$tobuild"
+            echo "quick retry"
+            terraform plan -out tfplan
             terraform apply tfplan -no-color
-
-            rc=$(terraform state list | grep -v 'data.' | wc -l)
-
-            if [[ $rc -lt $tobuild ]]; then
-                echo "rc = $rc  tobuild=$tobuild"
-                echo "quick retry"
-                terraform plan -out tfplan
-                terraform apply tfplan -no-color
-            fi
-
-        # double check the helm chart has gone in
         fi
-        if [[ $rc -lt $tobuild ]]; then echo "only $rc in tf state expected $tobuild .. exit .." && exit; fi
 
-        echo "PASSED $i tests (found $rc resources expected minimum for this stage = $tobuild)"
-        cd $cur
+    # double check the helm chart has gone in
+    fi
+    if [[ $rc -lt $tobuild ]]; then echo "only $rc in tf state expected $tobuild .. exit .." && exit; fi
 
-    done
-fi
+    echo "PASSED $i tests (found $rc resources expected minimum for this stage = $tobuild)"
+    cd $cur
+
+done

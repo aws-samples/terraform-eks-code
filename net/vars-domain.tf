@@ -7,7 +7,3 @@ variable "dn" {
   type    = string
   default = "people.aws.dev"
 }
-
-variable "awsalias" {
-  type    = string
-}

@@ -1,8 +1,5 @@
 #
-if [[ -z "${TF_VAR_awsalias}" ]]; then
-    echo "ERROR: TF_VAR_awsalias needs to be set to your AWS hosts alais - please discuss with workshop host"
-    echo "export TF_VAR_awsalias=<host alias>"
-fi
+export TFID=$(aws ssm get-parameter --name /workshop/tf-eks/id --query Parameter.Value --output text)
 chmod 640 /home/ec2-user/.kube/config
 echo "Cleaning up if required .."
 helm uninstall keycloak -n keycloak &>/dev/null
@@ -10,7 +7,7 @@ kubectl delete ns keycloak &>/dev/null
 terraform init -upgrade
 terraform destroy -auto-approve
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-export HOSTED_ZONE=$ACCOUNT_ID.$TF_VAR_awsalias.people.aws.dev
+export HOSTED_ZONE=$ACCOUNT_ID.$TFID.people.aws.dev
 export KEYCLOAK_PASSWORD="keycloakpass123"
 export WORKSPACE_ENDPOINT=$(aws grafana list-workspaces | jq -r '.workspaces[] | select(.name=="keycloak-blog").endpoint')
 export WORKSPACE_ID=$(aws grafana list-workspaces | jq -r '.workspaces[] | select(.name=="keycloak-blog").id')

@@ -1,4 +1,5 @@
 echo "Checking workshop setup ..."
+echo "PASSED"
 #TOKEN=$(curl -s --request PUT "http://169.254.169.254/latest/api/token" --header "X-aws-ec2-metadata-token-ttl-seconds: 3600")
 #instid=$(curl -s http://169.254.169.254/latest/meta-data/instance-id --header "X-aws-ec2-metadata-token: $TOKEN")
 #iname=$(aws ec2 describe-tags --filters "Name=resource-type,Values=instance" "Name=resource-id,Values=$instid" | jq -r '.Tags[] | select(.Key=="Name").Value')
@@ -13,9 +14,4 @@ echo "Checking workshop setup ..."
 #else
 #    echo "PASSED: Found Instance profile $ip"
 #fi
-if [[ -z "${TF_VAR_awsalias}" ]]; then
-    echo "ERROR: TF_VAR_awsalias needs to be set to your AWS hosts alais - please discuss with workshop host"
-    echo "export TF_VAR_awsalias=<host alias>"
-else
-    echo "PASSED: Found TF_VAR_awsalias=$TF_VAR_awsalias - proceed with the workshop"
-fi
+
