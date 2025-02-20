@@ -96,10 +96,8 @@ resource "kubernetes_service_v1" "sample__details" {
     #]
     external_ips            = []
     internal_traffic_policy = "Cluster"
-    ip_families = [
-      "IPv4",
-    ]
-    ip_family_policy            = "SingleStack"
+    #ip_families = [ "IPv4"]
+    ip_family_policy            = "DualStack"
     load_balancer_source_ranges = []
     publish_not_ready_addresses = false
     selector = {
@@ -141,10 +139,8 @@ resource "kubernetes_service_v1" "sample__productpage" {
     #]
     external_ips            = []
     internal_traffic_policy = "Cluster"
-    ip_families = [
-      "IPv4",
-    ]
-    ip_family_policy            = "SingleStack"
+    #ip_families = [ "IPv4",]
+    ip_family_policy            = "DualStack"
     load_balancer_source_ranges = []
     publish_not_ready_addresses = false
     selector = {
@@ -186,10 +182,8 @@ resource "kubernetes_service_v1" "sample__ratings" {
     #]
     external_ips            = []
     internal_traffic_policy = "Cluster"
-    ip_families = [
-      "IPv4",
-    ]
-    ip_family_policy            = "SingleStack"
+    #ip_families = [  "IPv4",]
+    ip_family_policy            = "DualStack"
     load_balancer_source_ranges = []
     publish_not_ready_addresses = false
     selector = {
@@ -231,10 +225,8 @@ resource "kubernetes_service_v1" "sample__reviews" {
     #]
     external_ips            = []
     internal_traffic_policy = "Cluster"
-    ip_families = [
-      "IPv4",
-    ]
-    ip_family_policy            = "SingleStack"
+    #ip_families = [    "IPv4",]
+    ip_family_policy            = "DualStack"
     load_balancer_source_ranges = []
     publish_not_ready_addresses = false
     selector = {
