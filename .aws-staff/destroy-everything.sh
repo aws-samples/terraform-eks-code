@@ -18,11 +18,6 @@ if [[ $? -eq 0 ]]; then
     kubectl delete ns rabbitmq &>/dev/null
     echo "zap Flux"
     flux uninstall -s &>/dev/null
-    helm uninstall keycloak -n keycloak &>/dev/null
-    echo "zap Karpenter"
-    kubectl delete nodepool default
-    kubectl delete ec2nodeclass default
-    kubectl -n kube-system scale deployment karpenter --replicas 0
     sleep 2
 fi
 
@@ -40,7 +35,7 @@ fi
 echo "pass 1 ...."
 cur=$(pwd)
 date
-dirs="istio keycloak observ addons"
+dirs="istio observ addons"
 for i in $dirs; do
     cd $cur
     cd ../$i
