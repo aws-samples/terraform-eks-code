@@ -12,7 +12,7 @@ resource "aws_route" "nat-ipv6" {
 
 resource "aws_route" "nat-ipv4" {
   route_table_id            = aws_ssm_parameter.private_rtb.value
-  destination_ipv6_cidr_block    = "0.0.0.0/0"
+  destination_cidr_block    = "0.0.0.0/0"
   nat_gateway_id = module.vpc.natgw_ids[0]
 }
 
