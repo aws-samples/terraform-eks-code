@@ -7,15 +7,15 @@ resource "aws_route" "rt-eks1" {
 resource "aws_route" "nat-ipv6" {
   route_table_id            = aws_ssm_parameter.private_rtb.value
   destination_ipv6_cidr_block    = "::/0"
-  vpc_peering_connection_id = module.vpc.natgw_ids[0]
+  net_gateway_id = module.vpc.natgw_ids[0]
 }
-
 
 resource "aws_route" "nat-ipv4" {
   route_table_id            = aws_ssm_parameter.private_rtb.value
-  destination_cidr_block    = "0.0.0.0/0"
-  vpc_peering_connection_id = module.vpc.natgw_ids[0]
+  destination_ipv6_cidr_block    = "0.0.0.0/0"
+  net_gateway_id = module.vpc.natgw_ids[0]
 }
+
 
 resource "aws_route" "rt-eks-isol" {
   route_table_id            = aws_ssm_parameter.intra_rtb.value
