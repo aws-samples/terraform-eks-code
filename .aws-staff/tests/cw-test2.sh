@@ -32,19 +32,17 @@ kubectl wait --for=condition=Ready pods -l control-plane=controller-manager -n $
     exit 1
 }
 
-
-
-# Check Fluent Bit pods
-echo "Checking Fluent Bit pods..."
-kubectl wait --for=condition=Ready pods -l app=fluent-bit -n ${NAMESPACE} --timeout=60s || {
-    echo "Error: Fluent Bit pods not ready"
+# Check CloudWatch agent pods
+echo "Checking CloudWatch agent pods..."
+kubectl wait --for=condition=Ready pods -l name=cloudwatch-agent -n ${NAMESPACE} --timeout=60s || {
+    echo "Error: CloudWatch agent pods not ready"
     exit 1
 }
 
-# Check CloudWatch agent pods
-echo "Checking CloudWatch agent pods..."
-kubectl wait --for=condition=Ready pods -l app=cloudwatch-agent -n ${NAMESPACE} --timeout=60s || {
-    echo "Error: CloudWatch agent pods not ready"
+# Check Fluent Bit pods
+echo "Checking Fluent Bit pods..."
+kubectl wait --for=condition=Ready pods -l name=fluent-bit -n ${NAMESPACE} --timeout=60s || {
+    echo "Error: Fluent Bit pods not ready"
     exit 1
 }
 
@@ -144,7 +142,7 @@ echo "Container Insights metrics found ✓"
 
 # 6. Verify CloudWatch agent configuration
 echo "Checking CloudWatch agent configuration..."
-for pod in $(kubectl get pods -n ${NAMESPACE} -l app=cloudwatch-agent -o name); do
+for pod in $(kubectl get pods -n ${NAMESPACE} -l name=cloudwatch-agent -o name); do
     echo "Checking config in $pod..."
     kubectl exec -n ${NAMESPACE} $pod -- cat /etc/cwagentconfig/cwagentconfig.json > /dev/null || {
         echo "Error: Cannot read CloudWatch agent configuration"
