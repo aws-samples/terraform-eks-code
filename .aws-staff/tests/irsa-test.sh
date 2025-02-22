@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
-
+echo "irsa test"
+CLUSTER="eks-workshop"
+OIDC=$(aws eks describe-cluster --name $CLUSTER --query "cluster.identity.oidc.issuer" --output text)
+echo $OIDC
+oid=$(echo $OIDC | cut -f5 -d'/')
+aws iam list-open-id-connect-providers --output text | grep $oid
+if [[ $? -eq 0 ]];then
+echo "oidc provider exists"
+fi
 # Generate a random string for bucket name
 RANDOM_STRING=$(LC_ALL=C tr -dc 'a-z0-9' < /dev/urandom | fold -w 8 | head -n 1)
 BUCKET_NAME="irsa-test-${RANDOM_STRING}"
