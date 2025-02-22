@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-CLUSTER_NAME="your-cluster-name"  # Replace with your cluster name
+CLUSTER_NAME="eks-workshop"  # Replace with your cluster name
 NAMESPACE="amazon-cloudwatch"
 TEST_NAMESPACE="cloudwatch-test"
 
