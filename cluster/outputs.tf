@@ -113,6 +113,18 @@ output "cluster_iam_role_unique_id" {
   value       = module.eks.cluster_iam_role_unique_id
 }
 
+#module.eks.node_iam_role_arn
+output "node_iam_role_arn" {
+  description = "Auto Mode Node IAM role"
+  value       = module.eks.node_iam_role_arn
+}
+
+output "node_iam_role_name" {
+  description = "Auto Mode Node IAM name"
+  value       = module.eks.node_iam_role_name
+}
+
+
 ################################################################################
 # EKS Addons
 ################################################################################
