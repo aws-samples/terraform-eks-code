@@ -4,12 +4,12 @@ provider "aws" {
   alias  = "virginia"
 }
 
-resource "aws_ec2_instance_metadata_defaults" "metadata" {
-  http_endpoint               = "enabled"
-  http_tokens                 = "required"
-  http_put_response_hop_limit = 1
-  instance_metadata_tags      = "disabled"
-}
+#resource "aws_ec2_instance_metadata_defaults" "metadata" {
+#  http_endpoint               = "enabled"
+#  http_tokens                 = "required"
+#  http_put_response_hop_limit = 1
+#  instance_metadata_tags      = "disabled"
+#}
 
 
 
@@ -24,8 +24,6 @@ locals {
   cluster_version = data.aws_ssm_parameter.tf-eks-version.value
   region          = data.aws_ssm_parameter.tf-eks-region.value
 
-
-  vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
