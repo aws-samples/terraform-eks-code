@@ -32,17 +32,19 @@ kubectl wait --for=condition=Ready pods -l control-plane=controller-manager -n $
     exit 1
 }
 
-# Check CloudWatch agent pods
-echo "Checking CloudWatch agent pods..."
-kubectl wait --for=condition=Ready pods -l app=cloudwatch-agent -n ${NAMESPACE} --timeout=60s || {
-    echo "Error: CloudWatch agent pods not ready"
-    exit 1
-}
+
 
 # Check Fluent Bit pods
 echo "Checking Fluent Bit pods..."
 kubectl wait --for=condition=Ready pods -l app=fluent-bit -n ${NAMESPACE} --timeout=60s || {
     echo "Error: Fluent Bit pods not ready"
+    exit 1
+}
+
+# Check CloudWatch agent pods
+echo "Checking CloudWatch agent pods..."
+kubectl wait --for=condition=Ready pods -l app=cloudwatch-agent -n ${NAMESPACE} --timeout=60s || {
+    echo "Error: CloudWatch agent pods not ready"
     exit 1
 }
 
