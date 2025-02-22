@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-CLUSTER_NAME="eks-workshop"  # Replace with your cluster name
+CLUSTER_NAME="eks-workshop"
 NAMESPACE="amazon-cloudwatch"
 TEST_NAMESPACE="cloudwatch-test"
 
@@ -27,14 +27,22 @@ echo "Checking CloudWatch pods..."
 
 # Check controller manager
 echo "Checking controller manager..."
-kubectl wait --for=condition=Ready pods -l control-plane=controller-manager -n ${NAMESPACE} --timeout=60s || {
+kubectl wait --for=condition=Ready pods -l app.kubernetes.io/component=amazon-cloudwatch-observability -n ${NAMESPACE} --timeout=60s || {
     echo "Error: CloudWatch Observability controller manager not ready"
     exit 1
 }
 
+# Print pod labels for debugging
+echo "Checking pod labels..."
+echo "CloudWatch agent pod labels:"
+POD_NAME=$(kubectl get pods -n ${NAMESPACE} -l app.kubernetes.io/name=cloudwatch-agent -o name | head -n 1)
+if [ -n "$POD_NAME" ]; then
+    kubectl get $POD_NAME -n ${NAMESPACE} -o json | jq .metadata.labels
+fi
+
 # Check CloudWatch agent pods
 echo "Checking CloudWatch agent pods..."
-kubectl wait --for=condition=Ready pods -l name=cloudwatch-agent -n ${NAMESPACE} --timeout=60s || {
+kubectl wait --for=condition=Ready pods -l app.kubernetes.io/name=cloudwatch-agent -n ${NAMESPACE} --timeout=60s || {
     echo "Error: CloudWatch agent pods not ready"
     exit 1
 }
