@@ -67,7 +67,7 @@ module "eks_blueprints_addons" {
   #enable_karpenter                       = true
   #enable_kube_prometheus_stack           = true
   enable_metrics_server                   = true
-  enable_aws_cloudwatch_metrics           = falsi # for container insights - done in cluster build
+  enable_aws_cloudwatch_metrics           = false # for container insights - done in cluster build
 
   enable_cert_manager                     = false   #turned on in observability accel)
   #cert_manager_route53_hosted_zone_arns  = [format("arn:aws:route53:::hostedzone/%s",data.aws_ssm_parameter.hzid.value)] 
