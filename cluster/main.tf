@@ -69,17 +69,9 @@ module "eks" {
     provider_key_arn = module.kms.key_arn
   }
 
-  cluster_addons = {
-    amazon-cloudwatch-observability = {
-        most_recent = true
-      }
-
-  }
-
   vpc_id                   = data.aws_ssm_parameter.eks-vpc.value
   subnet_ids               = jsondecode(data.aws_ssm_parameter.private_subnets.value)
   #control_plane_subnet_ids = jsondecode(data.aws_ssm_parameter.intra_subnets.value)
-
 
   cluster_security_group_additional_rules = {
     # Test: https://github.com/terraform-aws-modules/terraform-aws-eks/pull/2319
