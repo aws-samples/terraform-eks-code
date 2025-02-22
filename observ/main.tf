@@ -45,7 +45,7 @@ data "aws_grafana_workspace" "this" {
 module "eks_monitoring" {
   #depends_on = [aws_prometheus_workspace.amp-demo]
   source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring"
-  #source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring?ref=v2.0.0"
+  #source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring?ref=v2.13.0"
 
   eks_cluster_id = data.aws_ssm_parameter.cluster-name.value
 

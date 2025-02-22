@@ -47,7 +47,7 @@ provider "kubectl" {
 module "eks_blueprints_addons" {
   
   source = "aws-ia/eks-blueprints-addons/aws"
-  version = "~> 1.11" #ensure to update this to the latest/desired version
+  version = "~> 1.19" #ensure to update this to the latest/desired version
 
   #eks_addons = { 
   #  amazon-cloudwatch-observability = {
@@ -67,7 +67,7 @@ module "eks_blueprints_addons" {
   #enable_karpenter                       = true
   #enable_kube_prometheus_stack           = true
   enable_metrics_server                   = true
-  enable_aws_cloudwatch_metrics           = false # for container insights - done in cluster build
+  enable_aws_cloudwatch_metrics           = true # for container insights - done in cluster build
 
   enable_cert_manager                     = false   #turned on in observability accel)
   #cert_manager_route53_hosted_zone_arns  = [format("arn:aws:route53:::hostedzone/%s",data.aws_ssm_parameter.hzid.value)] 
