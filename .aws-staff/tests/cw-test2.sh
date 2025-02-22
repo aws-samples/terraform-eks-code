@@ -27,7 +27,7 @@ echo "Checking CloudWatch pods..."
 
 # Check controller manager
 echo "Checking controller manager..."
-kubectl wait --for=condition=Ready pods -l app.kubernetes.io/component=amazon-cloudwatch-observability -n ${NAMESPACE} --timeout=60s || {
+kubectl wait --for=condition=Ready pods -l "app.kubernetes.io/name=amazon-cloudwatch-observability" -n ${NAMESPACE} --timeout=60s || {
     echo "Error: CloudWatch Observability controller manager not ready"
     exit 1
 }
