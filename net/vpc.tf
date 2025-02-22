@@ -17,7 +17,7 @@ module "vpc" {
   public_subnet_assign_ipv6_address_on_creation = true
   private_subnet_assign_ipv6_address_on_creation  = true
   intra_subnet_assign_ipv6_address_on_creation  = true
-  create_egress_only_igw = false
+  create_egress_only_igw = true
  
   # 100.64.0.0/18  2= added tp  100.65.0.0/16
   #private_subnets = concat(
