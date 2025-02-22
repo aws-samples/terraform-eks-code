@@ -32,17 +32,21 @@ kubectl wait --for=condition=Ready pods -l app.kubernetes.io/component=amazon-cl
     exit 1
 }
 
-# Print pod labels for debugging
-echo "Checking pod labels..."
-echo "CloudWatch agent pod labels:"
-POD_NAME=$(kubectl get pods -n ${NAMESPACE} -l app.kubernetes.io/name=cloudwatch-agent -o name | head -n 1)
-if [ -n "$POD_NAME" ]; then
-    kubectl get $POD_NAME -n ${NAMESPACE} -o json | jq .metadata.labels
-fi
-
 # Check CloudWatch agent pods
 echo "Checking CloudWatch agent pods..."
-kubectl wait --for=condition=Ready pods -l app.kubernetes.io/name=cloudwatch-agent -n ${NAMESPACE} --timeout=60s || {
+echo "Listing all pods and their labels in ${NAMESPACE}:"
+kubectl get pods -n ${NAMESPACE} --show-labels
+
+echo "Looking for CloudWatch agent pods:"
+AGENT_POD=$(kubectl get pods -n ${NAMESPACE} | grep cloudwatch-agent | head -n 1 | awk '{print $1}')
+if [ -n "$AGENT_POD" ]; then
+    echo "Found agent pod: $AGENT_POD"
+    echo "Pod labels:"
+    kubectl get pod $AGENT_POD -n ${NAMESPACE} -o jsonpath='{.metadata.labels}' | jq '.'
+fi
+
+# Now try to wait for the pods
+kubectl wait --for=condition=Ready pods -l k8s-app=cloudwatch-agent -n ${NAMESPACE} --timeout=60s || {
     echo "Error: CloudWatch agent pods not ready"
     exit 1
 }
