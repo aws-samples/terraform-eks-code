@@ -55,7 +55,7 @@ for i in $dirs; do
             terraform destroy -auto-approve
             if [[ $? -eq 0 ]]; then
                 echo "terraform destroy in $i succeeded"
-                rm -rf .terraform*
+                #rm -rf .terraform*
             else
                 echo "terraform destroy in $i failed"
                 exit
@@ -104,7 +104,7 @@ for i in $dirs; do
     if [[ -d ".terraform" ]]; then
         terraform destroy -auto-approve >/dev/null
         rm -f tfplan terraform*
-        rm -rf .terraform
+        #rm -rf .terraform
     fi
     cd $cur
     date

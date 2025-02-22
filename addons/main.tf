@@ -60,14 +60,23 @@ module "eks_blueprints_addons" {
   cluster_version   = data.aws_ssm_parameter.tf-eks-version.value
   oidc_provider_arn = data.aws_ssm_parameter.oidc_provider_arn.value
 
-  #enable_aws_load_balancer_controller     = true
- 
-  enable_fargate_fluentbit                = false # get logs for fargate pods
-  #enable_cluster_proportional_autoscaler = true
-  #enable_karpenter                       = true
-  #enable_kube_prometheus_stack           = true
-  enable_metrics_server                   = true
-  enable_aws_cloudwatch_metrics           = true # for container insights - done in cluster build
+  #enable_aws_load_balancer_controller    = true
+  #enable_fargate_fluentbit               = false # get logs for fargate pods
+  #enable_cluster_proportional_autoscaler = false
+  #enable_karpenter                       = false
+  #enable_kube_prometheus_stack           = false
+  #enable_metrics_server                   = true
+    enable_external_dns                    = true
+  external_dns = {
+    name          = "external-dns"
+    namespace     = "external-dns"
+    create_namespace = true
+    depends_on = [null_resource.sleep]
+  }
+  external_dns_route53_zone_arns = [data.aws_route53_zone.phz.arn]
+  
+  
+  #enable_aws_cloudwatch_metrics           = true # for container insights - done in cluster build
 
   enable_cert_manager                     = false   #turned on in observability accel)
   #cert_manager_route53_hosted_zone_arns  = [format("arn:aws:route53:::hostedzone/%s",data.aws_ssm_parameter.hzid.value)] 
@@ -83,16 +92,6 @@ module "eks_blueprints_addons" {
   #    },
   #    ]
   #  }
-
-  enable_external_dns                    = true
-  external_dns = {
-    name          = "external-dns"
-    namespace     = "external-dns"
-    create_namespace = true
-    depends_on = [null_resource.sleep]
-  }
-  external_dns_route53_zone_arns = [data.aws_route53_zone.phz.arn]
-
 
   enable_aws_privateca_issuer             = false
   aws_privateca_issuer = {
