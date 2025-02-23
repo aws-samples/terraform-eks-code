@@ -31,8 +31,8 @@ kubectl wait --for=condition=Ready pods -l "app.kubernetes.io/name=external-secr
 echo "All External Secrets pods are running ✓"
 
 # 2. Create test namespace
-echo "Creating test namespace..."
-kubectl create namespace ${TEST_NAMESPACE}
+#echo "Creating test namespace..."
+#kubectl create namespace ${TEST_NAMESPACE}
 
 # 3. Create SecretStore with AWS Secrets Manager configuration
 # this passes the service account "default" for IRSA
@@ -40,6 +40,10 @@ kubectl create namespace ${TEST_NAMESPACE}
 #
 echo "Role attached to service account: external-secrets-sa"
 kubectl describe  sa external-secrets-sa  -n external-secrets | grep Anno
+sarn=$(kubectl describe  sa external-secrets-sa  -n external-secrets | grep Anno | cut -f3- -d':' | tr -d ' ')
+kubectl annotate serviceaccount default -n external-secrets-test \
+    eks.amazonaws.com/role-arn=$sarn --overwrite
+kubectl describe  sa default  -n external-secrets-test | grep Anno
 
 echo "Creating SecretStore..."
 cat << EOF | kubectl apply -f -
@@ -52,11 +56,11 @@ spec:
   provider:
     aws:
       service: SecretsManager
-      region: ${AWS_REGION}
+      region: eu-west-1
       auth:
         jwt:
           serviceAccountRef:
-            name: external-secrets-sa
+            name: default
 EOF
 
 # 4. Create a test secret in AWS Secrets Manager
