@@ -71,8 +71,8 @@ spec:
 EOF
 
 # 4. Wait for service to get LoadBalancer IP/hostname
-echo "Waiting for LoadBalancer to be ready (sleep 240) ..."
-sleep 240
+echo "Waiting for LoadBalancer to be ready (sleep 60) ..."
+sleep 60
 kubectl wait --for=jsonpath='{.status.loadBalancer.ingress[0]}' service nginx-test -n external-dns-test --timeout=180s || {
     echo "Error: LoadBalancer not ready"
     exit 1
