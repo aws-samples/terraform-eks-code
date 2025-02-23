@@ -13,6 +13,7 @@ kubectl wait --for=condition=Ready pods -l "app.kubernetes.io/name=external-dns"
     exit 1
 }
 
+
 echo "External DNS pods are running ✓"
 
 # 2. Check External DNS logs for errors
