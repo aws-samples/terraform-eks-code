@@ -66,7 +66,7 @@ module "eks_blueprints_addons" {
   #enable_karpenter                       = false
   #enable_kube_prometheus_stack           = false
   #enable_metrics_server                   = true
-    enable_external_dns                    = true
+  enable_external_dns                    = true
   external_dns = {
     name          = "external-dns"
     namespace     = "external-dns"
@@ -75,6 +75,17 @@ module "eks_blueprints_addons" {
   }
   external_dns_route53_zone_arns = [data.aws_route53_zone.phz.arn]
  
+  enable_external_secrets = true    # do in addons
+
+  external_secrets = {
+    name          = "external-secrets"
+    chart_version = "0.14.2"
+    repository    = "https://charts.external-secrets.io"
+    namespace     = "external-secrets"
+    create_namespace = true
+  }
+
+
   
   #enable_aws_cloudwatch_metrics           = true # for container insights - done in cluster build
 
@@ -159,15 +170,7 @@ module "eks_blueprints_addons" {
   #  ]
   #}
 
-  #enable_external_secrets = true    # do in addons
 
-  #external_secrets = {
-  #  name          = "external-secrets"
-  #  chart_version = "0.9.9"
-  #  repository    = "https://charts.external-secrets.io"
-  #  namespace     = "external-secrets"
-  #  create_namespace = true
-  #}
 
   tags = {
     Environment = "dev"
