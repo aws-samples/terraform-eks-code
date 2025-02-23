@@ -2,7 +2,10 @@
 set -e
 
 NAMESPACE="external-dns"
-TEST_DOMAIN="test.example.com"  # Replace with your domain
+td=$(aws route53 list-hosted-zones --query HostedZones[].Name --output text | grep 'people.aws.dev')
+md=${td%.}
+TEST_DOMAIN=$(echo $md)  # Replace with your domain
+echo "Domain: ${TEST_DOMAIN}"
 
 echo "Testing External DNS..."
 
