@@ -48,14 +48,14 @@ module "eks" {
   cluster_endpoint_public_access = false
   cluster_endpoint_private_access = true
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-  
+
   enable_irsa = true
 
   enable_cluster_creator_admin_permissions = true
   authentication_mode = "API_AND_CONFIG_MAP" # this mode is default
 
-  #cluster_ip_family = "ipv6"
-  #create_cni_ipv6_iam_policy = true
+  cluster_ip_family = "ipv6"
+  create_cni_ipv6_iam_policy = true
   ## need to use this ^^  with karpenter nodes
 
   cluster_compute_config = {
@@ -74,6 +74,7 @@ module "eks" {
   vpc_id                   = data.aws_ssm_parameter.eks-vpc.value
   subnet_ids               = jsondecode(data.aws_ssm_parameter.private_subnets.value)
   #control_plane_subnet_ids = jsondecode(data.aws_ssm_parameter.intra_subnets.value)
+
 
   cluster_security_group_additional_rules = {
     # Test: https://github.com/terraform-aws-modules/terraform-aws-eks/pull/2319
@@ -107,3 +108,5 @@ module "kms" {
 
   tags = local.tags
 }
+
+
