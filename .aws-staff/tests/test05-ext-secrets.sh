@@ -35,6 +35,12 @@ echo "Creating test namespace..."
 kubectl create namespace ${TEST_NAMESPACE}
 
 # 3. Create SecretStore with AWS Secrets Manager configuration
+# this passes the service account "default" for IRSA
+#  https://aws.amazon.com/blogs/containers/leverage-aws-secrets-stores-from-eks-fargate-with-external-secrets-operator/
+#
+echo "Role attached to service account: external-secrets-sa"
+kubectl describe  sa external-secrets-sa  -n external-secrets | grep Anno
+
 echo "Creating SecretStore..."
 cat << EOF | kubectl apply -f -
 apiVersion: external-secrets.io/v1beta1
@@ -50,7 +56,7 @@ spec:
       auth:
         jwt:
           serviceAccountRef:
-            name: default
+            name: external-secrets-sa
 EOF
 
 # 4. Create a test secret in AWS Secrets Manager
