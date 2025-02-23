@@ -68,7 +68,8 @@ spec:
 EOF
 
 # 4. Wait for service to get LoadBalancer IP/hostname
-echo "Waiting for LoadBalancer to be ready..."
+echo "Waiting for LoadBalancer to be ready (sleep 180) ..."
+sleep 180
 kubectl wait --for=jsonpath='{.status.loadBalancer.ingress[0]}' service nginx-test -n external-dns-test --timeout=180s || {
     echo "Error: LoadBalancer not ready"
     exit 1
@@ -77,7 +78,7 @@ kubectl wait --for=jsonpath='{.status.loadBalancer.ingress[0]}' service nginx-te
 echo "LoadBalancer is ready ✓"
 
 # 5. Check External DNS logs for DNS record creation
-echo "Checking External DNS logs for DNS updates..."
+echo "Checking External DNS logs for DNS updates (sleep 30) ..."
 sleep 30  # Give External DNS time to process
 kubectl logs -n ${NAMESPACE} ${POD_NAME} --tail=50 | grep -i "${TEST_DOMAIN}" || {
     echo "Warning: No log entries found for test domain"
