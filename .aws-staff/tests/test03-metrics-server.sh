@@ -12,6 +12,7 @@ kubectl wait --for=condition=Ready pods -l "app.kubernetes.io/name=metrics-serve
     exit 1
 }
 
+
 echo "Metrics Server pods are running ✓"
 
 # 2. Check metrics server API availability
