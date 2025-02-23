@@ -56,7 +56,7 @@ EOF
 # 4. Create a test secret in AWS Secrets Manager
 echo "Creating test secret in AWS Secrets Manager..."
 aws secretsmanager create-secret \
-    --name "external-secrets-test" \
+    --name "test-secret" \
     --secret-string '{"username":"test-user","password":"test-password"}' || {
     echo "Error: Failed to create AWS secret"
     exit 1
