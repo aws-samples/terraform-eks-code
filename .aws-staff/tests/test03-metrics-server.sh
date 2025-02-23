@@ -69,7 +69,7 @@ kubectl wait --for=condition=Ready pods -l app=metrics-test -n default --timeout
 }
 
 # Wait for metrics to be collected (metrics server needs some time to collect metrics)
-echo "Waiting for metrics to be collected..."
+echo "Waiting for metrics to be collected (sleep 30s) ..."
 sleep 30
 
 # 5. Test pod metrics
