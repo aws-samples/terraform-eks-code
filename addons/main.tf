@@ -74,7 +74,7 @@ module "eks_blueprints_addons" {
     depends_on = [null_resource.sleep]
   }
   external_dns_route53_zone_arns = [data.aws_route53_zone.phz.arn]
-  
+ 
   
   #enable_aws_cloudwatch_metrics           = true # for container insights - done in cluster build
 
