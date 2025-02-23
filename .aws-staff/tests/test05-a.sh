@@ -5,6 +5,7 @@ NAMESPACE="external-secrets"
 TEST_NAMESPACE="external-secrets-test"
 SECRET_NAME="test-secret"
 
+
 echo "Testing External Secrets Operator..."
 # Print versions
 echo "External Secrets Version:"
