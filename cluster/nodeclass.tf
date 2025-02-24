@@ -47,7 +47,7 @@ spec:
   # If unspecified, EKS will create a role
   # If specified, role requires access entry described above
   #role: arn:aws:iam::123456789012:role/MyNodeRole
-  role: module.eks.node_iam_role_arn
+  #role: module.eks.node_iam_role_arn
 
   # Optional: Additional EC2 tags
   tags:
