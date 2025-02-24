@@ -42,6 +42,7 @@ spec:
     iops: 3000      # Range: 3000-16000
     throughput: 125 # Range: 125-1000
     type: gp3
+    encrypted: true
 
   # IAM role to use for EC2 instance role
   # If unspecified, EKS will create a role
