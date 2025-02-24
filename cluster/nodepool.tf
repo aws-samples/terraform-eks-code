@@ -14,7 +14,7 @@ spec:
       nodeClassRef:
         group: eks.amazonaws.com
         kind: NodeClass
-        name: default
+        name: mynodeclass
 
       requirements:
         - key: "eks.amazonaws.com/instance-category"

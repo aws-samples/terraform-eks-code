@@ -15,7 +15,8 @@ resource "null_resource" "gen_cluster_auth" {
         #eksctl utils write-kubeconfig --cluster $CLUSTER_NAME
         #context=$(kubectl config get-contexts -o name | grep $CLUSTER_NAME)
         ##kubectl config rename-context $context $CLUSTER_NAME
-        kubectl version && kubectl get nodes
+        kubectl version
+        sleep 10
     EOT
   }
 }
