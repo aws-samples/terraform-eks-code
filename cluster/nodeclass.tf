@@ -12,7 +12,6 @@ spec:
   # Required: Subnet selection for node placement
   subnetSelectorTerms:
     - tags:
-    #Name: "<tag-name>"
         kubernetes.io/role/internal-elb: "1"
     # Alternative using direct subnet ID
     # - id: "subnet-0123456789abcdef0"
@@ -20,12 +19,12 @@ spec:
 
   # Required: Security group selection for nodes
   securityGroupSelectorTerms:
-    #- tags:
-    #    Name: "eks-cluster-node-sg"
+    - tags:
+        Name: "eks-workshop-cluster"
     # Alternative approaches:
     # - id: "sg-0123456789abcdef0"
     # - name: "eks-cluster-node-security-group"
-    -id: ${module.eks.cluster_security_group_id}
+    #-id: ${module.eks.cluster_security_group_id}
 
 
   # Optional: Configure SNAT policy (defaults to Random)
@@ -47,7 +46,7 @@ spec:
   # If unspecified, EKS will create a role
   # If specified, role requires access entry described above
   #role: arn:aws:iam::123456789012:role/MyNodeRole
-  #role: module.eks.node_iam_role_arn
+  role: module.eks.node_iam_role_arn
 
   # Optional: Additional EC2 tags
   tags:
