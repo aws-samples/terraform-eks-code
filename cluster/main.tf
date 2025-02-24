@@ -2,6 +2,13 @@
 provider "aws" {
   region = "us-east-1"
   alias  = "virginia"
+
+  kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.14"
+  }
+
+
 }
 
 #resource "aws_ec2_instance_metadata_defaults" "metadata" {
