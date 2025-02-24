@@ -1,4 +1,4 @@
-resource "kubectl_manifest" "karpenter_node_class" {
+resource "kubectl_manifest" "karpenter_node_pool" {
 yaml_body = <<-YAML
 apiVersion: karpenter.sh/v1
 kind: NodePool
