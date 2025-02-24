@@ -3,11 +3,11 @@ yaml_body = <<-YAML
 apiVersion: eks.amazonaws.com/v1
 kind: NodeClass
 metadata:
-  name: default
+  name: mynodeclass
 spec:
 
   # Required: Name of IAM Role for Nodes
-  role: "MyNodeRole"
+  role: module.eks.node_iam_role_name
 
   # Required: Subnet selection for node placement
   subnetSelectorTerms:
