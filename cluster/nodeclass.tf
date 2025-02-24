@@ -41,6 +41,7 @@ spec:
     size: "80Gi"    # Range: 1-59000Gi or 1-64000G or 1-58Ti or 1-64T
     iops: 3000      # Range: 3000-16000
     throughput: 125 # Range: 125-1000
+    type: gp3
 
   # IAM role to use for EC2 instance role
   # If unspecified, EKS will create a role
