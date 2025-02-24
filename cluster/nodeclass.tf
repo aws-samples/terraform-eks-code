@@ -16,7 +16,7 @@ spec:
         kubernetes.io/role/internal-elb: "1"
     # Alternative using direct subnet ID
     # - id: "subnet-0123456789abcdef0"
-      -id: module.eks.cluster_security_group_id
+    #  -id: module.eks.cluster_security_group_id
 
   # Required: Security group selection for nodes
   securityGroupSelectorTerms:
