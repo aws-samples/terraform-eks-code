@@ -8,8 +8,8 @@ metadata:
 spec:
 
   # Required: Name of IAM Role for Nodes
-  #role: ${module.eks.node_iam_role_name}
-  role: ${module.eks.cluster_iam_role_name}
+  role: ${module.eks.node_iam_role_name}
+
   # Required: Subnet selection for node placement
   subnetSelectorTerms:
     - tags:
@@ -49,7 +49,7 @@ spec:
   # If specified, role requires access entry described above
   #role: arn:aws:iam::123456789012:role/MyNodeRole
   #role: module.eks.node_iam_role_arn
-
+  
   # Optional: Additional EC2 tags
   tags:
     Environment: "production"
