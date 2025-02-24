@@ -7,7 +7,7 @@ metadata:
 spec:
 
   # Required: Name of IAM Role for Nodes
-  role: module.eks.node_iam_role_name
+  role: ${module.eks.node_iam_role_name}
 
   # Required: Subnet selection for node placement
   subnetSelectorTerms:
@@ -25,7 +25,7 @@ spec:
     # Alternative approaches:
     # - id: "sg-0123456789abcdef0"
     # - name: "eks-cluster-node-security-group"
-    -id: [module.eks.cluster_security_group_id]
+    -id: [${module.eks.cluster_security_group_id}]
 
 
   # Optional: Configure SNAT policy (defaults to Random)
