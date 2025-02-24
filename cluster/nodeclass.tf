@@ -41,8 +41,6 @@ spec:
     size: "80Gi"    # Range: 1-59000Gi or 1-64000G or 1-58Ti or 1-64T
     iops: 3000      # Range: 3000-16000
     throughput: 125 # Range: 125-1000
-    type: gp3
-    encrypted: true
 
   # IAM role to use for EC2 instance role
   # If unspecified, EKS will create a role
@@ -51,8 +49,8 @@ spec:
   #role: module.eks.node_iam_role_arn
   
   # Optional: Additional EC2 tags
-  tags:
-    Environment: "production"
-    Team: "platform"
+  #tags:
+  #  Environment: "production"
+  #  Team: "platform"
 YAML
 }
