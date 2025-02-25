@@ -1,7 +1,7 @@
-resource "aws_iam_role_policy_attachment" "additional_node_policy" {
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-  role       = module.eks.node_iam_role_name
-}
+#resource "aws_iam_role_policy_attachment" "additional_node_policy" {
+#  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+#  role       = module.eks.node_iam_role_name
+#}
 
 
 #AmazonInspector2ManagedCispolicy = "arn:aws:iam::aws:policy/AmazonInspector2ManagedCisPolicy"
