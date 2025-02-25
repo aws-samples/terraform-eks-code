@@ -20,11 +20,11 @@ spec:
   # Required: Security group selection for nodes
   securityGroupSelectorTerms:
     #- tags:
-    #    Name: "eks-workshop-cluster"
+    #    Name: 
     # Alternative approaches:
     #- id: "sg-04b04505d2d96d877"
-    # - name: "eks-cluster-node-security-group"
-    -id: "${module.eks.cluster_primary_security_group_id}"
+    #- name: ${data.aws_security_group.primary_eks_sec_grp.name}
+    - id: ${module.eks.cluster_primary_security_group_id}
 
 
   # Optional: Configure SNAT policy (defaults to Random)
