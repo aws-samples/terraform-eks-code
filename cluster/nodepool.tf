@@ -9,7 +9,7 @@ spec:
   disruption:
     consolidationPolicy: WhenEmpty
     consolidateAfter: 30s
-    expireAfter: 24h # 1 days
+    expireAfter: 48h # 4 days
     budgets:
     - nodes: "50%"  
       schedule: "0 2 * * *"  # daily at 2am UTC
