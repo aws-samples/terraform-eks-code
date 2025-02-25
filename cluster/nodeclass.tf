@@ -22,7 +22,7 @@ spec:
     #- tags:
     #    Name: "eks-workshop-cluster"
     # Alternative approaches:
-    - id: "sg-0e8594c21f153004e"
+    - id: "sg-04b04505d2d96d877"
     # - name: "eks-cluster-node-security-group"
     #-id: ${module.eks.cluster_primary_security_group_id}
 
