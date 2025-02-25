@@ -13,6 +13,7 @@ spec:
     budgets:
     - nodes: "50%"  
       schedule: "0 2 * * *"  # daily at 2am UTC
+      duration: "3h"        # 1 hour
   template:
     metadata:
       labels:
