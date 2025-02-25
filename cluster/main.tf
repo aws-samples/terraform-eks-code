@@ -72,7 +72,8 @@ module "eks" {
   cluster_compute_config = {
     enabled    = true
     #node_pools = ["general-purpose"]
-    node_pools = ["system"]
+    #node_pools = ["system"]
+    node_pools = []
   }
 
 # External encryption key
