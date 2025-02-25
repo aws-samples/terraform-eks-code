@@ -49,8 +49,8 @@ spec:
   #role: module.eks.node_iam_role_arn
   
   # Optional: Additional EC2 tags
-  #tags:
-  #  Environment: "production"
-  #  Team: "platform"
+  tags:
+    Environment: "production"
+    Team: "platform"
 YAML
 }
