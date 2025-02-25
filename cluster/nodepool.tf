@@ -15,6 +15,13 @@ spec:
         group: eks.amazonaws.com
         kind: NodeClass
         name: default
+      disruption:
+        consolidationPolicy: WhenEmpty
+        consolidateAfter: 30s
+        expireAfter: 24h # 1 days
+        budgets:
+        - nodes: "50%"  
+          schedule: "0 2 * * *"  # daily at 2am UTC
       requirements:
         - key: "eks.amazonaws.com/instance-category"
           operator: In
