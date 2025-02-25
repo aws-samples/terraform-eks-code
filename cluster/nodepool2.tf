@@ -1,10 +1,10 @@
-resource "kubectl_manifest" "karpenter_node_pool" {
+resource "kubectl_manifest" "karpenter_node_pool2" {
 depends_on = [null_resource.gen_cluster_auth,kubectl_manifest.karpenter_node_class]
 yaml_body = <<-YAML
 apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:
-  name: my-node-pool
+  name: my-node-pool2
 spec:
   disruption:
     consolidationPolicy: WhenEmpty
