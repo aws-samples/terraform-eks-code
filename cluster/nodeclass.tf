@@ -19,10 +19,10 @@ spec:
 
   # Required: Security group selection for nodes
   securityGroupSelectorTerms:
-    - tags:
-        Name: "eks-workshop-cluster"
+    #- tags:
+    #    Name: "eks-workshop-cluster"
     # Alternative approaches:
-    # - id: "sg-0123456789abcdef0"
+    - id: "sg-0e8594c21f153004e"
     # - name: "eks-cluster-node-security-group"
     #-id: ${module.eks.cluster_primary_security_group_id}
 
