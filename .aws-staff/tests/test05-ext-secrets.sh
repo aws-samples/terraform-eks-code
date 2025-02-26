@@ -1,13 +1,14 @@
 #!/bin/bash
 set -e
+NAMESPACE="external-secrets"
+TEST_NAMESPACE="external-secrets-test"
+SECRET_NAME="test-secret"
 echo "delete namespace"
 kubectl delete namespace ${TEST_NAMESPACE} --ignore-not-found
 echo "delete aws secret"
 aws secretsmanager delete-secret --secret-id external-secrets-test --force-delete-without-recovery || true
 
-NAMESPACE="external-secrets"
-TEST_NAMESPACE="external-secrets-test"
-SECRET_NAME="test-secret"
+
 
 
 kubectl create ns $TEST_NAMESPACE
