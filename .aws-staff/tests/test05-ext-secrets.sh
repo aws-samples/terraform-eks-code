@@ -61,7 +61,7 @@ spec:
       auth:
         jwt:
           serviceAccountRef:
-            name: default
+            name: external-secrets-sa
 EOF
 
 # 4. Create a test secret in AWS Secrets Manager
