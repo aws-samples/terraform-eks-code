@@ -310,7 +310,7 @@ resource "kubernetes_deployment_v1" "sample__details-v1" {
         container {
           args                       = []
           command                    = []
-          image                      = "docker.io/istio/examples-bookinfo-details-v1:1.18.0"
+          image                      = "docker.io/istio/examples-bookinfo-details-v1:1.20.2"
           image_pull_policy          = "IfNotPresent"
           name                       = "details"
           stdin                      = false
@@ -397,7 +397,7 @@ resource "kubernetes_deployment_v1" "sample__productpage-v1" {
         container {
           args                       = []
           command                    = []
-          image                      = "docker.io/istio/examples-bookinfo-productpage-v1:1.18.0"
+          image                      = "docker.io/istio/examples-bookinfo-productpage-v1:1.20.2"
           image_pull_policy          = "IfNotPresent"
           name                       = "productpage"
           stdin                      = false
@@ -497,7 +497,7 @@ resource "kubernetes_deployment_v1" "sample__ratings-v1" {
         container {
           args                       = []
           command                    = []
-          image                      = "docker.io/istio/examples-bookinfo-ratings-v1:1.18.0"
+          image                      = "docker.io/istio/examples-bookinfo-ratings-v1:1.20.2"
           image_pull_policy          = "IfNotPresent"
           name                       = "ratings"
           stdin                      = false
@@ -584,7 +584,7 @@ resource "kubernetes_deployment_v1" "sample__reviews-v1" {
         container {
           args                       = []
           command                    = []
-          image                      = "docker.io/istio/examples-bookinfo-reviews-v1:1.18.0"
+          image                      = "docker.io/istio/examples-bookinfo-reviews-v1:1.20.2"
           image_pull_policy          = "IfNotPresent"
           name                       = "reviews"
           stdin                      = false
@@ -700,7 +700,7 @@ resource "kubernetes_deployment_v1" "sample__reviews-v2" {
         container {
           args                       = []
           command                    = []
-          image                      = "docker.io/istio/examples-bookinfo-reviews-v2:1.18.0"
+          image                      = "docker.io/istio/examples-bookinfo-reviews-v2:1.20.2"
           image_pull_policy          = "IfNotPresent"
           name                       = "reviews"
           stdin                      = false
@@ -816,7 +816,7 @@ resource "kubernetes_deployment_v1" "sample__reviews-v3" {
         container {
           args                       = []
           command                    = []
-          image                      = "docker.io/istio/examples-bookinfo-reviews-v3:1.18.0"
+          image                      = "docker.io/istio/examples-bookinfo-reviews-v3:1.20.2"
           image_pull_policy          = "IfNotPresent"
           name                       = "reviews"
           stdin                      = false
