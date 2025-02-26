@@ -75,7 +75,7 @@ module "eks_blueprints_addons" {
   }
   external_dns_route53_zone_arns = [data.aws_route53_zone.phz.arn]
  
-  enable_external_secrets = true    # do in addons
+  #enable_external_secrets = true    # do in addons
 
   external_secrets = {
     name          = "external-secrets"
