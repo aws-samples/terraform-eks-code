@@ -99,6 +99,7 @@ spec:
       property: password
 EOF
 
+
 # 6. Wait for secret to be created
 echo "Waiting for secret to be created..."
 for i in {1..12}; do
