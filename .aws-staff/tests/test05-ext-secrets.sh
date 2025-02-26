@@ -5,6 +5,7 @@ NAMESPACE="external-secrets"
 TEST_NAMESPACE="external-secrets-test"
 SECRET_NAME="test-secret"
 
+kubectl create ns $TEST_NAMESPACE
 echo "Testing External Secrets Operator..."
 
 # 1. Check if all External Secrets pods are running
