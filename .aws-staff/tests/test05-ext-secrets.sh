@@ -13,7 +13,7 @@ aws secretsmanager delete-secret --secret-id external-secrets-test --force-delet
 
 kubectl create ns $TEST_NAMESPACE
 echo "Testing External Secrets Operator..."
-
+kubectl create  sa external-secrets-sa -n $TEST_NAMESPACE
 # 1. Check if all External Secrets pods are running
 echo "Checking External Secrets pods..."
 
@@ -50,7 +50,7 @@ kubectl describe  sa external-secrets-sa  -n external-secrets | grep Anno
 sarn=$(kubectl describe  sa external-secrets-sa  -n external-secrets | grep Anno | cut -f3- -d':' | tr -d ' ')
 kubectl annotate serviceaccount default -n external-secrets-test \
     eks.amazonaws.com/role-arn=$sarn --overwrite
-kubectl describe  sa default  -n external-secrets-test | grep Anno
+kubectl describe sa default -n external-secrets-test | grep Anno
 
 echo "Creating SecretStore..."
 cat << EOF | kubectl apply -f -
@@ -67,8 +67,11 @@ spec:
       auth:
         jwt:
           serviceAccountRef:
-            name: external-secrets-sa
+            name: default
 EOF
+
+echo "check secret store"
+
 
 # 4. Create a test secret in AWS Secrets Manager
 echo "Creating test secret in AWS Secrets Manager..."
