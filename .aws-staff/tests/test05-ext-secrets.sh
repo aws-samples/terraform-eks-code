@@ -166,3 +166,4 @@ chmod +x cleanup.sh
 # Print versions
 echo "External Secrets Version:"
 kubectl get deployment -n ${NAMESPACE} external-secrets -o jsonpath='{.spec.template.spec.containers[0].image}'
+./cleanup.sh
