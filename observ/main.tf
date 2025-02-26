@@ -64,8 +64,10 @@ module "eks_monitoring" {
   # deploys external-secrets in to the cluster
   enable_external_secrets = true
   grafana_api_key         = aws_grafana_workspace_api_key.key.key
+  
   target_secret_name      = "grafana-admin-credentials"
   target_secret_namespace = "grafana-operator"
+  
   grafana_url             = format("https://%s",data.aws_grafana_workspace.this.endpoint)
 
 

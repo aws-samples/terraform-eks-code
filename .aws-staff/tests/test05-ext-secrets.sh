@@ -9,11 +9,8 @@ echo "delete aws secret"
 aws secretsmanager delete-secret --secret-id external-secrets-test --force-delete-without-recovery || true
 
 
-
-
 kubectl create ns $TEST_NAMESPACE
 echo "Testing External Secrets Operator..."
-kubectl create  sa external-secrets-sa -n $TEST_NAMESPACE
 # 1. Check if all External Secrets pods are running
 echo "Checking External Secrets pods..."
 
@@ -40,6 +37,16 @@ echo "All External Secrets pods are running ✓"
 # 2. Create test namespace
 #echo "Creating test namespace..."
 #kubectl create namespace ${TEST_NAMESPACE}
+
+
+### need own role / trust policy and permissions !
+
+#####
+
+
+
+######
+
 
 # 3. Create SecretStore with AWS Secrets Manager configuration
 # this passes the service account "default" for IRSA
