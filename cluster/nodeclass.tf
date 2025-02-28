@@ -52,6 +52,6 @@ spec:
   tags:
     Environment: "production"
     Team: "platform"
-    Name: "EKS Auto - mynodeclass"
+    Name: "EKS Auto Workshop"
 YAML
 }
