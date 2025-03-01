@@ -72,62 +72,64 @@ yum install --quiet -y nc git jq zip tar findutils zsh diffutils tree gettext ba
 
 pip3 install -q awscurl==0.28 urllib3==1.26.6
 echo "Other tools"
-# kubectl
+echo "kubectl"
 download "https://dl.k8s.io/release/v$kubectl_version/bin/linux/${arch_name}/kubectl" "kubectl"
 chmod +x ./kubectl
 mv ./kubectl /usr/local/bin
 
-# helm
+echo "helm"
 download "https://get.helm.sh/helm-v$helm_version-linux-${arch_name}.tar.gz" "helm.tar.gz"
 tar zxf helm.tar.gz
 chmod +x linux-${arch_name}/helm
 mv ./linux-${arch_name}/helm /usr/local/bin
 rm -rf linux-${arch_name}/ helm.tar.gz
 
-# eksctl
+echo "eksctl"
 download "https://github.com/eksctl-io/eksctl/releases/download/v${eksctl_version}/eksctl_Linux_${arch_name}.tar.gz" "eksctl.tar.gz"
 tar zxf eksctl.tar.gz
 chmod +x eksctl
 mv ./eksctl /usr/local/bin
 rm -rf eksctl.tar.gz
 
-# kubeseal
+echo "kubeseal"
 download "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${kubeseal_version}/kubeseal-${kubeseal_version}-linux-${arch_name}.tar.gz" "kubeseal.tar.gz"
 tar xfz kubeseal.tar.gz
 chmod +x kubeseal
 mv ./kubeseal /usr/local/bin
 rm -rf kubeseal.tar.gz
 
-# yq
+echo "yq"
 download "https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_${arch_name}" "yq"
 chmod +x ./yq
 mv ./yq /usr/local/bin
 
-# flux
+echo "flux"
 download "https://github.com/fluxcd/flux2/releases/download/v${flux_version}/flux_${flux_version}_linux_${arch_name}.tar.gz" "flux.tar.gz"
 tar zxf flux.tar.gz
 chmod +x flux
 mv ./flux /usr/local/bin
 rm -rf flux.tar.gz
 
-# argocd
+echo "argocd"
 download "https://github.com/argoproj/argo-cd/releases/download/v${argocd_version}/argocd-linux-${arch_name}" "argocd"
 chmod +x ./argocd
 mv ./argocd /usr/local/bin/argocd
 
-# ec2 instance selector
+echo "ec2 instance selector"
 download "https://github.com/aws/amazon-ec2-instance-selector/releases/download/v${ec2_instance_selector_version}/ec2-instance-selector-linux-${arch_name}" "ec2-instance-selector"
 chmod +x ./ec2-instance-selector
 mv ./ec2-instance-selector /usr/local/bin/ec2-instance-selector
 
-# oha load generator
+echo "oha load generator"
 download "https://github.com/hatoo/oha/releases/download/v${oha_version}/oha-linux-${arch_name}" "oha"
 chmod +x ./oha
 mv ./oha /usr/local/bin
 
+echo "terraform"
 yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
 yum -y install terraform
 
+echo "kubectl completion"
 /usr/local/bin/kubectl completion bash >  ~/.bashrc.d/kubectl_completion.bash
 echo "alias k=kubectl" >> ~/.bashrc.d/kubectl_completion.bash
 echo "complete -F __start_kubectl k" >> ~/.bashrc.d/kubectl_completion.bash
