@@ -130,6 +130,6 @@ yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/has
 yum -y install terraform
 
 echo "kubectl completion"
-/usr/local/bin/kubectl completion bash >  /home/ec2_user/.bashrc.d/kubectl_completion.bash
-echo "alias k=kubectl" >> /home/ec2_user/.bashrc.d/kubectl_completion.bash
-echo "complete -F __start_kubectl k" >> /home/ec2_user/.bashrc.d/kubectl_completion.bash
+/usr/local/bin/kubectl completion bash >  /home/ec2-user/.bashrc.d/kubectl_completion.bash
+echo "alias k=kubectl" >> /home/ec2-user/.bashrc.d/kubectl_completion.bash
+echo "complete -F __start_kubectl k" >> /home/ec2-user/.bashrc.d/kubectl_completion.bash
