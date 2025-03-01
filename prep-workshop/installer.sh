@@ -67,11 +67,11 @@ case "$arch" in
     exit 1
     ;;
 esac
-
-yum install --quiet -y nc git jzip tar findutils zsh diffutils tree gettext bash-completion python3 python3-pip
+echo "OS tools"
+yum install --quiet -y nc git jq zip tar findutils zsh diffutils tree gettext bash-completion python3 python3-pip
 
 pip3 install -q awscurl==0.28 urllib3==1.26.6
-
+echo "Other tools"
 # kubectl
 download "https://dl.k8s.io/release/v$kubectl_version/bin/linux/${arch_name}/kubectl" "kubectl"
 chmod +x ./kubectl
