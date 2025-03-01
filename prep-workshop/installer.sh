@@ -68,7 +68,7 @@ case "$arch" in
     ;;
 esac
 
-yum install --quiet -y gettext bash-completion python3 python3-pip
+yum install --quiet -y nc git jzip tar findutils zsh diffutils tree gettext bash-completion python3 python3-pip
 
 pip3 install -q awscurl==0.28 urllib3==1.26.6
 
