@@ -124,6 +124,10 @@ mv ./ec2-instance-selector /usr/local/bin/ec2-instance-selector
 download "https://github.com/hatoo/oha/releases/download/v${oha_version}/oha-linux-${arch_name}" "oha"
 chmod +x ./oha
 mv ./oha /usr/local/bin
+
+yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+sudo yum -y install terraform
+
 /usr/local/bin/kubectl completion bash >  ~/.bashrc.d/kubectl_completion.bash
 echo "alias k=kubectl" >> ~/.bashrc.d/kubectl_completion.bash
 echo "complete -F __start_kubectl k" >> ~/.bashrc.d/kubectl_completion.bash
