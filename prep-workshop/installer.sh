@@ -70,7 +70,7 @@ esac
 echo "OS tools"
 yum install --quiet -y nc git jq zip tar findutils zsh diffutils tree gettext bash-completion python3 python3-pip
 
-pip3 install -q awscurl==0.28 urllib3==1.26.6
+pip3 install -q awscurl==0.28 urllib3==1.26.6 &> /dev/null
 echo "Other tools"
 echo "kubectl"
 download "https://dl.k8s.io/release/v$kubectl_version/bin/linux/${arch_name}/kubectl" "kubectl"
