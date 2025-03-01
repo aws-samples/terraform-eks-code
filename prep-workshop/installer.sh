@@ -120,7 +120,7 @@ download "https://github.com/aws/amazon-ec2-instance-selector/releases/download/
 chmod +x ./ec2-instance-selector
 mv ./ec2-instance-selector /usr/local/bin/ec2-instance-selector
 
-# oha
+# oha load generator
 download "https://github.com/hatoo/oha/releases/download/v${oha_version}/oha-linux-${arch_name}" "oha"
 chmod +x ./oha
 mv ./oha /usr/local/bin
