@@ -10,7 +10,7 @@ export AWS_REGION=$(ec2-metadata | grep local-hostname | cut -f2 -d'.')
 chmod +x installer.sh
 #chmod +x setup.sh
 echo "Running installer.sh ....."
-(sudo ./installer.sh) &>/dev/null
+sudo ./installer.sh
 #ls -l / | grep eks-workshop | grep ec2 >/dev/null
 #if [ $? -eq 0 ]; then
 #    echo "Install utils into /usr/local/bin"
