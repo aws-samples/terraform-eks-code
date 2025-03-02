@@ -39,6 +39,9 @@ spec:
         - key: eks.amazonaws.com/instance-generation
           operator: Gt
           values: ["5"]
+        - key: "karpenter.sh/capacity-type"
+          operator: In
+          values: ["on-demand","spot"]
   limits:
     cpu: "1000"
     memory: 1000Gi
