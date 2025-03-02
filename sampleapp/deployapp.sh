@@ -2,6 +2,7 @@
 #kubectl wait --for=condition=available deployments --all
 #sleep 5
 #kubectl get svc ui
+kubectl create ns sampleapp
 kubectl apply -f sampleapp.yaml -n sampleapp
 kubectl wait --for=condition=available deployments --all -n sampleapp
 sleep 5
