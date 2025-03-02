@@ -129,6 +129,14 @@ echo "terraform"
 yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
 yum -y install terraform
 
+
+echo "istio cli"
+cd ~/environment
+rm -rf istio-1.24.3
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.24.3 sh -
+export PATH=$HOME/environment/istio-1.24.3/bin:$PATH 
+echo "export PATH=$HOME/environment/istio-1.24.3/bin:$PATH" >> ~/.bashrc
+
 echo "kubectl completion"
 mkdir -p /home/ec2-user/.bashrc.d
 /usr/local/bin/kubectl completion bash >  /home/ec2-user/.bashrc.d/kubectl_completion.bash
