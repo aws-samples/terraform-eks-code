@@ -42,4 +42,10 @@ if [[ $storc == *"ebs.csi.eks.amazonaws.com"* ]]; then
 else
     echo "Auto mode ebs storageclass is not active"
 fi
+echo "csi drivers"
 kubectl get csidriver
+echo "nodeclass"
+kubectl get nodeclass
+echo "nodepool"
+kubectl get nodepool
+
