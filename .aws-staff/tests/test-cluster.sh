@@ -36,5 +36,10 @@ if [[ $crds == *"policyendpoints.networking"* ]]; then
 else
     echo "policyendpoints is not installed"
 fi
-kubectl get storageclass
+storc=$(kubectl get storageclass)
+if [[ $storc == *"ebs.csi.eks.amazonaws.com"* ]]; then
+    echo "Auto mode ebs storageclass is active"
+else
+    echo "Auto mode ebs storageclass is not active"
+fi
 kubectl get csidriver
