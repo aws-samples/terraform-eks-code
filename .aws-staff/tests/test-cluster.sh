@@ -36,3 +36,5 @@ if [[ $crds == *"policyendpoints.networking"* ]]; then
 else
     echo "policyendpoints is not installed"
 fi
+kubectl get storageclass
+kubectl get csidriver
