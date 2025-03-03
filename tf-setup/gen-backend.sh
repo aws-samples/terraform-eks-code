@@ -24,14 +24,14 @@ s3b=$(echo "aws_s3_bucket.terraform_state.id" | terraform console 2> /dev/null |
 echo $s3b > tmp-buck.txt
 mkdir -p generated
 
-SECTIONS=('tf-setup' 'net' 'cluster' 'addons' 'observ' )
- 
+SECTIONS=('tf-setup' 'net' 'cluster' 'nodepool' 'addons' 'observ')
+s3b=`terraform output -json s3_bucket | jq -r .[]`
 for section in "${SECTIONS[@]}"
 do
 
     #tabn=`terraform output dynamodb_table_name_$section | tr -d '"'`
     tabn=$(printf "terraform_locks_%s" $section) 
-    s3b=`terraform output -json s3_bucket | jq -r .[]`
+    #s3b=`terraform output -json s3_bucket | jq -r .[]`
     echo $s3b $tabn
 
     cd $d
@@ -47,7 +47,7 @@ do
     printf "  aws = {\n" >> $of
     printf "   source = \"hashicorp/aws\"\n" >> $of
     printf "#  Lock version to avoid unexpected problems\n" >> $of
-    printf "   version = \"5.87.0\"\n" >> $of
+    printf "   version = \"5.90.0\"\n" >> $of
     printf "  }\n" >> $of
     printf "  kubernetes = {\n" >> $of
     printf "   source = \"hashicorp/kubernetes\"\n" >> $of

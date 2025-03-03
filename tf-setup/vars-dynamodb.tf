@@ -22,6 +22,12 @@ variable "table_name_cluster" {
   default     = "terraform_locks_cluster"
 }
 
+variable "table_name_nodepool" {
+  description = "The name of the DynamoDB table. Must be unique in this AWS account."
+  type        = string
+  default     = "terraform_locks_nodepool"
+}
+
 variable "table_name_tf-setup" {
   description = "The name of the DynamoDB table. Must be unique in this AWS account."
   type        = string
@@ -30,10 +36,10 @@ variable "table_name_tf-setup" {
 
 variable "stages" {
   type    = list(string)
-  default = ["tf-setup", "net", "cluster","addons", "observ"]
+  default = ["tf-setup", "net", "cluster","nodepool", "addons", "observ"]
 }
 
 variable "stagecount" {
   type    = number
-  default = 5
+  default = 6
 }

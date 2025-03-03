@@ -1,6 +1,6 @@
 date
 cur=`pwd`
-dirs="tf-setup net cluster nodeg"
+dirs="tf-setup net cluster nodepool"
 for i in $dirs; do
     cd $cur
     cd ../$i

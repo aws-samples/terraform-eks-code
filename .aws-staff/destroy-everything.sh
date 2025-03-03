@@ -35,7 +35,7 @@ fi
 echo "pass 1 ...."
 cur=$(pwd)
 date
-dirs="istio observ addons"
+dirs="istio observ addons nodepool"
 for i in $dirs; do
     cd $cur
     cd ../$i

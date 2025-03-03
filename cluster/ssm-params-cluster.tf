@@ -48,3 +48,14 @@ resource "aws_ssm_parameter" "endpoint" {
     workshop = "tf-eks-workshop"
   }
 }
+
+
+resource "aws_ssm_parameter" "eks-node-role-name" {
+  name        = "/workshop/tf-eks/eks-node-role-name"
+  description = "The EKS node role name"
+  type        = "String"
+  value = module.eks.node_iam_role_name
+  tags = {
+    workshop = "tf-eks-workshop"
+  }
+}
