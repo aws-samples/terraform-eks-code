@@ -35,9 +35,9 @@ provider "helm" {
 
 ## base
 
-data "aws_grafana_workspace" "this" {
-  workspace_id = data.aws_ssm_parameter.tf-eks-grafana-id.value
-}
+#data "aws_grafana_workspace" "this" {
+#  workspace_id = aws_grafana_workspace.workshop.id
+#}
 
 
 # eks 
