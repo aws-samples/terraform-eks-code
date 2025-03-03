@@ -21,7 +21,3 @@ data "aws_ssm_parameter" "tf-eks-cluster-name" {
 data "aws_ssm_parameter" "tf-eks-version" {
   name = "/workshop/tf-eks/eks-version"
 }
-
-data "aws_ssm_parameter" "tf-eks-grafana-id" {
-  name        = "/workshop/tf-eks/grafana-id"
-}
