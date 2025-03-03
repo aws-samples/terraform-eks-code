@@ -68,7 +68,7 @@ module "eks_monitoring" {
   target_secret_name      = "grafana-admin-credentials"
   target_secret_namespace = "grafana-operator"
   
-  grafana_url             = format("https://%s",data.aws_grafana_workspace.this.endpoint)
+  grafana_url             = format("https://%s",aws_grafana_workspace.workshop.endpoint)
 
 
   # control the publishing of dashboards by specifying the boolean value for the variable 'enable_dashboards', default is 'true'
