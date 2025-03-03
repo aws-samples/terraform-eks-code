@@ -1,5 +1,5 @@
 resource "kubectl_manifest" "inflate" {
-depends_on = [null_resource.gen_cluster_auth]
+depends_on=[kubectl_manifest.karpenter_node_pool2]
 yaml_body = <<-YAML
 apiVersion: apps/v1
 kind: Deployment
