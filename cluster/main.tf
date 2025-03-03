@@ -6,15 +6,6 @@ provider "aws" {
 }
 
 
-terraform {
-required_providers {
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = ">= 1.14"
-    }
-}
-}
-
 #resource "aws_ec2_instance_metadata_defaults" "metadata" {
 #  http_endpoint               = "enabled"
 #  http_tokens                 = "required"
