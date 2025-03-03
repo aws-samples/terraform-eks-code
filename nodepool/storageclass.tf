@@ -1,5 +1,4 @@
 resource "kubectl_manifest" "storage" {
-depends_on = [null_resource.gen_cluster_auth]
 yaml_body = <<-YAML
 apiVersion: storage.k8s.io/v1
 kind: StorageClass

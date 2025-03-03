@@ -1,5 +1,4 @@
 resource "kubectl_manifest" "karpenter_node_class" {
-depends_on = [null_resource.gen_cluster_auth]
 yaml_body = <<-YAML
 apiVersion: eks.amazonaws.com/v1
 kind: NodeClass
