@@ -17,3 +17,7 @@ data "aws_ssm_parameter" "ca" {
 data "aws_ssm_parameter" "endpoint" {
   name        = "/workshop/tf-eks/endpoint"
 }
+
+data "aws_ssm_parameter" "eks-node-role-name" {
+  name        = "/workshop/tf-eks/eks-node-role-name"
+}
