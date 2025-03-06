@@ -134,6 +134,7 @@ echo "istio cli"
 cd /home/ec2-user/environment
 rm -rf istio-1.24.3
 curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.24.3 sh -
+chown ec2-user:ec2-user -R istio-1.24.3
 export PATH=$HOME/environment/istio-1.24.3/bin:$PATH 
 echo "export PATH=$HOME/environment/istio-1.24.3/bin:$PATH" >> ~/.bashrc
 
