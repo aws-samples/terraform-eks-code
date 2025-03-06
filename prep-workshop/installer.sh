@@ -127,11 +127,11 @@ mv ./oha /usr/local/bin
 
 echo "terraform"
 yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-yum -y install terraform
+yum -yq install terraform
 
 
 echo "istio cli"
-cd ~/environment
+cd /home/ec2-user/environment
 rm -rf istio-1.24.3
 curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.24.3 sh -
 export PATH=$HOME/environment/istio-1.24.3/bin:$PATH 
