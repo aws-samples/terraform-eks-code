@@ -4,7 +4,7 @@ rm -f build.log
 date >> build.log
 buildok=1
 #orig
-dirs="tf-setup net cluster nodepool addons observ"
+dirs="tf-setup net cluster nodepool addons"
 #set -e # turn on error checking - exit if error
 for i in `echo $dirs`;do
     ./build-stage.sh $i 2>&1 | tee -a build.log
