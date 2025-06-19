@@ -55,8 +55,8 @@ do
     printf "   version = \"2.24.0\"\n" >> $of
     printf "  }\n" >> $of
     printf "  helm = {\n" >> $of
-    printf "    source  = "hashicorp/helm" \n" >> $of
-    printf "    version = "~> 2.17.0"\n" >> $of
+    printf "    source  = \"hashicorp/helm\" \n" >> $of
+    printf "    version = \"~> 2.17.0\" \n" >> $of
     printf "  }\n" >> $of
     printf "  kubectl = {\n" >> $of
     printf "    source  = \"gavinbunney/kubectl\"\n" >> $of
