@@ -20,5 +20,5 @@ else
     echo "PASSED: Found TF_VAR_awsalias=$TF_VAR_awsalias - proceed with the workshop"
 fi
 if [[ "$TF_VAR_awsalias" = "eksworkshop" ]]; then
-    echo "INFO: TF_VAR_awsalias set to eksworkshop - you will have to skip section 4.8 Install/Configure Keycloak"
+    echo "INFO: TF_VAR_awsalias set to the default - eksworkshop - you will have to skip section 4.8 Install/Configure Keycloak"
 fi
