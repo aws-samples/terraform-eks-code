@@ -7,7 +7,7 @@ else
     if [[ $dnsl -gt 0 ]]; then
         echo "DNS setup ok - please proceed"
     else
-        echo "ERROR: DNS unexpected response - please discuss with workshop host"
+        echo "DNS not setup - please discuss with workshop host"
         echo "  or  "
         echo "You can just skip this module 4.8 Install/Configure Keycloak and proceed to 4.9 Prepare the cluster for eksworkshop"
     fi

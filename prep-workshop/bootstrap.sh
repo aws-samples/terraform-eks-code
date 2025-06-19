@@ -1,6 +1,8 @@
 export REPOSITORY_OWNER="aws-samples"
 export REPOSITORY_NAME="eks-workshop-v2"
 export REPOSITORY_REF="main"
+export TF_VAR_awsalias="eksworkshop"
+echo "export TF_VAR_awsalias=${TF_VAR_awsalias}" | tee -a ~/.bashrc
 sudo yum install -y jq 
 export AWS_REGION=$(ec2-metadata | grep region | cut -f2 -d':' | tr -d ' ')
 rm -f installer.sh setup.sh
