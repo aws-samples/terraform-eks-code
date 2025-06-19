@@ -18,7 +18,7 @@ provider "helm" {
     host                   = data.aws_ssm_parameter.endpoint.value
     cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
 
-    exec {
+    exec = {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
       # This requires the awscli to be installed locally where Terraform is executed
