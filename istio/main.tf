@@ -10,8 +10,9 @@ provider "kubernetes" {
   }
 }
 
+
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host                   = data.aws_ssm_parameter.endpoint.value
     cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
 
