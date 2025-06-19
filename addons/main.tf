@@ -12,6 +12,7 @@ provider "kubernetes" {
   }
 }
 
+
 provider "helm" {
   kubernetes = {
     host                   = data.aws_ssm_parameter.endpoint.value
@@ -23,8 +24,10 @@ provider "helm" {
       # This requires the awscli to be installed locally where Terraform is executed
       args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
     }
+
   }
 }
+
 
 provider "kubectl" {
   apply_retry_count      = 5
