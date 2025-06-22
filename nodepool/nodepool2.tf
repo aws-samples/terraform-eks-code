@@ -35,7 +35,7 @@ spec:
           values: ["eu-west-1a", "eu-west-1b","eu-west-1c"]
         - key: "kubernetes.io/arch"
           operator: In
-          values: ["arm64", "amd64"]
+          values: ["amd64"]
         - key: eks.amazonaws.com/instance-generation
           operator: Gt
           values: ["5"]
