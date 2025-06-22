@@ -42,12 +42,12 @@ do
     # write out the backend config 
     printf "" > $of
     printf "terraform {\n" >> $of
-    printf "required_version = \"> 1.8.5\"\n" >> $of
+    printf "required_version = \"> 1.9.5\"\n" >> $of
     printf "required_providers {\n" >> $of
     printf "  aws = {\n" >> $of
     printf "   source = \"hashicorp/aws\"\n" >> $of
     printf "#  Lock version to avoid unexpected problems\n" >> $of
-    printf "   version = \"5.89.0\"\n" >> $of
+    printf "   version = \"5.98.0\"\n" >> $of
     printf "  }\n" >> $of
     printf "  kubernetes = {\n" >> $of
     printf "   source = \"hashicorp/kubernetes\"\n" >> $of
@@ -88,7 +88,7 @@ of=`echo "generated/backend-k8scicd.tf"`
     # write out the backend config 
     printf "" > $of
     printf "terraform {\n" >> $of
-    printf "required_version = \"> 1.4.4\"\n" >> $of
+    printf "required_version = \"> 1.9.4\"\n" >> $of
     printf "required_providers {\n" >> $of
     printf "  kubernetes = {\n" >> $of
     printf "   source = \"hashicorp/kubernetes\"\n" >> $of
