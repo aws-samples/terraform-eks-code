@@ -1061,7 +1061,6 @@ metadata:
     app.kubernetes.io/managed-by: Helm
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing 
-    service.beta.kubernetes.io/aws-load-balancer-ip-address-type: dualstack
 spec:
   type: LoadBalancer
   ports:
