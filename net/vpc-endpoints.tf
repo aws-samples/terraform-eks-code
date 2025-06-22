@@ -10,10 +10,19 @@ module "vpc_endpoints" {
   security_group_name_prefix = "${local.name}-vpc-endpoints-"
   security_group_description = "VPC endpoint security group"
   security_group_rules = {
+
+
+    ingress_https1 = {
+      description = "HTTPS from VPC 1"
+      cidr_blocks = [module.vpc.vpc_cidr_block]
+      ipv6_cidr_blocks       = [module.vpc.vpc_ipv4_cidr_block]
+    }
+  
     ingress_https2 = {
       description = "HTTPS from VPC 2"
       cidr_blocks = [element(local.secondary_cidr_blocks, 0)]
     }
+
     egress_https = {
       type="egress"
       description = "HTTPS out of VPC"
