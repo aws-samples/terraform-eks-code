@@ -41,7 +41,8 @@ locals {
 module "eks" {
   #source = "../.."
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.33.1"
+  #version = "20.33.1"
+  version = "20.37.1"
   
   cluster_name                   = local.name
   cluster_version                = local.cluster_version
@@ -91,7 +92,8 @@ module "eks" {
 
 module "disabled_eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.33.1"
+  #version = "20.33.1"
+  version = "20.37.1"
 
   create = false
 }
