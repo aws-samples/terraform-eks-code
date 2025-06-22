@@ -47,7 +47,7 @@ provider "kubectl" {
 module "eks_blueprints_addons" {
   
   source = "aws-ia/eks-blueprints-addons/aws"
-  version = "~> 1.19" #ensure to update this to the latest/desired version
+  version = "~> 1.21.0" #ensure to update this to the latest/desired version
 
   #eks_addons = { 
   #  amazon-cloudwatch-observability = {
