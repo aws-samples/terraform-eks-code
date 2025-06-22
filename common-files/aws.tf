@@ -5,7 +5,7 @@ terraform {
     aws = {
       source = "hashicorp/aws"
       #  Lock version to prevent unexpected problems
-      version = "5.89.0"
+      version = "5.98.0"
     }
     null = {
       source  = "hashicorp/null"
@@ -21,7 +21,7 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.12.0"
+      version = "~> 2.17.0"
     }
     kubectl = {
       source  = "gavinbunney/kubectl"
