@@ -18,7 +18,6 @@ module "vpc_endpoints" {
       type="egress"
       description = "HTTPS out of VPC"
       cidr_blocks = ["0.0.0.0/0"]
-      ipv6_cidr_blocks       = ["::/0"]
     }
     egress_ssh = {
       type="egress"

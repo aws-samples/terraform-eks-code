@@ -55,10 +55,6 @@ module "eks" {
   enable_cluster_creator_admin_permissions = true
   authentication_mode = "API_AND_CONFIG_MAP" # this mode is default
 
-  #cluster_ip_family = "ipv6"
-  #create_cni_ipv6_iam_policy = true
-  ## need to use this ^^  with karpenter nodes
-
   cluster_compute_config = {
     enabled    = true
     #node_pools = ["general-purpose","system"]
