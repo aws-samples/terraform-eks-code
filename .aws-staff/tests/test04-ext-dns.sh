@@ -42,7 +42,6 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: ${TEST_DOMAIN}
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing 
-    service.beta.kubernetes.io/aws-load-balancer-ip-address-type: dualstack
 
 spec:
   type: LoadBalancer

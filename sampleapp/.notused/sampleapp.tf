@@ -2170,7 +2170,6 @@ resource "kubernetes_service_v1" "sampleapp__orders" {
 resource "kubernetes_service_v1" "sampleapp__ui" {
   metadata {
     annotations = {
-      "service.beta.kubernetes.io/aws-load-balancer-ip-address-type" = "dualstack"
       "service.beta.kubernetes.io/aws-load-balancer-scheme"          = "internet-facing"
     }
     generate_name = null

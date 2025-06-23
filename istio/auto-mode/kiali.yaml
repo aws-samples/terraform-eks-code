@@ -283,7 +283,6 @@ metadata:
     app.kubernetes.io/part-of: "kiali"
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing 
-    service.beta.kubernetes.io/aws-load-balancer-ip-address-type: dualstack
 
 spec:
   type: LoadBalancer
