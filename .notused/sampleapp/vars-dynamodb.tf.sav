@@ -1,1 +1,0 @@
-../tf-setup/vars-dynamodb.tf

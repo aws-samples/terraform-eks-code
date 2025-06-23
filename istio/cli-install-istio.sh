@@ -1,21 +1,24 @@
 cd ~/environment
 rm -rf istio-1.24.3
-curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.24.3 TARGET_ARCH=x86_64 sh -
+echo "istio cli"
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.24.3 sh -
+chown ec2-user:ec2-user -R istio-1.24.3
+export PATH=$HOME/environment/istio-1.24.3/bin:$PATH 
+echo "export PATH=$HOME/environment/istio-1.24.3/bin:$PATH" >> ~/.bashrc
 cd ~/environment/istio-1.24.3
-export PATH=$PWD/bin:$PATH
 istioctl version --remote=false
 istioctl install --set profile=demo -y
 kubectl create ns sample
 kubectl label namespace sample istio-injection=enabled
 kubectl -n sample apply -f samples/bookinfo/platform/kube/bookinfo.yaml
 sleep 5
-kubectl get services
+kubectl -n sample get services
 echo "wait 30s for pods"
 sleep 30
-kubectl get pods
-kubectl exec "$(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metadata.name}')" -c ratings -- curl -sS productpage:9080/productpage | grep -o "<title>.*</title>"
+kubectl -n sample get pods
+kubectl -n sample exec "$(kubectl -n sample get pod -l app=ratings -o jsonpath='{.items[0].metadata.name}')" -c ratings -- curl -sS productpage:9080/productpage | grep -o "<title>.*</title>"
 kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
-istioctl analyze
+istioctl analyze -n sample
 
 export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}') 
 export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')

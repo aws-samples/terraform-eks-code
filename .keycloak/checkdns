@@ -1,8 +1,0 @@
-export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-export TFID=$(aws ssm get-parameter --name /workshop/tf-eks/id --query Parameter.Value --output text)
-dnsl=$(dig $ACCOUNT_ID.$TFID.people.aws.dev NS +short | wc -l)
-if [[ $dnsl -gt 0 ]]; then
-    echo "DNS setup ok - please proceed"
-else
-    echo "ERROR: DNS unexpected response - please discuss with workshop host"
-fi
