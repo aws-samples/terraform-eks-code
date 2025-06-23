@@ -6,3 +6,4 @@ cd ~/environment/tfekscode/istio
 terraform destroy -auto-approve
 istioctl uninstall --purge
 kubectl delete ns istio-system
+kubectl delete ns istio-ingress
