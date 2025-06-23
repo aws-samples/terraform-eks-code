@@ -1,12 +1,13 @@
 cd ~/environment
-rm -rf istio-1.20.3
-curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.20.3 TARGET_ARCH=x86_64 sh -
-cd ~/environment/istio-1.20.3
+rm -rf istio-1.24.3
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.24.3 TARGET_ARCH=x86_64 sh -
+cd ~/environment/istio-1.24.3
 export PATH=$PWD/bin:$PATH
 istioctl version --remote=false
 istioctl install --set profile=demo -y
-kubectl label namespace default istio-injection=enabled
-kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+kubectl create ns sample
+kubectl label namespace sample istio-injection=enabled
+kubectl -n sample apply -f samples/bookinfo/platform/kube/bookinfo.yaml
 sleep 5
 kubectl get services
 echo "wait 30s for pods"
@@ -24,8 +25,6 @@ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
 
 echo "http://$GATEWAY_URL/productpage"
 for i in $(seq 1 100); do curl -s -o /dev/null "http://$GATEWAY_URL/productpage"; done
-
-
 
 kubectl apply -f samples/addons
 kubectl rollout status deployment/kiali -n istio-system

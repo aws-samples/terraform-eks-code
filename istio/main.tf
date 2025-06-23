@@ -40,7 +40,6 @@ provider "kubectl" {
 
 locals {
   istio_chart_url     = "https://istio-release.storage.googleapis.com/charts"
-  #istio_chart_version = "1.20.2"
   istio_chart_version = "1.24.3"
 
 }
