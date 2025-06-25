@@ -7,14 +7,6 @@ aws kms delete-alias --alias-name alias/eks/eks-workshop
 #arn:aws:iam::566972129213:policy/AmazonEKS_CNI_IPv6_Policy
 aws iam delete-policy --policy-arn arn:aws:iam::$accid:policy/AmazonEKS_CNI_IPv6_Policy
 aws iam delete-policy --policy-arn $lbarn || echo "no LB policy to delete"
-aws dynamodb delete-table --table-name terraform_locks_net || echo "terraform_locks_net"
-aws dynamodb delete-table --table-name terraform_locks_iam || echo "terraform_locks_iam"
-aws dynamodb delete-table --table-name terraform_locks_c9net || echo "terraform_locks_c9net"
-aws dynamodb delete-table --table-name terraform_locks_cluster || echo "terraform_locks_cluster"
-aws dynamodb delete-table --table-name terraform_locks_nodeg || echo "terraform_locks_nodeg"
-aws dynamodb delete-table --table-name terraform_locks_eks-cidr || echo "terraform_locks_eks-cidr"
-aws dynamodb delete-table --table-name terraform_locks_sampleapp || echo "terraform_locks_sampleapp"
-aws dynamodb delete-table --table-name terraform_locks_cicd || echo "terraform_locks_cicd"
 buck=()
 for j in `aws s3 ls | awk '{print $3}' | grep codep-tfeks`; do 
 echo $j

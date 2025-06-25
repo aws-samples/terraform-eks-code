@@ -32,8 +32,8 @@ terraform {
     bucket         = local.BUCKET_NAME
     key            = local.BKEY
     region         = local.BREG
-    dynamodb_table = local.DTAB
-    encrypt        = "true"
+    use_lockfile   = true
+    encrypt        = true
   }
 
 
@@ -61,25 +61,4 @@ data "aws_availability_zones" "az" {
   state = "available"
 }
 
-
-
-resource "aws_dynamodb_table" "terraform_lock" {
-  # switch var
-  name         = format("tf_lock_%s_%s", data.aws_ssm_parameter.tf-eks-id.value, lower(basename(path.cwd)))
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-  point_in_time_recovery {
-    enabled = true
-  }
-  server_side_encryption {
-    enabled     = true
-    kms_key_arn = data.aws_ssm_parameter.tf-eks-keyarn.value
-  }
-
-}
 

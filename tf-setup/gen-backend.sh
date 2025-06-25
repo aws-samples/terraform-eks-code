@@ -66,8 +66,8 @@ do
     printf "bucket = \"%s\"\n"  $s3b >> $of
     printf "key = \"terraform/%s.tfstate\"\n"  $tabn >> $of
     printf "region = \"%s\"\n"  $reg >> $of
-    printf "dynamodb_table = \"%s\"\n"  $tabn >> $of
-    printf "encrypt = \"true\"\n"   >> $of
+    printf "use_lockfile = true\n" >> $of
+    printf "encrypt = true\n"   >> $of
     printf "}\n" >> $of
     printf "}\n" >> $of
     ##
@@ -99,8 +99,8 @@ of=`echo "generated/backend-k8scicd.tf"`
     printf "bucket = \"%s\"\n"  $s3b >> $of
     printf "key = \"terraform/%s.tfstate\"\n"  $tabn >> $of
     printf "region = \"%s\"\n"  $reg >> $of
-    printf "dynamodb_table = \"%s\"\n"  $tabn >> $of
-    printf "encrypt = \"true\"\n"   >> $of
+    printf "use_lockfile = true\n" >> $of
+    printf "encrypt = true\n"   >> $of
     printf "}\n" >> $of
     printf "}\n" >> $of
     ##
