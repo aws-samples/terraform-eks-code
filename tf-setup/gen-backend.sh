@@ -29,11 +29,8 @@ s3b=`terraform output -json s3_bucket | jq -r .[]`
 for section in "${SECTIONS[@]}"
 do
 
-    #tabn=`terraform output dynamodb_table_name_$section | tr -d '"'`
-    tabn=$(printf "terraform_locks_%s" $section) 
     #s3b=`terraform output -json s3_bucket | jq -r .[]`
-    echo $s3b $tabn
-
+    echo $s3b $section
     cd $d
 
     of=`echo "generated/backend-${section}.tf"`
@@ -64,7 +61,7 @@ do
     printf " }\n" >> $of
     printf "backend \"s3\" {\n" >> $of
     printf "bucket = \"%s\"\n"  $s3b >> $of
-    printf "key = \"terraform/%s.tfstate\"\n"  $tabn >> $of
+    printf "key = \"terraform/%s.tfstate\"\n"  $section >> $of
     printf "region = \"%s\"\n"  $reg >> $of
     printf "use_lockfile = true\n" >> $of
     printf "encrypt = true\n"   >> $of
@@ -80,9 +77,8 @@ do
 done
 # just for cicd k8s
 section="sampleapp"
-tabn=$(printf "terraform_locks_sampleapp" $section) 
 s3b=`terraform output -json s3_bucket | jq -r .[]`
-echo $s3b $tabn
+echo $s3b
 cd $d
 of=`echo "generated/backend-k8scicd.tf"`
     # write out the backend config 
@@ -97,7 +93,7 @@ of=`echo "generated/backend-k8scicd.tf"`
     printf " }\n" >> $of
     printf "backend \"s3\" {\n" >> $of
     printf "bucket = \"%s\"\n"  $s3b >> $of
-    printf "key = \"terraform/%s.tfstate\"\n"  $tabn >> $of
+    printf "key = \"terraform/%s.tfstate\"\n"  $section >> $of
     printf "region = \"%s\"\n"  $reg >> $of
     printf "use_lockfile = true\n" >> $of
     printf "encrypt = true\n"   >> $of
