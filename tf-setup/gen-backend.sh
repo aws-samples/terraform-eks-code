@@ -75,31 +75,6 @@ do
     printf "}\n" >> $of
 
 done
-# just for cicd k8s
-section="sampleapp"
-s3b=`terraform output -json s3_bucket | jq -r .[]`
-echo $s3b
-cd $d
-of=`echo "generated/backend-k8scicd.tf"`
-    # write out the backend config 
-    printf "" > $of
-    printf "terraform {\n" >> $of
-    printf "required_version = \"> 1.9.4\"\n" >> $of
-    printf "required_providers {\n" >> $of
-    printf "  kubernetes = {\n" >> $of
-    printf "   source = \"hashicorp/kubernetes\"\n" >> $of
-    printf "   version = \"2.17.0\"\n" >> $of
-    printf "  }\n" >> $of
-    printf " }\n" >> $of
-    printf "backend \"s3\" {\n" >> $of
-    printf "bucket = \"%s\"\n"  $s3b >> $of
-    printf "key = \"terraform/%s.tfstate\"\n"  $section >> $of
-    printf "region = \"%s\"\n"  $reg >> $of
-    printf "use_lockfile = true\n" >> $of
-    printf "encrypt = true\n"   >> $of
-    printf "}\n" >> $of
-    printf "}\n" >> $of
-    ##
 
 cd $d
 terraform fmt --recursive
