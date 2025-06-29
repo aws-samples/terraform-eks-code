@@ -34,7 +34,7 @@ module "vpc" {
 
   public_subnet_suffix  = "SubnetPublic"
   private_subnet_suffix = "SubnetPrivate"
-  database_subnet_suffix = "SubnetDatabase"
+  intra_subnet_suffix = "SubnetIntra"
 
 
   enable_nat_gateway = true
