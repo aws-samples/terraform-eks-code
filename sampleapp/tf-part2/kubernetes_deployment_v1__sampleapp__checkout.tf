@@ -1,6 +1,6 @@
 # kubernetes_deployment_v1.sampleapp__checkout:
 resource "kubernetes_deployment_v1" "sampleapp__checkout" {
-
+depends_on = [kubernetes_config_map_v1.sampleapp__checkout]
   metadata {
     annotations   = {}
     generate_name = null

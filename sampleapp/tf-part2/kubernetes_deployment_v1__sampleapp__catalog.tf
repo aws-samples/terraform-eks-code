@@ -1,6 +1,6 @@
 # kubernetes_deployment_v1.sampleapp__catalog:
 resource "kubernetes_deployment_v1" "sampleapp__catalog" {
-
+  depends_on = [kubernetes_config_map_v1.sampleapp__catalog]
   metadata {
     annotations   = {}
     generate_name = null

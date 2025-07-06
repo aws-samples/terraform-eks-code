@@ -20,7 +20,7 @@ resource "kubernetes_stateful_set_v1" "sampleapp__catalog-mysql" {
     pod_management_policy  = "OrderedReady"
     replicas               = "1"
     revision_history_limit = 10
-    service_name           = "catalog-mysql"
+    service_name           = kubernetes_service_v1.sampleapp__catalog-mysql.metadata[0].name
 
     persistent_volume_claim_retention_policy {
       when_deleted = "Retain"
@@ -94,7 +94,7 @@ resource "kubernetes_stateful_set_v1" "sampleapp__catalog-mysql" {
             value_from {
               secret_key_ref {
                 key      = "username"
-                name     = "catalog-db"
+                name     = kubernetes_secret_v1.sampleapp__catalog-db.metadata[0].name
                 optional = false
               }
             }
@@ -106,7 +106,7 @@ resource "kubernetes_stateful_set_v1" "sampleapp__catalog-mysql" {
             value_from {
               secret_key_ref {
                 key      = "password"
-                name     = "catalog-db"
+                name     = kubernetes_secret_v1.sampleapp__catalog-db.metadata[0].name
                 optional = false
               }
             }

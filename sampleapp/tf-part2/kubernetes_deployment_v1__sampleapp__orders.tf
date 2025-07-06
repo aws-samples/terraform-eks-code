@@ -1,6 +1,6 @@
 # kubernetes_deployment_v1.sampleapp__orders:
 resource "kubernetes_deployment_v1" "sampleapp__orders" {
-
+  depends_on = [kubernetes_config_map_v1.sampleapp__orders]
   metadata {
     annotations   = {}
     generate_name = null
