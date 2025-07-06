@@ -3,9 +3,7 @@ resource "kubernetes_service_account_v1" "sampleapp__ui" {
   automount_service_account_token = false
 
   metadata {
-    annotations   = {
-      "service.beta.kubernetes.io/aws-load-balancer-scheme": "internet-facing"
-    }
+    annotations   = {}
     generate_name = null
     labels = {
       "app.kuberneres.io/owner"      = "retail-store-sample"
