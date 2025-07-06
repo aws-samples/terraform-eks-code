@@ -1,6 +1,6 @@
 # kubernetes_stateful_set_v1.sampleapp__orders-postgresql:
 resource "kubernetes_stateful_set_v1" "sampleapp__orders-postgresql" {
-
+  depends_on=[kubernetes_secret_v1.sampleapp__orders-db]
   metadata {
     annotations   = {}
     generate_name = null

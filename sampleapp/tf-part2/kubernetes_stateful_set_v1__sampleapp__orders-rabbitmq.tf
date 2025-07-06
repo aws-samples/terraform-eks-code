@@ -1,6 +1,6 @@
 # kubernetes_stateful_set_v1.sampleapp__orders-rabbitmq:
 resource "kubernetes_stateful_set_v1" "sampleapp__orders-rabbitmq" {
-
+  depends_on=[kubernetes_secret_v1.sampleapp__orders-rabbitmq]
   metadata {
     annotations   = {}
     generate_name = null

@@ -1,6 +1,6 @@
 # kubernetes_stateful_set_v1.sampleapp__catalog-mysql:
 resource "kubernetes_stateful_set_v1" "sampleapp__catalog-mysql" {
-
+  depends_on=[kubernetes_secret_v1.sampleapp__catalog-db]
   metadata {
     annotations   = {}
     generate_name = null
