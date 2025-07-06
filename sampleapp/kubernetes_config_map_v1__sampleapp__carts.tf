@@ -16,6 +16,6 @@ resource "kubernetes_config_map_v1" "sampleapp__carts" {
     generate_name = null
     labels        = {}
     name          = "carts"
-    namespace     = "sampleapp"
+    namespace     = kubernetes_namespace_v1.sampleapp.metadata[0].name
   }
 }

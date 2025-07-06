@@ -13,6 +13,6 @@ resource "kubernetes_config_map_v1" "sampleapp__orders" {
     generate_name = null
     labels        = {}
     name          = "orders"
-    namespace     = "sampleapp"
+    namespace     = kubernetes_namespace_v1.sampleapp.metadata[0].name
   }
 }
