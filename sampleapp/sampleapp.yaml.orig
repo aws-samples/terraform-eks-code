@@ -1,4 +1,16 @@
-
+---
+# Source: retail-store-sample-catalog-chart/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: catalog
+  labels:
+    helm.sh/chart: catalog-0.8.4
+    app.kubernetes.io/name: catalog
+    app.kubernetes.io/instance: catalog
+    app.kubernetes.io/component: service
+    app.kuberneres.io/owner: retail-store-sample
+    app.kubernetes.io/managed-by: Helm
 ---
 # Source: retail-store-sample-catalog-chart/templates/mysql-secret.yaml
 apiVersion: v1
@@ -212,6 +224,19 @@ spec:
         emptyDir: {}
 
 ---
+# Source: retail-store-sample-cart-chart/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: carts
+  labels:
+    helm.sh/chart: carts-0.8.4
+    app.kubernetes.io/name: carts
+    app.kubernetes.io/instance: carts
+    app.kubernetes.io/component: service
+    app.kuberneres.io/owner: retail-store-sample
+    app.kubernetes.io/managed-by: Helm
+---
 # Source: retail-store-sample-cart-chart/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
@@ -388,6 +413,19 @@ spec:
               containerPort: 8000
               protocol: TCP
 
+---
+# Source: retail-store-sample-orders-chart/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: orders
+  labels:
+    helm.sh/chart: orders-0.8.4
+    app.kubernetes.io/name: orders
+    app.kubernetes.io/instance: orders
+    app.kubernetes.io/component: service
+    app.kuberneres.io/owner: retail-store-sample
+    app.kubernetes.io/managed-by: Helm
 ---
 # Source: retail-store-sample-orders-chart/templates/postgresql-secret.yaml
 apiVersion: v1
@@ -683,6 +721,19 @@ spec:
         emptyDir: {}
 
 ---
+# Source: retail-store-sample-checkout-chart/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: checkout
+  labels:
+    helm.sh/chart: checkout-0.8.4
+    app.kubernetes.io/name: checkout
+    app.kubernetes.io/instance: checkout
+    app.kubernetes.io/component: service
+    app.kuberneres.io/owner: retail-store-sample
+    app.kubernetes.io/managed-by: Helm
+---
 # Source: retail-store-sample-checkout-chart/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
@@ -852,6 +903,19 @@ spec:
               protocol: TCP
 
 ---
+# Source: retail-store-sample-assets-chart/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: assets
+  labels:
+    helm.sh/chart: assets-0.8.4
+    app.kubernetes.io/name: assets
+    app.kubernetes.io/instance: assets
+    app.kubernetes.io/component: service
+    app.kuberneres.io/owner: retail-store-sample
+    app.kubernetes.io/managed-by: Helm
+---
 # Source: retail-store-sample-assets-chart/templates/configmap.yml
 apiVersion: v1
 kind: ConfigMap
@@ -956,6 +1020,19 @@ spec:
           emptyDir:
             medium: Memory
 
+---
+# Source: retail-store-sample-ui-chart/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ui
+  labels:
+    helm.sh/chart: ui-0.8.4
+    app.kubernetes.io/name: ui
+    app.kubernetes.io/instance: ui
+    app.kubernetes.io/component: service
+    app.kuberneres.io/owner: retail-store-sample
+    app.kubernetes.io/managed-by: Helm
 ---
 # Source: retail-store-sample-ui-chart/templates/configmap.yml
 apiVersion: v1
