@@ -18,9 +18,10 @@ date >> build.log
 
 set +e # turn off error checking - proceed if error
 echo "Some post build verifications"
-echo "Should have at least 21 pods running in total"
+echo "Should have at least 40 pods running in total"
 rc=$(kubectl get pods -A | grep Running | wc -l)
-if [ $rc -lt 21 ]; then 
-echo "ERROR: Found only $rc pods running - expected 21"
+if [[ $rc -lt 40 ]]; then 
+    echo "ERROR: Found only $rc pods running - expected 21"
 else
-echo "PASSED: running pod count $rc"
+    echo "PASSED: running pod count $rc"
+fi
