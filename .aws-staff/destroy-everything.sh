@@ -7,7 +7,6 @@ fi
 kubectl version &>/dev/null
 if [[ $? -eq 0 ]]; then
     echo "zap std app"
-    kubectl delete ns keycloak &>/dev/null
     kubectl delete ns sample &>/dev/null
     kubectl delete ns ui &>/dev/null
     kubectl delete ns assets &>/dev/null
@@ -35,7 +34,7 @@ fi
 echo "pass 1 ...."
 cur=$(pwd)
 date
-dirs="istio observ addons nodepool"
+dirs="istio observ sampleapp addons nodepool"
 for i in $dirs; do
     cd $cur
     cd ../$i
