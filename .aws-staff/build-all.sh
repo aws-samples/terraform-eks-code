@@ -1,4 +1,4 @@
-echo "circa 45 minutes ..."
+echo "circa 40 minutes ..."
 
 rm -f build.log
 date >> build.log

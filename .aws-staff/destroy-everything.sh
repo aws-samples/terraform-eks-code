@@ -1,3 +1,4 @@
+echo "~18 minutes to destroy all resources"
 echo "Pre cli based actions ..."
 userid=$(aws iam list-service-specific-credentials --user-name git-user 2>/dev/null | jq -r .ServiceSpecificCredentials[0].ServiceSpecificCredentialId)
 if [ "$userid" != "" ]; then
