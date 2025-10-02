@@ -47,7 +47,7 @@ module "vpc_endpoints" {
       }
     }
     },
-    { for service in toset(["autoscaling", "ecr.api", "ecr.dkr", "ec2", "guardduty-data", "ec2messages", "sts", "logs", "ssm", "ssmmessages", "codecommit", "codebuild", "codepipeline", "codedeploy", "grafana", "grafana-workspace","secretsmanager"]) :
+    { for service in toset(["autoscaling", "ecr.api", "ecr.dkr", "ec2", "guardduty-data", "ec2messages", "sts", "logs", "ssm", "ssmmessages", "grafana", "grafana-workspace","secretsmanager"]) :
       replace(service, ".", "_") =>
       {
         service             = service

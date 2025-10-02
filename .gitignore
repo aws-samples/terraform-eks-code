@@ -50,3 +50,4 @@ Private.md
 .aws-staff/NOTES.md
 .notused/idp/private/github-token
 .notused/idp/private/github-integration.yaml
+.aws-staff/saml.sh
