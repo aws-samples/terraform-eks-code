@@ -14,7 +14,7 @@ module "vpc" {
 
   azs             = local.azs
  
-  # 100.64.0.0/18  2= added tp  100.65.0.0/16
+  # 100.64.0.0/18  2= added to  100.65.0.0/16
   #private_subnets = concat(
   #  [for k, v in local.azs : cidrsubnet(element(local.secondary_cidr_blocks, 0), 2, k)]
   #)
