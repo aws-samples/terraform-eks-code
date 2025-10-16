@@ -27,7 +27,7 @@ Parameters:
   HomeFolder:
     Type: String
     Description: Folder to open in VS Code server
-    Default: /Workshop
+    Default: /home/ec2-user/environment
   DevServerBasePath:
     Type: String
     Description: Base path for the application to be added to Nginx sites-available list
