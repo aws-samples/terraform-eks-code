@@ -10,7 +10,7 @@ module "vpc" {
 
   name = local.name
   cidr = local.vpc_cidr
-  #secondary_cidr_blocks = local.secondary_cidr_blocks
+  secondary_cidr_blocks = local.secondary_cidr_blocks
 
   azs             = local.azs
  
@@ -18,9 +18,10 @@ module "vpc" {
   #private_subnets = concat(
   #  [for k, v in local.azs : cidrsubnet(element(local.secondary_cidr_blocks, 0), 2, k)]
   #)
+  private_subnets = [for k, v in local.azs : cidrsubnet(element(local.secondary_cidr_blocks, 0), 2, k)]
   
   # /22 10.0.0.0/22 and 10.0.4.0/22 and 10.0.8.0/22
-  private_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 6, k * 4)]
+  #private_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 6, k * 4)]
   
   # 10.0.48.0/24 and 10.0.49.0/24 and 10.0.50.0/24
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
