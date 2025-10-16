@@ -21,6 +21,8 @@ if [[ $_ != $0 ]]; then
     #else
     #    echo "Root installer.sh may have failed"
     #fi
+    echo "Install idpbuilder for CNCF CNOE"
+    curl -fsSL https://raw.githubusercontent.com/cnoe-io/idpbuilder/main/hack/install.sh | bash
     aws configure set default.region $AWS_REGION
     aws configure set region $AWS_REGION
     echo "Add SPOT service linked role"

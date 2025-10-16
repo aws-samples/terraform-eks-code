@@ -3,13 +3,13 @@
 #set -e
 
 # renovate: depName=kubernetes/kubernetes
-kubectl_version='1.31.5'
+kubectl_version='1.33.5'
 
 # renovate: depName=helm/helm
-helm_version='3.16.4'
+helm_version='3.19.0'
 
 # renovate: depName=eksctl-io/eksctl
-eksctl_version='0.203.0'
+eksctl_version='0.215.0'
 
 kubeseal_version='0.18.4'
 
@@ -23,7 +23,7 @@ flux_version='2.4.0'
 argocd_version='2.13.4'
 
 # renovate: depName=hashicorp/terraform
-terraform_version='1.9.8'
+terraform_version='1.13.4'
 
 # renovate: depName=aws/amazon-ec2-instance-selector
 ec2_instance_selector_version='2.4.1'
