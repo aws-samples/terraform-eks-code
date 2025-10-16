@@ -1,4 +1,25 @@
 coder:
+# set this otherwise you get a ClassicLB
+  service:
+    externalTrafficPolicy: Local
+    sessionAffinity: None
+    annotations: { service.beta.kubernetes.io/aws-load-balancer-type: "external" }
+#
+# By default, Coder will set the externalTrafficPolicy to Cluster 
+# which will mask client IP addresses in the Audit log. 
+# If you want to preserve the source IP, you can either set this value to Local, 
+# or pass through the client IP via the X-Forwarded-For header. 
+# To configure the latter, set the following environment variables:
+  env:
+    - name: CODER_PROXY_TRUSTED_HEADERS
+      value: X-Forwarded-For
+    - name: CODER_PROXY_TRUSTED_ORIGINS
+      value: 10.0.0.1/8 # this will be the CIDR range of your Load Balancer IP address
+
+
+
+
+
   # You can specify any environment variables you'd like to pass to Coder
   # here. Coder consumes environment variables listed in
   # `coder server --help`, and these environment variables are also passed
