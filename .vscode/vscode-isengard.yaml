@@ -149,7 +149,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref DefaultVpcId
-      CidrBlock: 172.31.128.0/26
+      CidrBlock: 172.31.130.0/26
       AvailabilityZone: !Select [0, !GetAZs '']
       MapPublicIpOnLaunch: true
       Tags:
@@ -160,7 +160,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref DefaultVpcId
-      CidrBlock: 172.31.64.0/26
+      CidrBlock: 172.31.140.0/26
       AvailabilityZone: !Select [0, !GetAZs '']
       Tags:
         - Key: Name
