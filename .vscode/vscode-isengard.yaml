@@ -1,6 +1,9 @@
 Description: Create a VS code-server instance with an Amazon CloudFront distribution for use in Workshop Studio. Version 3.0.0
 
 Parameters:
+  DefaultVpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: Default VPC ID
   VSCodeUser:
     Type: String
     Description: UserName for VS code-server
@@ -16,14 +19,14 @@ Parameters:
   InstanceType:
     Description: VS code-server EC2 instance type
     Type: String
-    Default: t3a.large
-    AllowedPattern: '^(t3|t4|c6|c7|m6|m7|m8)[g|i|a]?(d|n|dn|-flex)?\.(nano|micro|small|medium|large|[2|4|9|12|16|18|24|32|48]?xlarge)$'
+    Default: t4g.medium
+    AllowedPattern: '^(t3|t4|c6|c7|m6|m7|m8)[g|i|a]?(d|n|dn|-flex)?\.(nano|micro|small|medium|large|[2|4|9|12]?xlarge)$'
     ConstraintDescription: Must be a valid t, c or m series EC2 instance type
   InstanceOperatingSystem:
     Description: VS code-server EC2 operating system
     Type: String
     Default: AmazonLinux-2023
-    AllowedValues: ['AmazonLinux-2023', 'Ubuntu-22', 'Ubuntu-24']
+    AllowedValues: ['AmazonLinux-2023']
   HomeFolder:
     Type: String
     Description: Folder to open in VS Code server
@@ -118,45 +121,19 @@ Mappings:
   ArmImage:
   # aws ssm get-parameters-by-path --path "/aws/service/canonical/ubuntu/" --recursive --query "Parameters[*].Name"  > canonical-ami.txt
   # aws ssm get-parameters-by-path --path "/aws/service/ami-amazon-linux-latest/" --recursive --query "Parameters[*].Name"  > amazon-ami.txt
-    Ubuntu-22:
-      ImageId: '{{resolve:ssm:/aws/service/canonical/ubuntu/server/jammy/stable/current/arm64/hvm/ebs-gp2/ami-id}}'
-    Ubuntu-24:
-      ImageId: '{{resolve:ssm:/aws/service/canonical/ubuntu/server/noble/stable/current/arm64/hvm/ebs-gp3/ami-id}}'
     AmazonLinux-2023:
       ImageId: '{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-arm64}}'
   AmdImage:
-    Ubuntu-22:
-      ImageId: '{{resolve:ssm:/aws/service/canonical/ubuntu/server/jammy/stable/current/amd64/hvm/ebs-gp2/ami-id}}'
-    Ubuntu-24:
-      ImageId: '{{resolve:ssm:/aws/service/canonical/ubuntu/server/noble/stable/current/amd64/hvm/ebs-gp3/ami-id}}'
     AmazonLinux-2023:
       ImageId: '{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64}}'
   AWSRegionsPrefixListID:
   # aws ec2 describe-managed-prefix-lists  --region <REGION> | jq -r '.PrefixLists[] | select (.PrefixListName == "com.amazonaws.global.cloudfront.origin-facing") | .PrefixListId'
-    ap-northeast-1:
-      PrefixList: pl-58a04531
-    ap-northeast-2:
-      PrefixList: pl-22a6434b
-    ap-south-1:
-      PrefixList: pl-9aa247f3
-    ap-southeast-1:
-      PrefixList: pl-31a34658
-    ap-southeast-2:
-      PrefixList: pl-b8a742d1
-    ca-central-1:
-      PrefixList: pl-38a64351
-    eu-central-1:
-      PrefixList: pl-a3a144ca
-    eu-north-1:
-      PrefixList: pl-fab65393
     eu-west-1:
       PrefixList: pl-4fa04526
     eu-west-2:
       PrefixList: pl-93a247fa
     eu-west-3:
       PrefixList: pl-75b1541c
-    sa-east-1:
-      PrefixList: pl-5da64334
     us-east-1:
       PrefixList: pl-3b927c52
     us-east-2:
@@ -167,6 +144,140 @@ Mappings:
       PrefixList: pl-82a045eb
 
 Resources:
+  # Create subnets in default VPC
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref DefaultVpcId
+      CidrBlock: 172.31.128.0/26
+      AvailabilityZone: !Select [0, !GetAZs '']
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-public-subnet
+
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref DefaultVpcId
+      CidrBlock: 172.31.64.0/26
+      AvailabilityZone: !Select [0, !GetAZs '']
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-private-subnet
+
+  # NAT Gateway for internet access
+  NATGatewayEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  NATGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NATGatewayEIP.AllocationId
+      SubnetId: !Ref PublicSubnet
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-nat
+
+  # VPC Endpoints for SSM connectivity
+  SSMEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      VpcId: !Ref DefaultVpcId
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.ssm
+      VpcEndpointType: Interface
+      SubnetIds:
+        - !Ref PrivateSubnet
+      SecurityGroupIds:
+        - !Ref VPCEndpointSecurityGroup
+
+  SSMMessagesEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      VpcId: !Ref DefaultVpcId
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.ssmmessages
+      VpcEndpointType: Interface
+      SubnetIds:
+        - !Ref PrivateSubnet
+      SecurityGroupIds:
+        - !Ref VPCEndpointSecurityGroup
+
+  EC2MessagesEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      VpcId: !Ref DefaultVpcId
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.ec2messages
+      VpcEndpointType: Interface
+      SubnetIds:
+        - !Ref PrivateSubnet
+      SecurityGroupIds:
+        - !Ref VPCEndpointSecurityGroup
+
+  S3Endpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      VpcId: !Ref DefaultVpcId
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.s3
+      VpcEndpointType: Gateway
+      RouteTableIds:
+        - !Ref PrivateRouteTable
+
+  CloudWatchLogsEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      VpcId: !Ref DefaultVpcId
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.logs
+      VpcEndpointType: Interface
+      SubnetIds:
+        - !Ref PrivateSubnet
+      SecurityGroupIds:
+        - !Ref VPCEndpointSecurityGroup
+
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref DefaultVpcId
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-private-rt
+
+  PrivateRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NATGateway
+
+  PrivateSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet
+      RouteTableId: !Ref PrivateRouteTable
+
+  VPCEndpointSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for VPC endpoints
+      VpcId: !Ref DefaultVpcId
+      SecurityGroupIngress:
+        - Description: Allow HTTPS from private subnet
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 172.31.64.0/26
+
+  CloudFrontVPCOrigin:
+    Type: AWS::CloudFront::VpcOrigin
+    Properties:
+      VpcOriginEndpointConfig:
+        Name: !Sub ${AWS::StackName}-vpc-origin
+        Arn: !Sub arn:${AWS::Partition}:ec2:${AWS::Region}:${AWS::AccountId}:instance/${VSCodeInstance}
+        HTTPPort: 80
+        OriginProtocolPolicy: http-only
+
+
   SecretPlaintextLambdaRole:
     Type: AWS::IAM::Role
     Properties:
@@ -874,6 +985,7 @@ Resources:
         - !FindInMap [ArmImage, !Ref InstanceOperatingSystem, ImageId]
         - !FindInMap [AmdImage, !Ref InstanceOperatingSystem, ImageId]
       InstanceType: !Ref InstanceType
+      SubnetId: !Ref PrivateSubnet
       BlockDeviceMappings:
         - DeviceName: !If [IsAL2023, /dev/xvda, /dev/sda1]
           Ebs:
@@ -895,262 +1007,36 @@ Resources:
       - Key: Name
         Value: !Ref InstanceName
 
-  VSCodeInstanceCachePolicy:
-    Type: AWS::CloudFront::CachePolicy
-    Properties:
-      CachePolicyConfig:
-        DefaultTTL: 86400
-        MaxTTL: 31536000
-        MinTTL: 1
-        Name: !Sub
-        - ${InstanceName}-${RandomGUID}
-        - RandomGUID: !Select [0, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId ]]]]
-        ParametersInCacheKeyAndForwardedToOrigin:
-          CookiesConfig:
-            CookieBehavior: all
-          EnableAcceptEncodingGzip: False
-          HeadersConfig:
-            HeaderBehavior: whitelist
-            Headers:
-              - Accept-Charset
-              - Authorization
-              - Origin
-              - Accept
-              - Referer
-              - Host
-              - Accept-Language
-              - Accept-Encoding
-              - Accept-Datetime
-          QueryStringsConfig:
-            QueryStringBehavior: all
 
-  CloudFrontDistribution:
-    Type: AWS::CloudFront::Distribution
-    Metadata:
-      cfn_nag:
-        rules_to_suppress:
-          - id: W10
-            reason: CloudFront Distribution access logging would require setup of an S3 bucket and changes in IAM, which add unnecessary complexity to the template
-          - id: W70
-            reason: Workshop Studio does not include a domain that can be used to provision a certificate, so it is not possible to setup TLS. See PFR EE-6016
-    Properties:
-      DistributionConfig:
-        Enabled: True
-        HttpVersion: http2and3
-        CacheBehaviors:
-          - AllowedMethods:
-              - GET
-              - HEAD
-              - OPTIONS
-              - PUT
-              - PATCH
-              - POST
-              - DELETE
-            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad # see https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-cache-policies.html#managed-cache-policy-caching-disabled
-            Compress: False
-            OriginRequestPolicyId: 216adef6-5c7f-47e4-b989-5492eafa07d3 # Managed-AllViewer - see https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-origin-request-policies.html#:~:text=When%20using%20AWS,47e4%2Db989%2D5492eafa07d3
-            TargetOriginId: !Sub CloudFront-${AWS::StackName}
-            ViewerProtocolPolicy: allow-all
-            PathPattern: '/proxy/*'
-        DefaultCacheBehavior:
-          AllowedMethods:
-            - GET
-            - HEAD
-            - OPTIONS
-            - PUT
-            - PATCH
-            - POST
-            - DELETE
-          CachePolicyId: !Ref VSCodeInstanceCachePolicy
-          OriginRequestPolicyId: 216adef6-5c7f-47e4-b989-5492eafa07d3 # Managed-AllViewer - see https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-origin-request-policies.html#:~:text=When%20using%20AWS,47e4%2Db989%2D5492eafa07d3
-          TargetOriginId: !Sub CloudFront-${AWS::StackName}
-          ViewerProtocolPolicy: allow-all
-        Origins:
-          - DomainName: !GetAtt VSCodeInstance.PublicDnsName
-            Id: !Sub CloudFront-${AWS::StackName}
-            CustomOriginConfig:
-              OriginProtocolPolicy: http-only
 
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup
-    Metadata:
-      cfn_nag:
-        rules_to_suppress:
-          - id: F1000
-            reason: All outbound traffic should be allowed from this instance. The EC2 instance is provisioned in the default VPC, which already has this egress rule, and it is not possible to duplicate this egress rule in the default VPC
     Properties:
-      GroupDescription: SG for VSCodeServer - only allow CloudFront ingress
+      GroupDescription: SG for VSCodeServer
+      VpcId: !Ref DefaultVpcId
       SecurityGroupIngress:
-        - Description: Allow HTTP from com.amazonaws.global.cloudfront.origin-facing
+        - Description: Allow HTTP from VPC
           IpProtocol: tcp
           FromPort: 80
           ToPort: 80
-          SourcePrefixListId: !FindInMap [AWSRegionsPrefixListID, !Ref 'AWS::Region', PrefixList]
+          CidrIp: 172.31.0.0/16
+      SecurityGroupEgress:
+        - Description: Allow all outbound traffic
+          IpProtocol: -1
+          CidrIp: 0.0.0.0/0
 
-  VSCodeHealthCheckLambdaRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-            - !Sub lambda.${AWS::URLSuffix}
-          Action:
-          - sts:AssumeRole
-      Path: /
-      ManagedPolicyArns:
-        - !Sub arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
-  VSCodeHealthCheckLambda:
-    Type: AWS::Lambda::Function
-    Metadata:
-      cfn_nag:
-        rules_to_suppress:
-          - id: W58
-            reason: Warning incorrectly reported. The role associated with the Lambda function has the AWSLambdaBasicExecutionRole managed policy attached, which includes permission to write CloudWatch Logs. See https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSLambdaBasicExecutionRole.html
-          - id: W89
-            reason: CloudFormation custom function does not need the scaffolding of a VPC, to do so would add unnecessary complexity
-          - id: W92
-            reason: CloudFormation custom function does not need reserved concurrent executions, to do so would add unnecessary complexity
-    Properties:
-      Description: Run health check on VS code-server instance
-      Handler: index.lambda_handler
-      Runtime: python3.12
-      MemorySize: 128
-      Timeout: 600
-      Environment:
-        Variables:
-          RetrySleep: 2900
-          AbortTimeRemaining: 5000
-      Architectures:
-        - arm64
-      Role: !GetAtt VSCodeHealthCheckLambdaRole.Arn
-      Code:
-        ZipFile: |
-          import json
-          import cfnresponse
-          import logging
-          import time
-          import os
-          import http.client
-          from urllib.parse import urlparse
-
-          logger = logging.getLogger()
-          logger.setLevel(logging.INFO)
-
-          def healthURLOk(url):
-              # Using try block to catch connection errors and JSON conversion errors
-              try:
-                  logger.debug(f'url: {url}')
-                  parsed_url = urlparse(url)
-                  if parsed_url.scheme == 'https':
-                      logger.debug(f'Trying https: {parsed_url.netloc}. Parsed_url: {parsed_url}')
-                      conn = http.client.HTTPSConnection(parsed_url.netloc)
-                  else:
-                      logger.debug(f'Trying http: {parsed_url.netloc}. Parsed_url: {parsed_url}')
-                      conn = http.client.HTTPConnection(parsed_url.netloc)
-                  conn.request("GET", parsed_url.path or "/")
-                  response = conn.getresponse()
-                  logger.debug(f'response: {response}')
-                  logger.debug(f'response.status: {response.status}')
-                  content = response.read()
-                  logger.debug(f'content: {content}')
-                  # This will be true for any return code below 4xx (so 3xx and 2xx)
-                  if 200 <= response.status < 400:
-                      response_dict = json.loads(content.decode('utf-8'))
-                      logger.debug(f'response_dict: {response_dict}')
-                      # Checking for expected keys and if the key has the expected value
-                      if 'status' in response_dict and (response_dict['status'].lower() == 'alive' or response_dict['status'].lower() == 'expired'):
-                          # Response code 200 and correct JSON returned
-                          logger.info(f'Health check OK. Status: {response_dict['status'].lower()}')
-                          return True
-                      else:
-                          # Response code 200 but the 'status' key is either not present or does not have the value 'alive' or 'expired'
-                          logger.info(f'Health check failed. Status: {response_dict['status'].lower()}')
-                          return False
-                  else:
-                      # Response was not ok (error 4xx or 5xx)
-                      logger.info(f'Healthcheck failed. Return code: {response.status}')
-                      return False
-
-              except http.client.HTTPException as e:
-                  # URL malformed or endpoint not ready yet, this should only happen if we can not DNS resolve the URL
-                  logger.error(e, exc_info=True)
-                  logger.error(f'Healthcheck failed: HTTP Exception. URL invalid and/or endpoint not ready yet')
-                  return False
-
-              except json.decoder.JSONDecodeError as e:
-                  # The response we got was not a properly formatted JSON
-                  logger.error(e, exc_info=True)
-                  logger.info(f'Healthcheck failed: Did not get JSON object from URL as expected')
-                  return False
-
-              except Exception as e:
-                  logger.error(e, exc_info=True)
-                  logger.info(f'Healthcheck failed: General error')
-                  return False
-
-              finally:
-                  if 'conn' in locals():
-                      conn.close()
-
-          def is_valid_json(json_string):
-              try:
-                  json.loads(json_string)
-                  return True
-              except ValueError:
-                  return False
-
-          def lambda_handler(event, context):
-              logger.debug(f'event: {event}')
-              logger.debug(f'context: {context}')
-              try:
-                  if event['RequestType'] != 'Create':
-                      cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData={}, reason='No action to take')
-                  else:
-                      sleep_ms = int(os.environ.get('RetrySleep'))
-                      abort_time_remaining_ms = int(os.environ.get('AbortTimeRemaining'))
-                      resource_properties = (event['ResourceProperties'])
-                      logger.debug(f'resource_properties: %s', resource_properties)
-                      url = (event['ResourceProperties']['Url'])
-                      logger.info(f'Testing url: {url}')
-                      time_remaining_ms = context.get_remaining_time_in_millis()
-                      attempt_no = 0
-                      health_check = False
-                      while (attempt_no == 0 or (time_remaining_ms > abort_time_remaining_ms and not health_check)):
-                          attempt_no += 1
-                          logger.info(f'Attempt: {attempt_no}. Time Remaining: {time_remaining_ms/1000}s')
-                          health_check = healthURLOk(url)
-                          if not health_check:
-                              logger.debug(f'Healthcheck failed. Sleeping: {sleep_ms/1000}s')
-                              time.sleep(sleep_ms/1000)
-                          time_remaining_ms = context.get_remaining_time_in_millis()
-                      if health_check:
-                          logger.info(f'Health check successful. Attempts: {attempt_no}. Time Remaining: {time_remaining_ms/1000}s')
-                          cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData={}, reason='VS code-server healthcheck successful')
-                      else:
-                          logger.info(f'Health check failed. Timed out. Attempts: {attempt_no}. Time remaining {time_remaining_ms/1000}s < Abort time remaining {abort_time_remaining_ms/1000}s')
-                          cfnresponse.send(event, context, cfnresponse.FAILED, responseData={}, reason='VS code-server healthcheck failed. Timed out after ' + str(attempt_no) + ' attempts')
-                          logger.info(f'Response sent')
-
-              except Exception as e:
-                  logger.error(e, exc_info=True)
-                  logger.info(f'Health check failed. General exception')
-                  cfnresponse.send(event, context, cfnresponse.FAILED, responseData={}, reason=str(e))
-
-  Healthcheck:
-    Type: Custom::VSCodeHealthCheckLambda
-    Properties:
-      ServiceToken: !GetAtt VSCodeHealthCheckLambda.Arn
-      ServiceTimeout: 610
-      Url: !Sub https://${CloudFrontDistribution.DomainName}/healthz
 
 Outputs:
-  URL:
-    Description: VSCode-Server URL
-    Value: !Sub https://${CloudFrontDistribution.DomainName}/?folder=${HomeFolder}
+  InstanceId:
+    Description: VSCode-Server Instance ID
+    Value: !Ref VSCodeInstance
+  PrivateIP:
+    Description: VSCode-Server Private IP
+    Value: !GetAtt VSCodeInstance.PrivateIp
   Password:
     Description: VSCode-Server Password
     Value: !GetAtt SecretPlaintext.password
+  #CloudFrontURL:
+  #  Description: CloudFront Distribution URL
+  #  Value: !Sub https://${CloudFrontDistribution.DomainName}

@@ -51,3 +51,4 @@ Private.md
 .notused/idp/private/github-token
 .notused/idp/private/github-integration.yaml
 .aws-staff/saml.sh
+.vscode/notes.md
