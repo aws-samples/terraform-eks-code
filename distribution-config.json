@@ -1,0 +1,61 @@
+{
+  "CallerReference": "cli-vpc-origin-distribution-1761911518",
+  "Comment": "vscode distribution with VPC Origin",
+  "Origins": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "Id": "MyVPCOrigin",
+        "DomainName": "ip-172-31-140-23.eu-west-2.compute.internal",
+        "VpcOriginConfig": {
+          "VpcOriginId": "vo_GAZnDQcgoGZBVhb4OnscqK"
+        }
+      }
+    ]
+  },
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "MyVPCOrigin",
+    "ViewerProtocolPolicy": "redirect-to-https",
+    "AllowedMethods": {
+      "Quantity": 7,
+      "Items": [
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "PUT",
+        "POST",
+        "PATCH",
+        "DELETE"
+      ],
+      "CachedMethods": {
+        "Quantity": 3,
+        "Items": [
+          "GET",
+          "HEAD",
+          "OPTIONS"
+        ]
+      }
+    },
+    "ForwardedValues": {
+      "QueryString": true,
+      "Cookies": {
+        "Forward": "all"
+      },
+      "Headers": {
+        "Quantity": 0
+      },
+      "QueryStringCacheKeys": {
+        "Quantity": 0
+      }
+    },
+    "DefaultTTL": 86400,
+    "MinTTL": 0,
+    "MaxTTL": 31536000,
+    "Compress": true,
+    "LambdaFunctionAssociations": {
+      "Quantity": 0
+    }
+  },
+  "Enabled": true,
+  "PriceClass": "PriceClass_All"
+}

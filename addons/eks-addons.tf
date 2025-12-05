@@ -8,14 +8,7 @@ resource "aws_eks_addon" "metrics-server" {
   addon_name                  = "metrics-server"
 }
 
-# new
-#resource "aws_eks_addon" "cert-manager" {
-#  cluster_name                = data.aws_ssm_parameter.cluster-name.value
-#  addon_name                  = "cert-manager"
-#}
-
-#resource "aws_eks_addon" "adot" {
-#  depends_on                  = [aws_eks_addon.cert-manager]
-#  cluster_name                = data.aws_ssm_parameter.cluster-name.value
-# addon_name                  = "adot"
-#}
+resource "aws_eks_addon" "network-flow-monitoring-agent" {
+  cluster_name                = data.aws_ssm_parameter.cluster-name.value
+  addon_name                  = "aws-network-flow-monitoring-agent"
+}

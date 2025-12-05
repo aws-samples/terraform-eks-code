@@ -39,6 +39,7 @@ jq
 **/*.old
 **/net-v2/*
 **/notused/*
+**/.vscode/*
 
 **/.terraform.lock.hcl
 extra/.observability/priv-vars.tf
@@ -52,3 +53,4 @@ Private.md
 .notused/idp/private/github-integration.yaml
 .aws-staff/saml.sh
 .vscode/notes.md
+.DS_Store

@@ -268,16 +268,6 @@ Resources:
           ToPort: 443
           CidrIp: 172.31.64.0/26
 
-  CloudFrontVPCOrigin:
-    Type: AWS::CloudFront::VpcOrigin
-    Properties:
-      VpcOriginEndpointConfig:
-        Name: !Sub ${AWS::StackName}-vpc-origin
-        Arn: !Sub arn:${AWS::Partition}:ec2:${AWS::Region}:${AWS::AccountId}:instance/${VSCodeInstance}
-        HTTPPort: 80
-        OriginProtocolPolicy: http-only
-
-
   SecretPlaintextLambdaRole:
     Type: AWS::IAM::Role
     Properties:
@@ -877,32 +867,46 @@ Resources:
               timeoutSeconds: 240
               runCommand:
                 - '#!/bin/bash'
+                - systemctl enable --now amazon-ssm-agent
                 - !Sub export HOME=/home/${VSCodeUser}
                 - curl -fsSL https://code-server.dev/install.sh | bash -s -- 2>&1
                 - !Sub systemctl enable --now code-server@${VSCodeUser} 2>&1
                 - !Sub |
-                  tee /etc/nginx/conf.d/code-server.conf <<EOF
+                  tee /etc/nginx/conf.d/code-editor.conf <<EOF
                   server {
                       listen 80;
                       listen [::]:80;
                       # server_name \$\{CloudFrontDistribution.DomainName\};
                       server_name *.cloudfront.net;
+                      proxy_set_header Host \$host;
+                      proxy_set_header X-Real-IP \$remote_addr;
+                      proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                      proxy_set_header X-Forwarded-Proto \$scheme;
+                      proxy_set_header Upgrade \$http_upgrade;
+                      proxy_set_header Connection "upgrade";
+                      proxy_buffering off;
+                      proxy_set_header Accept-Encoding gzip;
                       location / {
-                        proxy_pass http://localhost:8080/;
-                        proxy_set_header Host \$host;
-                        proxy_set_header Upgrade \$http_upgrade;
-                        proxy_set_header Connection upgrade;
-                        proxy_set_header Accept-Encoding gzip;
-                      }
-                      location /${DevServerBasePath} {
-                        proxy_pass http://localhost:${DevServerPort}/${DevServerBasePath};
-                        proxy_set_header Host \$host;
-                        proxy_set_header Upgrade \$http_upgrade;
-                        proxy_set_header Connection upgrade;
-                        proxy_set_header Accept-Encoding gzip;
+                          proxy_pass http://localhost:8080/;
                       }
                   }
                   EOF
+                - !Sub |
+                  if [[ -n "${DevServerBasePath}" ]]
+                  then
+                      sed -i '$i\
+                      location /${DevServerBasePath} {\
+                          proxy_pass http://localhost:${DevServerPort};\
+                      }\
+                      location /ports/${DevServerPort}/ {\
+                          return 301 /${DevServerBasePath};\
+                      }' /etc/nginx/conf.d/code-editor.conf
+                  fi
+                - systemctl enable nginx
+                - systemctl restart nginx
+                - echo "Nginx installed. Checking configuration"
+                - nginx -t 2>&1
+                - systemctl status nginx
                 - !Sub mkdir -p /home/${VSCodeUser}/.config/code-server
                 - !Sub |
                   tee /home/${VSCodeUser}/.config/code-server/config.yaml <<EOF
@@ -1019,13 +1023,11 @@ Resources:
           IpProtocol: tcp
           FromPort: 80
           ToPort: 80
-          CidrIp: 172.31.0.0/16
+          SourcePrefixListId: !FindInMap [AWSRegionsPrefixListID, !Ref 'AWS::Region', PrefixList]
       SecurityGroupEgress:
         - Description: Allow all outbound traffic
           IpProtocol: -1
           CidrIp: 0.0.0.0/0
-
-
 
 Outputs:
   InstanceId:
