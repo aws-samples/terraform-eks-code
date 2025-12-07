@@ -822,18 +822,18 @@ Resources:
               timeoutSeconds: 600
               runCommand:
                 - '#!/bin/bash'
-                - !Sub sudo -u ${CodeEditorUser} --login curl -fsSL https://astral.sh/uv/install.sh -o /tmp/uv_install.sh
-                - !Sub sudo -u ${CodeEditorUser} --login bash /tmp/uv_install.sh
+                - !Sub sudo -u ${VSCodeUser} --login curl -fsSL https://astral.sh/uv/install.sh -o /tmp/uv_install.sh
+                - !Sub sudo -u ${VSCodeUser} --login bash /tmp/uv_install.sh
                 - !Sub |
                     if uv generate-shell-completion bash &>/dev/null; then
-                      echo 'eval "$(uv generate-shell-completion bash)"' >> /home/${CodeEditorUser}/.bashrc
+                      echo 'eval "$(uv generate-shell-completion bash)"' >> /home/${VSCodeUser}/.bashrc
                     fi
                 - !Sub |
                     if uvx generate-shell-completion bash &>/dev/null; then
-                      echo 'eval "$(uvx generate-shell-completion bash)"' >> /home/${CodeEditorUser}/.bashrc
+                      echo 'eval "$(uvx generate-shell-completion bash)"' >> /home/${VSCodeUser}/.bashrc
                     fi
                 - echo "uv installed. Checking configuration"
-                - !Sub sudo -u ${CodeEditorUser} --login uv --version 
+                - !Sub sudo -u ${VSCodeUser} --login uv --version 
           - name: InstallKiroCLI
             action: aws:runShellScript
             inputs:
@@ -842,10 +842,10 @@ Resources:
                 - '#!/bin/bash'
                 - set -euo pipefail
                 - curl -fsSL https://cli.kiro.dev/install -o /tmp/install-kiro-cli.sh
-                - !Sub chown -R ${CodeEditorUser}:${CodeEditorUser} /tmp/install-kiro-cli.sh
-                - !Sub sudo -u ${CodeEditorUser} bash /tmp/install-kiro-cli.sh 2>&1
+                - !Sub chown -R ${VSCodeUser}:${VSCodeUser} /tmp/install-kiro-cli.sh
+                - !Sub sudo -u ${VSCodeUser} bash /tmp/install-kiro-cli.sh 2>&1
                 - echo "Kiro CLI installed. Checking configuration"
-                - !Sub sudo -i -u ${CodeEditorUser} kiro-cli --version        
+                - !Sub sudo -i -u ${VSCodeUser} kiro-cli --version        
           - name: DownloadBranches
             action: aws:runShellScript
             inputs:

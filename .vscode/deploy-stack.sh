@@ -1,6 +1,6 @@
 # delete role eksworkshop-admin
 # create WSParticipantRole.
-echo "Building in eu-west-1 
+echo "Building in eu-west-1"
 aws iam detach-role-policy --role-name eksworkshop-admin --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
 ir=$(aws iam list-instance-profiles | grep vscode | grep InstanceProfileName | cut -f2 -d':' | cut -f2 -d'"')
 aws iam remove-role-from-instance-profile --instance-profile-name $ir --role-name eksworkshop-admin
