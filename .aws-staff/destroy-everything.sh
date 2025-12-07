@@ -99,7 +99,7 @@ for i in $dirs; do
     cd ../$i
     echo "**** Destroying in $i ****"
     if [[ -d ".terraform" ]]; then
-        terraform destroy -auto-approve >/dev/null
+        terraform destroy -auto-approve
         rm -f tfplan terraform*
         #rm -rf .terraform
     fi
