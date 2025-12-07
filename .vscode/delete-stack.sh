@@ -3,4 +3,4 @@
 #    echo $sn
 #    aws cloudformation delete-stack --stack-name $sn
 #done
-aws cloudformation delete-stack --stack-name vscode --region eu-west-2
+aws cloudformation delete-stack --stack-name vscode --region eu-west-1

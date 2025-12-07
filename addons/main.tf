@@ -150,10 +150,6 @@ module "eks_blueprints_addons" {
     create_namespace = true
   }
 
-  metrics_server = {
-    namespace="kube-system"
-    #create_namespace = true
-  }
 
   #aws_load_balancer_controller = {
     #namespace=kubernetes_namespace_v1.aws_load_balancer_controller.id
@@ -166,8 +162,6 @@ module "eks_blueprints_addons" {
   #    },
   #  ]
   #}
-
-
 
   tags = {
     Environment = "dev"

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get the private dns
-DEFAULT_VPC_ID=$(aws ec2 describe-vpcs --filters "Name=isDefault,Values=true" --query 'Vpcs[0].VpcId' --region eu-west-2 --output text)
+DEFAULT_VPC_ID=$(aws ec2 describe-vpcs --filters "Name=isDefault,Values=true" --query 'Vpcs[0].VpcId' --region eu-west-1 --output text)
 pdns=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=VSCodeServer" "Name=instance-state-name,Values=running" --query 'Reservations[0].Instances[0].[PrivateDnsName]' --output text)
 iid=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=VSCodeServer" "Name=instance-state-name,Values=running" --query 'Reservations[0].Instances[0].[InstanceId]' --output text)
 REGION=$(aws configure get region)
