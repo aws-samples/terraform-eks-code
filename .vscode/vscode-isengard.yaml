@@ -816,6 +816,36 @@ Resources:
                     done
                     rm -rf /tmp/folder
                   fi
+          - name: InstallTerraformDnf
+            action: aws:runShellScript
+            precondition:
+              StringEquals:
+                - '{{ LinuxFlavor }}'
+                - al2023
+            inputs:
+              timeoutSeconds: 300
+              runCommand:
+                - '#!/bin/bash'
+                - dnf config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+                - dnf -y install terraform 2>&1
+                - echo "Terraform installed. Checking configuration"
+                - terraform --version
+          - name: InstallTerraformApt
+            action: aws:runShellScript
+            precondition:
+              StringEquals:
+                - '{{ LinuxFlavor }}'
+                - ubuntu
+            inputs:
+              timeoutSeconds: 300
+              runCommand:
+                - '#!/bin/bash'
+                - dpkg --configure -a
+                - curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-keyring.gpg
+                - echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-keyring.gpg] https://apt.releases.hashicorp.com/ $(lsb_release --codename --short) main" >> /etc/apt/sources.list.d/hashicorp.list
+                - apt-get -q update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q terraform
+                - echo "Terraform installed. Checking configuration"
+                - terraform --version
           - name: Installuv
             action: aws:runShellScript
             inputs:
