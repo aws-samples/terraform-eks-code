@@ -22,8 +22,6 @@ flux_version='2.4.0'
 # renovate: depName=argoproj/argo-cd
 argocd_version='2.13.4'
 
-# renovate: depName=hashicorp/terraform
-terraform_version='1.9.8'
 
 # renovate: depName=aws/amazon-ec2-instance-selector
 ec2_instance_selector_version='2.4.1'
@@ -124,10 +122,6 @@ echo "oha load generator"
 download "https://github.com/hatoo/oha/releases/download/v${oha_version}/oha-linux-${arch_name}" "oha"
 chmod +x ./oha
 mv ./oha /usr/local/bin
-
-echo "terraform"
-yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-yum -yq install terraform
 
 
 echo "istio cli"
