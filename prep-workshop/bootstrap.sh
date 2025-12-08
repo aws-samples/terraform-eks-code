@@ -28,6 +28,7 @@ if [[ $_ != $0 ]]; then
     echo "Add SPOT service linked role"
     aws iam create-service-linked-role --aws-service-name spot.amazonaws.com &>/dev/null || true
     echo "Kiro mcp setup"
+    mkdir -p ~/.kiro/settings
     cp ~/environment/tfekscode/prep-workshop/mcp.json  ~/.kiro/settings/mcp.json
     echo "Now run...."
     echo " "
