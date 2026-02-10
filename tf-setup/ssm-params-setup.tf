@@ -1,3 +1,8 @@
+# SSM Parameter Store Configuration
+# These parameters serve as a configuration registry for all infrastructure stages
+# Other stages read these values to maintain consistency across the deployment
+
+# Unique identifier for this workshop deployment
 resource "aws_ssm_parameter" "tf-eks-id" {
   name        = "/workshop/tf-eks/id"
   description = "The unique id for the workshop"
@@ -9,6 +14,7 @@ resource "aws_ssm_parameter" "tf-eks-id" {
   }
 }
 
+# KMS key ID for encryption operations
 resource "aws_ssm_parameter" "tf-eks-keyid" {
   name        = "/workshop/tf-eks/keyid"
   description = "The keyid for the workshop"
@@ -20,6 +26,7 @@ resource "aws_ssm_parameter" "tf-eks-keyid" {
   }
 }
 
+# KMS key ARN for IAM policy references
 resource "aws_ssm_parameter" "tf-eks-keyarn" {
   name        = "/workshop/tf-eks/keyarn"
   description = "The key arn for the workshop"
@@ -31,6 +38,7 @@ resource "aws_ssm_parameter" "tf-eks-keyarn" {
   }
 }
 
+# AWS region for all resources
 resource "aws_ssm_parameter" "tf-eks-region" {
   name        = "/workshop/tf-eks/region"
   description = "The region for the workshop"
@@ -42,6 +50,7 @@ resource "aws_ssm_parameter" "tf-eks-region" {
   }
 }
 
+# EKS cluster name used across all stages
 resource "aws_ssm_parameter" "tf-eks-cluster-name" {
   name        = "/workshop/tf-eks/cluster-name"
   description = "The EKS cluster name for the workshop"
@@ -53,6 +62,7 @@ resource "aws_ssm_parameter" "tf-eks-cluster-name" {
   }
 }
 
+# S3 bucket name for Terraform state backend
 resource "aws_ssm_parameter" "tf-eks-buck-name" {
   name        = "/workshop/tf-eks/bucket-name"
   description = "The Terraform State bucket name for the workshop"
@@ -64,6 +74,7 @@ resource "aws_ssm_parameter" "tf-eks-buck-name" {
   }
 }
 
+# Kubernetes version for EKS cluster
 resource "aws_ssm_parameter" "tf-eks-version" {
   name        = "/workshop/tf-eks/eks-version"
   description = "The EKS Version"

@@ -1,17 +1,26 @@
+# S3 Bucket for Terraform State Storage
+# This bucket stores state files for all stages of the infrastructure
 
+# Main state bucket with unique name
 resource "aws_s3_bucket" "terraform_state" {
 
   bucket = format("tf-state-workshop-%s", random_id.id1.hex)
 
-  // This is only here so we can destroy the bucket as part of automated tests. You should not copy this for production
-  // usage
+  # WARNING: force_destroy is enabled for workshop/demo purposes only
+  # This allows easy cleanup but should NEVER be used in production
+  # In production, state buckets should be protected from deletion
   force_destroy = true
+  
+  # Prevent bucket name changes after creation
+  # This avoids accidental state migration issues
   lifecycle {
     ignore_changes = [bucket]
   }
 
 }
 
+# Enable KMS encryption for all objects in the bucket
+# Ensures state files are encrypted at rest
 resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" {
   bucket = aws_s3_bucket.terraform_state.id
 
@@ -25,17 +34,18 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" 
   }
 }
 
-
+# Enable versioning for state file history
+# Allows recovery from accidental state corruption or deletion
 resource "aws_s3_bucket_versioning" "terraform_state" {
-  # Enable versioning so we can see the full revision history of our
-  # state files
   bucket = aws_s3_bucket.terraform_state.id
+  
   versioning_configuration {
     status = "Enabled"
   }
 }
 
-
+# Block all public access to the state bucket
+# State files contain sensitive information and should never be public
 resource "aws_s3_bucket_public_access_block" "pub_block_state" {
   bucket = aws_s3_bucket.terraform_state.id
 

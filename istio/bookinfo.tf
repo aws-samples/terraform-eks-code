@@ -1,15 +1,31 @@
+# Bookinfo Sample Namespace
+# Creates namespace with automatic Istio sidecar injection enabled
+# Demonstrates Istio service mesh capabilities
+
 resource "kubernetes_namespace_v1" "sample" {
-  depends_on=[null_resource.restart]
+  # Wait for ingress gateway restart to complete
+  depends_on = [null_resource.restart]
+  
   metadata {
     annotations = {}
+    
+    # Enable automatic Envoy sidecar injection
+    # All pods in this namespace will get an Istio proxy sidecar
     labels = {
       "istio-injection" = "enabled"
     }
+    
     name = "sample"
   }
 
   timeouts {}
 }
+
+# Automatic Sidecar Injection:
+# - Istio mutating webhook intercepts pod creation
+# - Injects Envoy proxy container as sidecar
+# - Enables traffic management, security, and observability
+# - Pods will show 2/2 containers (app + sidecar)
 
 
 # kubernetes_service_account_v1.sample__bookinfo-details:
