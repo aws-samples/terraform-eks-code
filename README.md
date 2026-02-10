@@ -119,7 +119,7 @@ Each stage builds upon the previous, with configuration shared via SSM Parameter
 
 Comprehensive documentation available in the `docs/` directory:
 
-- **[Overview](docs/README-overview.md)** - Complete architecture and deployment guide
+- **[Complete Overview](docs/README.md)** - Full architecture and deployment guide
 - **[tf-setup](docs/README-tf-setup.md)** - Foundation and state management
 - **[common-files](docs/README-common-files.md)** - Shared configuration (DRY)
 - **[net](docs/README-net.md)** - Network infrastructure
