@@ -7,7 +7,7 @@ data "aws_instance" "c9inst" {
   # Filter by instance name tag
   filter {
     name   = "tag:Name"
-    values = ["VSCodeServer"]
+    values = ["eksworkshop-kiroide"]
   }
   
   # Only find running instances
