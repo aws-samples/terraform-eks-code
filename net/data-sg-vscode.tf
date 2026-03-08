@@ -3,7 +3,7 @@
 data "aws_security_group" "c9sg" {
   filter {
     name   = "tag:Name"
-    values = ["Kiro1-Instance-SG"]
+    values = ["kiro1-Instance-SG"]
   }
 }
 
