@@ -20,7 +20,7 @@ data "aws_instance" "c9inst" {
 # Get the security group attached to the VSCode instance
 # sort() ensures consistent selection if multiple SGs exist
 data "aws_security_group" "c9sg" {
-  name = sort(data.aws_instance.c9inst.security_groups)[0]
+  name = sort(data.aws_instance.c9inst.vpc_security_group_ids)[0]
 }
 
 # Get the IAM instance profile for the VSCode instance
