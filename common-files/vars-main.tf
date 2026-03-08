@@ -26,7 +26,7 @@ variable "cluster-name" {
 # Kubernetes version for EKS cluster
 variable "eks_version" {
   type    = string
-  default = "1.33"
+  default = "1.34"
 }
 
 # Unused variable - kept for compatibility
