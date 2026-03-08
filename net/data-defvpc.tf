@@ -9,3 +9,11 @@ data "aws_vpc" "vpc-default" {
   }
   cidr_block="172.31.0.0/16"
 }
+
+
+data "aws_route_table" "selected" {
+  filter {
+    name   = "tag:Name"
+    values = ["eksworkshop-Private-Routes"]
+  }
+}
