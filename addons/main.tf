@@ -1,5 +1,5 @@
 # Kubernetes Provider Configuration
-ccess to the EKS cluster for Terraform operations
+# Access to the EKS cluster for Terraform operations
 # Uses AWS CLI for authentication via IRSA# Kubernetes Provider Configuration
 # Configures access to the EKS cluster for Terraform operations
 # Uses AWS CLI for authentication via IRSA
