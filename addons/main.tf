@@ -12,7 +12,6 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
   
   # Local kubeconfig file (fallback)
- kube/config"
   
   # AWS CLI exec authentication
   # Uses AWS IAM for authentication with short-lived tokens (15 min)
@@ -26,7 +25,7 @@ provider "kubernetes" {
 }
 
 # Helm Provider Configuration
-#External Secrets, etc.)
+# Manages Helm chart installations (External DNS, External Secrets, etc.)
 provider "helm" {
   kubernetes {
     host                   = data.aws_ssm_parameter.endpoint.value
@@ -48,7 +47,7 @@ provider "kubectl" {
   # Handles transient API server issues
   apply_retry_count      = 5
   
-  host                   = data.aws_ssm_paramalue
+  host                   = data.aws_ssm_parameter.endpoint.value
   cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
   
   # Don't load local kubeconfig (use exec auth only)
@@ -83,7 +82,7 @@ module "eks_blueprints_addons" {
   #}
 
   # Required: Cluster information from SSM parameters
-= data.aws_ssm_parameter.cluster-name.value
+  cluster_name      = data.aws_ssm_parameter.cluster-name.value
   cluster_endpoint  = data.aws_ssm_parameter.endpoint.value
   cluster_version   = data.aws_ssm_parameter.tf-eks-version.value
   oidc_provider_arn = data.aws_ssm_parameter.oidc_provider_arn.value
@@ -94,7 +93,7 @@ module "eks_blueprints_addons" {
   external_dns = {
     name             = "external-dns"
     namespace        = "external-dns"
-    service_account  = "extern
+    service_account  = "external-dns"
     create_namespace = true
     # Wait for load balancer controller to be ready
     depends_on       = [null_resource.sleep]
@@ -168,7 +167,7 @@ module "eks_blueprints_addons" {
   #      name  = "cloudWatchLogs.autoCreateGroup"
   #      value = true
   #    }
-       value = data.aws_ssm_parameter.eks-vpc.value
+  #       value = data.aws_ssm_parameter.eks-vpc.value
   #    },
   #  ]
   #}
@@ -177,11 +176,6 @@ module "eks_blueprints_addons" {
   tags = {
     Environment = "dev"
   }
-}
-ter1-"
-  #  retention       = 7
-  #  skip_destroy    = false
-  #}
 
   # CloudWatch Metrics Configuration
   # Collects cluster and pod metrics, sends to CloudWatch
@@ -198,10 +192,15 @@ ter1-"
   #  set = [
   #    {
   #      name  = "vpcId"
-  # #  ]
+  #    },
+  #  ]
   #}
 
   #aws_for_fluentbit_cw_log_group = {
   #  create          = true
   #  use_name_prefix = true
-  #  name_prefix     = "eks-clus
+  #  name_prefix     = "eks-cluster1-"
+  #  retention       = 7
+  #  skip_destroy    = false
+  #}
+}
