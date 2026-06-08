@@ -55,8 +55,8 @@ do
     printf "    version = \"~> 2.17.0\" \n" >> $of
     printf "  }\n" >> $of
     printf "  grafana = {\n" >> $of
-    printf "    source  = "grafana/grafana" \n" >> $of
-    printf "    version = ">= 2.9" \n" >> $of
+    printf "    source  = \"grafana/grafana\"\n" >> $of
+    printf "    version = \">= 2.9\"\n" >> $of
     printf "  }\n" >> $of
     printf "  kubectl = {\n" >> $of
     printf "    source  = \"gavinbunney/kubectl\"\n" >> $of
