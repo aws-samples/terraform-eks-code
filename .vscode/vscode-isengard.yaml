@@ -1,4 +1,4 @@
-Description: Create a VS code-server instance with an Amazon CloudFront distribution for use in Workshop Studio. Version 3.0.0
+Description: Create VS code-server instance with SSM port forwarding for use in Workshop Studio on Isengard
 
 Parameters:
   DefaultVpcId:
@@ -241,7 +241,7 @@ Resources:
       VpcId: !Ref DefaultVpcId
       Tags:
         - Key: Name
-          Value: !Sub ${AWS::StackName}-private-rt
+          Value: eksworkshop-Private-Routes
 
   PrivateRoute:
     Type: AWS::EC2::Route
@@ -588,8 +588,8 @@ Resources:
               timeoutSeconds: 60
               runCommand:
                 - '#!/bin/bash'
+                - dnf clean all
                 - dnf install -y --allowerasing curl gnupg whois argon2 unzip nginx openssl jq amazon-ec2-utils yum-utils
-                - git clone -b new-module https://github.com/aws-samples/terraform-eks-code.git /home/ec2-user/environment/tfekscode
           - name: InstallBasePackagesApt
             action: aws:runShellScript
             precondition:
@@ -723,6 +723,17 @@ Resources:
                     echo "Installing git-remote-codecommit with pip3"
                     PIP_BREAK_SYSTEM_PACKAGES=1 pip3 install git-remote-codecommit
                   fi
+          - name: CloneTfeksCode
+            action: aws:runShellScript
+            precondition:
+              StringEquals:
+                - '{{ LinuxFlavor }}'
+                - al2023
+            inputs:
+              timeoutSeconds: 120
+              runCommand:
+                - '#!/bin/bash'
+                - git clone -b new-module https://github.com/aws-samples/terraform-eks-code.git /home/ec2-user/environment/tfekscode
           - name: CloneRepo
             action: aws:runShellScript
             inputs:
@@ -1069,7 +1080,7 @@ Resources:
             - mkdir -p ${HomeFolder} && chown -R ${VSCodeUser}:${VSCodeUser} ${HomeFolder}
       Tags:
       - Key: Name
-        Value: !Ref InstanceName
+        Value: eksworkshop-kiroide
 
 
 
@@ -1088,6 +1099,9 @@ Resources:
         - Description: Allow all outbound traffic
           IpProtocol: -1
           CidrIp: 0.0.0.0/0
+      Tags:
+      - Key: Name
+        Value: kiro1-Instance-SG
 
 Outputs:
   InstanceId:

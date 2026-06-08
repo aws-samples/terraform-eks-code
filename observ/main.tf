@@ -54,86 +54,46 @@ provider "helm" {
 
 # AWS Observability Accelerator - EKS Monitoring Module
 # Deploys a complete observability stack for EKS
-# Includes Prometheus, Grafana, ADOT, dashboards, and alerts
+# Uses the v3.0 profile-driven architecture
+# Profile: self-managed-amp (deploys OTel Collector via Helm)
+# Supports metrics, traces (X-Ray), and logs (CloudWatch)
+
+# Required: Grafana provider for dashboard provisioning
+provider "grafana" {
+  url  = format("https://%s", aws_grafana_workspace.workshop.endpoint)
+  auth = aws_grafana_workspace_api_key.key.key
+}
 
 module "eks_monitoring" {
   # Source: AWS Observability Accelerator GitHub repository
-  # Using latest version from main branch
-  source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring"
-  #source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring?ref=v2.13.0"
+  # Pinned to v3.0.0 for stability
+  source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring?ref=v3.0.0"
+
+  # Pass the grafana provider to the module
+  providers = {
+    grafana = grafana
+  }
+
+  # Required: Collector profile
+  # Options: "cloudwatch-otlp", "managed-metrics", "self-managed-amp"
+  # self-managed-amp: Deploys OTel Collector via Helm, supports metrics, traces, and logs
+  collector_profile = "self-managed-amp"
 
   # EKS cluster identifier
   eks_cluster_id = data.aws_ssm_parameter.cluster-name.value
 
-  # FluxCD - commented out (not used in this deployment)
-  #enable_fluxcd=false
-
-  # AWS Distro for OpenTelemetry (ADOT) Operator
-  # Deploys ADOT operator for collecting metrics, logs, and traces
-  # Required for observability stack
-  enable_amazon_eks_adot = true
-
-  # Cert Manager
-  # Manages TLS certificates for ADOT operator webhooks
-  # Set to false if cert-manager is already installed
-  enable_cert_manager = true
-
-  # API Server Monitoring
-  # Enables monitoring of Kubernetes API server metrics
-  # Provides insights into control plane performance
-  enable_apiserver_monitoring = true
-
-  # External Secrets Operator
-  # Syncs Grafana API key from AWS Secrets Manager to Kubernetes
-  # Required for automated dashboard provisioning
-  enable_external_secrets = true
-  
   # Grafana Configuration
   # API key for dashboard provisioning
-  grafana_api_key         = aws_grafana_workspace_api_key.key.key
-  
-  # Kubernetes secret configuration for Grafana credentials
-  target_secret_name      = "grafana-admin-credentials"
-  target_secret_namespace = "grafana-operator"
-  
-  # Grafana workspace URL
-  grafana_url             = format("https://%s",aws_grafana_workspace.workshop.endpoint)
-
-  # Dashboards
-  # Automatically provisions pre-built dashboards in Grafana
-  # Includes cluster, workload, and application dashboards
-  enable_dashboards = true
-
-  # Amazon Managed Prometheus (AMP)
-  # Creates a new AMP workspace for metrics storage
-  # Set to false if using an existing workspace
-  enable_managed_prometheus       = true
-  #managed_prometheus_workspace_id = var.managed_prometheus_workspace_id
-  
-  # Alert Manager
-  # Sets up alert routing and notifications at the workspace level
-  enable_alertmanager = true
-
-  # Prometheus Configuration
-  # Scrape interval: How often to collect metrics (60 seconds)
-  # Scrape timeout: Maximum time for a scrape operation (15 seconds)
-  prometheus_config = {
-    global_scrape_interval = "60s"
-    global_scrape_timeout  = "15s"
-  }
-
-  # Logging
-  # Enables log collection for the observability accelerator components
-  enable_logs = true
+  grafana_api_key = aws_grafana_workspace_api_key.key.key
 
   # Tracing
   # Enables distributed tracing with AWS X-Ray
   # Provides service maps and performance insights
   enable_tracing = true
 
-  # Tags - commented out
-  # Apply custom tags to all resources
-  #tags = local.tags
+  # Logging
+  # Enables log collection via OTel Collector to CloudWatch Logs
+  enable_logs = true
 }
 
 
