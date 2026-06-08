@@ -66,8 +66,10 @@ module "eks_monitoring" {
   eks_cluster_id = data.aws_ssm_parameter.cluster-name.value
 
   # AWS Distro for OpenTelemetry (ADOT) Operator
-  # Deploys ADOT operator for collecting metrics, logs, and traces
-  enable_amazon_eks_adot = true
+  # Disabled: The ADOT v1beta1 webhook rejects the v2.13.1 string-format config.
+  # The CloudWatch Observability add-on (installed in addons stage) provides
+  # equivalent metrics/logs collection without this conflict.
+  enable_amazon_eks_adot = false
 
   # Cert Manager
   # Manages TLS certificates for ADOT operator webhooks
