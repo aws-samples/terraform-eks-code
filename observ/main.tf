@@ -54,46 +54,57 @@ provider "helm" {
 
 # AWS Observability Accelerator - EKS Monitoring Module
 # Deploys a complete observability stack for EKS
-# Uses the v3.0 profile-driven architecture
-# Profile: self-managed-amp (deploys OTel Collector via Helm)
-# Supports metrics, traces (X-Ray), and logs (CloudWatch)
-
-# Required: Grafana provider for dashboard provisioning
-provider "grafana" {
-  url  = format("https://%s", aws_grafana_workspace.workshop.endpoint)
-  auth = aws_grafana_workspace_api_key.key.key
-}
+# Uses v2.13.1 (latest stable release)
+# Includes Prometheus, Grafana, ADOT, dashboards, and alerts
 
 module "eks_monitoring" {
   # Source: AWS Observability Accelerator GitHub repository
-  # Using main branch which has the v3.0 profile-driven architecture
-  source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring"
-
-  # Pass the grafana provider to the module
-  providers = {
-    grafana = grafana
-  }
-
-  # Required: Collector profile
-  # Options: "cloudwatch-otlp", "managed-metrics", "self-managed-amp"
-  # self-managed-amp: Deploys OTel Collector via Helm, supports metrics, traces, and logs
-  collector_profile = "self-managed-amp"
+  # Pinned to v2.13.1 (latest stable release compatible with AWS provider 5.x)
+  source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring?ref=v2.13.1"
 
   # EKS cluster identifier
   eks_cluster_id = data.aws_ssm_parameter.cluster-name.value
 
+  # AWS Distro for OpenTelemetry (ADOT) Operator
+  # Deploys ADOT operator for collecting metrics, logs, and traces
+  enable_amazon_eks_adot = true
+
+  # Cert Manager
+  # Manages TLS certificates for ADOT operator webhooks
+  enable_cert_manager = true
+
+  # API Server Monitoring
+  # Enables monitoring of Kubernetes API server metrics
+  enable_apiserver_monitoring = true
+
+  # External Secrets Operator
+  # Syncs Grafana API key from AWS Secrets Manager to Kubernetes
+  enable_external_secrets = true
+
   # Grafana Configuration
-  # API key for dashboard provisioning
-  grafana_api_key = aws_grafana_workspace_api_key.key.key
+  grafana_api_key         = aws_grafana_workspace_api_key.key.key
+  target_secret_name      = "grafana-admin-credentials"
+  target_secret_namespace = "grafana-operator"
+  grafana_url             = format("https://%s", aws_grafana_workspace.workshop.endpoint)
 
-  # Tracing
-  # Enables distributed tracing with AWS X-Ray
-  # Provides service maps and performance insights
+  # Dashboards
+  enable_dashboards = true
+
+  # Amazon Managed Prometheus (AMP)
+  enable_managed_prometheus = true
+
+  # Alert Manager
+  enable_alertmanager = true
+
+  # Prometheus Configuration
+  prometheus_config = {
+    global_scrape_interval = "60s"
+    global_scrape_timeout  = "15s"
+  }
+
+  # Logging and Tracing
+  enable_logs    = true
   enable_tracing = true
-
-  # Logging
-  # Enables log collection via OTel Collector to CloudWatch Logs
-  enable_logs = true
 }
 
 
