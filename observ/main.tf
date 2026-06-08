@@ -66,8 +66,8 @@ provider "grafana" {
 
 module "eks_monitoring" {
   # Source: AWS Observability Accelerator GitHub repository
-  # Pinned to v3.0.0 for stability
-  source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring?ref=v3.0.0"
+  # Using main branch which has the v3.0 profile-driven architecture
+  source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring"
 
   # Pass the grafana provider to the module
   providers = {
