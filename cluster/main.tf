@@ -87,8 +87,10 @@ module "eks" {
   # EKS Auto Mode configuration
   # Simplified node management with AWS-managed compute
   compute_config = {
-    enabled    = true
-    node_pools = [] # Node pools configured in nodepool stage
+    enabled = true
+    # node_pools left unset (null): node pools are configured in the nodepool stage.
+    # EKS module v21 sends the node role ARN whenever node_pools != null, and EKS
+    # rejects a node role with an empty node pool list.
   }
 
   # External KMS key for secrets encryption

@@ -153,8 +153,7 @@ module "eks" {
   authentication_mode = "API_AND_CONFIG_MAP"
   
   compute_config = {
-    enabled    = true
-    node_pools = []
+    enabled = true
   }
 }
 ```
@@ -562,8 +561,8 @@ EKS Auto Mode is a fully managed compute option where AWS handles:
 
 ```terraform
 compute_config = {
-  enabled    = true
-  node_pools = []  # Configured in nodepool stage
+  enabled = true
+  # node_pools left unset: node pools are configured in the nodepool stage
 }
 ```
 
