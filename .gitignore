@@ -56,3 +56,12 @@ Private.md
 .DS_Store
 .vscode/vscode-isengard.yaml
 .DS_Store
+# Terraform working dirs and lock info (any depth)
+**/.terraform/
+.terraform.tfstate.lock.info
+crash.*.log
+# Written by tf-setup/gen-backend.sh
+**/tmp-buck.txt
+# Local agent/workflow artefacts
+.agents/
+.worktrees/
