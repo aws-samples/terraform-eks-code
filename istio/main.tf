@@ -1,7 +1,7 @@
 provider "kubernetes" {
   host                   = data.aws_ssm_parameter.endpoint.value
   cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
-  config_path = "~/.kube/config"
+  config_path            = "~/.kube/config"
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "aws"
@@ -11,11 +11,11 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host                   = data.aws_ssm_parameter.endpoint.value
     cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
 
-    exec {
+    exec = {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
       # This requires the awscli to be installed locally where Terraform is executed
@@ -39,140 +39,142 @@ provider "kubectl" {
 }
 
 locals {
-  istio_chart_url     = "https://istio-release.storage.googleapis.com/charts"
-  istio_chart_version = "1.24.3"
+  istio_chart_url = "https://istio-release.storage.googleapis.com/charts"
+  # Latest Istio is 1.32.0, but 1.31.x/1.32.0 Helm charts were not published to istio-release
+  # at the time of this upgrade; 1.30.8 is the newest release with base/istiod/gateway charts
+  istio_chart_version = "1.30.8"
 
 }
 
 
 module "eks_blueprints_addons" {
-  
-    source = "aws-ia/eks-blueprints-addons/aws"
-    version = "~> 1.11" #ensure to update this to the latest/desired version
 
-    #eks_addons = { 
-    #  amazon-cloudwatch-observability = {
-    #      most_recent = true
-    #    }
-    #}
+  source  = "aws-ia/eks-blueprints-addons/aws"
+  version = "~> 1.24.3" #ensure to update this to the latest/desired version
 
-    cluster_name      = data.aws_ssm_parameter.cluster-name.value
-    cluster_endpoint  = data.aws_ssm_parameter.endpoint.value
-    cluster_version   = data.aws_ssm_parameter.tf-eks-version.value
-    oidc_provider_arn = data.aws_ssm_parameter.oidc_provider_arn.value
+  #eks_addons = { 
+  #  amazon-cloudwatch-observability = {
+  #      most_recent = true
+  #    }
+  #}
 
-  
- 
-    helm_releases = {
-        istio-base = {
-        chart         = "base"
-        chart_version = local.istio_chart_version
-        repository    = local.istio_chart_url
-        name          = "istio-base"
-        namespace     = kubernetes_namespace_v1.istio_system.metadata[0].name
-        replace       = true
-        }
-
-        istiod = {
-        chart         = "istiod"
-        chart_version = local.istio_chart_version
-        repository    = local.istio_chart_url
-        name          = "istiod"
-        namespace     = kubernetes_namespace_v1.istio_system.metadata[0].name
-        replace       = true
-
-        set = [
-            {
-            name  = "meshConfig.accessLogFile"
-            value = "/dev/stdout"
-            }
-        ]
-        }
-
-        istio-ingress = {
-        chart            = "gateway"
-        chart_version    = local.istio_chart_version
-        repository       = local.istio_chart_url
-        name             = "istio-ingress"
-        namespace        = "istio-ingress" # per https://github.com/istio/istio/blob/master/manifests/charts/gateways/istio-ingress/values.yaml#L2
-        create_namespace = true
-        replace       = true
-
-        set = [
-            {
-            name  = "resources.requests.cpu"
-            value = "110m"
-            },
-            {
-            name  = "service.ports[0].name"
-            value = "status-port"
-            },
-            {
-            name  = "service.ports[0].port"
-            value = "15021"
-            },
-            {
-            name  = "service.ports[0].protocol"
-            value = "TCP"
-            },
-            {
-            name  = "service.ports[0].targetPort"
-            value = "15021"
-            },
-            {
-            name  = "service.ports[1].name"
-            value = "http2"
-            },
-            {
-            name  = "service.ports[1].port"
-            value = "80"
-            },
-            {
-            name  = "service.ports[1].protocol"
-            value = "TCP"
-            },
-            {
-            name  = "service.ports[1].targetPort"
-            value = "8080"
-            },
-            {            
-            name  = "service.ports[2].name"
-            value = "https"
-            },
-            {
-            name  = "service.ports[2].port"
-            value = "443"
-            },
-            {
-            name  = "service.ports[2].protocol"
-            value = "TCP"
-            },
-            {
-            name  = "service.ports[2].targetPort"
-            value = "443"
-            }
-        ]
+  cluster_name      = data.aws_ssm_parameter.cluster-name.value
+  cluster_endpoint  = data.aws_ssm_parameter.endpoint.value
+  cluster_version   = data.aws_ssm_parameter.tf-eks-version.value
+  oidc_provider_arn = data.aws_ssm_parameter.oidc_provider_arn.value
 
 
-        values = [
-            yamlencode(
-            {
-                labels = {
-                istio = "ingressgateway"
-                }
-                service = {
-                annotations = {
-                    "service.beta.kubernetes.io/aws-load-balancer-type"            = "external"
-                    "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" = "ip"
-                    "service.beta.kubernetes.io/aws-load-balancer-scheme"          = "internet-facing"
-                    "service.beta.kubernetes.io/aws-load-balancer-attributes"      = "load_balancing.cross_zone.enabled=true"
-                }
-                }
-            }
-            )
-        ]
-        }
+
+  helm_releases = {
+    istio-base = {
+      chart         = "base"
+      chart_version = local.istio_chart_version
+      repository    = local.istio_chart_url
+      name          = "istio-base"
+      namespace     = kubernetes_namespace_v1.istio_system.metadata[0].name
+      replace       = true
     }
+
+    istiod = {
+      chart         = "istiod"
+      chart_version = local.istio_chart_version
+      repository    = local.istio_chart_url
+      name          = "istiod"
+      namespace     = kubernetes_namespace_v1.istio_system.metadata[0].name
+      replace       = true
+
+      set = [
+        {
+          name  = "meshConfig.accessLogFile"
+          value = "/dev/stdout"
+        }
+      ]
+    }
+
+    istio-ingress = {
+      chart            = "gateway"
+      chart_version    = local.istio_chart_version
+      repository       = local.istio_chart_url
+      name             = "istio-ingress"
+      namespace        = "istio-ingress" # per https://github.com/istio/istio/blob/master/manifests/charts/gateways/istio-ingress/values.yaml#L2
+      create_namespace = true
+      replace          = true
+
+      set = [
+        {
+          name  = "resources.requests.cpu"
+          value = "110m"
+        },
+        {
+          name  = "service.ports[0].name"
+          value = "status-port"
+        },
+        {
+          name  = "service.ports[0].port"
+          value = "15021"
+        },
+        {
+          name  = "service.ports[0].protocol"
+          value = "TCP"
+        },
+        {
+          name  = "service.ports[0].targetPort"
+          value = "15021"
+        },
+        {
+          name  = "service.ports[1].name"
+          value = "http2"
+        },
+        {
+          name  = "service.ports[1].port"
+          value = "80"
+        },
+        {
+          name  = "service.ports[1].protocol"
+          value = "TCP"
+        },
+        {
+          name  = "service.ports[1].targetPort"
+          value = "8080"
+        },
+        {
+          name  = "service.ports[2].name"
+          value = "https"
+        },
+        {
+          name  = "service.ports[2].port"
+          value = "443"
+        },
+        {
+          name  = "service.ports[2].protocol"
+          value = "TCP"
+        },
+        {
+          name  = "service.ports[2].targetPort"
+          value = "443"
+        }
+      ]
+
+
+      values = [
+        yamlencode(
+          {
+            labels = {
+              istio = "ingressgateway"
+            }
+            service = {
+              annotations = {
+                "service.beta.kubernetes.io/aws-load-balancer-type"            = "external"
+                "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" = "ip"
+                "service.beta.kubernetes.io/aws-load-balancer-scheme"          = "internet-facing"
+                "service.beta.kubernetes.io/aws-load-balancer-attributes"      = "load_balancing.cross_zone.enabled=true"
+              }
+            }
+          }
+        )
+      ]
+    }
+  }
 
 
   tags = {

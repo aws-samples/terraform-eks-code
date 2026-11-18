@@ -7,7 +7,7 @@
 resource "aws_eks_addon" "cloudwatch-observability" {
   cluster_name = data.aws_ssm_parameter.cluster-name.value
   addon_name   = "amazon-cloudwatch-observability"
-  
+
   # Features:
   # - Container Insights: Pod and node metrics
   # - Application Signals: Application performance monitoring
@@ -20,7 +20,7 @@ resource "aws_eks_addon" "cloudwatch-observability" {
 resource "aws_eks_addon" "metrics-server" {
   cluster_name = data.aws_ssm_parameter.cluster-name.value
   addon_name   = "metrics-server"
-  
+
   # Features:
   # - CPU and memory metrics for nodes and pods
   # - Enables Horizontal Pod Autoscaler (HPA)

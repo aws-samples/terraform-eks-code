@@ -7,13 +7,13 @@ resource "null_resource" "restart" {
   triggers = {
     always_run = timestamp()
   }
-  
+
   # Wait for all Helm releases to complete
   depends_on = [module.eks_blueprints_addons.helm_release]
-  
+
   # Execute restart command
   provisioner "local-exec" {
-    on_failure  = fail  # Fail Terraform if restart fails
+    on_failure  = fail # Fail Terraform if restart fails
     when        = create
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT

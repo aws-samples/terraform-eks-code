@@ -6,7 +6,7 @@ resource "aws_route53_zone" "keycloak" {
   # Zone name format: {account-id}.{random-id}.{domain}
   # Example: 123456789012.a1b2c3d4e5f6g7h8.people.aws.dev
   # Ensures unique zone name across deployments
-  name = format("%s.%s.%s",data.aws_caller_identity.current.account_id,data.aws_ssm_parameter.tf-eks-id.value,var.dn)
+  name = format("%s.%s.%s", data.aws_caller_identity.current.account_id, data.aws_ssm_parameter.tf-eks-id.value, var.dn)
 }
 
 # SSM parameter for hosted zone ID

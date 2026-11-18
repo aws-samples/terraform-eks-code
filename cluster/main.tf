@@ -31,16 +31,16 @@ data "aws_ecrpublic_authorization_token" "token" {
 # Values are read from SSM parameters created by tf-setup and net stages
 locals {
   # Cluster name from SSM parameter
-  name            = nonsensitive(data.aws_ssm_parameter.tf-eks-cluster-name.value)
-  
+  name = nonsensitive(data.aws_ssm_parameter.tf-eks-cluster-name.value)
+
   # Kubernetes version from SSM parameter
   cluster_version = data.aws_ssm_parameter.tf-eks-version.value
-  
+
   # AWS region from SSM parameter
-  region          = data.aws_ssm_parameter.tf-eks-region.value
+  region = data.aws_ssm_parameter.tf-eks-region.value
 
   # Use first 3 availability zones for high availability
-  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+  azs = slice(data.aws_availability_zones.available.names, 0, 3)
 
   # Standard tags for all resources
   # Compatible with eksworkshop.com conventions
@@ -58,55 +58,55 @@ locals {
 # Uses the official AWS EKS Terraform module
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.37.1"
-  
+  version = "21.30.2"
+
   # Basic cluster configuration
-  cluster_name                   = local.name
-  cluster_version                = local.cluster_version
-  
+  name               = local.name
+  kubernetes_version = local.cluster_version
+
   # Private cluster configuration
   # API endpoint only accessible from within VPC (via VPC peering)
-  cluster_endpoint_public_access = false
-  cluster_endpoint_private_access = true
-  
+  endpoint_public_access  = false
+  endpoint_private_access = true
+
   # Control plane logging
   # All log types enabled for comprehensive monitoring
-  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-  
+  enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+
   # Enable IRSA (IAM Roles for Service Accounts)
   # Allows Kubernetes pods to assume IAM roles
   enable_irsa = true
 
   # Grant cluster creator admin permissions automatically
   enable_cluster_creator_admin_permissions = true
-  
+
   # Authentication mode supports both EKS API and ConfigMap
   # Allows gradual migration to EKS API
   authentication_mode = "API_AND_CONFIG_MAP"
 
   # EKS Auto Mode configuration
   # Simplified node management with AWS-managed compute
-  cluster_compute_config = {
+  compute_config = {
     enabled    = true
-    node_pools = []  # Node pools configured in nodepool stage
+    node_pools = [] # Node pools configured in nodepool stage
   }
 
   # External KMS key for secrets encryption
   # Using separate KMS module for better key management
   create_kms_key = false
-  cluster_encryption_config = {
-    resources        = ["secrets"]  # Encrypt Kubernetes secrets at rest
+  encryption_config = {
+    resources        = ["secrets"] # Encrypt Kubernetes secrets at rest
     provider_key_arn = module.kms.key_arn
   }
 
   # Network configuration from net stage
   vpc_id                   = data.aws_ssm_parameter.eks-vpc.value
-  subnet_ids               = jsondecode(data.aws_ssm_parameter.private_subnets.value)  # Worker nodes
+  subnet_ids               = jsondecode(data.aws_ssm_parameter.private_subnets.value) # Worker nodes
   control_plane_subnet_ids = jsondecode(data.aws_ssm_parameter.intra_subnets.value)   # Control plane ENIs
 
   # Additional security group rules
   # Allow kubectl access from default VPC (VSCode/Cloud9)
-  cluster_security_group_additional_rules = {
+  security_group_additional_rules = {
     ingress_source_security_group_id = {
       description = "Ingress from another computed security group"
       protocol    = "tcp"
@@ -123,26 +123,26 @@ module "eks" {
 # Not used in this workshop
 module "disabled_eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.37.1"
+  version = "21.30.2"
 
-  create = false  # Do not create resources
+  create = false # Do not create resources
 }
 
 # KMS key for cluster encryption
 # Separate module for better key management and rotation
 module "kms" {
   source  = "terraform-aws-modules/kms/aws"
-  version = "~> 1.5"
+  version = "~> 4.2.2"
 
   # Key alias for easy identification
-  aliases               = ["eks/${local.name}"]
-  description           = "${local.name} cluster encryption key"
-  
+  aliases     = ["eks/${local.name}"]
+  description = "${local.name} cluster encryption key"
+
   # Enable default key policy (allows key owners full access)
   enable_default_policy = true
-  
+
   # Current AWS account/user as key owner
-  key_owners            = [data.aws_caller_identity.current.arn]
+  key_owners = [data.aws_caller_identity.current.arn]
 
   tags = local.tags
 }

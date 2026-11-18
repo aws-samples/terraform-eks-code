@@ -3,10 +3,10 @@
 # Starts with 0 replicas - scale up to trigger node creation
 
 resource "kubectl_manifest" "inflate" {
-# Depends on NodePool being created first
-depends_on=[kubectl_manifest.karpenter_node_pool2]
+  # Depends on NodePool being created first
+  depends_on = [kubectl_manifest.karpenter_node_pool2]
 
-yaml_body = <<-YAML
+  yaml_body = <<-YAML
 apiVersion: apps/v1
 kind: Deployment
 metadata:

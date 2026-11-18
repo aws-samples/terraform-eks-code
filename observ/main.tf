@@ -4,14 +4,14 @@
 
 provider "kubernetes" {
   # Cluster API endpoint from SSM parameter
-  host                   = data.aws_ssm_parameter.endpoint.value
-  
+  host = data.aws_ssm_parameter.endpoint.value
+
   # Cluster CA certificate (base64 decoded)
   cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
-  
+
   # Local kubeconfig file (fallback)
   config_path = "~/.kube/config"
-  
+
   # AWS CLI exec authentication
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"

@@ -1,86 +1,90 @@
 #!/bin/bash
 echo "Setup Terraform cache"
-if [ ! -f $HOME/.terraform.d/plugin-cache ]; then
-  mkdir -p $HOME/.terraform.d/plugin-cache
-  cp dot-terraform.rc $HOME/.terraformrc
+if [ ! -d "$HOME/.terraform.d/plugin-cache" ]; then
+  mkdir -p "$HOME/.terraform.d/plugin-cache"
+  cp dot-terraform.rc "$HOME/.terraformrc"
 fi
 
-d=`pwd`
+d=$(pwd)
 sleep 5
-reg=`terraform output -json region | jq -r .[]`
-#reg=$(echo "var.region" | terraform console 2> /dev/null | jq -r .)
-if [[ -z ${reg} ]] ; then
+# TF_STATE_REGION / TF_STATE_BUCKET override the tf-setup outputs (e.g. for offline validation)
+# (-json is used because -raw prints its "No outputs found" warning on stdout)
+tfout=$(terraform output -json 2>/dev/null)
+reg=${TF_STATE_REGION:-$(echo "$tfout" | jq -r '.region.value // empty' 2>/dev/null)}
+s3b=${TF_STATE_BUCKET:-$(echo "$tfout" | jq -r '.s3_bucket.value // empty' 2>/dev/null)}
+if [[ -z ${reg} || -z ${s3b} ]] ; then
     echo "no terraform output variables - exiting ....."
     echo "run terraform init/plan/apply in the the init directory first"
-else
-    echo "region=$reg"
+    exit 1
 fi
-    s3b=`terraform output -json s3_bucket | jq -r .[]`
+echo "region=$reg"
 #
-## using terragrunt for the DRY code might be a better approach than the below -
+## using terragrunt for the DRY code might be a better approach than the below -
 #
-s3b=$(echo "aws_s3_bucket.terraform_state.id" | terraform console 2> /dev/null | jq -r .)
-
-echo $s3b > tmp-buck.txt
+echo "$s3b" > tmp-buck.txt
 mkdir -p generated
 
 SECTIONS=('tf-setup' 'net' 'cluster' 'nodepool' 'addons' 'observ')
-s3b=`terraform output -json s3_bucket | jq -r .[]`
 for section in "${SECTIONS[@]}"
 do
 
-    #s3b=`terraform output -json s3_bucket | jq -r .[]`
-    echo $s3b $section
-    cd $d
+    echo "$s3b" "$section"
+    cd "$d" || exit 1
 
-    of=`echo "generated/backend-${section}.tf"`
+    of="generated/backend-${section}.tf"
+    # observ: observability-accelerator v2.13.1 uses dynamic "set" blocks, which helm 3 rejects
+    if [[ $section == observ ]]; then
+        helm_ver="~> 2.17.0"
+    else
+        helm_ver="~> 3.3.0"
+    fi
     #vf=`echo "generated/vars-${section}.tf"`
 
     # write out the backend config 
-    printf "" > $of
-    printf "terraform {\n" >> $of
-    printf "required_version = \"> 1.12.0\"\n" >> $of
-    printf "required_providers {\n" >> $of
-    printf "  aws = {\n" >> $of
-    printf "   source = \"hashicorp/aws\"\n" >> $of
-    printf "#  Lock version to avoid unexpected problems\n" >> $of
-    printf "   version = \"5.100.0\"\n" >> $of
-    printf "  }\n" >> $of
-    printf "  kubernetes = {\n" >> $of
-    printf "   source = \"hashicorp/kubernetes\"\n" >> $of
-    printf "   version = \"2.24.0\"\n" >> $of
-    printf "  }\n" >> $of
-    printf "  helm = {\n" >> $of
-    printf "    source  = \"hashicorp/helm\" \n" >> $of
-    printf "    version = \"~> 2.17.0\" \n" >> $of
-    printf "  }\n" >> $of
-    printf "  grafana = {\n" >> $of
-    printf "    source  = \"grafana/grafana\"\n" >> $of
-    printf "    version = \">= 2.9\"\n" >> $of
-    printf "  }\n" >> $of
-    printf "  kubectl = {\n" >> $of
-    printf "    source  = \"gavinbunney/kubectl\"\n" >> $of
-    printf "    version = \">= 1.14\"\n" >> $of
-    printf "  }\n" >> $of
-    printf " }\n" >> $of
-    printf "backend \"s3\" {\n" >> $of
-    printf "bucket = \"%s\"\n"  $s3b >> $of
-    printf "key = \"terraform/%s.tfstate\"\n"  $section >> $of
-    printf "region = \"%s\"\n"  $reg >> $of
-    printf "use_lockfile = true\n" >> $of
-    printf "encrypt = true\n"   >> $of
-    printf "}\n" >> $of
-    printf "}\n" >> $of
+    printf "" > "$of"
+    printf "terraform {\n" >> "$of"
+    printf "required_version = \"> 1.12.0\"\n" >> "$of"
+    printf "required_providers {\n" >> "$of"
+    printf "  aws = {\n" >> "$of"
+    printf "   source = \"hashicorp/aws\"\n" >> "$of"
+    printf "#  Lock version to avoid unexpected problems\n" >> "$of"
+    printf "   version = \"6.73.0\"\n" >> "$of"
+    printf "  }\n" >> "$of"
+    printf "  kubernetes = {\n" >> "$of"
+    printf "   source = \"hashicorp/kubernetes\"\n" >> "$of"
+    printf "   version = \"3.5.0\"\n" >> "$of"
+    printf "  }\n" >> "$of"
+    printf "  helm = {\n" >> "$of"
+    printf "    source  = \"hashicorp/helm\"\n" >> "$of"
+    printf "    version = \"%s\"\n" "$helm_ver" >> "$of"
+    printf "  }\n" >> "$of"
+    printf "  grafana = {\n" >> "$of"
+    printf "    source  = \"grafana/grafana\"\n" >> "$of"
+    printf "    version = \"~> 4.55.0\"\n" >> "$of"
+    printf "  }\n" >> "$of"
+    printf "  kubectl = {\n" >> "$of"
+    printf "    source  = \"alekc/kubectl\"\n" >> "$of"
+    printf "    version = \"~> 3.0.1\"\n" >> "$of"
+    printf "  }\n" >> "$of"
+    printf " }\n" >> "$of"
+    printf "backend \"s3\" {\n" >> "$of"
+    printf "bucket = \"%s\"\n"  "$s3b" >> "$of"
+    printf "key = \"terraform/%s.tfstate\"\n"  "$section" >> "$of"
+    printf "region = \"%s\"\n"  "$reg" >> "$of"
+    printf "use_lockfile = true\n" >> "$of"
+    printf "encrypt = true\n"   >> "$of"
+    printf "}\n" >> "$of"
+    printf "}\n" >> "$of"
     ##
-    printf "provider \"aws\" {\n" >> $of
-    printf "region = var.region\n"  >> $of
-    printf "shared_credentials_files = [\"~/.aws/credentials\"]\n" >> $of
-    #printf "profile = var.profile\n" >> $of
-    printf "}\n" >> $of
+    printf "provider \"aws\" {\n" >> "$of"
+    printf "region = var.region\n"  >> "$of"
+    printf "shared_credentials_files = [\"~/.aws/credentials\"]\n" >> "$of"
+    #printf "profile = var.profile\n" >> "$of"
+    printf "}\n" >> "$of"
 
 done
 
-cd $d
+cd "$d" || exit 1
 terraform fmt --recursive
 
 exit 0

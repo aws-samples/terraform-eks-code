@@ -4,30 +4,30 @@
 
 module "vpc" {
 
-  source  = "terraform-aws-modules/vpc/aws"
+  source = "terraform-aws-modules/vpc/aws"
   # lock version for stability
-  version = "5.21.0"
+  version = "6.8.0"
 
-  name = local.name
-  cidr = local.vpc_cidr
+  name                  = local.name
+  cidr                  = local.vpc_cidr
   secondary_cidr_blocks = local.secondary_cidr_blocks
 
-  azs             = local.azs
- 
+  azs = local.azs
+
   # 100.64.0.0/18  2= added to  100.65.0.0/16
   #private_subnets = concat(
   #  [for k, v in local.azs : cidrsubnet(element(local.secondary_cidr_blocks, 0), 2, k)]
   #)
   private_subnets = [for k, v in local.azs : cidrsubnet(element(local.secondary_cidr_blocks, 0), 2, k)]
-  
+
   # /22 10.0.0.0/22 and 10.0.4.0/22 and 10.0.8.0/22
   #private_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 6, k * 4)]
-  
+
   # 10.0.48.0/24 and 10.0.49.0/24 and 10.0.50.0/24
-  public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
-  
+  public_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
+
   # 10.0.52.0/24 and 10.0.53.0/24 and 10.0.54.0/24
-  intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
+  intra_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
 
 
   # 10.0.56.0/24 and 10.0.57.0/24 and 10.0.57.0/24
@@ -35,7 +35,7 @@ module "vpc" {
 
   public_subnet_suffix  = "SubnetPublic"
   private_subnet_suffix = "SubnetPrivate"
-  intra_subnet_suffix = "SubnetIntra"
+  intra_subnet_suffix   = "SubnetIntra"
 
 
   enable_nat_gateway = true

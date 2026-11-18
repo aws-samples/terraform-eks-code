@@ -1,11 +1,11 @@
 module "vpc_endpoints" {
-  
-  source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
+
+  source = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
   # lock version for stability
-  version = "5.21.0"
+  version = "6.8.0"
 
 
-  vpc_id = module.vpc.vpc_id
+  vpc_id                     = module.vpc.vpc_id
   create_security_group      = true
   security_group_name_prefix = "${local.name}-vpc-endpoints-"
   security_group_description = "VPC endpoint security group"
@@ -15,21 +15,21 @@ module "vpc_endpoints" {
       description = "HTTPS from VPC 1"
       cidr_blocks = [module.vpc.vpc_cidr_block]
     }
-  
+
     ingress_https2 = {
       description = "HTTPS from VPC 2"
       cidr_blocks = [element(local.secondary_cidr_blocks, 0)]
     }
 
     egress_https = {
-      type="egress"
+      type        = "egress"
       description = "HTTPS out of VPC"
       cidr_blocks = ["0.0.0.0/0"]
     }
     egress_ssh = {
-      type="egress"
-      from_port=22
-      to_port=22
+      type        = "egress"
+      from_port   = 22
+      to_port     = 22
       description = "HTTPS out of VPC"
       cidr_blocks = ["0.0.0.0/0"]
     }
@@ -38,8 +38,8 @@ module "vpc_endpoints" {
   endpoints = merge({
     # ECR images are stored on S3
     s3 = {
-      service         = "s3"
-      service_type    = "Gateway"
+      service      = "s3"
+      service_type = "Gateway"
       #route_table_ids = module.vpc.private_route_table_ids
       route_table_ids = module.vpc.intra_route_table_ids
       tags = {
@@ -47,10 +47,10 @@ module "vpc_endpoints" {
       }
     }
     },
-    { for service in toset(["autoscaling", "ecr.api", "ecr.dkr", "ec2", "guardduty-data", "ec2messages", "sts", "logs", "ssm", "ssmmessages", "grafana", "grafana-workspace","secretsmanager"]) :
+    { for service in toset(["autoscaling", "ecr.api", "ecr.dkr", "ec2", "guardduty-data", "ec2messages", "sts", "logs", "ssm", "ssmmessages", "grafana", "grafana-workspace", "secretsmanager"]) :
       replace(service, ".", "_") =>
       {
-        service             = service
+        service = service
         #subnet_ids          = module.vpc.private_subnets
         subnet_ids          = module.vpc.intra_subnets
         private_dns_enabled = true

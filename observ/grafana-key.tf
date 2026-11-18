@@ -4,17 +4,17 @@
 
 resource "aws_grafana_workspace_api_key" "key" {
   # Key name for identification
-  key_name        = "observability-key"
-  
+  key_name = "observability-key"
+
   # ADMIN role required for dashboard creation and management
-  key_role        = "ADMIN"
-  
+  key_role = "ADMIN"
+
   # Time to live: 5 days (432000 seconds)
   # Short TTL for security - rotate regularly
   seconds_to_live = 432000
-  
+
   # Associated Grafana workspace
-  workspace_id    = aws_grafana_workspace.workshop.id
+  workspace_id = aws_grafana_workspace.workshop.id
 }
 
 # Security Note:

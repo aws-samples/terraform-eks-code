@@ -6,7 +6,7 @@
 # Used to dynamically populate zone requirements in NodePool
 data "aws_availability_zones" "available" {
   state = "available"
-  
+
   # Filter out Local Zones and Wavelength Zones
   # Only use standard availability zones
   filter {
@@ -18,8 +18,8 @@ data "aws_availability_zones" "available" {
 # Karpenter NodePool Resource
 # Depends on NodeClass being created first
 resource "kubectl_manifest" "karpenter_node_pool2" {
-depends_on = [kubectl_manifest.karpenter_node_class]
-yaml_body = <<-YAML
+  depends_on = [kubectl_manifest.karpenter_node_class]
+  yaml_body  = <<-YAML
 apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:

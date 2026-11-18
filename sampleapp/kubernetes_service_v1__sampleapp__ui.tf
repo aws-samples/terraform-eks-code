@@ -34,16 +34,16 @@ resource "kubernetes_service_v1" "sampleapp__ui" {
     ip_families = [
       "IPv4",
     ]
-    ip_family_policy            = "SingleStack"
-    
+    ip_family_policy = "SingleStack"
+
     # Use EKS Auto Mode load balancer class
     # Auto Mode automatically provisions and manages the NLB
-    load_balancer_class         = "eks.amazonaws.com/nlb"
-    
+    load_balancer_class = "eks.amazonaws.com/nlb"
+
     load_balancer_ip            = null
     load_balancer_source_ranges = []
     publish_not_ready_addresses = false
-    
+
     # Selector matches UI deployment pods
     selector = {
       "app.kuberneres.io/owner"     = "retail-store-sample"
@@ -52,17 +52,17 @@ resource "kubernetes_service_v1" "sampleapp__ui" {
       "app.kubernetes.io/name"      = "ui"
     }
     session_affinity = "None"
-    
+
     # LoadBalancer type creates external NLB
-    type             = "LoadBalancer"
+    type = "LoadBalancer"
 
     port {
       app_protocol = null
       name         = "http"
       node_port    = 31139
-      port         = 80  # External port (internet)
+      port         = 80 # External port (internet)
       protocol     = "TCP"
-      target_port  = "http"  # Container port 8080
+      target_port  = "http" # Container port 8080
     }
   }
 }

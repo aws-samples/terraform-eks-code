@@ -9,7 +9,7 @@ data "aws_instance" "c9inst" {
     name   = "tag:Name"
     values = ["eksworkshop-kiroide"]
   }
-  
+
   # Only find running instances
   filter {
     name   = "instance-state-name"

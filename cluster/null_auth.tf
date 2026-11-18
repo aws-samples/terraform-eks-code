@@ -7,13 +7,13 @@ resource "null_resource" "gen_cluster_auth" {
   triggers = {
     always_run = timestamp()
   }
-  
+
   # Wait for EKS cluster to be fully created
   depends_on = [module.eks]
-  
+
   # Execute kubectl configuration script
   provisioner "local-exec" {
-    on_failure  = fail  # Fail Terraform if script fails
+    on_failure  = fail # Fail Terraform if script fails
     when        = create
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT

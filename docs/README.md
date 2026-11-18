@@ -81,7 +81,7 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
 │                                                                          │
 │  ┌────────────────────────────────────────────────────────────────┐    │
 │  │ Service Mesh (istio)                                            │    │
-│  │ - Istio 1.24.3 (Control Plane + Ingress Gateway)              │    │
+│  │ - Istio 1.30.8 (Control Plane + Ingress Gateway)              │    │
 │  │ - Bookinfo Sample Application                                  │    │
 │  │ - Traffic Management & mTLS                                    │    │
 │  │ - Advanced Routing & Resilience                                │    │
@@ -261,7 +261,7 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
 **Purpose**: Service mesh for advanced microservices management
 
 **Creates**:
-- Istio 1.24.3:
+- Istio 1.30.8:
   - Istio Base (CRDs)
   - Istiod (control plane)
   - Istio Ingress Gateway (NLB)

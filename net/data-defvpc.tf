@@ -7,7 +7,7 @@ data "aws_vpc" "vpc-default" {
     name   = "tag:Name"
     values = ["eksworkshop-vpc"]
   }
-  cidr_block="172.31.0.0/16"
+  cidr_block = "172.31.0.0/16"
 }
 
 

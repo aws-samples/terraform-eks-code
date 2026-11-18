@@ -10,7 +10,7 @@ resource "aws_s3_bucket" "terraform_state" {
   # This allows easy cleanup but should NEVER be used in production
   # In production, state buckets should be protected from deletion
   force_destroy = true
-  
+
   # Prevent bucket name changes after creation
   # This avoids accidental state migration issues
   lifecycle {
@@ -38,7 +38,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" 
 # Allows recovery from accidental state corruption or deletion
 resource "aws_s3_bucket_versioning" "terraform_state" {
   bucket = aws_s3_bucket.terraform_state.id
-  
+
   versioning_configuration {
     status = "Enabled"
   }

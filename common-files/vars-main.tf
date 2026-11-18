@@ -28,15 +28,3 @@ variable "eks_version" {
   type    = string
   default = "1.34"
 }
-
-# Unused variable - kept for compatibility
-# TODO: Remove if not needed
-variable "no-output" {
-  description = "The name of the EKS Cluster"
-  type        = string
-  default     = "secret"
-  sensitive   = true
-}
-
-
-

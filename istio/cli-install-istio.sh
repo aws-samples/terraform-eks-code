@@ -1,11 +1,11 @@
 cd ~/environment
-rm -rf istio-1.24.3
+rm -rf istio-1.30.8
 echo "istio cli"
-curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.24.3 sh -
-chown ec2-user:ec2-user -R istio-1.24.3
-export PATH=$HOME/environment/istio-1.24.3/bin:$PATH 
-echo "export PATH=$HOME/environment/istio-1.24.3/bin:$PATH" >> ~/.bashrc
-cd ~/environment/istio-1.24.3
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.30.8 sh -
+chown ec2-user:ec2-user -R istio-1.30.8
+export PATH=$HOME/environment/istio-1.30.8/bin:$PATH 
+echo "export PATH=$HOME/environment/istio-1.30.8/bin:$PATH" >> ~/.bashrc
+cd ~/environment/istio-1.30.8
 istioctl version --remote=false
 istioctl install --set profile=demo -y
 kubectl create ns sample

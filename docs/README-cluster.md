@@ -64,7 +64,7 @@ The `cluster` stage creates the Amazon EKS (Elastic Kubernetes Service) cluster 
 ## Key Features
 
 ### 1. EKS Auto Mode
-- **Enabled**: `cluster_compute_config.enabled = true`
+- **Enabled**: `compute_config.enabled = true`
 - **Node Pools**: Empty array (configured in nodepool stage)
 - **Benefits**:
   - Simplified node management
@@ -73,8 +73,8 @@ The `cluster` stage creates the Amazon EKS (Elastic Kubernetes Service) cluster 
   - AWS manages node lifecycle
 
 ### 2. Private Cluster
-- **Public Access**: Disabled (`cluster_endpoint_public_access = false`)
-- **Private Access**: Enabled (`cluster_endpoint_private_access = true`)
+- **Public Access**: Disabled (`endpoint_public_access = false`)
+- **Private Access**: Enabled (`endpoint_private_access = true`)
 - **Access Method**: Via VPC peering from VSCode/Cloud9
 - **Security**: API endpoint not exposed to internet
 
@@ -140,19 +140,19 @@ locals {
 ```terraform
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.37.1"
+  version = "21.30.2"
   
-  cluster_name                   = local.name
-  cluster_version                = local.cluster_version
-  cluster_endpoint_public_access = false
-  cluster_endpoint_private_access = true
-  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  name                    = local.name
+  kubernetes_version      = local.cluster_version
+  endpoint_public_access  = false
+  endpoint_private_access = true
+  enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   
   enable_irsa = true
   enable_cluster_creator_admin_permissions = true
   authentication_mode = "API_AND_CONFIG_MAP"
   
-  cluster_compute_config = {
+  compute_config = {
     enabled    = true
     node_pools = []
   }
@@ -172,7 +172,7 @@ module "eks" {
 ```terraform
 module "kms" {
   source  = "terraform-aws-modules/kms/aws"
-  version = "~> 1.5"
+  version = "~> 4.2.2"
   
   aliases               = ["eks/{cluster-name}"]
   description           = "{cluster-name} cluster encryption key"
@@ -189,7 +189,7 @@ module "kms" {
 ```terraform
 module "disabled_eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.37.1"
+  version = "21.30.2"
   create = false
 }
 ```
@@ -561,7 +561,7 @@ EKS Auto Mode is a fully managed compute option where AWS handles:
 ### Configuration
 
 ```terraform
-cluster_compute_config = {
+compute_config = {
   enabled    = true
   node_pools = []  # Configured in nodepool stage
 }
@@ -755,7 +755,7 @@ kubectl cluster-info
 
 ### Issue: Control plane logs not appearing
 **Cause**: Log types not enabled or CloudWatch permissions  
-**Solution**: Verify `cluster_enabled_log_types`, check IAM role
+**Solution**: Verify `enabled_log_types`, check IAM role
 
 ### Issue: Secrets not encrypted
 **Cause**: KMS key not configured  
@@ -768,7 +768,7 @@ kubectl cluster-info
 ### Adding More Log Types
 
 ```terraform
-cluster_enabled_log_types = [
+enabled_log_types = [
   "api",
   "audit",
   "authenticator",
@@ -780,14 +780,14 @@ cluster_enabled_log_types = [
 ### Enabling Public Access (Temporarily)
 
 ```terraform
-cluster_endpoint_public_access = true
-cluster_endpoint_public_access_cidrs = ["YOUR_IP/32"]
+endpoint_public_access       = true
+endpoint_public_access_cidrs = ["YOUR_IP/32"]
 ```
 
 ### Adding Cluster Add-ons
 
 ```terraform
-cluster_addons = {
+addons = {
   coredns = {
     most_recent = true
   }
@@ -803,7 +803,7 @@ cluster_addons = {
 ### Custom Node Pools (Auto Mode)
 
 ```terraform
-cluster_compute_config = {
+compute_config = {
   enabled    = true
   node_pools = ["general-purpose", "system"]
 }

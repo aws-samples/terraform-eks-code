@@ -2,8 +2,8 @@
 # This key encrypts the S3 bucket containing all Terraform state files
 
 resource "aws_kms_key" "ekskey" {
-  description = format("EKS KMS Key 2 %s", var.cluster-name)
-  # Note: Key rotation not enabled - consider enabling for production
+  description         = format("EKS KMS Key 2 %s", var.cluster-name)
+  enable_key_rotation = true
   # Note: Using default key policy - consider custom policy for production
 }
 

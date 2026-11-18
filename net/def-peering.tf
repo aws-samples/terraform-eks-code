@@ -5,10 +5,10 @@
 resource "aws_vpc_peering_connection" "def-peer" {
   # EKS VPC (peer)
   peer_vpc_id = module.vpc.vpc_id
-  
+
   # Default VPC (requester)
-  vpc_id      = data.aws_vpc.vpc-default.id
-  
+  vpc_id = data.aws_vpc.vpc-default.id
+
   # Auto-accept since both VPCs are in same account
   auto_accept = true
 }

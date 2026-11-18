@@ -1,7 +1,7 @@
 #cd ~/environment
-#curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.24.3 TARGET_ARCH=x86_64 sh -
+#curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.30.8 TARGET_ARCH=x86_64 sh -
 ## https://istio.io/latest/docs/setup/getting-started/
-cd ~/environment/istio-1.24.3
+cd ~/environment/istio-1.30.8
 kubectl create ns sample 
 kubectl label namespace sample istio-injection=enabled
 kubectl -n sample apply -f samples/bookinfo/platform/kube/bookinfo.yaml

@@ -31,6 +31,7 @@ resource "aws_kms_key" "ekskey"
 ```
 
 **Purpose**: Ensures state files are encrypted at rest  
+**Rotation**: Automatic key rotation enabled (`enable_key_rotation = true`)  
 **Output**: `keyid` - Used by S3 bucket and stored in SSM
 
 ---
@@ -131,10 +132,12 @@ cp dot-terraform.rc $HOME/.terraformrc
 
 #### 2. Extract Terraform Outputs
 ```bash
-reg=`terraform output -json region | jq -r .[]`
-s3b=`terraform output -json s3_bucket | jq -r .[]`
+tfout=$(terraform output -json)
+reg=${TF_STATE_REGION:-$(echo "$tfout" | jq -r '.region.value // empty')}
+s3b=${TF_STATE_BUCKET:-$(echo "$tfout" | jq -r '.s3_bucket.value // empty')}
 ```
-- Retrieves region and S3 bucket name from current state
+- Retrieves region and S3 bucket name from current state (or from `TF_STATE_REGION` / `TF_STATE_BUCKET` if set)
+- Exits with status 1 if either value is empty
 - Uses `jq` to parse JSON output
 
 #### 3. Generate Backend Files
@@ -151,7 +154,7 @@ Each file (`generated/backend-{stage}.tf`) contains:
 
 **Terraform Block**:
 - Version constraint: `> 1.12.0`
-- Provider versions (AWS 5.100.0, Kubernetes 2.24.0, Helm 2.17.0, kubectl 1.14+)
+- Provider versions (AWS 6.73.0, Kubernetes 3.5.0, Helm ~> 3.3.0 (observ stage: ~> 2.17.0), Grafana ~> 4.55.0, alekc/kubectl ~> 3.0.1)
 
 **Backend Configuration**:
 ```terraform
@@ -188,7 +191,6 @@ Ensures all generated files follow Terraform formatting standards.
 | `profile` | string | `default` | AWS credentials profile |
 | `cluster-name` | string | `eks-workshop` | EKS cluster name |
 | `eks_version` | string | `1.33` | Kubernetes version |
-| `no-output` | string | `secret` | Sensitive placeholder (unused) |
 
 **Environment Override**: Variables can be set via `TF_VAR_` environment variables
 
@@ -198,8 +200,8 @@ Ensures all generated files follow Terraform formatting standards.
 
 ### Terraform Requirements
 - **Minimum Version**: 1.12.0
-- **AWS Provider**: 5.100.0 (locked)
-- **Additional Providers**: null, external, kubernetes, helm, kubectl, local
+- **AWS Provider**: 6.73.0 (locked)
+- **Additional Providers**: null, external, kubernetes, helm, kubectl (alekc/kubectl), local, random
 
 ### AWS Provider
 ```terraform

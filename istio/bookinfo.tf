@@ -5,16 +5,16 @@
 resource "kubernetes_namespace_v1" "sample" {
   # Wait for ingress gateway restart to complete
   depends_on = [null_resource.restart]
-  
+
   metadata {
     annotations = {}
-    
+
     # Enable automatic Envoy sidecar injection
     # All pods in this namespace will get an Istio proxy sidecar
     labels = {
       "istio-injection" = "enabled"
     }
-    
+
     name = "sample"
   }
 

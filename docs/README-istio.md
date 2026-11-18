@@ -86,7 +86,7 @@ The `istio` stage deploys Istio service mesh to the EKS cluster along with the B
 
 **Configuration**:
 - **Chart**: `base`
-- **Version**: 1.24.3
+- **Version**: 1.30.8
 - **Namespace**: `istio-system`
 - **Repository**: https://istio-release.storage.googleapis.com/charts
 
@@ -101,7 +101,7 @@ The `istio` stage deploys Istio service mesh to the EKS cluster along with the B
 
 **Configuration**:
 - **Chart**: `istiod`
-- **Version**: 1.24.3
+- **Version**: 1.30.8
 - **Namespace**: `istio-system`
 - **Access Logs**: Enabled (`/dev/stdout`)
 
@@ -122,7 +122,7 @@ The `istio` stage deploys Istio service mesh to the EKS cluster along with the B
 
 **Configuration**:
 - **Chart**: `gateway`
-- **Version**: 1.24.3
+- **Version**: 1.30.8
 - **Namespace**: `istio-ingress`
 - **Service Type**: LoadBalancer (NLB)
 
@@ -189,7 +189,7 @@ Product Page (Python)
 ```terraform
 locals {
   istio_chart_url     = "https://istio-release.storage.googleapis.com/charts"
-  istio_chart_version = "1.24.3"
+  istio_chart_version = "1.30.8"
 }
 ```
 
@@ -338,7 +338,7 @@ resource "null_resource" "restart" {
 **Purpose**: Alternative CLI-based installation
 
 **Actions**:
-1. Downloads Istio 1.24.3
+1. Downloads Istio 1.30.8
 2. Creates `sample` namespace
 3. Enables Istio injection
 4. Deploys Bookinfo application
@@ -794,7 +794,7 @@ spec:
 ## Summary
 
 The istio stage deploys a complete service mesh solution with:
-- **Istio 1.24.3**: Latest stable version
+- **Istio 1.30.8**: Newest release with published Helm charts (1.31.x/1.32.0 charts were not published at the time of the upgrade)
 - **Control Plane (Istiod)**: Service discovery, traffic management, security
 - **Ingress Gateway**: External traffic entry point with NLB
 - **Bookinfo Application**: Sample microservices app demonstrating Istio features

@@ -165,8 +165,8 @@ check_cmd "oha"
 # --- InstallIstioCLI ---
 SECTION="InstallIstioCLI"
 echo "[$SECTION]"
-check_dir "$HOME_DIR/environment/istio-1.24.3"
-grep -q 'istio-1.24.3/bin' "$HOME_DIR/.bashrc" 2>/dev/null && pass "istio in PATH (.bashrc)" || fail "istio not in .bashrc PATH"
+check_dir "$HOME_DIR/environment/istio-1.30.8"
+grep -q 'istio-1.30.8/bin' "$HOME_DIR/.bashrc" 2>/dev/null && pass "istio in PATH (.bashrc)" || fail "istio not in .bashrc PATH"
 
 # --- ConfigureAWSRegionAndSpot ---
 SECTION="ConfigureAWSRegion"

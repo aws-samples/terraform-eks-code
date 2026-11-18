@@ -5,42 +5,47 @@
 terraform {
   # Minimum version required for features used in this project
   required_version = "> 1.12.0"
-  
+
   required_providers {
     # AWS provider locked to specific version to prevent breaking changes
     aws = {
-      source = "hashicorp/aws"
-      version = "5.100.0"  # Locked version for stability
+      source  = "hashicorp/aws"
+      version = "6.73.0" # Locked version for stability
     }
     # Used for triggering gen-backend.sh script
     null = {
       source  = "hashicorp/null"
-      version = "~> 3.2.0"
+      version = "~> 3.3.2"
     }
     # Used for external data sources if needed
     external = {
       source  = "hashicorp/external"
-      version = "~> 2.3.1"
+      version = "~> 2.4.2"
     }
     # Required for subsequent stages that manage K8s resources
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.24.0"
+      version = "3.5.0"
     }
     # Required for subsequent stages that deploy Helm charts
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.17.0"
+      version = "~> 3.3.0"
     }
-    # Required for advanced K8s manifest management
+    # Required for advanced K8s manifest management (alekc fork - actively maintained)
     kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = ">= 1.14"
+      source  = "alekc/kubectl"
+      version = "~> 3.0.1"
     }
     # Used for local file operations
     local = {
       source  = "hashicorp/local"
-      version = "~> 2.4.0"
+      version = "~> 2.9.1"
+    }
+    # Used for the random bucket-name suffix in tf-setup/rand.tf
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.9.1"
     }
 
   }

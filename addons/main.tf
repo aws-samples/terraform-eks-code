@@ -6,13 +6,13 @@
 
 provider "kubernetes" {
   # Cluster API endpoint from SSM parameter
-  host                   = data.aws_ssm_parameter.endpoint.value
-  
+  host = data.aws_ssm_parameter.endpoint.value
+
   # Cluster CA certificate (base64 decoded)
   cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
-  
+
   # Local kubeconfig file (fallback)
-  
+
   # AWS CLI exec authentication
   # Uses AWS IAM for authentication with short-lived tokens (15 min)
   # Automatically refreshed by AWS CLI
@@ -27,15 +27,15 @@ provider "kubernetes" {
 # Helm Provider Configuration
 # Manages Helm chart installations (External DNS, External Secrets, etc.)
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host                   = data.aws_ssm_parameter.endpoint.value
     cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
 
     # Same exec authentication as Kubernetes provider
-    exec {
+    exec = {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
-      args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
+      args        = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
     }
   }
 }
@@ -45,19 +45,19 @@ provider "helm" {
 provider "kubectl" {
   # Retry failed operations up to 5 times
   # Handles transient API server issues
-  apply_retry_count      = 5
-  
+  apply_retry_count = 5
+
   host                   = data.aws_ssm_parameter.endpoint.value
   cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
-  
+
   # Don't load local kubeconfig (use exec auth only)
-  load_config_file       = false
+  load_config_file = false
 
   # Same exec authentication as other providers
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "aws"
-    args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
+    args        = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
   }
 }
 
@@ -69,9 +69,9 @@ provider "kubectl" {
 # So we only install: External DNS, External Secrets, and CloudWatch Metrics
 
 module "eks_blueprints_addons" {
-  
-  source = "aws-ia/eks-blueprints-addons/aws"
-  version = "~> 1.21.0" # Ensure to update this to the latest/desired version
+
+  source  = "aws-ia/eks-blueprints-addons/aws"
+  version = "~> 1.24.3" # Ensure to update this to the latest/desired version
 
   # Optional: AWS managed EKS add-ons
   # Commented out - using separate aws_eks_addon resources instead
@@ -96,11 +96,11 @@ module "eks_blueprints_addons" {
     service_account  = "external-dns"
     create_namespace = true
     # Wait for load balancer controller to be ready
-    depends_on       = [null_resource.sleep]
+    depends_on = [null_resource.sleep]
   }
   # Route53 zone ARN for IRSA permissions
   external_dns_route53_zone_arns = [data.aws_route53_zone.phz.arn]
- 
+
   # External Secrets Configuration
   # Syncs secrets from AWS Secrets Manager/Parameter Store to Kubernetes
   # Note: enable_external_secrets is commented out - using explicit config instead

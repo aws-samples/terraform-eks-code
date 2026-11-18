@@ -5,16 +5,16 @@
 resource "null_resource" "sleep" {
   # Always run on apply (timestamp changes every time)
   triggers = {
-    always_run = timestamp() 
+    always_run = timestamp()
   }
-  
+
   # Wait for load balancer controller to be installed
   # Note: This dependency is on a module output that may not exist if LB controller is disabled
   depends_on = [module.eks_blueprints_addons.aws_load_balancer_controller]
-  
+
   # Execute sleep command
   provisioner "local-exec" {
-    on_failure  = fail  # Fail Terraform if sleep fails
+    on_failure  = fail # Fail Terraform if sleep fails
     when        = create
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT

@@ -51,7 +51,7 @@ cluster/
 
 **Contents**:
 - Terraform version constraint (> 1.12.0)
-- Provider version locks (AWS 5.100.0, Kubernetes 2.24.0, Helm 2.17.0, etc.)
+- Provider version locks (AWS 6.73.0, Kubernetes 3.5.0, Helm ~> 3.3.0, alekc/kubectl ~> 3.0.1, etc.)
 - AWS provider configuration with credentials
 - Additional provider declarations (null, external)
 
@@ -87,7 +87,6 @@ cluster/
 | `profile` | string | `default` | AWS credentials profile |
 | `cluster-name` | string | `eks-workshop` | EKS cluster name |
 | `eks_version` | string | `1.33` | Kubernetes version |
-| `no-output` | string | `secret` | Unused sensitive variable |
 
 **Override Methods**:
 - Environment variables: `TF_VAR_region=us-east-1`

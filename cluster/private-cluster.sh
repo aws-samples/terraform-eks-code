@@ -1,2 +1,2 @@
-sed -i'.orig' -e 's/cluster_endpoint_public_access = true/cluster_endpoint_public_access = false/' main.tf
+sed -i'.orig' -e 's/\(endpoint_public_access *= *\)true/\1false/' main.tf
 terraform apply -auto-approve

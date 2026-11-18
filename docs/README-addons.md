@@ -164,7 +164,7 @@ provider "kubectl" {
 ```terraform
 module "eks_blueprints_addons" {
   source = "aws-ia/eks-blueprints-addons/aws"
-  version = "~> 1.21.0"
+  version = "~> 1.24.3"
   
   cluster_name      = data.aws_ssm_parameter.cluster-name.value
   cluster_endpoint  = data.aws_ssm_parameter.endpoint.value

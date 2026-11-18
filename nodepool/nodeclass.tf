@@ -3,7 +3,7 @@
 # Specifies IAM role, subnets, security groups, and storage configuration
 
 resource "kubectl_manifest" "karpenter_node_class" {
-yaml_body = <<-YAML
+  yaml_body = <<-YAML
 apiVersion: eks.amazonaws.com/v1
 kind: NodeClass
 metadata:

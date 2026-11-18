@@ -1,9 +1,9 @@
-resource "aws_grafana_workspace" "workshop"  {
+resource "aws_grafana_workspace" "workshop" {
   account_access_type      = "CURRENT_ACCOUNT"
   authentication_providers = ["SAML"]
   permission_type          = "CUSTOMER_MANAGED"
   role_arn                 = aws_iam_role.grafana.arn
-  name = "keycloak-blog"     # must match  keycloak stuff
+  name                     = "keycloak-blog" # must match  keycloak stuff
 }
 
 # IAM Role for Grafana Workspace
@@ -11,7 +11,7 @@ resource "aws_grafana_workspace" "workshop"  {
 
 resource "aws_iam_role" "grafana" {
   name = "grafana-assume"
-  
+
   # Trust policy: Allow Grafana service to assume this role
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

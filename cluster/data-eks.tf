@@ -6,7 +6,7 @@
 # Retrieves the IAM OIDC provider created for IRSA
 data "aws_iam_openid_connect_provider" "example" {
   depends_on = [module.eks]
-  
+
   # Construct OIDC provider URL from cluster output
   url = format("https://%s", module.eks.oidc_provider)
 }
@@ -15,7 +15,7 @@ data "aws_iam_openid_connect_provider" "example" {
 # Retrieves detailed cluster information
 data "aws_eks_cluster" "example" {
   depends_on = [module.eks]
-  name = module.eks.cluster_name
+  name       = module.eks.cluster_name
 }
 
 # Cluster endpoint output (commented out - available in outputs.tf)

@@ -14,7 +14,7 @@ A complete EKS environment with:
 - **Network Infrastructure** - VPC with dual CIDR blocks, 3 AZs, VPC endpoints
 - **Node Provisioning** - Karpenter for automatic, cost-optimized scaling
 - **Observability Stack** - Amazon Managed Prometheus, Grafana, ADOT, dashboards
-- **Service Mesh** - Istio 1.24.3 with traffic management and mTLS
+- **Service Mesh** - Istio 1.30.8 with traffic management and mTLS
 - **Sample Applications** - E-commerce microservices and Bookinfo demos
 - **Security** - IRSA, KMS encryption, private endpoints, security best practices
 

@@ -3,7 +3,7 @@
 # Uses EBS CSI driver with gp3 volumes and encryption
 
 resource "kubectl_manifest" "storage" {
-yaml_body = <<-YAML
+  yaml_body = <<-YAML
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:

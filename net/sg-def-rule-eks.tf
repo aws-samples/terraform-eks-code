@@ -8,8 +8,8 @@ resource "aws_default_security_group" "default" {
   # Allow all traffic from resources in the same security group
   # Enables communication between resources using default SG
   ingress {
-    protocol  = -1  # All protocols
-    self      = true  # Only from same SG
+    protocol  = -1   # All protocols
+    self      = true # Only from same SG
     from_port = 0
     to_port   = 0
   }
@@ -19,8 +19,8 @@ resource "aws_default_security_group" "default" {
   egress {
     from_port   = 0
     to_port     = 0
-    protocol    = "-1"  # All protocols
-    cidr_blocks = ["0.0.0.0/0"]  # All destinations
+    protocol    = "-1"          # All protocols
+    cidr_blocks = ["0.0.0.0/0"] # All destinations
   }
 }
 

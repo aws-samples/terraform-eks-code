@@ -8,7 +8,7 @@ resource "aws_ssm_parameter" "cicd-vpc" {
   name        = "/workshop/tf-eks/cicd-vpc"
   description = "The cicd vpc id"
   type        = "String"
-  value = module.vpc.vpc_id
+  value       = module.vpc.vpc_id
   tags = {
     workshop = "tf-eks-workshop"
   }
@@ -20,7 +20,7 @@ resource "aws_ssm_parameter" "eks-vpc" {
   name        = "/workshop/tf-eks/eks-vpc"
   description = "The eks vpc id"
   type        = "String"
-  value = module.vpc.vpc_id
+  value       = module.vpc.vpc_id
   tags = {
     workshop = "tf-eks-workshop"
   }
@@ -32,7 +32,7 @@ resource "aws_ssm_parameter" "eks-cidr" {
   name        = "/workshop/tf-eks/eks-cidr"
   description = "The EKS cluster main CIDR"
   type        = "String"
-  value = module.vpc.vpc_cidr_block
+  value       = module.vpc.vpc_cidr_block
   tags = {
     workshop = "tf-eks-workshop"
   }
@@ -44,7 +44,7 @@ resource "aws_ssm_parameter" "cicd-cidr" {
   name        = "/workshop/tf-eks/cicd-cidr"
   description = "The cicd cidr block"
   type        = "String"
-  value = module.vpc.vpc_cidr_block
+  value       = module.vpc.vpc_cidr_block
   tags = {
     workshop = "tf-eks-workshop"
   }
@@ -57,11 +57,11 @@ resource "aws_ssm_parameter" "private_subnets" {
   name        = "/workshop/tf-eks/private_subnets"
   description = "The private subnets for cluster"
   type        = "StringList"
-  value = jsonencode(module.vpc.private_subnets)
+  value       = jsonencode(module.vpc.private_subnets)
   tags = {
     workshop = "tf-eks-workshop"
   }
-}  
+}
 
 # Intra subnet IDs (JSON-encoded array)
 # Isolated subnets for EKS control plane ENIs and VPC endpoints
@@ -70,11 +70,11 @@ resource "aws_ssm_parameter" "intra_subnets" {
   name        = "/workshop/tf-eks/intra_subnets"
   description = "The intra subnets for cluster"
   type        = "StringList"
-  value = jsonencode(module.vpc.intra_subnets)
+  value       = jsonencode(module.vpc.intra_subnets)
   tags = {
     workshop = "tf-eks-workshop"
   }
-}  
+}
 
 # Database subnets - currently not used
 # Uncomment if RDS or other database services are added to the workshop
@@ -107,11 +107,11 @@ resource "aws_ssm_parameter" "private_rtb" {
   name        = "/workshop/tf-eks/private_rtb"
   description = "The private route table id for cluster"
   type        = "String"
-  value = element(module.vpc.private_route_table_ids,0)
+  value       = element(module.vpc.private_route_table_ids, 0)
   tags = {
     workshop = "tf-eks-workshop"
   }
-} 
+}
 
 # Intra route table ID
 # Route table for intra subnets (control plane ENIs)
@@ -120,11 +120,11 @@ resource "aws_ssm_parameter" "intra_rtb" {
   name        = "/workshop/tf-eks/intra_rtb"
   description = "The intra route table id for cluster"
   type        = "String"
-  value = element(module.vpc.intra_route_table_ids,0)
+  value       = element(module.vpc.intra_route_table_ids, 0)
   tags = {
     workshop = "tf-eks-workshop"
   }
-} 
+}
 
 # Public route table ID
 # Route table for public subnets (NAT Gateway, load balancers)
@@ -133,11 +133,11 @@ resource "aws_ssm_parameter" "public_rtb" {
   name        = "/workshop/tf-eks/public_rtb"
   description = "The public route table id for cluster"
   type        = "String"
-  value = element(module.vpc.public_route_table_ids,0)
+  value       = element(module.vpc.public_route_table_ids, 0)
   tags = {
     workshop = "tf-eks-workshop"
   }
-} 
+}
 
 # Private hosted zone ID
 # Route53 zone for internal DNS resolution
@@ -146,8 +146,8 @@ resource "aws_ssm_parameter" "phz-id" {
   name        = "/workshop/tf-eks/phz-id"
   description = "The id for private hosted zone"
   type        = "String"
-  value = aws_route53_zone.keycloak.id
+  value       = aws_route53_zone.keycloak.id
   tags = {
     workshop = "tf-eks-workshop"
   }
-} 
+}
