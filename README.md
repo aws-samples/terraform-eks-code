@@ -10,7 +10,7 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
 
 A complete EKS environment with:
 
-- **EKS Cluster** (Kubernetes 1.33) with Auto Mode and private API endpoint
+- **EKS Cluster** (Kubernetes 1.36) with Auto Mode and private API endpoint
 - **Network Infrastructure** - VPC with dual CIDR blocks, 3 AZs, VPC endpoints
 - **Node Provisioning** - Karpenter for automatic, cost-optimized scaling
 - **Observability Stack** - Amazon Managed Prometheus, Grafana, ADOT, dashboards
@@ -30,7 +30,7 @@ A complete EKS environment with:
 
 - Terraform v1.12.0+
 - AWS CLI v2.x
-- kubectl v1.33+
+- kubectl v1.36+
 - jq
 - AWS credentials configured
 
@@ -143,7 +143,7 @@ Each document includes architecture diagrams, configuration details, testing pro
 - **Connectivity**: VPC peering for VSCode/Cloud9 access
 
 ### EKS Configuration
-- **Version**: Kubernetes 1.33
+- **Version**: Kubernetes 1.36
 - **Compute**: Auto Mode (AWS-managed nodes)
 - **API Endpoint**: Private only
 - **Authentication**: API_AND_CONFIG_MAP mode

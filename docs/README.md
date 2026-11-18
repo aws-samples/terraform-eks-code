@@ -35,7 +35,7 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
 │                                                                          │
 │  ┌────────────────────────────────────────────────────────────────┐    │
 │  │ EKS Cluster (cluster)                                           │    │
-│  │ - EKS Control Plane (Kubernetes 1.33)                          │    │
+│  │ - EKS Control Plane (Kubernetes 1.36)                          │    │
 │  │ - Auto Mode Enabled                                            │    │
 │  │ - IRSA (IAM Roles for Service Accounts)                        │    │
 │  │ - Private API Endpoint                                         │    │
@@ -142,7 +142,7 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
 **Purpose**: EKS cluster creation and configuration
 
 **Creates**:
-- EKS cluster (Kubernetes 1.33)
+- EKS cluster (Kubernetes 1.36)
 - EKS Auto Mode configuration
 - OIDC provider for IRSA
 - KMS key for secrets encryption
@@ -310,7 +310,7 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
 
 ### Infrastructure
 - **Terraform**: Infrastructure as Code (v1.12.0+)
-- **AWS EKS**: Managed Kubernetes service (v1.33)
+- **AWS EKS**: Managed Kubernetes service (v1.36)
 - **Karpenter**: Kubernetes node autoscaler
 - **VPC**: Dual CIDR networking
 
@@ -435,7 +435,7 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
 ### Required Tools
 - **Terraform**: v1.12.0 or later
 - **AWS CLI**: v2.x
-- **kubectl**: v1.33 or compatible
+- **kubectl**: v1.36 or compatible
 - **jq**: For JSON parsing in scripts
 
 ### AWS Requirements

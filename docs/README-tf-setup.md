@@ -190,7 +190,7 @@ Ensures all generated files follow Terraform formatting standards.
 | `region` | string | `eu-west-1` | AWS deployment region |
 | `profile` | string | `default` | AWS credentials profile |
 | `cluster-name` | string | `eks-workshop` | EKS cluster name |
-| `eks_version` | string | `1.33` | Kubernetes version |
+| `eks_version` | string | `1.36` | Kubernetes version |
 
 **Environment Override**: Variables can be set via `TF_VAR_` environment variables
 
