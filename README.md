@@ -13,7 +13,7 @@ A complete EKS environment with:
 - **EKS Cluster** (Kubernetes 1.36) with Auto Mode and private API endpoint
 - **Network Infrastructure** - VPC with dual CIDR blocks, 3 AZs, VPC endpoints
 - **Node Provisioning** - Karpenter for automatic, cost-optimized scaling
-- **Observability Stack** - Amazon Managed Prometheus, Grafana, ADOT, dashboards
+- **Observability Stack** - Amazon Managed Prometheus, Grafana, OpenTelemetry Collector, X-Ray, dashboards
 - **Service Mesh** - Istio 1.30.8 with traffic management and mTLS
 - **Sample Applications** - E-commerce microservices and Bookinfo demos
 - **Security** - IRSA, KMS encryption, private endpoints, security best practices
@@ -72,9 +72,9 @@ The infrastructure is deployed in 9 modular stages:
 2. **net** (~5 min) - VPC, subnets, VPC endpoints, peering
 3. **cluster** (~15 min) - EKS cluster with Auto Mode and IRSA
 4. **nodepool** (~2 min) - Karpenter node provisioning configuration
-5. **addons** (~5 min) - External DNS, External Secrets, metrics
+5. **addons** (~5 min) - External DNS, CloudWatch Observability, Metrics Server
 6. **sampleapp** (~3 min) - E-commerce microservices application
-7. **observ** (~10 min) - Prometheus, Grafana, ADOT, dashboards
+7. **observ** (~10 min) - Prometheus, Grafana, OpenTelemetry Collector, dashboards
 8. **istio** (~5 min) - Service mesh with Bookinfo sample
 
 Each stage builds upon the previous, with configuration shared via SSM Parameter Store.

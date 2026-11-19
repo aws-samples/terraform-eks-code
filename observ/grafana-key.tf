@@ -18,8 +18,8 @@ resource "aws_grafana_workspace_api_key" "key" {
 }
 
 # Security Note:
-# - This key is stored in AWS Secrets Manager
-# - Synced to Kubernetes via External Secrets Operator
-# - Used only for automated dashboard provisioning
-# - Should be rotated regularly (every 5 days)
+# - Used by the Grafana Terraform provider (main.tf) to create the folder, dashboards and data source
+# - Held in Terraform state (S3, KMS-encrypted); not synced into the cluster (v3 has no External Secrets)
+# - Expires after 5 days; plans in this stage then fail until it is recreated:
+#     terraform apply -replace=aws_grafana_workspace_api_key.key
 

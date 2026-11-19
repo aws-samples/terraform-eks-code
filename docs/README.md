@@ -58,7 +58,6 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
 │  │ - Metrics Server                                               │    │
 │  │ - Network Flow Monitoring                                      │    │
 │  │ - External DNS (Route53 integration)                           │    │
-│  │ - External Secrets (AWS Secrets Manager sync)                  │    │
 │  │ - CloudWatch Metrics Collection                                │    │
 │  └────────────────────────────────────────────────────────────────┘    │
 │                                                                          │
@@ -66,7 +65,7 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
 │  │ Sample Application (sampleapp)                                  │    │
 │  │ - Retail Store (6 microservices)                               │    │
 │  │ - Databases (MySQL, PostgreSQL, RabbitMQ, Redis)              │    │
-│  │ - LoadBalancer (internet-facing NLB)                           │    │
+│  │ - LoadBalancer (internal NLB)                                  │    │
 │  │ - Production-ready security practices                          │    │
 │  └────────────────────────────────────────────────────────────────┘    │
 │                                                                          │
@@ -74,7 +73,7 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
 │  │ Observability (observ)                                          │    │
 │  │ - Amazon Managed Prometheus (AMP)                              │    │
 │  │ - Amazon Managed Grafana (AMG)                                 │    │
-│  │ - AWS Distro for OpenTelemetry (ADOT)                          │    │
+│  │ - OpenTelemetry Collector (metrics → AMP, traces → X-Ray)      │    │
 │  │ - Pre-built Dashboards & Alerts                                │    │
 │  │ - Distributed Tracing (X-Ray)                                  │    │
 │  └────────────────────────────────────────────────────────────────┘    │
@@ -193,8 +192,7 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
   - Metrics Server (HPA, kubectl top)
   - Network Flow Monitoring Agent
 - EKS Blueprints Add-ons:
-  - External DNS (Route53 automation)
-  - External Secrets (AWS Secrets Manager sync)
+  - External DNS (Route53 automation, chart 1.24.0)
   - CloudWatch Metrics (cluster metrics)
 
 **Key Features**:
@@ -215,12 +213,12 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
   - UI (web interface)
   - Assets (static files)
   - Catalog (product data) → MySQL
-  - Carts (shopping cart) → DynamoDB
+  - Carts (shopping cart) → DynamoDB Local
   - Orders (order processing) → PostgreSQL + RabbitMQ
   - Checkout (payment) → Redis
 - 3 StatefulSets (MySQL, PostgreSQL, RabbitMQ)
 - 1 Deployment (Redis)
-- LoadBalancer (internet-facing NLB)
+- LoadBalancer (internal NLB)
 
 **Key Features**:
 - Production-ready security (non-root, read-only filesystem)
@@ -239,11 +237,10 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
 **Creates**:
 - Amazon Managed Prometheus (AMP) workspace
 - Amazon Managed Grafana (AMG) workspace
-- AWS Distro for OpenTelemetry (ADOT) operator
-- Cert Manager (TLS certificates)
-- External Secrets Operator
-- Pre-built dashboards (cluster, workload, application)
-- Alert Manager configuration
+- OpenTelemetry Collector (observability-accelerator v3, `self-managed-amp` profile)
+- kube-state-metrics and node-exporter
+- Pre-built dashboards (cluster, kubelet, nodes, workloads)
+- AMP recording and alerting rules
 
 **Key Features**:
 - Fully managed Prometheus and Grafana
@@ -317,7 +314,7 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
 ### Observability
 - **Amazon Managed Prometheus**: Metrics storage
 - **Amazon Managed Grafana**: Visualization
-- **ADOT**: OpenTelemetry collection
+- **OpenTelemetry Collector**: Metrics and trace collection
 - **CloudWatch**: Logs and additional metrics
 - **X-Ray**: Distributed tracing
 
@@ -328,8 +325,6 @@ This repository contains a complete, production-ready Amazon EKS infrastructure 
 
 ### Add-ons
 - **External DNS**: Automatic DNS management
-- **External Secrets**: Secrets synchronization
-- **Cert Manager**: TLS certificate management
 - **Metrics Server**: Resource metrics
 
 ---
@@ -762,7 +757,7 @@ This infrastructure provides a **complete, production-ready EKS environment** wi
 - ✅ **Modular architecture** (9 stages)
 - ✅ **Security best practices** (IRSA, encryption, private endpoints)
 - ✅ **Cost optimization** (Karpenter, spot instances, consolidation)
-- ✅ **Comprehensive observability** (AMP, AMG, ADOT, dashboards)
+- ✅ **Comprehensive observability** (AMP, AMG, OpenTelemetry Collector, dashboards)
 - ✅ **Service mesh** (Istio for advanced traffic management)
 - ✅ **Sample applications** (microservices demonstrations)
 - ✅ **Full documentation** (architecture, troubleshooting, best practices)

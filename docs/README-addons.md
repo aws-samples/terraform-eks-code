@@ -193,7 +193,7 @@ external_dns = {
   namespace        = "external-dns"
   service_account  = "external-dns"
   create_namespace = true
-  depends_on       = [null_resource.sleep]
+  depends_on       = [terraform_data.sleep]
 }
 external_dns_route53_zone_arns = [data.aws_route53_zone.phz.arn]
 ```
@@ -449,9 +449,10 @@ data "aws_route53_zone" "phz" {
 **Purpose**: Add delay between add-on installations
 
 ```terraform
-resource "null_resource" "sleep" {
-  triggers = {
-    always_run = timestamp() 
+resource "terraform_data" "sleep" {
+  # Runs once per cluster
+  triggers_replace = {
+    cluster = nonsensitive(data.aws_ssm_parameter.cluster-name.value)
   }
   depends_on = [module.eks_blueprints_addons.aws_load_balancer_controller]
   provisioner "local-exec" {
@@ -503,7 +504,7 @@ module.eks_blueprints_addons
     ├─→ CloudWatch Metrics
     └─→ (other add-ons)
     ↓
-null_resource.sleep (stabilization)
+terraform_data.sleep (stabilization)
     ↓
 observ/sampleapp stages
 ```

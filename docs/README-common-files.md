@@ -83,7 +83,7 @@ cluster/
 
 | Variable | Type | Default | Description |
 |----------|------|---------|-------------|
-| `region` | string | `eu-west-1` | AWS deployment region |
+| `region` | string | `eu-west-2` | AWS deployment region |
 | `profile` | string | `default` | AWS credentials profile |
 | `cluster-name` | string | `eks-workshop` | EKS cluster name |
 | `eks_version` | string | `1.36` | Kubernetes version |

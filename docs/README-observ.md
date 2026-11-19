@@ -2,749 +2,210 @@
 
 ## Overview
 
-The `observ` stage deploys a comprehensive observability solution for the EKS cluster using the AWS Observability Accelerator. This stage sets up Amazon Managed Prometheus, Amazon Managed Grafana, OpenTelemetry, and pre-configured dashboards for monitoring cluster health, application performance, and infrastructure metrics.
+The `observ` stage deploys metrics and tracing for the EKS cluster using **v3 of the AWS Observability Accelerator** `eks-monitoring` module with the `self-managed-amp` collector profile. It creates an Amazon Managed Prometheus (AMP) workspace, an OpenTelemetry Collector in the cluster that writes metrics to AMP and traces to AWS X-Ray, and dashboards in an Amazon Managed Grafana (AMG) workspace.
 
-**Execution Time**: ~10-15 minutes (part of the ~40 minute total build)  
-**Dependencies**: tf-setup, net, cluster, nodepool, addons (requires running cluster)  
-**Outputs**: Grafana workspace, Prometheus workspace, dashboards, alerts  
-**Purpose**: Complete observability stack for EKS
+**Execution Time**: ~5-10 minutes
+**Dependencies**: tf-setup, net, cluster, nodepool, addons (requires a running cluster)
+**Outputs**: Grafana workspace, Prometheus workspace, OTel Collector, dashboards, Prometheus rules
+**Purpose**: Metrics (AMP) and traces (X-Ray) for EKS, visualised in Grafana
+
+Container logs are not handled here: the CloudWatch Observability add-on installed by the `addons` stage already ships them to CloudWatch (Container Insights), so `enable_logs = false`.
 
 ---
 
 ## Architecture Overview
 
-### Observability Stack
+```
+┌──────────────────────────── EKS cluster ─────────────────────────────┐
+│                                                                       │
+│  kube-state-metrics ─┐                                                │
+│  node-exporter ──────┼──► OpenTelemetry Collector ──► AMP remote write │
+│  kubelet / cAdvisor ─┘    (namespace otel-collector)   (SigV4, IRSA)   │
+│                                │                                      │
+│  apps (OTLP traces) ───────────┴──────────────────► AWS X-Ray          │
+└───────────────────────────────────────────────────────────────────────┘
 
+Amazon Managed Grafana (workspace "keycloak-blog")
+  ├─ Data source "Amazon Managed Prometheus" (SigV4, workspace IAM role)
+  └─ Folder "EKS Monitoring": cluster, kubelet, namespace-workloads,
+                              node-exporter, nodes, workloads dashboards
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│ EKS Cluster                                                      │
-│                                                                  │
-│  ┌────────────────────────────────────────────────────────┐    │
-│  │ AWS Distro for OpenTelemetry (ADOT)                    │    │
-│  │ - Collector DaemonSet                                  │    │
-│  │ - Operator for custom resources                        │    │
-│  │ - Metrics, logs, traces collection                     │    │
-│  └────────────────┬───────────────────────────────────────┘    │
-│                   │                                              │
-│  ┌────────────────▼───────────────────────────────────────┐    │
-│  │ Prometheus Server                                       │    │
-│  │ - Scrapes metrics from pods                            │    │
-│  │ - Stores locally (short-term)                          │    │
-│  │ - Remote writes to AMP                                 │    │
-│  └────────────────┬───────────────────────────────────────┘    │
-│                   │                                              │
-│  ┌────────────────▼───────────────────────────────────────┐    │
-│  │ Cert Manager                                            │    │
-│  │ - TLS certificates for webhooks                        │    │
-│  │ - Required for ADOT operator                           │    │
-│  └────────────────────────────────────────────────────────┘    │
-│                                                                  │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │ External Secrets Operator                                │  │
-│  │ - Syncs Grafana API key from Secrets Manager           │  │
-│  │ - Creates Kubernetes secret for dashboards             │  │
-│  └──────────────────────────────────────────────────────────┘  │
-└────────────────┬─────────────────────────────────────────────────┘
-                 │
-                 ▼
-┌─────────────────────────────────────────────────────────────────┐
-│ AWS Managed Services                                             │
-│                                                                  │
-│  ┌────────────────────────────────────────────────────────┐    │
-│  │ Amazon Managed Prometheus (AMP)                        │    │
-│  │ - Long-term metrics storage                            │    │
-│  │ - PromQL query engine                                  │    │
-│  │ - Alert Manager                                        │    │
-│  │ - Workspace: amp-demo                                  │    │
-│  └────────────────┬───────────────────────────────────────┘    │
-│                   │                                              │
-│  ┌────────────────▼───────────────────────────────────────┐    │
-│  │ Amazon Managed Grafana (AMG)                           │    │
-│  │ - Visualization and dashboards                         │    │
-│  │ - SAML authentication                                  │    │
-│  │ - Pre-configured dashboards                            │    │
-│  │ - Workspace: keycloak-blog                             │    │
-│  └────────────────────────────────────────────────────────┘    │
-│                                                                  │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │ AWS X-Ray                                                │  │
-│  │ - Distributed tracing                                   │  │
-│  │ - Service maps                                          │  │
-│  │ - Performance insights                                  │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│                                                                  │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │ CloudWatch                                               │  │
-│  │ - Logs aggregation                                      │  │
-│  │ - Additional metrics                                    │  │
-│  │ - Alarms and notifications                              │  │
-│  └──────────────────────────────────────────────────────────┘  │
-└──────────────────────────────────────────────────────────────────┘
-```
+
+What v3 no longer deploys (all were part of v2): FluxCD, Grafana Operator, External Secrets Operator, the ADOT operator and cert-manager. Dashboards are created directly by Terraform through the Grafana provider.
 
 ---
 
 ## Key Components
 
-### 1. AWS Observability Accelerator Module
-**Purpose**: Opinionated, production-ready observability stack
+### 1. AWS Observability Accelerator `eks-monitoring` module (v3)
 
-**Source**: `github.com/aws-observability/terraform-aws-observability-accelerator`
+```terraform
+source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring?ref=4c39cde"
+```
 
-**Features**:
-- Pre-configured Prometheus and Grafana
-- ADOT operator and collectors
-- Pre-built dashboards
-- Alert rules
-- Best practices configuration
+- v3 is not yet tagged upstream (the newest release is v2.13.1), so the module is **pinned to commit `4c39cde`** on `main` (2026-04-24) rather than tracking the branch.
+- `collector_profile = "self-managed-amp"`. The other profiles are `managed-metrics` (agentless AMP scraper, no traces) and `cloudwatch-otlp` (installs the CloudWatch Observability chart, which would clash with the add-on from the `addons` stage).
+- Requires the helm provider >= 3.0, the `grafana/grafana` provider and `hashicorp/http` (all pinned via `backend-observ.tf`).
 
 ### 2. Amazon Managed Prometheus (AMP)
-**Purpose**: Fully managed Prometheus-compatible monitoring service
 
-**Configuration**:
-- **Workspace**: Automatically created
-- **Scrape Interval**: 60 seconds
-- **Scrape Timeout**: 15 seconds
-- **Alert Manager**: Enabled
-- **Retention**: 150 days (default)
+- Workspace alias `eks-monitoring`, created by the module.
+- Recording and alerting rule groups created by the module (`aws_prometheus_rule_group_namespace`).
+- The collector writes with SigV4 using an IRSA role `<cluster>-otel-collector`.
 
-**Benefits**:
-- No infrastructure to manage
-- Automatic scaling
-- High availability
-- Long-term storage
-- PromQL compatibility
+### 3. OpenTelemetry Collector
 
-### 3. Amazon Managed Grafana (AMG)
-**Purpose**: Fully managed Grafana service for visualization
+- Helm chart `open-telemetry/opentelemetry-collector`, namespace `otel-collector`.
+- Scrape jobs: `kubelet`, `kubelet-cadvisor`, `kube-state-metrics`, `node-exporter`.
+- Pipelines: `metrics` → AMP, `traces` → X-Ray.
 
-**Configuration**:
-- **Workspace Name**: `keycloak-blog`
-- **Authentication**: SAML (Keycloak integration)
-- **Permission Type**: Customer managed
-- **Account Access**: Current account only
+**Workarounds for two v3 bugs** (in `observ/main.tf`, remove once fixed upstream):
 
-**IAM Permissions**:
-- `AmazonPrometheusQueryAccess` - Query AMP
-- `AmazonGrafanaCloudWatchAccess` - CloudWatch data source
-- `AWSXrayReadOnlyAccess` - X-Ray tracing data
+| Setting | Why |
+|---|---|
+| `otel_collector_chart_version = "0.107.0"` | The module sets `exporters.logging = null`. With the module's default chart (0.114.0, collector 0.118) the null key stays in the rendered config, and collectors >= 0.111 refuse to start because the `logging` exporter was removed. Chart 0.107.0 = collector 0.110.0. |
+| `helm_values = { "config.service.pipelines.logs" = "null" }` | With `enable_logs = false` the module adds no logs pipeline, so the chart's default one is kept. It references `memory_limiter` and `debug`, which the module removes, and the collector refuses to start. Setting it to `null` removes the chart default. |
 
-**API Key**:
-- **Name**: `observability-key`
-- **Role**: ADMIN
-- **TTL**: 5 days (432000 seconds)
-- **Purpose**: Dashboard provisioning
+**Known limitation**: node-exporter is scraped through its Service name, so each scrape lands on one random node and all nodes report under a single `instance` label.
 
-### 4. AWS Distro for OpenTelemetry (ADOT)
-**Purpose**: Collect and export telemetry data
+### 4. Amazon Managed Grafana (AMG)
 
-**Components**:
-- **Operator**: Manages ADOT collectors
-- **Collector**: DaemonSet on each node
-- **Exporters**: Prometheus, X-Ray, CloudWatch
+- Workspace `keycloak-blog` (`grafana.tf`), Grafana 10.4, `authentication_providers = ["SAML"]`. SAML (Keycloak) must be configured before anyone can log in to the UI.
+- Workspace IAM role `grafana-assume` with `AmazonPrometheusQueryAccess`, `AmazonGrafanaCloudWatchAccess` and `AWSXrayReadOnlyAccess`.
+- API key `observability-key` (`grafana-key.tf`), role ADMIN, `seconds_to_live = 432000` (5 days). The Grafana provider uses it to create the folder, dashboards and data source. **After it expires, plans in this stage fail** until the key is recreated (`terraform apply -replace=aws_grafana_workspace_api_key.key`).
 
-**Telemetry Types**:
-- **Metrics**: CPU, memory, network, custom
-- **Logs**: Container logs, application logs
-- **Traces**: Distributed tracing with X-Ray
+### 5. Grafana data source for AMP
 
-### 5. Cert Manager
-**Purpose**: TLS certificate management
+The AMP profiles only output the data source settings (`amp_datasource_config`), so `main.tf` creates it:
 
-**Configuration**:
-- **Enabled**: true
-- **Purpose**: ADOT operator webhooks
-- **Certificates**: Self-signed for internal use
-
-**Why Needed?**
-- ADOT operator uses admission webhooks
-- Webhooks require TLS certificates
-- Cert Manager automates certificate lifecycle
-
-### 6. External Secrets Operator
-**Purpose**: Sync Grafana API key to Kubernetes
-
-**Configuration**:
-- **Enabled**: true
-- **Secret Name**: `grafana-admin-credentials`
-- **Namespace**: `grafana-operator`
-- **Source**: AWS Secrets Manager
-
-**Why Needed?**
-- Grafana API key stored securely in AWS
-- Synced to Kubernetes for dashboard provisioning
-- Automatic rotation support
+```terraform
+resource "grafana_data_source" "amp" {
+  type       = module.eks_monitoring.amp_datasource_config.type
+  name       = "Amazon Managed Prometheus"
+  url        = module.eks_monitoring.amp_datasource_config.endpoint
+  is_default = true
+  json_data_encoded = jsonencode({
+    httpMethod    = module.eks_monitoring.amp_datasource_config.http_method
+    sigV4Auth     = true
+    sigV4AuthType = "ec2_iam_role" # Amazon Managed Grafana workspace IAM role
+    sigV4Region   = module.eks_monitoring.amp_datasource_config.sigv4_region
+  })
+}
+```
 
 ---
 
 ## File-by-File Breakdown
 
-### Provider Configuration
+| File | Purpose |
+|---|---|
+| `main.tf` | Kubernetes, helm (v3 syntax) and Grafana providers; `eks_monitoring` module call; AMP Grafana data source |
+| `grafana.tf` | AMG workspace and its IAM role / policy attachments |
+| `grafana-key.tf` | AMG API key used by the Grafana provider |
+| `backend-observ.tf` | S3 backend and provider versions (symlink to `tf-setup/generated/`) |
+| `data-params-cluster.tf`, `data-params-setup.tf`, `aws-data.tf`, `vars-main.tf` | Shared lookups and variables (symlinks to `common-files/`) |
+| `.terraform.lock.hcl` | Provider lock file (committed) |
 
-#### main.tf
-**Purpose**: Configures providers and deploys observability stack
+### Provider configuration (helm provider 3)
 
-**Kubernetes Provider**:
-```terraform
-provider "kubernetes" {
-  host                   = data.aws_ssm_parameter.endpoint.value
-  cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
-  config_path = "~/.kube/config"
-  exec {
-    api_version = "client.authentication.k8s.io/v1beta1"
-    command     = "aws"
-    args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
-  }
-}
-```
-
-**Helm Provider**:
 ```terraform
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host                   = data.aws_ssm_parameter.endpoint.value
     cluster_ca_certificate = base64decode(data.aws_ssm_parameter.ca.value)
-    exec {
+    exec = {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
-      args = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
+      args        = ["eks", "get-token", "--cluster-name", data.aws_ssm_parameter.cluster-name.value]
     }
   }
 }
-```
 
-**EKS Monitoring Module**:
-```terraform
-module "eks_monitoring" {
-  source = "github.com/aws-observability/terraform-aws-observability-accelerator//modules/eks-monitoring"
-  
-  eks_cluster_id = data.aws_ssm_parameter.cluster-name.value
-  
-  # Core components
-  enable_amazon_eks_adot = true
-  enable_cert_manager = true
-  enable_external_secrets = true
-  
-  # Grafana integration
-  grafana_api_key = aws_grafana_workspace_api_key.key.key
-  grafana_url = format("https://%s", aws_grafana_workspace.workshop.endpoint)
-  target_secret_name = "grafana-admin-credentials"
-  target_secret_namespace = "grafana-operator"
-  
-  # Prometheus
-  enable_managed_prometheus = true
-  enable_alertmanager = true
-  prometheus_config = {
-    global_scrape_interval = "60s"
-    global_scrape_timeout = "15s"
-  }
-  
-  # Monitoring features
-  enable_apiserver_monitoring = true
-  enable_dashboards = true
-  enable_logs = true
-  enable_tracing = true
+provider "grafana" {
+  url  = format("https://%s", aws_grafana_workspace.workshop.endpoint)
+  auth = aws_grafana_workspace_api_key.key.key
 }
 ```
 
-**Key Features Enabled**:
-- **ADOT**: OpenTelemetry collection
-- **Cert Manager**: TLS certificates
-- **External Secrets**: Grafana API key sync
-- **Managed Prometheus**: Metrics storage
-- **Alert Manager**: Alert routing
-- **API Server Monitoring**: Control plane metrics
-- **Dashboards**: Pre-built Grafana dashboards
-- **Logs**: Log collection and forwarding
-- **Tracing**: Distributed tracing with X-Ray
+---
+
+## Dashboards
+
+Created in the Grafana folder **EKS Monitoring**, fetched at plan time from `aws-observability/aws-observability-accelerator` (`artifacts/grafana-dashboards/eks/infrastructure`, ref `main`):
+
+- Kubernetes / Compute Resources / Cluster
+- Kubelet
+- Namespace (Workloads)
+- Node Exporter / Nodes
+- Nodes
+- Workloads
+
+Because the dashboards come from the upstream `main` branch, they can change between plans. Set `dashboard_git_ref` in the module call to pin them.
 
 ---
 
-### Grafana Workspace
-
-#### grafana.tf
-**Purpose**: Creates Amazon Managed Grafana workspace and IAM role
-
-**Grafana Workspace**:
-```terraform
-resource "aws_grafana_workspace" "workshop" {
-  account_access_type = "CURRENT_ACCOUNT"
-  authentication_providers = ["SAML"]
-  permission_type = "CUSTOMER_MANAGED"
-  role_arn = aws_iam_role.grafana.arn
-  name = "keycloak-blog"
-}
-```
-
-**Configuration**:
-- **Account Access**: Current AWS account only
-- **Authentication**: SAML (Keycloak)
-- **Permissions**: Customer managed (custom IAM role)
-- **Name**: `keycloak-blog` (matches Keycloak configuration)
-
-**IAM Role**:
-```terraform
-resource "aws_iam_role" "grafana" {
-  name = "grafana-assume"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-      Principal = {
-        Service = "grafana.amazonaws.com"
-      }
-    }]
-  })
-}
-```
-
-**Attached Policies**:
-1. **AmazonPrometheusQueryAccess**: Query AMP workspaces
-2. **AmazonGrafanaCloudWatchAccess**: CloudWatch data source
-3. **AWSXrayReadOnlyAccess**: X-Ray tracing data
-
-**Why These Policies?**
-- Grafana needs to query multiple AWS data sources
-- Least privilege access to each service
-- Read-only access (no write permissions)
-
----
-
-### Grafana API Key
-
-#### grafana-key.tf
-**Purpose**: Creates API key for dashboard provisioning
-
-```terraform
-resource "aws_grafana_workspace_api_key" "key" {
-  key_name = "observability-key"
-  key_role = "ADMIN"
-  seconds_to_live = 432000  # 5 days
-  workspace_id = aws_grafana_workspace.workshop.id
-}
-```
-
-**Configuration**:
-- **Name**: `observability-key`
-- **Role**: ADMIN (full permissions)
-- **TTL**: 5 days (432000 seconds)
-- **Purpose**: Automated dashboard provisioning
-
-**Why ADMIN Role?**
-- Required for creating/updating dashboards
-- Needed for data source configuration
-- Used by Observability Accelerator
-
-**Security Considerations**:
-- Short TTL (5 days)
-- Stored in AWS Secrets Manager
-- Synced to Kubernetes via External Secrets
-- Rotated regularly
-
----
-
-## Symlinked Files
-
-These files are symlinked from `common-files/`:
-
-- **aws-data.tf**: AWS account and region data sources
-- **backend-observ.tf**: S3 backend configuration (generated by tf-setup)
-- **data-params-setup.tf**: Setup stage SSM parameters
-- **data-params-cluster.tf**: Cluster stage SSM parameters (endpoint, OIDC, etc.)
-- **vars-main.tf**: Common variables
-
----
-
-## Pre-Configured Dashboards
-
-The Observability Accelerator automatically provisions these dashboards:
-
-### Cluster Dashboards
-1. **Cluster Overview**: High-level cluster health
-2. **Node Metrics**: CPU, memory, disk, network per node
-3. **Pod Metrics**: Resource usage per pod
-4. **Namespace Metrics**: Resource usage per namespace
-
-### Workload Dashboards
-5. **Deployment Metrics**: Deployment health and performance
-6. **StatefulSet Metrics**: StatefulSet health and performance
-7. **DaemonSet Metrics**: DaemonSet health and performance
-
-### Infrastructure Dashboards
-8. **API Server**: Control plane performance
-9. **etcd**: etcd cluster health
-10. **CoreDNS**: DNS query metrics
-11. **Kubelet**: Kubelet performance
-
-### Application Dashboards
-12. **Java/JVM**: Java application metrics
-13. **NGINX**: NGINX ingress metrics
-14. **Custom**: Application-specific metrics
-
----
-
-## Metrics Collected
-
-### Cluster Metrics
-- Node CPU, memory, disk, network
-- Pod CPU, memory, network
-- Container resource usage
-- Persistent volume usage
-
-### Kubernetes Metrics
-- API server requests and latency
-- Scheduler performance
-- Controller manager metrics
-- etcd performance
-
-### Application Metrics
-- HTTP request rate and latency
-- Error rates
-- Custom application metrics (Prometheus format)
-- JVM metrics (for Java apps)
-
-### Infrastructure Metrics
-- Load balancer metrics
-- VPC flow logs
-- CloudWatch metrics
-
----
-
-## Accessing Grafana
-
-### Get Grafana URL
+## Verification
 
 ```bash
-# Get workspace endpoint
-aws grafana describe-workspace --workspace-id <workspace-id> --query 'workspace.endpoint' --output text
+# Collector, kube-state-metrics, node-exporter
+kubectl get pods -n otel-collector
+kubectl get pods -n kube-system -l app.kubernetes.io/name=kube-state-metrics
+kubectl get pods -n prometheus-node-exporter
 
-# Or from Terraform output
-terraform output -raw grafana_endpoint
+# Collector logs (should show no errors or export failures)
+kubectl logs -n otel-collector deploy/otel-collector-opentelemetry-collector -c opentelemetry-collector --since=10m
+
+# AMP workspace
+aws amp list-workspaces --query 'workspaces[].[workspaceId,alias,status.statusCode]' --output text
+
+# Grafana endpoint
+terraform state show aws_grafana_workspace.workshop | grep endpoint
 ```
 
-### Login to Grafana
-
-1. Navigate to Grafana URL
-2. Click "Sign in with SAML"
-3. Authenticate with Keycloak
-4. Access dashboards
-
-### Default Dashboards Location
-
-- Navigate to "Dashboards" in left menu
-- Look for "AWS Observability Accelerator" folder
-- Pre-configured dashboards are organized by category
-
----
-
-## Querying Metrics
-
-### PromQL Examples
+### Example PromQL (Grafana Explore, data source "Amazon Managed Prometheus")
 
 ```promql
+# Scrape targets up, by job
+count by (job) (up)
+
 # Node CPU usage
-100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
+100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
 
-# Pod memory usage
-sum(container_memory_working_set_bytes{pod=~".*"}) by (pod)
+# Pod memory working set by namespace
+sum by (namespace) (container_memory_working_set_bytes{container!=""})
 
-# HTTP request rate
-rate(http_requests_total[5m])
-
-# API server latency
-histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket[5m])) by (le))
-
-# Pod restart count
-kube_pod_container_status_restarts_total
-```
-
-### CloudWatch Logs Insights
-
-```sql
-# Container logs
-fields @timestamp, @message
-| filter kubernetes.namespace_name = "sampleapp"
-| sort @timestamp desc
-| limit 100
-
-# Error logs
-fields @timestamp, @message
-| filter @message like /ERROR/
-| sort @timestamp desc
+# Pod restarts
+sum by (namespace, pod) (kube_pod_container_status_restarts_total)
 ```
 
 ---
 
-## Alerting
+## Troubleshooting
 
-### Alert Manager Configuration
-
-The Observability Accelerator sets up Alert Manager with:
-- **Workspace-level**: Alerts managed in AMP
-- **Routing**: Alert routing rules
-- **Receivers**: Notification channels (SNS, email, etc.)
-
-### Example Alert Rules
-
-```yaml
-# High CPU usage
-- alert: HighCPUUsage
-  expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
-  for: 5m
-  labels:
-    severity: warning
-  annotations:
-    summary: "High CPU usage on {{ $labels.instance }}"
-
-# Pod restart
-- alert: PodRestarting
-  expr: rate(kube_pod_container_status_restarts_total[15m]) > 0
-  for: 5m
-  labels:
-    severity: warning
-  annotations:
-    summary: "Pod {{ $labels.pod }} is restarting"
-
-# API server errors
-- alert: APIServerErrors
-  expr: rate(apiserver_request_total{code=~"5.."}[5m]) > 0.01
-  for: 5m
-  labels:
-    severity: critical
-  annotations:
-    summary: "API server returning 5xx errors"
-```
+| Symptom | Cause / fix |
+|---|---|
+| Collector `CrashLoopBackOff`: "the logging exporter has been deprecated" | Collector chart newer than 0.107.0 with this module commit. Keep `otel_collector_chart_version = "0.107.0"`. |
+| Collector `CrashLoopBackOff`: "references processor memory_limiter which is not configured" | The chart's default logs pipeline is still present. Keep the `config.service.pipelines.logs = null` `helm_values` entry while `enable_logs = false`. |
+| Plan fails with Grafana 401 errors | The API key expired (5-day TTL). Run `terraform apply -replace=aws_grafana_workspace_api_key.key`. |
+| Dashboards show no data | Check that the `Amazon Managed Prometheus` data source exists and the collector logs show no `Exporting failed` errors. |
+| Collector pod has extra `opentelemetry-auto-instrumentation-*` init containers | Added by the CloudWatch add-on's Application Signals auto-instrumentation. Harmless. |
 
 ---
 
-## Testing and Verification
+## Upgrading from v2 (what was done)
 
-### After Deployment
+1. `terraform destroy -target=module.eks_monitoring` with the v2 code, so the v2 resources were removed by the providers that created them.
+2. Deleted the empty namespaces (`flux-system`, `grafana-operator`, `prometheus-node-exporter`) and the Grafana Operator CRDs that Helm leaves behind.
+3. Switched `gen-backend.sh` to helm `~> 3.3.0` for every stage and regenerated the backend files.
+4. Replaced the module call with the v3 one above and applied.
+
+---
+
+## Destroying This Stage
 
 ```bash
-# Verify Grafana workspace
-aws grafana list-workspaces
-aws grafana describe-workspace --workspace-id <workspace-id>
-
-# Verify Prometheus workspace
-aws amp list-workspaces
-aws amp describe-workspace --workspace-id <workspace-id>
-
-# Check ADOT operator
-kubectl get pods -n opentelemetry-operator-system
-
-# Check ADOT collector
-kubectl get pods -n adot-collector
-
-# Check Cert Manager
-kubectl get pods -n cert-manager
-
-# Check External Secrets
-kubectl get pods -n external-secrets
-
-# Verify Prometheus server
-kubectl get pods -n prometheus
-
-# Check Grafana secret
-kubectl get secret grafana-admin-credentials -n grafana-operator
-
-# Test Prometheus query
-aws amp query-workspace --workspace-id <workspace-id> --query-string "up"
-
-# Check dashboards in Grafana
-# Navigate to Grafana URL and verify dashboards are present
+cd observ
+terraform destroy
 ```
 
----
-
-## Common Issues
-
-### Issue: Grafana workspace creation fails
-**Causes**:
-- IAM role permissions missing
-- SAML configuration incomplete
-- Workspace name conflict
-
-**Solutions**:
-```bash
-# Check IAM role
-aws iam get-role --role-name grafana-assume
-
-# Verify policies attached
-aws iam list-attached-role-policies --role-name grafana-assume
-
-# Check workspace status
-aws grafana describe-workspace --workspace-id <workspace-id>
-```
-
-### Issue: Dashboards not appearing
-**Causes**:
-- API key expired
-- External Secrets not syncing
-- Grafana API key permissions insufficient
-
-**Solutions**:
-```bash
-# Check API key
-aws grafana describe-workspace-api-key --key-id <key-id> --workspace-id <workspace-id>
-
-# Verify External Secrets
-kubectl get externalsecret -n grafana-operator
-kubectl describe externalsecret -n grafana-operator
-
-# Check secret
-kubectl get secret grafana-admin-credentials -n grafana-operator -o yaml
-```
-
-### Issue: ADOT collector not collecting metrics
-**Causes**:
-- Cert Manager not ready
-- ADOT operator not running
-- Prometheus server not configured
-
-**Solutions**:
-```bash
-# Check Cert Manager
-kubectl get pods -n cert-manager
-kubectl get certificates -A
-
-# Check ADOT operator
-kubectl logs -n opentelemetry-operator-system -l app.kubernetes.io/name=opentelemetry-operator
-
-# Check ADOT collector
-kubectl get pods -n adot-collector
-kubectl logs -n adot-collector -l app.kubernetes.io/name=adot-collector
-
-# Verify Prometheus config
-kubectl get configmap -n prometheus
-```
-
-### Issue: Prometheus remote write failing
-**Causes**:
-- AMP workspace not ready
-- IAM permissions missing
-- Network connectivity issues
-
-**Solutions**:
-```bash
-# Check AMP workspace
-aws amp describe-workspace --workspace-id <workspace-id>
-
-# Check Prometheus logs
-kubectl logs -n prometheus -l app.kubernetes.io/name=prometheus
-
-# Verify IRSA
-kubectl get sa -n prometheus -o yaml
-# Look for eks.amazonaws.com/role-arn annotation
-```
-
----
-
-## Cost Considerations
-
-### Amazon Managed Prometheus
-- **Metrics Ingested**: $0.30 per 10M samples
-- **Metrics Stored**: $0.03 per GB-month
-- **Query Samples**: $0.01 per 1M samples
-- **Estimated**: ~$50-100/month for typical cluster
-
-### Amazon Managed Grafana
-- **Workspace**: $9 per active user per month
-- **Editor License**: Included
-- **Viewer**: Free
-- **Estimated**: ~$9-45/month (1-5 users)
-
-### AWS X-Ray
-- **Traces Recorded**: $5 per 1M traces
-- **Traces Retrieved**: $0.50 per 1M traces
-- **Estimated**: ~$10-20/month
-
-### CloudWatch
-- **Logs Ingested**: $0.50 per GB
-- **Logs Stored**: $0.03 per GB-month
-- **Metrics**: $0.30 per metric per month
-- **Estimated**: ~$20-50/month
-
-### Total Estimated Cost
-**Monthly**: ~$89-215/month depending on usage
-
----
-
-## Security Considerations
-
-### IAM Roles
-✅ Least privilege access  
-✅ Service-specific roles  
-✅ No long-lived credentials  
-✅ IRSA for pod-level permissions
-
-### API Keys
-✅ Short TTL (5 days)  
-✅ Stored in Secrets Manager  
-✅ Synced via External Secrets  
-✅ Rotated regularly
-
-### Network Security
-✅ Private endpoints for AMP/AMG  
-✅ TLS for all communications  
-✅ VPC endpoints for AWS services  
-✅ No public exposure
-
-### Data Security
-✅ Encryption at rest (AMP, AMG)  
-✅ Encryption in transit (TLS)  
-✅ Access logging enabled  
-✅ Audit trails in CloudTrail
-
----
-
-## Best Practices
-
-### DO:
-✅ Use managed services (AMP, AMG) for production  
-✅ Enable Alert Manager for notifications  
-✅ Set up retention policies  
-✅ Use SAML authentication for Grafana  
-✅ Monitor the monitoring stack itself  
-✅ Set up dashboards for key metrics  
-✅ Configure alerts for critical issues  
-✅ Regularly review and update dashboards
-
-### DON'T:
-❌ Use long-lived API keys  
-❌ Grant excessive IAM permissions  
-❌ Ignore alert fatigue  
-❌ Skip retention policies  
-❌ Expose Grafana publicly without auth  
-❌ Collect unnecessary metrics  
-❌ Ignore cost optimization  
-❌ Skip regular reviews of alerts
-
----
-
-## Related Documentation
-
-- **addons Stage**: See `docs/README-addons.md` for add-ons configuration
-- **cluster Stage**: See `docs/README-cluster.md` for EKS cluster setup
-- **AWS Observability Accelerator**: https://aws-observability.github.io/terraform-aws-observability-accelerator/
-- **Amazon Managed Prometheus**: https://docs.aws.amazon.com/prometheus/
-- **Amazon Managed Grafana**: https://docs.aws.amazon.com/grafana/
-- **ADOT**: https://aws-otel.github.io/
-
----
-
-## Summary
-
-The observ stage deploys a complete observability solution with:
-- **Amazon Managed Prometheus**: Metrics storage and querying
-- **Amazon Managed Grafana**: Visualization and dashboards
-- **ADOT**: OpenTelemetry collection (metrics, logs, traces)
-- **Cert Manager**: TLS certificate management
-- **External Secrets**: Secure API key management
-- **Pre-built Dashboards**: Cluster, workload, and application monitoring
-- **Alert Manager**: Alert routing and notifications
-- **X-Ray Integration**: Distributed tracing
-- **CloudWatch Integration**: Logs and additional metrics
-
-This configuration provides production-ready observability for EKS clusters with minimal operational overhead, leveraging AWS managed services for scalability, reliability, and security.
+Destroy this stage before `addons`, `nodepool` and `cluster`.

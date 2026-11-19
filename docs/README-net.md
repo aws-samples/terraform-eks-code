@@ -200,13 +200,13 @@ intra_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
 **Rules Added**:
 - Port 443 from EKS VPC (HTTPS)
 - Port 22 from EKS VPC (SSH)
-- Port 8080 from anywhere (application access)
-- Port 80 from anywhere (HTTP)
+- Port 8080 from the EKS VPC secondary CIDR (100.65.0.0/16: nodes, pods, internal load balancers)
+- Port 80 from the EKS VPC secondary CIDR (port 80 is also code-server on the IDE instance)
 
 **Why?**
 - Allows EKS pods to communicate with development instance
 - Enables testing applications from browser
-- Port 8080/80 open for workshop demos (not production practice)
+- Ports 80/8080 are not opened to 0.0.0.0/0; one CIDR per rule because the IDE stack's CloudFront prefix list uses most of the security group's 60-rule quota
 
 #### data-sg-vscode-instance.tf
 **Purpose**: Discovers VSCode/Cloud9 instance and its security group

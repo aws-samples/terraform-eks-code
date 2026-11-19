@@ -91,14 +91,18 @@ Creates 7 SSM parameters that serve as a configuration registry for all stages.
 
 ### 5. Backend Generator (`null_resource.tf` + `gen-backend.sh`)
 
+`null_resource.tf` now holds a `terraform_data` resource (a `moved` block migrates existing state from the old `null_resource`). It only re-runs when the state bucket, region or `gen-backend.sh` changes.
+
 Orchestrates the creation of backend configuration files after the S3 bucket is ready.
 
-#### Null Resource Trigger
+#### Trigger
 
 ```terraform
-resource "null_resource" "gen_backend" {
-  triggers = {
-    always_run = timestamp()
+resource "terraform_data" "gen_backend" {
+  triggers_replace = {
+    bucket = aws_s3_bucket.terraform_state.bucket
+    region = var.region
+    script = filesha256("${path.module}/gen-backend.sh")
   }
   depends_on = [aws_s3_bucket_server_side_encryption_configuration.terraform_state]
   provisioner "local-exec" {
@@ -149,12 +153,14 @@ Creates backend configuration for these stages:
 - `nodepool`
 - `addons`
 - `observ`
+- `sampleapp`
+- `istio`
 
 Each file (`generated/backend-{stage}.tf`) contains:
 
 **Terraform Block**:
 - Version constraint: `> 1.12.0`
-- Provider versions (AWS 6.73.0, Kubernetes 3.5.0, Helm ~> 3.3.0 (observ stage: ~> 2.17.0), Grafana ~> 4.55.0, alekc/kubectl ~> 3.0.1)
+- Provider versions (AWS 6.73.0, Kubernetes 3.5.0, Helm ~> 3.3.0, Grafana ~> 4.55.0, alekc/kubectl ~> 3.0.1, null ~> 3.3.2)
 
 **Backend Configuration**:
 ```terraform
@@ -187,7 +193,7 @@ Ensures all generated files follow Terraform formatting standards.
 
 | Variable | Type | Default | Description |
 |----------|------|---------|-------------|
-| `region` | string | `eu-west-1` | AWS deployment region |
+| `region` | string | `eu-west-2` | AWS deployment region |
 | `profile` | string | `default` | AWS credentials profile |
 | `cluster-name` | string | `eks-workshop` | EKS cluster name |
 | `eks_version` | string | `1.36` | Kubernetes version |
@@ -212,7 +218,7 @@ provider "aws" {
 ```
 
 **Authentication**: Uses local AWS credentials file  
-**Region**: Configurable via variable (default: eu-west-1)
+**Region**: Configurable via variable (default: eu-west-2)
 
 ---
 
@@ -254,7 +260,7 @@ tf-setup/
 ├── rand.tf                  # Random ID generator
 ├── s3-bucket.tf             # State bucket with security
 ├── ssm-params-setup.tf      # Configuration parameters
-├── null_resource.tf         # Backend generation trigger
+├── null_resource.tf         # Backend generation trigger (terraform_data)
 ├── output.tf                # Output values
 ├── gen-backend.sh           # Backend file generator script
 ├── dot-terraform.rc         # Plugin cache configuration
@@ -264,7 +270,9 @@ tf-setup/
     ├── backend-cluster.tf
     ├── backend-nodepool.tf
     ├── backend-addons.tf
-    └── backend-observ.tf
+    ├── backend-observ.tf
+    ├── backend-sampleapp.tf
+    └── backend-istio.tf
 ```
 
 ---
@@ -296,6 +304,12 @@ When `build-stage.sh tf-setup` runs:
 ### Why Local State Initially?
 The first run uses local state because the S3 backend doesn't exist yet. Subsequent stages use the generated backend configurations.
 
+**Provider lock files**: each stage commits its `.terraform.lock.hcl` (hashes for darwin_arm64, darwin_amd64, linux_amd64 and linux_arm64). After changing a provider version, refresh them with:
+
+```bash
+terraform providers lock -platform=darwin_arm64 -platform=darwin_amd64 -platform=linux_amd64 -platform=linux_arm64
+```
+
 ### Why Generate Backend Files?
 - **DRY Principle**: Single source of truth for bucket name and region
 - **Consistency**: All stages use identical provider versions
@@ -325,11 +339,11 @@ All subsequent stages depend on:
 
 ### Issue: "no terraform output variables"
 **Cause**: Script runs before apply completes  
-**Solution**: 6-second sleep in null_resource, but may need adjustment
+**Solution**: 6-second sleep in terraform_data.gen_backend, but may need adjustment
 
 ### Issue: Backend file not found
 **Cause**: `gen-backend.sh` failed or didn't run  
-**Solution**: Check null_resource execution logs
+**Solution**: Check terraform_data.gen_backend execution logs
 
 ### Issue: S3 bucket already exists
 **Cause**: Random ID collision (extremely rare)  

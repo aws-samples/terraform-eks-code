@@ -65,11 +65,11 @@ The `sampleapp` stage deploys a complete microservices-based e-commerce applicat
 **Purpose**: Web interface for the e-commerce application
 
 **Configuration**:
-- **Image**: `public.ecr.aws/aws-containers/retail-store-sample-ui:0.8.4`
+- **Image**: `public.ecr.aws/aws-containers/retail-store-sample-ui:0.8.5`
 - **Replicas**: 1
 - **Resources**: 128m CPU, 512Mi memory
 - **Port**: 8080 (HTTP)
-- **Service Type**: LoadBalancer (internet-facing NLB)
+- **Service Type**: LoadBalancer (internal NLB: reachable from the VPC and the peered IDE VPC only)
 - **Health Checks**: Liveness probe on `/actuator/health/liveness`
 
 **Features**:
@@ -85,7 +85,7 @@ The `sampleapp` stage deploys a complete microservices-based e-commerce applicat
 **Purpose**: Serves static assets (images, CSS, JavaScript)
 
 **Configuration**:
-- **Image**: `public.ecr.aws/aws-containers/retail-store-sample-assets:0.8.4`
+- **Image**: `public.ecr.aws/aws-containers/retail-store-sample-assets:0.8.5`
 - **Replicas**: 1
 - **Resources**: 128m CPU, 128Mi memory
 - **Port**: 8080
@@ -104,15 +104,16 @@ The `sampleapp` stage deploys a complete microservices-based e-commerce applicat
 **Purpose**: Product catalog management
 
 **Configuration**:
-- **Image**: `public.ecr.aws/aws-containers/retail-store-sample-catalog:0.8.4`
+- **Image**: `public.ecr.aws/aws-containers/retail-store-sample-catalog:0.8.5`
 - **Replicas**: 1
 - **Resources**: 128m CPU, 512Mi memory
 - **Database**: MySQL (StatefulSet)
 - **Port**: 8080
 
 **Database**:
-- **Type**: MySQL 5.7
-- **Storage**: Persistent volume (30Gi)
+- **Type**: MySQL 8.4 (`mysql:8.4.13`)
+- **Storage**: `emptyDir` (data is lost when the pod restarts)
+- **Resources**: 100m CPU / 512Mi memory requested, 1Gi memory limit
 - **Credentials**: Kubernetes Secret
 - **Service**: ClusterIP (catalog-mysql)
 
@@ -125,17 +126,15 @@ The `sampleapp` stage deploys a complete microservices-based e-commerce applicat
 **Purpose**: Shopping cart management
 
 **Configuration**:
-- **Image**: `public.ecr.aws/aws-containers/retail-store-sample-carts:0.8.4`
+- **Image**: `public.ecr.aws/aws-containers/retail-store-sample-cart:0.8.5`
 - **Replicas**: 1
 - **Resources**: 128m CPU, 512Mi memory
-- **Database**: DynamoDB (external AWS service)
+- **Database**: DynamoDB Local (`amazon/dynamodb-local:1.25.1`, in-cluster `carts-dynamodb` Deployment; 100m CPU / 512Mi requested, 1Gi memory limit)
 - **Port**: 8080
 
 **DynamoDB Integration**:
-- Uses IRSA for authentication
-- No credentials in code
-- Serverless, fully managed
-- Auto-scaling capacity
+- Uses DynamoDB Local running in the cluster (not the AWS DynamoDB service)
+- Data is in-memory and lost when the pod restarts
 
 **Features**:
 - Session-based cart storage
@@ -146,7 +145,7 @@ The `sampleapp` stage deploys a complete microservices-based e-commerce applicat
 **Purpose**: Order processing and management
 
 **Configuration**:
-- **Image**: `public.ecr.aws/aws-containers/retail-store-sample-orders:0.8.4`
+- **Image**: `public.ecr.aws/aws-containers/retail-store-sample-orders:0.8.5`
 - **Replicas**: 1
 - **Resources**: 128m CPU, 512Mi memory
 - **Database**: PostgreSQL (StatefulSet)
@@ -154,14 +153,16 @@ The `sampleapp` stage deploys a complete microservices-based e-commerce applicat
 - **Port**: 8080
 
 **PostgreSQL Database**:
-- **Version**: PostgreSQL 16
-- **Storage**: Persistent volume (30Gi)
+- **Version**: PostgreSQL 16.16
+- **Storage**: `emptyDir` (data is lost when the pod restarts)
+- **Resources**: 100m CPU / 128Mi memory requested, 512Mi memory limit
 - **Credentials**: Kubernetes Secret
 - **Service**: ClusterIP (orders-postgresql)
 
 **RabbitMQ**:
-- **Version**: RabbitMQ 3.11
-- **Storage**: Persistent volume (30Gi)
+- **Version**: RabbitMQ 3.13.7 (`3.13.7-management`)
+- **Storage**: `emptyDir` (data is lost when the pod restarts)
+- **Resources**: 100m CPU / 256Mi memory requested, 512Mi memory limit
 - **Credentials**: Kubernetes Secret
 - **Service**: ClusterIP (orders-rabbitmq)
 - **Ports**: 5672 (AMQP), 15672 (Management UI)
@@ -175,14 +176,15 @@ The `sampleapp` stage deploys a complete microservices-based e-commerce applicat
 **Purpose**: Checkout process and payment
 
 **Configuration**:
-- **Image**: `public.ecr.aws/aws-containers/retail-store-sample-checkout:0.8.4`
+- **Image**: `public.ecr.aws/aws-containers/retail-store-sample-checkout:0.8.5`
 - **Replicas**: 1
 - **Resources**: 256m CPU, 512Mi memory
 - **Cache**: Redis (Deployment)
 - **Port**: 8080
 
 **Redis Cache**:
-- **Version**: Redis 6.0
+- **Version**: Redis 6.2.24 (`redis:6.2.24-alpine`)
+- **Resources**: 50m CPU / 64Mi memory requested, 128Mi memory limit
 - **Type**: Deployment (ephemeral)
 - **Service**: ClusterIP (checkout-redis)
 - **Port**: 6379
@@ -221,7 +223,7 @@ Kubernetes StatefulSets for stateful databases:
 
 ### Services
 Kubernetes Services for network access:
-- **LoadBalancer**: `ui` (internet-facing NLB)
+- **LoadBalancer**: `ui` (internal NLB)
 - **ClusterIP**: All other services (internal only)
 
 ### ConfigMaps
@@ -246,6 +248,9 @@ IRSA-enabled service accounts for AWS access:
 
 ### Provider Configuration
 - **k8s.tf**: Kubernetes provider using local kubeconfig
+- **backend-sampleapp.tf**: S3 backend and provider versions (symlink to `tf-setup/generated/`, generated by `gen-backend.sh`)
+- **vars-main.tf**: Shared variables (symlink to `common-files/`)
+- **Lifecycle**: each Deployment/StatefulSet ignores the Application Signals pod-template annotations the CloudWatch add-on adds, so plans stay clean
 
 ### Namespace
 - **kubernetes_namespace_v1__sampleapp.tf**: Creates `sampleapp` namespace
@@ -315,7 +320,7 @@ IRSA-enabled service accounts for AWS access:
 **Network Security**:
 - Services isolated in dedicated namespace
 - ClusterIP for internal services
-- LoadBalancer only for UI (internet-facing)
+- LoadBalancer only for UI (internal, not internet-facing)
 - Network policies can be applied
 
 **Secrets Management**:
@@ -779,7 +784,7 @@ The sampleapp stage deploys a complete microservices e-commerce application with
 - **1 cache**: Redis (Deployment)
 - **Security**: Non-root containers, read-only filesystems, IRSA
 - **Observability**: Prometheus metrics, health checks, CloudWatch logs
-- **High Availability**: RollingUpdate strategy, persistent storage
-- **Internet Access**: LoadBalancer for UI service
+- **High Availability**: RollingUpdate strategy (data stores use `emptyDir`, so data is not persistent)
+- **Access**: internal NLB for the UI service (from the VPC / IDE instance, or `kubectl port-forward`)
 
 This application demonstrates production-ready Kubernetes patterns including microservices architecture, database persistence, message queuing, caching, and secure container practices.

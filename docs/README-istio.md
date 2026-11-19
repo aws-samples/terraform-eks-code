@@ -135,7 +135,7 @@ The `istio` stage deploys Istio service mesh to the EKS cluster along with the B
 ```yaml
 service.beta.kubernetes.io/aws-load-balancer-type: external
 service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
-service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+service.beta.kubernetes.io/aws-load-balancer-scheme: internal  # VPC and peered IDE VPC only
 service.beta.kubernetes.io/aws-load-balancer-attributes: load_balancing.cross_zone.enabled=true
 ```
 
@@ -260,7 +260,7 @@ resource "kubernetes_namespace_v1" "istio_system" {
 **Namespace**:
 ```terraform
 resource "kubernetes_namespace_v1" "sample" {
-  depends_on = [null_resource.restart]
+  depends_on = [terraform_data.restart]
   metadata {
     labels = {
       "istio-injection" = "enabled"  # Automatic sidecar injection
@@ -294,25 +294,31 @@ All services are ClusterIP (internal only)
 5. `reviews-v2`: Reviews with black stars
 6. `reviews-v3`: Reviews with red stars
 
+**Resources**: each deployment sets CPU/memory requests and a memory limit (no CPU limit).
+
+**Ingress routing**: `bookinfo.tf` also creates the `bookinfo-gateway` Gateway and `bookinfo` VirtualService (`kubectl_manifest`), so `http://<gateway-nlb>/productpage` works from inside the VPC / IDE instance.
+
 **Container Images**:
-- `docker.io/istio/examples-bookinfo-details-v1:1.20.2`
-- `docker.io/istio/examples-bookinfo-productpage-v1:1.20.2`
-- `docker.io/istio/examples-bookinfo-ratings-v1:1.20.2`
-- `docker.io/istio/examples-bookinfo-reviews-v1:1.20.2`
-- `docker.io/istio/examples-bookinfo-reviews-v2:1.20.2`
-- `docker.io/istio/examples-bookinfo-reviews-v3:1.20.2`
+- `docker.io/istio/examples-bookinfo-details-v1:1.20.3`
+- `docker.io/istio/examples-bookinfo-productpage-v1:1.20.3`
+- `docker.io/istio/examples-bookinfo-ratings-v1:1.20.3`
+- `docker.io/istio/examples-bookinfo-reviews-v1:1.20.3`
+- `docker.io/istio/examples-bookinfo-reviews-v2:1.20.3`
+- `docker.io/istio/examples-bookinfo-reviews-v3:1.20.3`
 
 ---
 
 ### Synchronization
 
-#### null_resource.tf
+#### null_resource.tf (terraform_data)
 **Purpose**: Restarts ingress gateway after installation
 
 ```terraform
-resource "null_resource" "restart" {
-  triggers = {
-    always_run = timestamp()
+resource "terraform_data" "restart" {
+  # Re-runs only when the Istio version or cluster changes
+  triggers_replace = {
+    istio_version = local.istio_chart_version
+    cluster       = nonsensitive(data.aws_ssm_parameter.cluster-name.value)
   }
   depends_on = [module.eks_blueprints_addons.helm_release]
   provisioner "local-exec" {

@@ -379,9 +379,11 @@ resource "aws_iam_role" "irsa_role" {
 **Purpose**: Configures kubectl access after cluster creation
 
 ```terraform
-resource "null_resource" "gen_cluster_auth" {
-  triggers = {
-    always_run = timestamp()
+resource "terraform_data" "gen_cluster_auth" {
+  # Re-runs only when the cluster name or endpoint changes
+  triggers_replace = {
+    cluster  = module.eks.cluster_name
+    endpoint = module.eks.cluster_endpoint
   }
   depends_on = [module.eks]
   provisioner "local-exec" {
