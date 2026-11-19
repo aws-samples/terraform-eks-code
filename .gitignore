@@ -41,7 +41,7 @@ jq
 **/notused/*
 **/.vscode/*
 
-**/.terraform.lock.hcl
+# .terraform.lock.hcl files are committed (provider version + hash pinning)
 extra/.observability/priv-vars.tf
 .DS_Store
 docker-extract.sh
