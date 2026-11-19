@@ -24,7 +24,7 @@ echo "region=$reg"
 echo "$s3b" > tmp-buck.txt
 mkdir -p generated
 
-SECTIONS=('tf-setup' 'net' 'cluster' 'nodepool' 'addons' 'observ')
+SECTIONS=('tf-setup' 'net' 'cluster' 'nodepool' 'addons' 'observ' 'sampleapp' 'istio')
 for section in "${SECTIONS[@]}"
 do
 
@@ -57,6 +57,10 @@ do
     printf "  grafana = {\n" >> "$of"
     printf "    source  = \"grafana/grafana\"\n" >> "$of"
     printf "    version = \"~> 4.55.0\"\n" >> "$of"
+    printf "  }\n" >> "$of"
+    printf "  null = {\n" >> "$of"
+    printf "    source  = \"hashicorp/null\"\n" >> "$of"
+    printf "    version = \"~> 3.3.2\"\n" >> "$of"
     printf "  }\n" >> "$of"
     printf "  kubectl = {\n" >> "$of"
     printf "    source  = \"alekc/kubectl\"\n" >> "$of"
