@@ -32,12 +32,8 @@ do
     cd "$d" || exit 1
 
     of="generated/backend-${section}.tf"
-    # observ: observability-accelerator v2.13.1 uses dynamic "set" blocks, which helm 3 rejects
-    if [[ $section == observ ]]; then
-        helm_ver="~> 2.17.0"
-    else
-        helm_ver="~> 3.3.0"
-    fi
+    # All stages use helm provider 3 (observ moved to observability-accelerator v3)
+    helm_ver="~> 3.3.0"
     #vf=`echo "generated/vars-${section}.tf"`
 
     # write out the backend config 
