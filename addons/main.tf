@@ -86,6 +86,8 @@ module "eks_blueprints_addons" {
   cluster_endpoint  = data.aws_ssm_parameter.endpoint.value
   cluster_version   = data.aws_ssm_parameter.tf-eks-version.value
   oidc_provider_arn = data.aws_ssm_parameter.oidc_provider_arn.value
+  # Don't create the EKS Blueprints usage-telemetry CloudFormation stack
+  observability_tag = null
 
   # External DNS Configuration
   # Automatically creates/updates Route53 DNS records for Services and Ingresses
