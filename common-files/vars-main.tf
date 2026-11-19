@@ -6,7 +6,7 @@
 variable "region" {
   description = "The name of the AWS Region"
   type        = string
-  default     = "eu-west-1"
+  default     = "eu-west-2"
 }
 
 # AWS CLI profile to use (currently not used in provider config)
