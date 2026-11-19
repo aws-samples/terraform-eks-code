@@ -106,7 +106,7 @@ module "eks_blueprints_addons" {
       policy   = "upsert-only"
     })]
     # Wait for load balancer controller to be ready
-    depends_on = [null_resource.sleep]
+    depends_on = [terraform_data.sleep]
   }
   # Route53 zone ARN for IRSA permissions
   external_dns_route53_zone_arns = [data.aws_route53_zone.phz.arn]
