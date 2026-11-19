@@ -460,7 +460,7 @@ aws configure
 
 # 3. Deploy all stages (automated)
 cd .aws-staff
-./build-all.sh
+./build-all.sh                 # all stages (or e.g. ./build-all.sh net cluster)
 
 # 4. Access applications
 # Get sampleapp URL
@@ -596,7 +596,7 @@ cd ../tf-setup && terraform destroy -auto-approve
 
 ```bash
 cd .aws-staff
-./destroy-everything.sh
+./destroy-everything.sh        # asks for confirmation; --yes to skip the prompt
 ```
 
 **Warning**: This will delete all resources including:

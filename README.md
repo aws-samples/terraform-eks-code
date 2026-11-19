@@ -46,7 +46,7 @@ aws configure
 
 # Deploy all stages (automated)
 cd .aws-staff
-./build-all.sh
+./build-all.sh                 # all stages (or e.g. ./build-all.sh net cluster)
 ```
 
 ### Access Applications
@@ -164,7 +164,7 @@ Each document includes architecture diagrams, configuration details, testing pro
 ```bash
 # Automated cleanup (destroys all stages in reverse order)
 cd .aws-staff
-./destroy-everything.sh
+./destroy-everything.sh        # asks for confirmation; --yes to skip the prompt
 
 # Or manual stage-by-stage
 cd istio && terraform destroy -auto-approve
