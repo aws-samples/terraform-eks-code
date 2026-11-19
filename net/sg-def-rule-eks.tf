@@ -22,7 +22,7 @@ resource "aws_default_security_group" "default" {
     protocol    = "-1"          # All protocols
     cidr_blocks = ["0.0.0.0/0"] # All destinations
   }
+  # Same tags the VPC module used to apply
+  # (manage_default_security_group = false in vpc.tf, so only this resource manages the default SG)
+  tags = merge(local.tags, { Name = "${var.cluster-name}-default" })
 }
-
-
-
