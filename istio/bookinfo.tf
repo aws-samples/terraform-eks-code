@@ -346,6 +346,20 @@ resource "kubernetes_deployment_v1" "sample__details-v1" {
   }
 
   timeouts {}
+  # The CloudWatch Observability add-on (Application Signals) adds these pod-template
+  # annotations to every workload; ignore them so Terraform doesn't strip them on each apply
+  lifecycle {
+    ignore_changes = [
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-java"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-nodejs"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-python"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-dotnet"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-java"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-nodejs"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-python"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-dotnet"],
+    ]
+  }
 }
 
 # kubernetes_deployment_v1.sample__productpage-v1:
@@ -446,6 +460,20 @@ resource "kubernetes_deployment_v1" "sample__productpage-v1" {
   }
 
   timeouts {}
+  # The CloudWatch Observability add-on (Application Signals) adds these pod-template
+  # annotations to every workload; ignore them so Terraform doesn't strip them on each apply
+  lifecycle {
+    ignore_changes = [
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-java"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-nodejs"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-python"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-dotnet"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-java"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-nodejs"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-python"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-dotnet"],
+    ]
+  }
 }
 
 # kubernetes_deployment_v1.sample__ratings-v1:
@@ -533,6 +561,20 @@ resource "kubernetes_deployment_v1" "sample__ratings-v1" {
   }
 
   timeouts {}
+  # The CloudWatch Observability add-on (Application Signals) adds these pod-template
+  # annotations to every workload; ignore them so Terraform doesn't strip them on each apply
+  lifecycle {
+    ignore_changes = [
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-java"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-nodejs"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-python"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-dotnet"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-java"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-nodejs"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-python"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-dotnet"],
+    ]
+  }
 }
 
 # kubernetes_deployment_v1.sample__reviews-v1:
@@ -649,6 +691,20 @@ resource "kubernetes_deployment_v1" "sample__reviews-v1" {
   }
 
   timeouts {}
+  # The CloudWatch Observability add-on (Application Signals) adds these pod-template
+  # annotations to every workload; ignore them so Terraform doesn't strip them on each apply
+  lifecycle {
+    ignore_changes = [
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-java"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-nodejs"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-python"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-dotnet"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-java"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-nodejs"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-python"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-dotnet"],
+    ]
+  }
 }
 
 # kubernetes_deployment_v1.sample__reviews-v2:
@@ -765,6 +821,20 @@ resource "kubernetes_deployment_v1" "sample__reviews-v2" {
   }
 
   timeouts {}
+  # The CloudWatch Observability add-on (Application Signals) adds these pod-template
+  # annotations to every workload; ignore them so Terraform doesn't strip them on each apply
+  lifecycle {
+    ignore_changes = [
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-java"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-nodejs"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-python"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-dotnet"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-java"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-nodejs"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-python"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-dotnet"],
+    ]
+  }
 }
 
 # kubernetes_deployment_v1.sample__reviews-v3:
@@ -881,6 +951,20 @@ resource "kubernetes_deployment_v1" "sample__reviews-v3" {
   }
 
   timeouts {}
+  # The CloudWatch Observability add-on (Application Signals) adds these pod-template
+  # annotations to every workload; ignore them so Terraform doesn't strip them on each apply
+  lifecycle {
+    ignore_changes = [
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-java"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-nodejs"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-python"],
+      spec[0].template[0].metadata[0].annotations["instrumentation.opentelemetry.io/inject-dotnet"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-java"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-nodejs"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-python"],
+      spec[0].template[0].metadata[0].annotations["cloudwatch.aws.amazon.com/auto-annotate-dotnet"],
+    ]
+  }
 }
 
 
