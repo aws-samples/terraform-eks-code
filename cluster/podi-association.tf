@@ -14,6 +14,8 @@ resource "aws_eks_access_entry" "automode_node" {
 # Attaches the AmazonEKSAutoNodePolicy to the node role
 # This policy allows Auto Mode to manage node lifecycle
 resource "aws_eks_access_policy_association" "automode_node" {
+  # The access entry must exist before a policy can be associated with it
+  depends_on   = [aws_eks_access_entry.automode_node]
   cluster_name = module.eks.cluster_name
 
   # AWS managed policy for Auto Mode nodes
