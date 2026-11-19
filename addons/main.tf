@@ -95,6 +95,14 @@ module "eks_blueprints_addons" {
     namespace        = "external-dns"
     service_account  = "external-dns"
     create_namespace = true
+    # Pin the chart (the blueprints module defaults to 1.14.3)
+    chart_version = "1.24.0"
+    # Charts >= 1.22.0 require `policy` to be set; upsert-only matches the old
+    # default (never delete records ExternalDNS did not create)
+    values = [yamlencode({
+      provider = { name = "aws" }
+      policy   = "upsert-only"
+    })]
     # Wait for load balancer controller to be ready
     depends_on = [null_resource.sleep]
   }
