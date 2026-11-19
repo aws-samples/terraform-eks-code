@@ -1,5 +1,5 @@
 # Security Group Rules for VSCode/Cloud9 Instance
-# Adds ingress rules to allow traffic from EKS VPC and internet
+# Adds ingress rules to allow traffic from the EKS VPC
 # Enables kubectl access and application testing from development environment
 
 # Allow HTTPS from EKS VPC
@@ -24,26 +24,26 @@ resource "aws_security_group_rule" "sg-def-eks-all" {
   security_group_id = data.aws_security_group.c9sg.id
 }
 
-# Allow port 8080 from anywhere
+# Allow port 8080 from the EKS VPC secondary CIDR (nodes, pods, internal load balancers)
 # Used for testing applications deployed in the cluster
-# WARNING: Open to internet - workshop only, not for production
 resource "aws_security_group_rule" "sg-def-eks-8080" {
   type              = "ingress"
   from_port         = 8080
   to_port           = 8080
   protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
+  cidr_blocks       = local.secondary_cidr_blocks
   security_group_id = data.aws_security_group.c9sg.id
 }
 
-# Allow HTTP from anywhere
-# Used for testing web applications
-# WARNING: Open to internet - workshop only, not for production
+# Allow HTTP from the EKS VPC secondary CIDR (nodes, pods, internal load balancers)
+# Used for testing web applications. Port 80 is also code-server on the IDE instance,
+# so it is not opened wider than the EKS VPC (the IDE stack itself allows CloudFront only).
+# One CIDR per rule: the CloudFront prefix list on port 80 uses most of this SG's 60-rule quota
 resource "aws_security_group_rule" "sg-def-eks-80" {
   type              = "ingress"
   from_port         = 80
   to_port           = 80
   protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
+  cidr_blocks       = local.secondary_cidr_blocks
   security_group_id = data.aws_security_group.c9sg.id
 }
