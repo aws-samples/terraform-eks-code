@@ -5,8 +5,8 @@
 resource "kubernetes_service_v1" "sampleapp__ui" {
   metadata {
     annotations = {
-      # Create internet-facing NLB (not internal)
-      "service.beta.kubernetes.io/aws-load-balancer-scheme" = "internet-facing"
+      # Internal NLB: reachable only from inside the VPC (and the peered IDE VPC), not the internet
+      "service.beta.kubernetes.io/aws-load-balancer-scheme" = "internal"
     }
     generate_name = null
     labels = {
