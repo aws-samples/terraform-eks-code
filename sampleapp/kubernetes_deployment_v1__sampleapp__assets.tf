@@ -76,7 +76,7 @@ resource "kubernetes_deployment_v1" "sampleapp__assets" {
         container {
           args                       = []
           command                    = []
-          image                      = "public.ecr.aws/aws-containers/retail-store-sample-assets:0.8.4"
+          image                      = "public.ecr.aws/aws-containers/retail-store-sample-assets:0.8.5"
           image_pull_policy          = "IfNotPresent"
           name                       = "assets"
           stdin                      = false

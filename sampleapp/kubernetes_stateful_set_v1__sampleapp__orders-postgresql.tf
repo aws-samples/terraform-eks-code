@@ -69,7 +69,7 @@ resource "kubernetes_stateful_set_v1" "sampleapp__orders-postgresql" {
         container {
           args                       = []
           command                    = []
-          image                      = "public.ecr.aws/docker/library/postgres:16.1"
+          image                      = "public.ecr.aws/docker/library/postgres:16.16"
           image_pull_policy          = "IfNotPresent"
           name                       = "postgresql"
           stdin                      = false
@@ -120,8 +120,14 @@ resource "kubernetes_stateful_set_v1" "sampleapp__orders-postgresql" {
           }
 
           resources {
-            limits   = {}
-            requests = {}
+            # Requests sized from observed usage; memory limit only (no CPU limit, avoids throttling)
+            limits = {
+              "memory" = "512Mi"
+            }
+            requests = {
+              "cpu"    = "100m"
+              "memory" = "128Mi"
+            }
           }
 
           volume_mount {

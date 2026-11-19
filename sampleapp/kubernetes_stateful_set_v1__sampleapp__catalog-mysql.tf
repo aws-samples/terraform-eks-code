@@ -69,7 +69,7 @@ resource "kubernetes_stateful_set_v1" "sampleapp__catalog-mysql" {
         container {
           args                       = []
           command                    = []
-          image                      = "public.ecr.aws/docker/library/mysql:8.0"
+          image                      = "public.ecr.aws/docker/library/mysql:8.4.13"
           image_pull_policy          = "IfNotPresent"
           name                       = "mysql"
           stdin                      = false
@@ -120,8 +120,14 @@ resource "kubernetes_stateful_set_v1" "sampleapp__catalog-mysql" {
           }
 
           resources {
-            limits   = {}
-            requests = {}
+            # Requests sized from observed usage; memory limit only (no CPU limit, avoids throttling)
+            limits = {
+              "memory" = "1Gi"
+            }
+            requests = {
+              "cpu"    = "100m"
+              "memory" = "512Mi"
+            }
           }
 
           volume_mount {

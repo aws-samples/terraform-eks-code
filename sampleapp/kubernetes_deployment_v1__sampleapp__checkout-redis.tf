@@ -73,7 +73,7 @@ resource "kubernetes_deployment_v1" "sampleapp__checkout-redis" {
         container {
           args                       = []
           command                    = []
-          image                      = "redis:6.0-alpine"
+          image                      = "redis:6.2.24-alpine"
           image_pull_policy          = "IfNotPresent"
           name                       = "redis"
           stdin                      = false
@@ -91,8 +91,14 @@ resource "kubernetes_deployment_v1" "sampleapp__checkout-redis" {
           }
 
           resources {
-            limits   = {}
-            requests = {}
+            # Requests sized from observed usage; memory limit only (no CPU limit, avoids throttling)
+            limits = {
+              "memory" = "128Mi"
+            }
+            requests = {
+              "cpu"    = "50m"
+              "memory" = "64Mi"
+            }
           }
         }
       }

@@ -69,7 +69,7 @@ resource "kubernetes_stateful_set_v1" "sampleapp__orders-rabbitmq" {
         container {
           args                       = []
           command                    = []
-          image                      = "public.ecr.aws/docker/library/rabbitmq:3-management"
+          image                      = "public.ecr.aws/docker/library/rabbitmq:3.13.7-management"
           image_pull_policy          = "IfNotPresent"
           name                       = "rabbitmq"
           stdin                      = false
@@ -93,8 +93,14 @@ resource "kubernetes_stateful_set_v1" "sampleapp__orders-rabbitmq" {
           }
 
           resources {
-            limits   = {}
-            requests = {}
+            # Requests sized from observed usage; memory limit only (no CPU limit, avoids throttling)
+            limits = {
+              "memory" = "512Mi"
+            }
+            requests = {
+              "cpu"    = "100m"
+              "memory" = "256Mi"
+            }
           }
 
           volume_mount {

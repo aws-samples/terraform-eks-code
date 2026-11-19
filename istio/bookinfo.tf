@@ -4,7 +4,7 @@
 
 resource "kubernetes_namespace_v1" "sample" {
   # Wait for ingress gateway restart to complete
-  depends_on = [null_resource.restart]
+  depends_on = [terraform_data.restart]
 
   metadata {
     annotations = {}
@@ -322,7 +322,7 @@ resource "kubernetes_deployment_v1" "sample__details-v1" {
         container {
           args                       = []
           command                    = []
-          image                      = "docker.io/istio/examples-bookinfo-details-v1:1.20.2"
+          image                      = "docker.io/istio/examples-bookinfo-details-v1:1.20.3"
           image_pull_policy          = "IfNotPresent"
           name                       = "details"
           stdin                      = false
@@ -337,8 +337,14 @@ resource "kubernetes_deployment_v1" "sample__details-v1" {
           }
 
           resources {
-            limits   = {}
-            requests = {}
+            # Requests sized from observed usage; memory limit only (no CPU limit, avoids throttling)
+            limits = {
+              "memory" = "128Mi"
+            }
+            requests = {
+              "cpu"    = "50m"
+              "memory" = "64Mi"
+            }
           }
         }
       }
@@ -423,7 +429,7 @@ resource "kubernetes_deployment_v1" "sample__productpage-v1" {
         container {
           args                       = []
           command                    = []
-          image                      = "docker.io/istio/examples-bookinfo-productpage-v1:1.20.2"
+          image                      = "docker.io/istio/examples-bookinfo-productpage-v1:1.20.3"
           image_pull_policy          = "IfNotPresent"
           name                       = "productpage"
           stdin                      = false
@@ -438,8 +444,14 @@ resource "kubernetes_deployment_v1" "sample__productpage-v1" {
           }
 
           resources {
-            limits   = {}
-            requests = {}
+            # Requests sized from observed usage; memory limit only (no CPU limit, avoids throttling)
+            limits = {
+              "memory" = "512Mi"
+            }
+            requests = {
+              "cpu"    = "100m"
+              "memory" = "256Mi"
+            }
           }
 
           volume_mount {
@@ -537,7 +549,7 @@ resource "kubernetes_deployment_v1" "sample__ratings-v1" {
         container {
           args                       = []
           command                    = []
-          image                      = "docker.io/istio/examples-bookinfo-ratings-v1:1.20.2"
+          image                      = "docker.io/istio/examples-bookinfo-ratings-v1:1.20.3"
           image_pull_policy          = "IfNotPresent"
           name                       = "ratings"
           stdin                      = false
@@ -552,8 +564,14 @@ resource "kubernetes_deployment_v1" "sample__ratings-v1" {
           }
 
           resources {
-            limits   = {}
-            requests = {}
+            # Requests sized from observed usage; memory limit only (no CPU limit, avoids throttling)
+            limits = {
+              "memory" = "256Mi"
+            }
+            requests = {
+              "cpu"    = "50m"
+              "memory" = "128Mi"
+            }
           }
         }
       }
@@ -638,7 +656,7 @@ resource "kubernetes_deployment_v1" "sample__reviews-v1" {
         container {
           args                       = []
           command                    = []
-          image                      = "docker.io/istio/examples-bookinfo-reviews-v1:1.20.2"
+          image                      = "docker.io/istio/examples-bookinfo-reviews-v1:1.20.3"
           image_pull_policy          = "IfNotPresent"
           name                       = "reviews"
           stdin                      = false
@@ -658,8 +676,14 @@ resource "kubernetes_deployment_v1" "sample__reviews-v1" {
           }
 
           resources {
-            limits   = {}
-            requests = {}
+            # Requests sized from observed usage; memory limit only (no CPU limit, avoids throttling)
+            limits = {
+              "memory" = "512Mi"
+            }
+            requests = {
+              "cpu"    = "100m"
+              "memory" = "256Mi"
+            }
           }
 
           volume_mount {
@@ -768,7 +792,7 @@ resource "kubernetes_deployment_v1" "sample__reviews-v2" {
         container {
           args                       = []
           command                    = []
-          image                      = "docker.io/istio/examples-bookinfo-reviews-v2:1.20.2"
+          image                      = "docker.io/istio/examples-bookinfo-reviews-v2:1.20.3"
           image_pull_policy          = "IfNotPresent"
           name                       = "reviews"
           stdin                      = false
@@ -788,8 +812,14 @@ resource "kubernetes_deployment_v1" "sample__reviews-v2" {
           }
 
           resources {
-            limits   = {}
-            requests = {}
+            # Requests sized from observed usage; memory limit only (no CPU limit, avoids throttling)
+            limits = {
+              "memory" = "512Mi"
+            }
+            requests = {
+              "cpu"    = "100m"
+              "memory" = "256Mi"
+            }
           }
 
           volume_mount {
@@ -898,7 +928,7 @@ resource "kubernetes_deployment_v1" "sample__reviews-v3" {
         container {
           args                       = []
           command                    = []
-          image                      = "docker.io/istio/examples-bookinfo-reviews-v3:1.20.2"
+          image                      = "docker.io/istio/examples-bookinfo-reviews-v3:1.20.3"
           image_pull_policy          = "IfNotPresent"
           name                       = "reviews"
           stdin                      = false
@@ -918,8 +948,14 @@ resource "kubernetes_deployment_v1" "sample__reviews-v3" {
           }
 
           resources {
-            limits   = {}
-            requests = {}
+            # Requests sized from observed usage; memory limit only (no CPU limit, avoids throttling)
+            limits = {
+              "memory" = "512Mi"
+            }
+            requests = {
+              "cpu"    = "100m"
+              "memory" = "256Mi"
+            }
           }
 
           volume_mount {

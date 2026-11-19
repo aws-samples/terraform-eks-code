@@ -73,7 +73,7 @@ resource "kubernetes_deployment_v1" "sampleapp__carts-dynamodb" {
         container {
           args                       = []
           command                    = []
-          image                      = "amazon/dynamodb-local:1.20.0"
+          image                      = "amazon/dynamodb-local:1.25.1"
           image_pull_policy          = "IfNotPresent"
           name                       = "dynamodb"
           stdin                      = false
@@ -91,8 +91,14 @@ resource "kubernetes_deployment_v1" "sampleapp__carts-dynamodb" {
           }
 
           resources {
-            limits   = {}
-            requests = {}
+            # Requests sized from observed usage; memory limit only (no CPU limit, avoids throttling)
+            limits = {
+              "memory" = "1Gi"
+            }
+            requests = {
+              "cpu"    = "100m"
+              "memory" = "512Mi"
+            }
           }
         }
       }
