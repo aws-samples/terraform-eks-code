@@ -968,3 +968,60 @@ resource "kubernetes_deployment_v1" "sample__reviews-v3" {
 }
 
 
+
+# Bookinfo ingress routing (from istio 1.30.8 samples/bookinfo/networking/bookinfo-gateway.yaml)
+# Without a Gateway, the ingress gateway has no listener on 8080 (the NLB's port 80 target)
+resource "kubectl_manifest" "bookinfo_gateway" {
+  depends_on = [module.eks_blueprints_addons]
+  yaml_body  = <<-YAML
+    apiVersion: networking.istio.io/v1
+    kind: Gateway
+    metadata:
+      name: bookinfo-gateway
+      namespace: ${kubernetes_namespace_v1.sample.metadata[0].name}
+    spec:
+      # Matches the istio=ingressgateway label set on the istio-ingress gateway in main.tf
+      selector:
+        istio: ingressgateway
+      servers:
+        - port:
+            number: 8080
+            name: http
+            protocol: HTTP
+          hosts:
+            - "*"
+  YAML
+}
+
+resource "kubectl_manifest" "bookinfo_virtualservice" {
+  depends_on = [kubectl_manifest.bookinfo_gateway]
+  yaml_body  = <<-YAML
+    apiVersion: networking.istio.io/v1
+    kind: VirtualService
+    metadata:
+      name: bookinfo
+      namespace: ${kubernetes_namespace_v1.sample.metadata[0].name}
+    spec:
+      hosts:
+        - "*"
+      gateways:
+        - bookinfo-gateway
+      http:
+        - match:
+            - uri:
+                exact: /productpage
+            - uri:
+                prefix: /static
+            - uri:
+                exact: /login
+            - uri:
+                exact: /logout
+            - uri:
+                prefix: /api/v1/products
+          route:
+            - destination:
+                host: productpage
+                port:
+                  number: 9080
+  YAML
+}
