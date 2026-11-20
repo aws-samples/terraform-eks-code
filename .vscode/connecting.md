@@ -15,7 +15,7 @@ This is the private way in. The alternative, `cre-origin.sh`, publishes code-ser
 | Setting | Value (stack defaults) |
 |---|---|
 | Stack | `vscode` |
-| Region | `eu-west-2` |
+| Region | `eu-west-1` |
 | Instance Name tag | `eksworkshop-kiroide` |
 | Linux user | `ec2-user` |
 | Workspace folder | `/home/ec2-user/environment` |
@@ -38,7 +38,7 @@ Nothing extra is needed on the instance: its role has `AmazonSSMManagedInstanceC
 ## Connect
 
 ```bash
-export AWS_REGION=eu-west-2
+export AWS_REGION=eu-west-1
 
 # 1. Instance ID
 IID=$(aws ec2 describe-instances \

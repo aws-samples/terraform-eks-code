@@ -11,12 +11,12 @@
 #   ./cre-origin.sh             # create (or reuse) the VPC origin and distribution
 #   ./cre-origin.sh --dry-run   # resolve everything and print what would be created
 #
-# Settings (environment): AWS_REGION (eu-west-2), INSTANCE_NAME (eksworkshop-kiroide),
+# Settings (environment): AWS_REGION (eu-west-1), INSTANCE_NAME (eksworkshop-kiroide),
 #                         ORIGIN_NAME (vscode-ide-origin)
 #
 set -euo pipefail
 
-export AWS_REGION="${AWS_REGION:-eu-west-2}"
+export AWS_REGION="${AWS_REGION:-eu-west-1}"
 export AWS_DEFAULT_REGION="$AWS_REGION"
 INSTANCE_NAME="${INSTANCE_NAME:-eksworkshop-kiroide}"
 ORIGIN_NAME="${ORIGIN_NAME:-vscode-ide-origin}"

@@ -2,11 +2,11 @@
 #
 # Print the code-server URL (CloudFront) and password for the IDE instance.
 #
-# Settings (environment): AWS_REGION (eu-west-2), STACK (vscode), INSTANCE_NAME (eksworkshop-kiroide)
+# Settings (environment): AWS_REGION (eu-west-1), STACK (vscode), INSTANCE_NAME (eksworkshop-kiroide)
 #
 set -euo pipefail
 
-export AWS_REGION="${AWS_REGION:-eu-west-2}"
+export AWS_REGION="${AWS_REGION:-eu-west-1}"
 export AWS_DEFAULT_REGION="$AWS_REGION"
 STACK="${STACK:-vscode}"
 INSTANCE_NAME="${INSTANCE_NAME:-eksworkshop-kiroide}"

@@ -11,12 +11,12 @@
 #   ./delete-stack.sh --yes     # no prompt
 #   ./delete-stack.sh --force   # skip the "workshop still deployed" check (also asks)
 #
-# Settings (environment): AWS_REGION (eu-west-2), STACK (vscode), ORIGIN_NAME (vscode-ide-origin),
+# Settings (environment): AWS_REGION (eu-west-1), STACK (vscode), ORIGIN_NAME (vscode-ide-origin),
 #                         VPC_TAG (eksworkshop-vpc)
 #
 set -euo pipefail
 
-export AWS_REGION="${AWS_REGION:-eu-west-2}"
+export AWS_REGION="${AWS_REGION:-eu-west-1}"
 export AWS_DEFAULT_REGION="$AWS_REGION"
 STACK="${STACK:-vscode}"
 ORIGIN_NAME="${ORIGIN_NAME:-vscode-ide-origin}"

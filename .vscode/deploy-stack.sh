@@ -8,7 +8,7 @@
 #                                            # (only when no stack exists, e.g. after a failed create)
 #
 # Settings (override with environment variables):
-#   AWS_REGION     default eu-west-2
+#   AWS_REGION     default eu-west-1
 #   STACK          default vscode
 #   INSTANCE_NAME  default eksworkshop-kiroide   (the net stage looks the instance up by this Name tag)
 #   VPC_TAG        default eksworkshop-vpc       (the net stage looks the default VPC up by this Name tag)
@@ -18,7 +18,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export AWS_REGION="${AWS_REGION:-eu-west-2}"
+export AWS_REGION="${AWS_REGION:-eu-west-1}"
 export AWS_DEFAULT_REGION="$AWS_REGION"
 STACK="${STACK:-vscode}"
 INSTANCE_NAME="${INSTANCE_NAME:-eksworkshop-kiroide}"
