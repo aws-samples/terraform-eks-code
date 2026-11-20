@@ -193,7 +193,7 @@ Ensures all generated files follow Terraform formatting standards.
 
 | Variable | Type | Default | Description |
 |----------|------|---------|-------------|
-| `region` | string | `eu-west-2` | AWS deployment region |
+| `region` | string | `eu-west-1` | AWS deployment region |
 | `profile` | string | `default` | AWS credentials profile |
 | `cluster-name` | string | `eks-workshop` | EKS cluster name |
 | `eks_version` | string | `1.36` | Kubernetes version |
@@ -218,7 +218,7 @@ provider "aws" {
 ```
 
 **Authentication**: Uses local AWS credentials file  
-**Region**: Configurable via variable (default: eu-west-2)
+**Region**: Configurable via variable (default: eu-west-1)
 
 ---
 

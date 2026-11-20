@@ -24,7 +24,7 @@ LOG="$SCRIPT_DIR/destroy.log"
 STAGES=(istio observ sampleapp addons nodepool cluster net tf-setup)
 K8S_STAGES=" istio observ sampleapp addons nodepool "
 
-export AWS_REGION="${AWS_REGION:-eu-west-2}"
+export AWS_REGION="${AWS_REGION:-eu-west-1}"
 export AWS_DEFAULT_REGION="$AWS_REGION"
 export TF_IN_AUTOMATION=1
 

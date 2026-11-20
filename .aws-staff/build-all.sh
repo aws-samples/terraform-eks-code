@@ -22,7 +22,7 @@ LOG="$SCRIPT_DIR/build.log"
 ALL_STAGES=(tf-setup net cluster nodepool addons sampleapp observ istio)
 K8S_STAGES=" nodepool addons sampleapp observ istio "
 
-export AWS_REGION="${AWS_REGION:-eu-west-2}"
+export AWS_REGION="${AWS_REGION:-eu-west-1}"
 export AWS_DEFAULT_REGION="$AWS_REGION"
 export TF_IN_AUTOMATION=1
 
