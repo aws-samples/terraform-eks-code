@@ -1,0 +1,58 @@
+  {
+    "mcpServers": {
+      "aws-mcp": {
+        "command": "uvx",
+        "args": [
+          "mcp-proxy-for-aws@latest",
+          "https://aws-mcp.us-east-1.api.aws/mcp",
+          "--metadata",
+          "INSTALL_SOURCE=aws-cli"
+        ],
+        "timeout": 100000,
+        "transport": "stdio",
+        "disabled": false
+      },
+      "specialist-super-agent-mcp": {
+        "command": "specialist-super-agent-mcp",
+        "args": [],
+        "disabled": true
+      },
+      "slack-mcp": {
+        "command": "slack-mcp",
+        "args": [],
+        "disabled": true
+      },
+      "awslabs.eks-mcp-server": {
+        "command": "uvx",
+        "args": [
+          "awslabs.eks-mcp-server@latest",
+          "--allow-write",
+          "--allow-sensitive-data-access"
+        ],
+        "env": {
+          "FASTMCP_LOG_LEVEL": "ERROR"
+        },
+        "autoApprove": [],
+        "disabled": false
+      },
+      "terraform": {
+        "command": "docker",
+        "args": ["run", "-i", "--rm", "hashicorp/terraform-mcp-server:1.4.1"],
+        "disabled": false
+      },
+      "GitLab": {
+            "command": "npx",
+            "args": ["-y", "@zereight/mcp-gitlab"],
+            "disabled": true,
+            "env": {
+                "GITLAB_PERSONAL_ACCESS_TOKEN": "<yoru personal gitlab access token>",
+                "GITLAB_API_URL": "https://gitlab.aws.dev/api/v4",
+                "GITLAB_READ_ONLY_MODE": "false",
+                "USE_GITLAB_WIKI": "false",
+                "USE_MILESTONE": "false",
+                "USE_PIPELINE": "false",
+                "GITLAB_AUTH_COOKIE_PATH": "~/.midway/cookie"
+            }
+        }
+    }
+  }
