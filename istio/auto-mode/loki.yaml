@@ -1,3 +1,6 @@
+# Loki - from istio 1.30.8 samples/addons/loki.yaml (loki chart 6.53.0)
+# Local changes: storageClassName auto-ebs-sc on the StatefulSet volume, plus that StorageClass.
+# Apply: kubectl apply -f loki.yaml
 ---
 # Source: loki/templates/serviceaccount.yaml
 apiVersion: v1
@@ -6,11 +9,10 @@ metadata:
   name: loki
   namespace: istio-system
   labels:
-    helm.sh/chart: loki-6.18.0
+    helm.sh/chart: loki-6.53.0
     app.kubernetes.io/name: loki
     app.kubernetes.io/instance: loki
-    app.kubernetes.io/version: "3.2.0"
-    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: "3.6.5"
 automountServiceAccountToken: true
 ---
 # Source: loki/templates/config.yaml
@@ -20,11 +22,10 @@ metadata:
   name: loki
   namespace: istio-system
   labels:
-    helm.sh/chart: loki-6.18.0
+    helm.sh/chart: loki-6.53.0
     app.kubernetes.io/name: loki
     app.kubernetes.io/instance: loki
-    app.kubernetes.io/version: "3.2.0"
-    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: "3.6.5"
 data:
   config.yaml: |
     
@@ -38,7 +39,7 @@ data:
         addresses: ""
       enabled: false
     common:
-      compactor_address: 'http://loki:3100'
+      compactor_grpc_address: 'loki.istio-system.svc.cluster.local:9095'
       path_prefix: /var/loki
       replication_factor: 1
       storage:
@@ -61,7 +62,7 @@ data:
       volume_enabled: true
     memberlist:
       join_members:
-      - loki-memberlist
+      - loki-memberlist.istio-system.svc.cluster.local
     pattern_ingester:
       enabled: false
     query_range:
@@ -69,6 +70,8 @@ data:
     ruler:
       storage:
         type: local
+      wal:
+        dir: /var/loki/ruler-wal
     runtime_config:
       file: /etc/loki/runtime-config/runtime-config.yaml
     schema_config:
@@ -98,6 +101,7 @@ data:
       tsdb_shipper:
         index_gateway_client:
           server_address: ""
+      use_thanos_objstore: false
     tracing:
       enabled: false
 ---
@@ -108,11 +112,10 @@ metadata:
   name: loki-runtime
   namespace: istio-system
   labels:
-    helm.sh/chart: loki-6.18.0
+    helm.sh/chart: loki-6.53.0
     app.kubernetes.io/name: loki
     app.kubernetes.io/instance: loki
-    app.kubernetes.io/version: "3.2.0"
-    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: "3.6.5"
 data:
   runtime-config.yaml: |
     {}
@@ -122,11 +125,10 @@ kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   labels:
-    helm.sh/chart: loki-6.18.0
+    helm.sh/chart: loki-6.53.0
     app.kubernetes.io/name: loki
     app.kubernetes.io/instance: loki
-    app.kubernetes.io/version: "3.2.0"
-    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: "3.6.5"
   name: loki-clusterrole
 rules:
 - apiGroups: [""] # "" indicates the core API group
@@ -139,11 +141,10 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: loki-clusterrolebinding
   labels:
-    helm.sh/chart: loki-6.18.0
+    helm.sh/chart: loki-6.53.0
     app.kubernetes.io/name: loki
     app.kubernetes.io/instance: loki
-    app.kubernetes.io/version: "3.2.0"
-    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: "3.6.5"
 subjects:
   - kind: ServiceAccount
     name: loki
@@ -160,11 +161,10 @@ metadata:
   name: loki-memberlist
   namespace: istio-system
   labels:
-    helm.sh/chart: loki-6.18.0
+    helm.sh/chart: loki-6.53.0
     app.kubernetes.io/name: loki
     app.kubernetes.io/instance: loki
-    app.kubernetes.io/version: "3.2.0"
-    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: "3.6.5"
   annotations:
 spec:
   type: ClusterIP
@@ -186,11 +186,10 @@ metadata:
   name: loki-headless
   namespace: istio-system
   labels:
-    helm.sh/chart: loki-6.18.0
+    helm.sh/chart: loki-6.53.0
     app.kubernetes.io/name: loki
     app.kubernetes.io/instance: loki
-    app.kubernetes.io/version: "3.2.0"
-    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: "3.6.5"
     variant: headless
     prometheus.io/service-monitor: "false"
   annotations:
@@ -212,11 +211,10 @@ metadata:
   name: loki
   namespace: istio-system
   labels:
-    helm.sh/chart: loki-6.18.0
+    helm.sh/chart: loki-6.53.0
     app.kubernetes.io/name: loki
     app.kubernetes.io/instance: loki
-    app.kubernetes.io/version: "3.2.0"
-    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: "3.6.5"
   annotations:
 spec:
   type: ClusterIP
@@ -241,11 +239,10 @@ metadata:
   name: loki
   namespace: istio-system
   labels:
-    helm.sh/chart: loki-6.18.0
+    helm.sh/chart: loki-6.53.0
     app.kubernetes.io/name: loki
     app.kubernetes.io/instance: loki
-    app.kubernetes.io/version: "3.2.0"
-    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: "3.6.5"
     app.kubernetes.io/component: single-binary
     app.kubernetes.io/part-of: memberlist
 spec:
@@ -268,7 +265,9 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 33763d92c95bb565c019078f0419bddedd9febff7743044c8a329dfe84d4d218
+        checksum/config: 7beee9ce6dba8de1e670322d1f02ca6271acbff4e76efe12d443937c11f802f8
+        storage/size: "10Gi"
+        kubectl.kubernetes.io/default-container: "loki"
       labels:
         app.kubernetes.io/name: loki
         app.kubernetes.io/instance: loki
@@ -281,34 +280,14 @@ spec:
       
       securityContext:
         fsGroup: 10001
+        fsGroupChangePolicy: OnRootMismatch
         runAsGroup: 10001
         runAsNonRoot: true
         runAsUser: 10001
       terminationGracePeriodSeconds: 30
       containers:
-        - name: loki-sc-rules
-          image: "kiwigrid/k8s-sidecar:1.27.5"
-          imagePullPolicy: IfNotPresent
-          env:
-            - name: METHOD
-              value: WATCH
-            - name: LABEL
-              value: "loki_rule"
-            - name: FOLDER
-              value: "/rules"
-            - name: RESOURCE
-              value: "both"
-            - name: WATCH_SERVER_TIMEOUT
-              value: "60"
-            - name: WATCH_CLIENT_TIMEOUT
-              value: "60"
-            - name: LOG_LEVEL
-              value: "INFO"
-          volumeMounts:
-            - name: sc-rules-volume
-              mountPath: "/rules"
         - name: loki
-          image: docker.io/grafana/loki:3.2.0
+          image: docker.io/grafana/loki:3.6.5
           imagePullPolicy: IfNotPresent
           args:
             - -config.file=/etc/loki/config/config.yaml
@@ -330,10 +309,13 @@ spec:
               - ALL
             readOnlyRootFilesystem: true
           readinessProbe:
+            failureThreshold: 3
             httpGet:
               path: /ready
               port: http-metrics
-            initialDelaySeconds: 30
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
             timeoutSeconds: 1
           volumeMounts:
             - name: tmp
@@ -348,12 +330,41 @@ spec:
               mountPath: "/rules"
           resources:
             {}
+        - name: loki-sc-rules
+          image: docker.io/kiwigrid/k8s-sidecar:1.30.9
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: METHOD
+              value: WATCH
+            - name: LABEL
+              value: "loki_rule"
+            - name: FOLDER
+              value: "/rules"
+            - name: RESOURCE
+              value: "both"
+            - name: WATCH_SERVER_TIMEOUT
+              value: "60"
+            - name: WATCH_CLIENT_TIMEOUT
+              value: "60"
+            - name: LOG_LEVEL
+              value: "INFO"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: sc-rules-volume
+              mountPath: "/rules"
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchLabels:
                 app.kubernetes.io/component: single-binary
+                app.kubernetes.io/instance: 'loki'
+                app.kubernetes.io/name: 'loki'
             topologyKey: kubernetes.io/hostname
       volumes:
         - name: tmp
@@ -377,14 +388,17 @@ spec:
       spec:
         accessModes:
           - ReadWriteOnce
-# for auto mode          
+        # local change: EKS Auto Mode EBS StorageClass (defined at the end of this file)
         storageClassName: auto-ebs-sc
         resources:
           requests:
             storage: "10Gi"
 ---
-# auto mode ebs csi
+# local change: EKS Auto Mode EBS CSI StorageClass
 # https://docs.aws.amazon.com/eks/latest/userguide/sample-storage-workload.html
+# Same as the one the nodepool stage creates (nodepool/storageclass.tf). Applying this file is a
+# no-op for it; do NOT 'kubectl delete -f loki.yaml' while nodepool is deployed, or the cluster's
+# default StorageClass is deleted too - delete the loki StatefulSet/Services by name instead.
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -396,4 +410,3 @@ volumeBindingMode: WaitForFirstConsumer
 parameters:
   type: gp3
   encrypted: "true"
----

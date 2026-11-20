@@ -552,6 +552,50 @@ curl http://$GATEWAY_URL/productpage
 
 ---
 
+## Optional Add-ons
+
+`istio/auto-mode/` holds Kiali and Loki manifests adapted for EKS Auto Mode. Terraform does not apply them; apply them by hand after the `istio` stage if you want them.
+
+| File | Source | Local changes |
+|---|---|---|
+| `kiali.yaml` | Istio 1.30.8 `samples/addons/kiali.yaml` (kiali-server 2.26.0, `quay.io/kiali/kiali:v2.26`) | `view_only_mode: true`; Service `type: LoadBalancer` with an **internal** Auto Mode NLB |
+| `loki.yaml` | Istio 1.30.8 `samples/addons/loki.yaml` (loki 6.53.0, `grafana/loki:3.6.5`) | `storageClassName: auto-ebs-sc` on the StatefulSet volume, plus the `auto-ebs-sc` EBS CSI StorageClass that Auto Mode needs |
+
+```bash
+kubectl apply -f istio/auto-mode/kiali.yaml
+kubectl apply -f istio/auto-mode/loki.yaml
+kubectl rollout status deployment/kiali -n istio-system
+kubectl rollout status statefulset/loki -n istio-system
+```
+
+**Kiali** reads Istio metrics from the Prometheus at `http://prometheus.istio-system:9090`. That Prometheus is installed separately, by `istio/cli-install-istio.sh` (`kubectl apply -f samples/addons` from the Istio download); without it the Kiali graph is empty.
+
+To open Kiali:
+
+```bash
+# Internal NLB - from the IDE instance, or through it with SSM (see .vscode/connecting.md)
+kubectl get svc -n istio-system kiali -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+# open http://<hostname>:20001/kiali
+
+# Or from anywhere with cluster access
+kubectl port-forward -n istio-system svc/kiali 20001:20001
+# open http://localhost:20001/kiali
+```
+
+Kiali uses `auth: strategy: anonymous`, so anyone who can reach port 20001 gets in; `view_only_mode: true` stops them changing mesh configuration from the UI. Keep the NLB internal.
+
+**Loki** stores logs on a 10Gi gp3 EBS volume (single replica, `auth_enabled: false`). It only receives logs if something ships them to it (for example Grafana Alloy); the CloudWatch Observability add-on sends container logs to CloudWatch, not Loki.
+
+**Removing them**: `kubectl delete -f istio/auto-mode/kiali.yaml` is safe. Do **not** run `kubectl delete -f istio/auto-mode/loki.yaml` while the `nodepool` stage is deployed: the file includes `auto-ebs-sc`, which is also the cluster's default StorageClass managed by `nodepool/storageclass.tf`. Delete Loki's objects by name instead:
+
+```bash
+kubectl delete statefulset,service,configmap,serviceaccount -n istio-system -l app.kubernetes.io/name=loki
+kubectl delete clusterrole,clusterrolebinding -l app.kubernetes.io/name=loki
+kubectl delete pvc -n istio-system -l app.kubernetes.io/name=loki   # deletes the log data
+```
+
+---
+
 ## Testing and Verification
 
 ### After Deployment
