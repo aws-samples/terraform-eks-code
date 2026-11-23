@@ -1,0 +1,6 @@
+
+== AWS identity and tf-setup parameters
+  INFO  account 566972129213  region eu-west-1
+  FAIL  tf-setup SSM parameters missing in eu-west-1 - run tf-setup first (or set AWS_REGION)
+
+== Summary: 0 passed, 1 failed, 0 warnings

@@ -1,0 +1,7 @@
+
+== AWS identity and region
+  PASS  credentials work: arn:aws:iam::566972129213:user/andyt530
+  INFO  region: eu-west-1
+
+== SSM parameters (/workshop/tf-eks/*)
+  FAIL  no /workshop/tf-eks/* parameters in eu-west-1 - tf-setup is not applied (or AWS_REGION is wrong)

@@ -64,7 +64,7 @@ if [[ -z "$SSM_JSON" ]]; then
 fi
 if [[ $(echo "$SSM_JSON" | jq '.Parameters | length') -eq 0 ]]; then
     fail "no /workshop/tf-eks/* parameters in $REGION - tf-setup is not applied (or AWS_REGION is wrong)"
-    exit 1
+    echo; echo "== Summary: $PASS passed, $FAIL failed, $WARN warnings"; exit 1
 fi
 param() { echo "$SSM_JSON" | jq -r --arg n "/workshop/tf-eks/$1" '.Parameters[] | select(.Name==$n) | .Value'; }
 for p in $PARAMS; do
