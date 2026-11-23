@@ -10,11 +10,11 @@
 #   - gen-backend.sh (local)  -> tf-setup/generated/backend-<stage>.tf + tmp-buck.txt
 #
 # The later stages read the SSM parameters and use the generated backend files (symlinked
-# into each stage directory), so those are checked too. If the EKS cluster already exists,
-# the script also checks it matches the cluster-name / eks-version parameters (aws + kubectl).
+# into each stage directory), so those are checked too. The EKS cluster is checked by
+# test20-cluster.sh.
 #
 # Usage:  ./test00-tf-setup.sh            (region from AWS_REGION, else the generated backend, else eu-west-1)
-# Needs:  aws, jq; terraform and kubectl are optional.
+# Needs:  aws, jq; terraform is optional.
 # Exit:   0 when every check passes, 1 otherwise. Read-only: nothing is created or changed
 #         (terraform plan is run with -lock=false when tf-setup has local state).
 #
@@ -198,26 +198,6 @@ if command -v terraform >/dev/null; then
 fi
 [[ -d "$HOME/.terraform.d/plugin-cache" ]] && pass "terraform plugin cache dir exists" \
     || warn "$HOME/.terraform.d/plugin-cache missing (gen-backend.sh creates it)"
-
-# ------------------------------------------------------------------ EKS cluster (only if built)
-section "EKS cluster $CLUSTER (consumer of cluster-name / eks-version)"
-if C=$(aws eks describe-cluster --name "$CLUSTER" --output json 2>/dev/null); then
-    check "cluster status" "ACTIVE" "$(echo "$C" | jq -r '.cluster.status')"
-    check "cluster version = eks-version parameter" "$EKSVER" "$(echo "$C" | jq -r '.cluster.version')"
-    if command -v kubectl >/dev/null; then
-        SV=$(kubectl version -o json --request-timeout=15s 2>/dev/null | jq -r '.serverVersion | "\(.major).\(.minor)"' | tr -d '+')
-        if [[ -n "$SV" && "$SV" != "null.null" ]]; then
-            check "kubectl server version" "$EKSVER" "$SV"
-            CTX=$(kubectl config current-context 2>/dev/null)
-            [[ "$CTX" == *"$CLUSTER"* ]] && pass "kubectl context points at $CLUSTER ($CTX)" \
-                || warn "kubectl context '$CTX' does not mention $CLUSTER"
-        else
-            warn "kubectl cannot reach the cluster API (private endpoint? run from the IDE instance)"
-        fi
-    fi
-else
-    info "cluster not created yet - skipped"
-fi
 
 # ------------------------------------------------------------------ summary
 echo
